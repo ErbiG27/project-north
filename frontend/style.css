@@ -339,3 +339,8 @@ body
     display: flex;
     justify-content: center;
 }
+
+.offer-footer .btn{
+    display: inline-block;
+    text-decoration: none;
+}

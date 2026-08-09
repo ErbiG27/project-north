@@ -10,7 +10,7 @@ Ułatwić znalezienie wartościowych promocji, bonusów i metod zarabiania bez z
 
 ## Aktualna wersja
 
-v0.4.0
+v0.5.0
 
 ---
 
@@ -62,5 +62,18 @@ v0.4.0
 - Category Filters
 - Active filter state
 - Unified filtering architecture 
+
+## v0.5.0
+
+### Added
+
+- Dynamiczne generowanie kart ofert
+- Dane przeniesione do offers.js
+- Konfiguracja przeniesiona do config.js
+- Dynamiczne logotypy
+- Dynamiczne badge
+- Sortowanie ofert
+- bonusValue oraz timeValue
+- Komponenty renderujące (Badge, Logo, Button, Feature)
 
 Projekt rozwijany od podstaw jako długoterminowy produkt.
