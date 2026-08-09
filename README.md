@@ -10,7 +10,7 @@ Ułatwić znalezienie wartościowych promocji, bonusów i metod zarabiania bez z
 
 ## Aktualna wersja
 
-v0.3.0
+v0.4.0
 
 ---
 
@@ -26,15 +26,20 @@ v0.3.0
 
 ## Roadmap
 
-### v0.4.0
+### v0.4.0 
 - Działająca wyszukiwarka
 - Filtrowanie ofert
 - Sortowanie JavaScript
 
 ### v0.5.0
+- Dynamiczne generowanie ofert
+- Przeniesienie danych do offers.js
+- Automatyczne renderowanie kart
+
+### v0.5.1
 - Tooltipy
-- Wyjaśnienia KYC
-- Kategorie ofert
+- KYC
+- Kategorie
 
 ### v0.6.0
 - Logowanie
@@ -49,5 +54,13 @@ v0.3.0
 - JavaScript
 
 ---
+
+## v0.4.0
+
+### Added
+- Live Search
+- Category Filters
+- Active filter state
+- Unified filtering architecture 
 
 Projekt rozwijany od podstaw jako długoterminowy produkt.
