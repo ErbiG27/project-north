@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zarabiaj Online</title>
+    <title>North</title>
 
 </head>
 <body>
@@ -75,11 +75,11 @@
 
 <div class="offers-toolbar">
 
-    <input
-        type="text"
-        class="search-input"
-        placeholder="🔍 Wyszukaj ofertę..."
-    >
+<input
+    class="search-input"
+    id="search-input"
+    type="text"
+    placeholder="Szukaj ofert...">
 
     <div class="offers-actions">
 
@@ -104,21 +104,31 @@
 
 <div class="quick-filters">
 
-    <button class="quick-filter active">🌍 Wszystkie</button>
+    <button class="quick-filter active" data-filter="all">
+        🌍 Wszystkie
+    </button>
 
-    <button class="quick-filter">🏦 Banki</button>
+    <button class="quick-filter" data-filter="bank">
+        🏦 Banki
+    </button>
 
-    <button class="quick-filter">₿ Krypto</button>
+    <button class="quick-filter" data-filter="crypto">
+        ₿ Krypto
+    </button>
 
-    <button class="quick-filter">📈 Brokerzy</button>
+    <button class="quick-filter" data-filter="broker">
+        📈 Brokerzy
+    </button>
 
-    <button class="quick-filter">💸 Cashback</button>
+    <button class="quick-filter" data-filter="cashback">
+        💸 Cashback
+    </button>
 
 </div>
 
 <div class="offers-grid">
 
-    <div class="offer-card">
+    <div class="offer-card" data-name="revolut" data-category="bank">
             <div class="offer-header">
                 <div class="offer-brand">
                     <div class="offer-placeholder">
@@ -178,7 +188,7 @@
             </div>
         </div>
 
-    <div class="offer-card">
+    <div class="offer-card" data-name="binance" data-category="crypto">
             <div class="offer-header">
                 <div class="offer-brand">
                     <div class="offer-placeholder">
@@ -241,6 +251,8 @@
 </div>
 
 </section>  
+
+<script src="script.js"></script>
 
 </body>
 </html> 
