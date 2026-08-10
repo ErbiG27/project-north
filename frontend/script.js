@@ -225,3 +225,5 @@ sortSelect.addEventListener("change", () => {
     renderOffers();
 
 });
+
+renderOffers();
