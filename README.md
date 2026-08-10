@@ -77,3 +77,32 @@ v0.5.0
 - Komponenty renderujące (Badge, Logo, Button, Feature)
 
 Projekt rozwijany od podstaw jako długoterminowy produkt.
+
+### v0.5.1
+
+UI Improvements
+
+### v0.5.2
+
+How it Works + Hero Dashboard
+
+### v0.5.3
+
+Hero Polish + Visual improvements
+
+### v0.5.4
+Visual polish
+
+### Changelog v0.5.5
+🎨 Branding
+✅ wybrano roboczą nazwę ProjectNorth
+✅ wybrano kierunek logo (Kompas / Północ)
+✅ powstał pierwszy Brand Board
+✅ wybrano favicon concept
+✅ ustalono główną kolorystykę (czarny + zielony)
+✅ określono kierunek typografii
+📋 Decyzje projektowe
+Nazwa projektu: ProjectNorth
+Nazwa produktu na stronie: North
+Kierunek marki: Premium + Technology
+Styl: Minimalistyczny
