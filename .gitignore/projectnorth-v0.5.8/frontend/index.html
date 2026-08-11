@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>North</title>
+</head>
+<body>
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Znajdź sprawdzone sposoby zarabiania online</h1>
+                <p>W jednym miejscu znajdziesz sprawdzone sposoby zarabiania online wraz z ich zaletami, wadami i potencjalnymi zarobkami.</p>
+
+                <div class="buttons">
+                    <button class="btn green">Rozpocznij</button>
+                    <button class="btn blue">Zaloguj</button>
+                </div>
+            </div>
+
+                <div class="hero-image">
+
+                    <div class="hero-dashboard">
+
+                        <div class="dashboard-header">
+
+                            <span class="dashboard-title">North</span>
+
+                            <span class="dashboard-status">🟢 Online</span>
+
+                        </div>
+
+                        <div class="dashboard-offer">
+
+                            <div>
+                                <strong>🔥 Revolut</strong>
+                                <p>Bonus za konto</p>
+                            </div>
+
+                            <span>+200 zł</span>
+
+                        </div>
+
+                        <div class="dashboard-offer">
+
+                            <div>
+                                <strong>₿ Binance</strong>
+                                <p>Premia powitalna</p>
+                            </div>
+
+                            <span>100 USDT</span>
+
+                        </div>
+
+                        <div class="dashboard-divider"></div>
+
+                        <div class="dashboard-stats">
+
+                            <div class="stat-box">
+                                <strong>120+</strong>
+                                <span>Ofert</span>
+                            </div>
+
+                            <div class="stat-box">
+                                <strong>100%</strong>
+                                <span>Zweryfikowane</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+        </div>
+   
+    </section>
+
+    <section class="benefits">
+        <h2>💡 Dlaczego warto?</h2>
+
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <h3>⚡ Aktualizowane codziennie</h3>
+                <p>Oferty są regularnie sprawdzane i aktualizowane.</p>
+            </div>
+
+            <div class="benefit-card">
+                <h3>⚖️ Plusy i minusy</h3>
+                <p>Każda oferta zawiera zalety, wady i ocenę.</p>
+            </div>
+
+            <div class="benefit-card">
+                <h3>💰 Szacowane zarobki</h3>
+                <p>Przykładowe możliwości dla każdej metody.</p>
+            </div>
+
+            <div class="benefit-card">
+                <h3>✅ Zaufane źródła</h3>
+                <p>Polecamy wyłącznie sprawdzone platformy i promocje.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="how-it-works">
+
+        <h2>🚀 Jak działa North?</h2>
+
+        <div class="steps-grid">
+
+            <div class="step-card">
+
+                <div class="step-number">1</div>
+
+                <h3>Wybierz ofertę</h3>
+
+                <p>
+                    Przeglądaj sprawdzone bonusy, promocje i oferty
+                    dopasowane do swoich potrzeb.
+                </p>
+
+            </div>
+
+            <div class="step-arrow">
+                →
+            </div>
+
+            <div class="step-card">
+
+                <div class="step-number">2</div>
+
+                <h3>Spełnij warunki</h3>
+
+                <p>
+                    Załóż konto i wykonaj wymagane kroki opisane
+                    przy każdej ofercie.
+                </p>
+
+            </div>
+
+            <div class="step-arrow">
+                →
+            </div>
+
+            <div class="step-card">
+
+                <div class="step-number">3</div>
+
+                <h3>Odbierz bonus</h3>
+
+                <p>
+                    Po spełnieniu warunków odbierz nagrodę
+                    lub premię przewidzianą w promocji.
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <section class="offers">
+        <h2>💡 Polecane oferty</h2>
+
+        <div class="offers-toolbar">
+            <input
+                class="search-input"
+                id="search-input"
+                type="text"
+                placeholder="Szukaj ofert...">
+
+            <div class="offers-actions">
+                <select class="offers-select">
+                    <option>🌍 Wszystkie kategorie</option>
+                    <option>🏦 Banki</option>
+                    <option>₿ Krypto</option>
+                    <option>📈 Brokerzy</option>
+                    <option>💸 Cashback</option>
+                </select>
+
+                <select id="sort-select" class="offers-select">
+
+                    <option value="featured">⭐ Polecane</option>
+
+                    <option value="bonus-desc">💰 Najwyższy bonus</option>
+
+                    <option value="time-asc">⏱️ Najkrótszy czas</option>
+
+                    <option value="newest">🆕 Najnowsze</option>
+
+                </select>
+            </div>
+        </div>
+
+        <div class="quick-filters">
+            <button class="quick-filter active" data-filter="all">🌍 Wszystkie</button>
+            <button class="quick-filter" data-filter="bank">🏦 Banki</button>
+            <button class="quick-filter" data-filter="crypto">₿ Krypto</button>
+            <button class="quick-filter" data-filter="broker">📈 Brokerzy</button>
+            <button class="quick-filter" data-filter="cashback">💸 Cashback</button>
+        </div>
+
+        <div class="offers-grid"></div>
+    </section>
+
+    <script src="data/config.js"></script>
+    <script src="data/offers.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
