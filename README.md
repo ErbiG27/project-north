@@ -106,3 +106,22 @@ Nazwa projektu: ProjectNorth
 Nazwa produktu na stronie: North
 Kierunek marki: Premium + Technology
 Styl: Minimalistyczny
+
+Changelog
+🚀 v0.5.8 — Premium Hero Framework
+✨ Added
+Premium Hero Layout
+Two-column Hero architecture
+North Hero Framework
+North Score v2
+North Snapshot v2
+North Badges
+Premium CTA
+Responsive Hero
+Reusable Hero structure
+🔧 Improved
+Visual hierarchy
+Information architecture
+Component organization
+Hero spacing
+Offer presentation

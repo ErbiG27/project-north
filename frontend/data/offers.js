@@ -18,7 +18,7 @@ const offers = [
         description:
             "Darmowe konto osobiste z premią dla nowych użytkowników. Bonus otrzymasz po spełnieniu warunków promocji.",
         actionLabel: "Sprawdź ofertę →",
-        url: "#",
+        url: "offers/revolut.html",
         logo: "assets/logos/revolut.svg",
         featured: true
     },
@@ -41,7 +41,7 @@ const offers = [
         description:
             "Platforma kryptowalutowa z ofertą dla nowych użytkowników. Przed skorzystaniem sprawdź aktualne warunki promocji.",
         actionLabel: "Sprawdź ofertę →",
-        url: "#",
+        url: "offers/binance.html",
         logo: "assets/logos/binance.svg",
         featured: false
     }
