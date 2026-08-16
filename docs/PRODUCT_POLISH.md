@@ -8,6 +8,9 @@ Backlog jakościowy. Priorytet określa wpływ na zaufanie i ukończenie zadania
 - Potwierdzić aktualność bonusów, warunków, dostępności oraz informacji o partnerach.
 - Ujednolicić kodowanie plików do UTF-8, aby polskie znaki i ikony nie były uszkodzone.
 - Oznaczyć linki partnerskie, dodać podstawową politykę afiliacyjną oraz źródła warunków.
+- Dla Millennium, Nest i Pekao ręcznie połączyć krytyczne pola z konkretnym źródłem lub punktem regulaminu, datą weryfikacji i statusem pewności.
+- Nie pokazywać jednej „realnej nagrody” bez jawnego scenariusza; stosować `Advertised Max`, `Easy Floor` oraz `Your Likely Value` / `Conditional Max` tam, gdzie ma zastosowanie.
+- Nie publikować werdyktu `WAIT` ani precyzyjnego procentu Confidence/Match bez wystarczających danych i walidacji.
 - Sprawdzić wersję mobilną, klawiaturę i stany focus.
 
 ## P1 — fundament zaufania
@@ -15,7 +18,9 @@ Backlog jakościowy. Priorytet określa wpływ na zaufanie i ukończenie zadania
 - Uzupełnić spójne użycie istniejących zasobów marki North w stopce i metadanych.
 - Dodać footer z informacją o metodologii, aktualizacji i kontakcie.
 - Dodać datę weryfikacji i status oferty.
-- Przygotować stronę metodologii North Score.
+- Przygotować stronę metodologii modelu decyzji: North Value, North Confidence, scenariusze wartości, koszty, ryzyko niedowiezienia i zasady Verdict.
+- Zapewnić, że North Score — jeśli pozostaje widoczny — jest skrótem wtórnym z rozkładem i uzasadnieniem, a nie głównym USP.
+- Dodać czytelne stany `TAKE NOW`, `TAKE IF`, `SKIP` i `NOT ENOUGH DATA`; `WAIT` zachować jako późniejszy stan wymagający historii i backtestu.
 - Dodać puste stany dla braku wyników wyszukiwania oraz filtrów.
 - Uczynić całą kartę oferty logicznie klikalną bez zagnieżdżania interaktywnych elementów.
 
@@ -28,6 +33,17 @@ Backlog jakościowy. Priorytet określa wpływ na zaufanie i ukończenie zadania
 - Przegląd treści pod kątem prostego języka i nieuzasadnionych obietnic.
 - Ustalić politykę zakończeń linii i uporządkować `.gitattributes` (nie blokuje kolejnego etapu).
 - Poprawić kontrast sygnetu North wewnątrz North Verdict (nie blokuje kolejnego etapu).
+
+## Później — po walidacji Decision Model v1
+
+- Przeprowadzić jeden kontrolowany crypto hard case: Kraken referral, wyłącznie jako stretch validation case po Millennium, Nest i Pekao — nie jako rozszerzenie katalogu.
+- W analizie Kraken jawnie pokazać reward uncertainty, market risk, `North Confidence`, user capital at risk, conditions required oraz możliwość Verdict `TAKE IF`, `SKIP` lub `NOT ENOUGH DATA`.
+- Nie nadawać pozytywnego Verdict z powodu samej afiliacji lub referral.
+- Przed publikacją Kraken ponownie sprawdzić aktualne warunki promocji, publiczną dostępność ścieżki wejścia, ograniczenia programu referral, dozwolone publikowanie i linkowanie, ryzyko rynkowe oraz niegwarantowany charakter nagrody.
+- Wersjonowanie edycji ofert i historia zmian regulaminów.
+- Automatyczne monitorowanie regulaminów po sprawdzeniu procesu ręcznego.
+- Explainable North Match pokazujący wpływ zmiany założeń, nie tylko procent.
+- Pełny North Plan, conflict engine i historyczne `WAIT` vs `TAKE`.
 
 ## Kryterium zamknięcia zadania
 
