@@ -1,0 +1,690 @@
+{
+  "schemaVersion": "decision-model-v1",
+  "reviewedAt": "2026-08-16",
+  "methodologyVersion": "north-value-v1",
+  "confidenceFormat": "band-only",
+  "landingGates": {
+    "pekaoDemo": {
+      "status": "verified",
+      "offerId": "bank-pekao-konto-przekorzystne",
+      "editionId": "north-pekao-composite-2026-07-16",
+      "requiredCopyRule": "2 700 zł to łączne maksimum dwóch łączących się promocji: 300 zł przelewów pieniężnych i do 2 400 zł warunkowych nagród podróżnych. Nie wolno nazywać tej sumy 2 700 zł gotówki ani sugerować natychmiastowej wypłaty.",
+      "recheckBy": "2026-08-23"
+    },
+    "nestPersonaDemo": {
+      "status": "verified",
+      "offerId": "nest-bank-nest-konto",
+      "editionId": "north-nest-1250-2026-04-01",
+      "scenarioIds": [
+        "nest-low-qualified-spend",
+        "nest-no-salary-transfer",
+        "nest-well-fitted"
+      ],
+      "recheckBy": "2026-08-23"
+    },
+    "firstRealOpportunities": {
+      "bank-millennium-millennium-360": "ready_for_implementation",
+      "nest-bank-nest-konto": "ready_for_implementation",
+      "bank-pekao-konto-przekorzystne": "ready_for_implementation"
+    }
+  },
+  "offers": [
+    {
+      "identity": {
+        "id": "bank-millennium-millennium-360",
+        "slug": "bank-millennium-konto-360",
+        "provider": "Bank Millennium S.A.",
+        "category": "bank_account",
+        "title": "Do 700 zł na Twoje przyjemności z kontem Millennium 360°",
+        "status": "active",
+        "verifiedAt": "2026-08-16",
+        "edition": {
+          "id": "north-millennium-700-2026-04-01",
+          "name": "Do 700 zł na Twoje przyjemności z kontem Millennium 360°",
+          "validFrom": "2026-04-01",
+          "validTo": "2026-10-27",
+          "certainty": "confirmed",
+          "identifierNote": "Regulamin nie podaje osobnego kodu edycji. Identyfikator North łączy oficjalny tytuł i datę obowiązywania regulaminu. Nabór może skończyć się wcześniej po otwarciu 300 000 kont."
+        }
+      },
+      "value": {
+        "advertisedMax": {
+          "displayLabel": "do 700 zł",
+          "faceValueTotal": { "amount": 700, "currency": "PLN" },
+          "componentIds": ["millennium-first-bonus", "millennium-five-month-bonus"],
+          "aggregationBasis": "Dwie premie pieniężne są łączne, jeśli osobno spełniono warunki każdej z nich.",
+          "isCashEquivalent": true,
+          "caveat": "500 zł jest jedną premią zależną od spełnienia kompletu warunków w każdym z pięciu kolejnych miesięcy."
+        },
+        "rewardComponents": [
+          {
+            "id": "millennium-first-bonus",
+            "label": "Premia I",
+            "form": "cash",
+            "advertisedValue": { "amount": 200, "currency": "PLN" },
+            "calculation": "200 zł po spełnieniu warunków w ciągu 14 dni od otwarcia konta.",
+            "conditionActionIds": ["millennium-open", "millennium-consents", "millennium-first-inflow", "millennium-wallet-payments", "millennium-register-blik-phone"],
+            "combinability": "Łączy się z Premią II do łącznej kwoty 700 zł.",
+            "conditional": true,
+            "usability": {
+              "liquidity": "cash",
+              "usableValueRule": "Wartość użyteczna równa wypłaconej kwocie.",
+              "restrictions": ["Konto i wymagane zgody muszą pozostać aktywne do wypłaty."],
+              "expiry": null,
+              "transferability": "unrestricted_after_payout"
+            }
+          },
+          {
+            "id": "millennium-five-month-bonus",
+            "label": "Premia II",
+            "form": "cash",
+            "advertisedValue": { "amount": 500, "currency": "PLN" },
+            "calculation": "500 zł po spełnieniu warunków w każdym z pięciu miesięcy po miesiącu otwarcia.",
+            "conditionActionIds": ["millennium-monthly-inflow", "millennium-monthly-spend", "millennium-keep-blik-phone", "millennium-consents"],
+            "combinability": "Łączy się z Premią I do łącznej kwoty 700 zł.",
+            "conditional": true,
+            "usability": {
+              "liquidity": "cash",
+              "usableValueRule": "Wartość użyteczna równa wypłaconej kwocie.",
+              "restrictions": ["Pominięcie warunku w dowolnym z pięciu miesięcy blokuje całą Premię II.", "Konto i wymagane zgody muszą pozostać aktywne do wypłaty."],
+              "expiry": null,
+              "transferability": "unrestricted_after_payout"
+            }
+          }
+        ],
+        "easyFloor": {
+          "scenarioId": "millennium-first-bonus-only",
+          "grossValue": { "amount": 200, "currency": "PLN" },
+          "usableValue": { "amount": 200, "currency": "PLN" },
+          "includedComponentIds": ["millennium-first-bonus"],
+          "excludedComponentIds": [{ "id": "millennium-five-month-bonus", "reason": "Scenariusz nie zakłada pięciu miesięcy wpływów i wydatków." }],
+          "assumptions": ["Użytkownik jest kwalifikowany.", "W ciągu 14 dni może zapewnić wymagany dla wieku wpływ, pięć płatności portfelem mobilnym w sklepach stacjonarnych i rejestrację numeru do BLIK.", "Utrzymuje konto i zgody do wypłaty."],
+          "calculatedAt": "2026-08-16",
+          "methodologyVersion": "north-value-v1"
+        },
+        "scenarioFormula": {
+          "humanReadable": "Dodaj 200 zł, jeśli komplet warunków 14-dniowych jest spełniony. Dodaj 500 zł tylko wtedy, gdy komplet warunków jest spełniony w każdym z pięciu kolejnych miesięcy.",
+          "expression": "total = (first14DayConditions ? 200 : 0) + (allFiveMonthlyConditionSets ? 500 : 0)",
+          "inputs": ["ageBand", "first14DayEligibleInflows", "first14DayWalletPayments", "blikPhoneRegisteredWithin14Days", "monthlyEligibleInflows[5]", "monthlyEligibleSpend[5]", "blikPhoneMaintainedForFiveMonths", "requiredConsentsMaintained", "accountOpenAtPayout"],
+          "caps": [{ "scope": "total", "amount": { "amount": 700, "currency": "PLN" } }],
+          "horizon": "14 dni oraz pięć kolejnych miesięcy po miesiącu otwarcia; wypłata po weryfikacji",
+          "assumptions": ["Próg wpływu wynosi 1 500 zł dla wieku 18–25 i 3 000 zł dla wieku 26+ zgodnie z wprowadzeniem do pkt 4.", "Premia II jest all-or-nothing; regulamin nie opisuje częściowej wypłaty za pojedyncze miesiące."]
+        },
+        "conditionalMax": {
+          "scenarioId": "millennium-full-700",
+          "grossValue": { "amount": 700, "currency": "PLN" },
+          "usableValue": { "amount": 700, "currency": "PLN" },
+          "includedComponentIds": ["millennium-first-bonus", "millennium-five-month-bonus"],
+          "excludedComponentIds": [],
+          "assumptions": ["Spełniono warunki 14-dniowe.", "W każdym z pięciu miesięcy spełniono właściwy próg wpływu i wydano co najmniej 1 000 zł kwalifikowanymi płatnościami.", "Numer do BLIK, konto i zgody utrzymano do wypłaty."],
+          "calculatedAt": "2026-08-16",
+          "methodologyVersion": "north-value-v1"
+        },
+        "rewardForms": ["cash"],
+        "usabilityConstraints": ["Brak ograniczenia użycia po wypłacie.", "Wartość jest niedostępna przed wypłatą i przepada po przedwczesnym zamknięciu konta lub wycofaniu wymaganych zgód."],
+        "scenarioExamples": [
+          {
+            "id": "millennium-well-fitted-26-plus",
+            "label": "Użytkownik 30 lat, dobrze dopasowany do warunków",
+            "userInputs": { "age": 30, "eligibleInflowFirst14Days": 3000, "walletPaymentsFirst14Days": 5, "monthlyEligibleInflow": 3000, "monthlyEligibleSpend": 1000, "activeMonths": 5, "keepsBlikAndConsents": true },
+            "grossValue": { "amount": 700, "currency": "PLN" },
+            "usableValue": { "amount": 700, "currency": "PLN" },
+            "verdict": "TAKE IF",
+            "verdictReason": "Dodatnia wartość względem braku działania, jeśli użytkownik i tak może skierować wpływy, wydać 1 000 zł miesięcznie kwalifikowanymi płatnościami i akceptuje ryzyko utraty całych 500 zł po jednym błędzie.",
+            "confidenceBand": "HIGH"
+          }
+        ]
+      },
+      "eligibility": {
+        "geography": { "allowed": ["Poland"], "excluded": [], "basis": "Pełnoletnia osoba fizyczna, obywatel Polski, z PESEL, polskim dowodem osobistym i polskim numerem telefonu." },
+        "age": { "min": 18, "max": null, "note": "Warunki kwotowe różnią się dla 18–25 i 26+. Nagłówek tabeli w regulaminie używa także sformułowania „powyżej 26 lat”; model stosuje jednoznaczne wprowadzenie do pkt 4: 26+." },
+        "newCustomer": {
+          "required": true,
+          "definition": "Brak rachunku oszczędnościowo-rozliczeniowego w Banku Millennium od 1 stycznia 2022 r. do dnia przystąpienia.",
+          "lookbackFrom": "2022-01-01",
+          "lookbackTo": "joining_date",
+          "relationshipTypes": ["personal_current_account"]
+        },
+        "priorRelationshipExclusions": ["Posiadanie rachunku oszczędnościowo-rozliczeniowego Banku Millennium w okresie karencji.", "Zatrudnienie w Banku Millennium.", "Zastrzeżony PESEL w procesie otwierania."],
+        "requiredIncome": {
+          "required": true,
+          "type": "eligible_account_inflows",
+          "amount": null,
+          "cadence": "Pierwsze 14 dni i każdy z pięciu kolejnych miesięcy.",
+          "qualifyingSources": ["Wpływy z rachunku spoza Banku Millennium spełniające próg dla wieku."],
+          "excludedSources": ["Przelewy z innych rachunków prowadzonych przez Bank Millennium.", "Wpłaty gotówkowe dokonane przez uczestnika."],
+          "ageBands": [
+            { "age": "18-25", "amount": { "amount": 1500, "currency": "PLN" } },
+            { "age": "26+", "amount": { "amount": 3000, "currency": "PLN" } }
+          ],
+          "appliesToComponentIds": ["millennium-first-bonus", "millennium-five-month-bonus"]
+        },
+        "requiredSpend": [
+          {
+            "amount": null,
+            "cadence": "W ciągu 14 dni: co najmniej pięć płatności.",
+            "eligibleTransactions": "Płatności w sklepach stacjonarnych portfelem wirtualnym, np. Apple Pay, Google Pay lub Samsung Pay.",
+            "excludedTransactions": "Transakcje inne niż zakup towarów/usług, BLIK, gotówka, hazard, zwroty, wymiana walut i wskazane zasilenia usług finansowych.",
+            "appliesToComponentIds": ["millennium-first-bonus"]
+          },
+          {
+            "amount": { "amount": 1000, "currency": "PLN" },
+            "cadence": "Każdy z pięciu miesięcy po miesiącu otwarcia.",
+            "eligibleTransactions": "Płatności kartą debetową oraz portfelem wirtualnym w sklepach stacjonarnych.",
+            "excludedTransactions": "BLIK, gotówka, transakcje niebędące zakupem towarów/usług, hazard, zwroty, wymiana walut, usługa wielowalutowa i wskazane zasilenia usług finansowych.",
+            "appliesToComponentIds": ["millennium-five-month-bonus"]
+          }
+        ],
+        "requiredCapital": { "amount": null, "holdingPeriod": null, "capitalAtRisk": false, "appliesToComponentIds": [] },
+        "disqualifiers": ["Niespełnienie warunków nowego klienta.", "Brak wymaganych zgód.", "Otwarcie konta poza kwalifikowaną ścieżką.", "Zamknięcie konta lub wycofanie wymaganych zgód przed wypłatą."],
+        "userInputsRequired": ["age", "priorMillenniumAccountSince2022", "citizenshipAndDocuments", "abilityToRouteInflows", "eligibleMonthlySpend", "willingnessToKeepMarketingConsents", "mobileWalletAccess"]
+      },
+      "execution": {
+        "actions": [
+          { "id": "millennium-open", "label": "Otwórz Millennium 360° z kartą kwalifikowaną ścieżką.", "type": "open_account", "timing": "Do 2026-10-27 lub wcześniejszego wyczerpania puli.", "cadence": "once", "activeMonths": 0, "threshold": null, "appliesToComponentIds": ["millennium-first-bonus", "millennium-five-month-bonus"], "consequenceIfMissed": "Brak udziału w promocji.", "recoverable": false },
+          { "id": "millennium-consents", "label": "Udziel i utrzymaj wymagane zgody marketingowe i handlowe.", "type": "consent", "timing": "Przy otwarciu i do wypłaty.", "cadence": "continuous", "activeMonths": 6, "threshold": null, "appliesToComponentIds": ["millennium-first-bonus", "millennium-five-month-bonus"], "consequenceIfMissed": "Niewypłacenie nieotrzymanej jeszcze premii.", "recoverable": false },
+          { "id": "millennium-first-inflow", "label": "Zapewnij wpływy właściwe dla wieku.", "type": "income", "timing": "W ciągu 14 dni od otwarcia.", "cadence": "once", "activeMonths": 0, "threshold": "1 500 zł dla 18–25; 3 000 zł dla 26+.", "appliesToComponentIds": ["millennium-first-bonus"], "consequenceIfMissed": "Utrata Premii I.", "recoverable": false },
+          { "id": "millennium-wallet-payments", "label": "Wykonaj pięć płatności portfelem mobilnym w sklepach stacjonarnych.", "type": "spend", "timing": "W ciągu 14 dni od otwarcia.", "cadence": "once", "activeMonths": 0, "threshold": "5 transakcji", "appliesToComponentIds": ["millennium-first-bonus"], "consequenceIfMissed": "Utrata Premii I.", "recoverable": false },
+          { "id": "millennium-register-blik-phone", "label": "Zarejestruj numer telefonu do przelewów BLIK.", "type": "setup", "timing": "W ciągu 14 dni od otwarcia.", "cadence": "once", "activeMonths": 0, "threshold": null, "appliesToComponentIds": ["millennium-first-bonus", "millennium-five-month-bonus"], "consequenceIfMissed": "Utrata Premii I; brak możliwości spełnienia warunku Premii II.", "recoverable": false },
+          { "id": "millennium-monthly-inflow", "label": "Zapewnij wpływy właściwe dla wieku w każdym miesiącu.", "type": "income", "timing": "Pięć miesięcy po miesiącu otwarcia.", "cadence": "monthly", "activeMonths": 5, "threshold": "1 500 zł dla 18–25; 3 000 zł dla 26+.", "appliesToComponentIds": ["millennium-five-month-bonus"], "consequenceIfMissed": "Utrata całej Premii II.", "recoverable": false },
+          { "id": "millennium-monthly-spend", "label": "Wydaj co najmniej 1 000 zł kwalifikowanymi płatnościami w każdym miesiącu.", "type": "spend", "timing": "Pięć miesięcy po miesiącu otwarcia.", "cadence": "monthly", "activeMonths": 5, "threshold": "1 000 zł miesięcznie", "appliesToComponentIds": ["millennium-five-month-bonus"], "consequenceIfMissed": "Utrata całej Premii II.", "recoverable": false },
+          { "id": "millennium-keep-blik-phone", "label": "Nie wyrejestruj numeru do przelewów BLIK.", "type": "maintenance", "timing": "Przez pięć miesięcy po miesiącu otwarcia.", "cadence": "continuous", "activeMonths": 5, "threshold": null, "appliesToComponentIds": ["millennium-five-month-bonus"], "consequenceIfMissed": "Utrata całej Premii II.", "recoverable": false }
+        ],
+        "cadence": { "summary": "Jednorazowy sprint 14-dniowy, następnie pięć miesięcznych zestawów warunków.", "repeatedActionIds": ["millennium-monthly-inflow", "millennium-monthly-spend", "millennium-keep-blik-phone"] },
+        "activeMonths": { "min": 0, "max": 5, "basis": "Premia I: 14 dni; Premia II: pięć miesięcy po miesiącu otwarcia, plus oczekiwanie na wypłatę." },
+        "deadlines": [
+          { "type": "entry", "date": "2026-10-27", "relativeRule": "Możliwy wcześniejszy koniec po 300 000 kont.", "appliesTo": "promotion" },
+          { "type": "first_bonus_actions", "date": null, "relativeRule": "14 dni od otwarcia.", "appliesTo": "millennium-first-bonus" },
+          { "type": "second_bonus_actions", "date": null, "relativeRule": "Każdy z pięciu miesięcy po miesiącu otwarcia.", "appliesTo": "millennium-five-month-bonus" }
+        ],
+        "payoutLag": {
+          "earliest": "Do końca miesiąca po miesiącu otwarcia dla Premii I.",
+          "latest": "Do końca siódmego miesiąca liczonego od miesiąca otwarcia dla Premii II, zgodnie z tabelą regulaminu.",
+          "relativeTo": "Miesiąc otwarcia i zakończenie pięciu miesięcy warunków.",
+          "payoutForm": "Przelew pieniężny na Millennium 360°.",
+          "uncertaintyNote": "Dokładna data zależy od miesiąca otwarcia; regulamin podaje osobne terminy dla każdego miesiąca wejścia."
+        },
+        "failurePoints": [
+          { "id": "millennium-miss-one-month", "label": "Pominięcie jednego miesięcznego warunku", "severity": "high", "scope": "millennium-five-month-bonus", "consequence": "Utrata całych 500 zł.", "mitigation": "Miesięczna checklista wpływu, wydatków i rejestracji BLIK.", "sourceRequired": true },
+          { "id": "millennium-invalid-transaction", "label": "Wydatki w wyłączonych kategoriach lub BLIK", "severity": "high", "scope": "reward qualification", "consequence": "Transakcja nie liczy się do warunku.", "mitigation": "Używać karty lub kwalifikowanego portfela do zwykłych zakupów i zachować bufor ponad próg.", "sourceRequired": true },
+          { "id": "millennium-card-fee", "label": "Za mało płatności do zwolnienia z opłaty za kartę/BLIK", "severity": "medium", "scope": "cost", "consequence": "Po okresie zwolnienia opłata 5 zł albo 11 zł miesięcznie zależnie od wieku.", "mitigation": "Kontrolować osobno liczbę płatności wymaganą cennikiem; próg 1 000 zł Premii II nie gwarantuje pięciu transakcji.", "sourceRequired": true },
+          { "id": "millennium-close-before-payout", "label": "Zamknięcie konta albo wycofanie zgód przed wypłatą", "severity": "high", "scope": "unpaid rewards", "consequence": "Niewypłacenie nieotrzymanej jeszcze premii.", "mitigation": "Zamykać konto dopiero po zaksięgowaniu ostatniej należnej premii.", "sourceRequired": true }
+        ],
+        "safeExit": {
+          "status": "partial",
+          "earliestExit": "Po zaksięgowaniu ostatniej należnej premii.",
+          "notice": "Standardowe wypowiedzenie konta trwa jeden miesiąc; dyspozycję można złożyć m.in. w Millenecie, na infolinii, w oddziale lub listownie.",
+          "fee": { "amount": 0, "currency": "PLN" },
+          "clawback": "Regulamin promocji nie przewiduje zwrotu już wypłaconej prawidłowo premii; jest to wniosek z braku klauzuli, nie odrębne zapewnienie banku.",
+          "steps": ["Poczekać na ostatnią należną wypłatę.", "Sprawdzić brak powiązanych produktów i zaległości.", "Złożyć dyspozycję zamknięcia i wskazać rachunek do przelewu salda."],
+          "uncertaintyNote": "Brak afirmatywnej klauzuli „no clawback”; nie zamykać przed wypłatą."
+        }
+      },
+      "cost": {
+        "directFees": [{ "label": "Otwarcie i prowadzenie Millennium 360°", "amount": { "amount": 0, "currency": "PLN" }, "cadence": "monthly", "unavoidable": true, "appliesDuring": "Cały okres korzystania." }],
+        "avoidableFees": [{ "label": "Obsługa karty debetowej lub płatności zbliżeniowych BLIK", "amount": null, "cadence": "monthly", "avoidanceCondition": "Po pierwszych dwóch miesiącach: co najmniej 1 płatność w poprzednim miesiącu dla wieku 18–26 albo 5 płatności dla wieku powyżej 26; w przeciwnym razie 5 zł albo 11 zł.", "failurePointId": "millennium-card-fee" }],
+        "downstreamCosts": [{ "label": "Wypłaty z obcych bankomatów po niespełnieniu warunku aktywności", "amountOrRule": "1 zł Santander/Planet Cash albo 5 zł w pozostałych bankomatach; operator zagraniczny może doliczyć własną opłatę.", "trigger": "Brak warunku płatności i użycie obcego bankomatu.", "uncertaintyNote": null }],
+        "opportunityCost": [{ "label": "Przekierowanie wpływów i 1 000 zł miesięcznych wydatków", "amountOrRange": null, "assumption": "Nie monetyzujemy bez wskazanej alternatywy; ten sam wpływ lub obrót może blokować inną promocję.", "comparisonId": "do-nothing", "monetized": false }],
+        "totalsByScenario": [{ "scenarioId": "millennium-well-fitted-26-plus", "direct": { "amount": 0, "currency": "PLN" }, "avoidableIfMissed": "0–11 zł miesięcznie zależnie od wieku i aktywności karty", "downstream": null, "opportunity": null }]
+      },
+      "decision": {
+        "scenarios": [{ "id": "millennium-well-fitted-26-plus", "label": "Dobrze dopasowany użytkownik 26+", "userInputs": ["age=30", "eligible inflow=3 000 zł", "eligible spend=1 000 zł/month", "five wallet payments in first 14 days", "keeps consents and BLIK"], "eligibilityResult": "eligible_if_prior_relationship_check_passes" }],
+        "northValue": [{ "scenarioId": "millennium-well-fitted-26-plus", "advertisedMax": { "amount": 700, "currency": "PLN" }, "easyFloor": { "amount": 200, "currency": "PLN" }, "likelyGrossValue": { "amount": 700, "currency": "PLN" }, "expectedUsableValue": { "min": { "amount": 200, "currency": "PLN" }, "max": { "amount": 700, "currency": "PLN" } }, "netScenarioValue": { "min": { "amount": 200, "currency": "PLN" }, "max": { "amount": 700, "currency": "PLN" } }, "rewardQuality": "HIGH: gotówka po wypłacie", "effortBurden": "MEDIUM", "duration": "Pięć miesięcy plus wypłata", "directCost": { "amount": 0, "currency": "PLN" }, "opportunityCost": "Niepoliczony bez wskazanej alternatywy", "failureRisk": "HIGH dla 500 zł: jeden niespełniony miesiąc blokuje całą premię", "flexibility": "MEDIUM: można zrezygnować, ale traci się niewypłacone premie", "completionOutlook": "CONDITIONAL", "assumptions": ["Zwykłe wydatki użytkownika przekraczają próg.", "Wpływy można skierować bez materialnego kosztu alternatywnego."] }],
+        "northConfidence": {
+          "scope": "offer-facts",
+          "band": "HIGH",
+          "factors": { "sourceQuality": "HIGH", "completeness": "HIGH", "freshness": "HIGH", "ambiguity": "MEDIUM", "editionCertainty": "HIGH" },
+          "reasons": ["Aktualny regulamin, oficjalna strona produktu i oficjalny cennik pokrywają wartość, warunki, wypłaty oraz opłaty.", "Niejednoznaczność dotyczy tylko nagłówka tabeli wieku; pkt 4 i strona produktu wskazują 26+."],
+          "blockers": [],
+          "assessedAt": "2026-08-16"
+        },
+        "verdict": { "scenarioId": "user-scenario-required", "state": "NOT ENOUGH DATA", "summary": "Fakty oferty są zweryfikowane, ale pozytywny Verdict wymaga danych użytkownika.", "reasons": ["Wartość zależy od wieku, historii relacji, wpływów, wydatków i gotowości utrzymania zgód."], "conditions": [], "positiveBlockers": ["Brak scenariusza użytkownika."], "missingData": ["age", "prior relationship", "eligible inflow", "eligible spend", "consent preference", "alternative offers"] },
+        "comparison": { "doNothing": { "reward": { "amount": 0, "currency": "PLN" }, "directCost": { "amount": 0, "currency": "PLN" }, "effort": "minimal", "failureRisk": "none-added" }, "alternatives": [], "conclusion": "W scenariuszu dobrze dopasowanym oferta ma dodatnią wartość wobec braku działania; nie oznacza to przewagi nad inną ofertą bankową.", "limitations": ["Nie wykonano równoległego porównania alternatywy o tym samym horyzoncie."] }
+      },
+      "evidence": {
+        "regulationUrl": "https://www.bankmillennium.pl/delegate/managedfiles/66001/latest",
+        "officialUrl": "https://www.bankmillennium.pl/klienci-indywidualni/konta-osobiste/konto-millennium-360",
+        "sources": [
+          { "id": "millennium-reg-700", "type": "official_regulation", "title": "Regulamin promocji „Do 700 zł na Twoje przyjemności z kontem Millennium 360°”", "url": "https://www.bankmillennium.pl/delegate/managedfiles/66001/latest", "editionReference": "obowiązuje od 1.04.2026 r.", "publishedAt": "2026-04-01", "accessedAt": "2026-08-16", "status": "current_as_reviewed" },
+          { "id": "millennium-product-360", "type": "official_product_page", "title": "Konto Millennium 360°", "url": "https://www.bankmillennium.pl/klienci-indywidualni/konta-osobiste/konto-millennium-360", "editionReference": "Do 700 zł; do 27.10.2026 lub 300 000 kont", "publishedAt": null, "accessedAt": "2026-08-16", "status": "current_as_reviewed" },
+          { "id": "millennium-fees-card", "type": "official_fee_table", "title": "Cennik usług – karty debetowe", "url": "https://www.bankmillennium.pl/delegate/managedfiles/25/latest", "editionReference": "obowiązuje od 1.07.2024 r. dla umów od 1.06.2023 r.", "publishedAt": "2024-07-01", "accessedAt": "2026-08-16", "status": "current_official_document" }
+        ],
+        "fieldSources": [
+          { "fieldPath": "identity.edition", "sourceId": "millennium-reg-700", "sourceType": "official_regulation", "reference": "tytuł; „Kiedy możesz przystąpić do promocji”, pkt 1", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Brak osobnego kodu edycji; ID North oparto na tytule i dacie regulaminu." },
+          { "fieldPath": "identity.status", "sourceId": "millennium-product-360", "sourceType": "official_product_page", "reference": "sekcja promocji: trwa do 27.10.2026 lub 300 000 kont", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Status wymaga ponownego sprawdzenia puli przed publikacją." },
+          { "fieldPath": "value.advertisedMax", "sourceId": "millennium-reg-700", "sourceType": "official_regulation", "reference": "„Jakie są premie i jak je otrzymać”, pkt 4", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "value.rewardComponents[millennium-first-bonus]", "sourceId": "millennium-reg-700", "sourceType": "official_regulation", "reference": "pkt 4, tabela: Premia I – 200 zł", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "value.rewardComponents[millennium-five-month-bonus]", "sourceId": "millennium-reg-700", "sourceType": "official_regulation", "reference": "pkt 4, tabela: Premia II – 500 zł", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "value.rewardComponents[*].combinability", "sourceId": "millennium-reg-700", "sourceType": "official_regulation", "reference": "pkt 4: dwie premie o łącznej wartości 700 zł", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "value.easyFloor", "sourceId": "millennium-reg-700", "sourceType": "official_regulation", "reference": "pkt 4, Premia I; pkt 5, utrzymanie konta i zgód", "checkedAt": "2026-08-16", "supportLevel": "interpreted", "uncertaintyNote": "„Easy” jest etykietą scenariusza North; 200 zł nie jest gwarantowane bez spełnienia jawnych założeń." },
+          { "fieldPath": "value.scenarioFormula", "sourceId": "millennium-reg-700", "sourceType": "official_regulation", "reference": "pkt 4–9", "checkedAt": "2026-08-16", "supportLevel": "interpreted", "uncertaintyNote": "All-or-nothing Premii II wynika z warunku spełnienia działań „w każdym z 5 miesięcy”; brak reguły częściowej wypłaty." },
+          { "fieldPath": "eligibility", "sourceId": "millennium-reg-700", "sourceType": "official_regulation", "reference": "„Kto może wziąć udział”, pkt 2; „Jak przystąpić”, pkt 3", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Wewnętrzna niespójność słowna dla wieku 26 została opisana w conflicts." },
+          { "fieldPath": "eligibility.requiredIncome", "sourceId": "millennium-reg-700", "sourceType": "official_regulation", "reference": "pkt 4 i 8", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "eligibility.requiredSpend", "sourceId": "millennium-reg-700", "sourceType": "official_regulation", "reference": "pkt 4 i 9", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "eligibility.requiredCapital", "sourceId": "millennium-reg-700", "sourceType": "official_regulation", "reference": "pkt 3–9: brak wymogu depozytu lub utrzymania kapitału", "checkedAt": "2026-08-16", "supportLevel": "interpreted", "uncertaintyNote": "Brak wymogu wynika z kompletnej listy warunków; wpływy i wydatki pozostają osobnymi polami." },
+          { "fieldPath": "execution.actions", "sourceId": "millennium-reg-700", "sourceType": "official_regulation", "reference": "pkt 3–9", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "execution.deadlines", "sourceId": "millennium-reg-700", "sourceType": "official_regulation", "reference": "pkt 1; pkt 4; tabela „Kiedy wypłacamy premie”", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Koniec naboru może nastąpić po wyczerpaniu limitu kont." },
+          { "fieldPath": "execution.activeMonths", "sourceId": "millennium-reg-700", "sourceType": "official_regulation", "reference": "pkt 4: 14 dni oraz 5 miesięcy po miesiącu otwarcia", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "execution.payoutLag", "sourceId": "millennium-reg-700", "sourceType": "official_regulation", "reference": "tabela „Kiedy wypłacamy premie”, s. 7", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Dokładny dzień zależy od miesiąca otwarcia." },
+          { "fieldPath": "cost.directFees", "sourceId": "millennium-product-360", "sourceType": "official_product_page", "reference": "FAQ: otwarcie i prowadzenie konta bezwarunkowo bezpłatne", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "cost.avoidableFees", "sourceId": "millennium-fees-card", "sourceType": "official_fee_table", "reference": "Opłaty za kartę, wiersz obsługa karty/BLIK; przypisy 12–13", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Cennik jest nadal udostępniany jako oficjalny dokument, mimo daty obowiązywania od 2024 r.; aktualna strona produktu potwierdza stawki." },
+          { "fieldPath": "execution.failurePoints", "sourceId": "millennium-reg-700", "sourceType": "official_regulation", "reference": "pkt 4–9", "checkedAt": "2026-08-16", "supportLevel": "interpreted", "uncertaintyNote": "Skutek pojedynczego pominiętego miesiąca dla Premii II wynika z warunku „w każdym z 5 miesięcy”." },
+          { "fieldPath": "execution.failurePoints[millennium-card-fee]", "sourceId": "millennium-fees-card", "sourceType": "official_fee_table", "reference": "wiersz obsługa karty/BLIK; przypisy 12–13", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Warunek liczby płatności dla opłaty jest odrębny od warunku wartości płatności dla Premii II." },
+          { "fieldPath": "execution.safeExit", "sourceId": "millennium-product-360", "sourceType": "official_product_page", "reference": "FAQ: zamknięcie w Millenecie/infolinii/oddziale/listownie; miesięczny okres wypowiedzenia; sekcja promocji: konto otwarte do nagrody", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Procedura zamknięcia jest potwierdzona, ale brak afirmatywnej klauzuli o już wypłaconych premiach." },
+          { "fieldPath": "execution.safeExit.clawback", "sourceId": "millennium-reg-700", "sourceType": "official_regulation", "reference": "pkt 5: blokada wypłaty przed zamknięciem/wycofaniem zgód; brak klauzuli zwrotu wypłaconej premii", "checkedAt": "2026-08-16", "supportLevel": "interpreted", "uncertaintyNote": "Nie przedstawiać jako gwarancji banku, że clawback nigdy nie wystąpi." },
+          { "fieldPath": "decision.northValue[millennium-well-fitted-26-plus]", "sourceId": "millennium-reg-700", "sourceType": "official_regulation", "reference": "pkt 4–9; obliczenie deterministyczne dla jawnych danych scenariusza", "checkedAt": "2026-08-16", "supportLevel": "interpreted", "uncertaintyNote": "Nie uwzględnia niewskazanej alternatywy ani ceny czasu." }
+        ],
+        "conflicts": [{ "fieldPath": "eligibility.age", "sourceIds": ["millennium-reg-700", "millennium-product-360"], "description": "Pkt 4 wprowadza segmenty 18–25 i 26+, lecz nagłówek dalszej tabeli mówi „powyżej 26 lat”; strona produktu również stosuje niespójnie 26+ i „powyżej 26” w różnych miejscach.", "resolutionStatus": "Model stosuje 26+ z wprowadzenia do pkt 4. Dla użytkownika dokładnie 26-letniego interfejs ma pokazać notę i nie ukrywać konfliktu." }],
+        "recheckBy": "2026-08-23",
+        "owner": "ProjectNorth manual evidence review",
+        "notes": ["Brak źródeł wtórnych w podstawie krytycznych pól.", "Status limitu 300 000 kont musi być ponownie sprawdzony bezpośrednio przed publikacją lub CTA."]
+      },
+      "listing": { "problemLabel": "700 zł wymaga dwóch różnych rytmów działań", "summary": "200 zł po sprincie 14-dniowym i 500 zł dopiero po komplecie warunków w pięciu kolejnych miesiącach.", "featured": true },
+      "affiliate": { "available": false, "url": null, "disclosure": "Brak aktywnego linku afiliacyjnego w tym rekordzie." }
+    },
+    {
+      "identity": {
+        "id": "nest-bank-nest-konto",
+        "slug": "nest-bank-nest-konto",
+        "provider": "Nest Bank S.A.",
+        "category": "bank_account",
+        "title": "Zyskaj do 1250 zł premii z Nest Kontem",
+        "status": "active",
+        "verifiedAt": "2026-08-16",
+        "edition": {
+          "id": "north-nest-1250-2026-04-01",
+          "name": "Zyskaj do 1250 zł premii z Nest Kontem",
+          "validFrom": "2026-04-01",
+          "validTo": "2026-09-30",
+          "certainty": "confirmed",
+          "identifierNote": "Regulamin nie podaje osobnego kodu edycji. Bank może zakończyć nabór wcześniej z siedmiodniowym komunikatem; prawa dotychczasowych uczestników pozostają."
+        }
+      },
+      "value": {
+        "advertisedMax": {
+          "displayLabel": "do 1 250 zł",
+          "faceValueTotal": { "amount": 1250, "currency": "PLN" },
+          "componentIds": ["nest-transaction-cashback", "nest-eur-exchange-bonus"],
+          "aggregationBasis": "Maksymalnie 1 200 zł zwrotu w 24 miesiące plus jednorazowe 50 zł za wymianę minimum 100 EUR.",
+          "isCashEquivalent": true,
+          "caveat": "1 200 zł wymaga osiągania miesięcznego limitu 50 zł przez wszystkie 24 miesiące; wpływ wynagrodzenia jest warunkiem tego składnika."
+        },
+        "rewardComponents": [
+          {
+            "id": "nest-transaction-cashback",
+            "label": "2% zwrotu za transakcje",
+            "form": "cashback",
+            "advertisedValue": { "amount": 1200, "currency": "PLN" },
+            "calculation": "2% kwalifikowanych płatności kartą i BLIK, maksymalnie 50 zł miesięcznie przez 24 kolejne miesiące.",
+            "conditionActionIds": ["nest-activate-cashback", "nest-monthly-salary", "nest-monthly-spend", "nest-maintain-consent"],
+            "combinability": "Łączy się z jednorazową premią 50 zł za wymianę euro.",
+            "conditional": true,
+            "usability": { "liquidity": "cash", "usableValueRule": "Wartość użyteczna równa wypłaconej kwocie.", "restrictions": ["Miesięczny cap 50 zł.", "Pominięty miesiąc daje 0 zł i nie wydłuża 24-miesięcznego okresu."], "expiry": null, "transferability": "unrestricted_after_payout" }
+          },
+          {
+            "id": "nest-eur-exchange-bonus",
+            "label": "Premia za wymianę euro",
+            "form": "cash",
+            "advertisedValue": { "amount": 50, "currency": "PLN" },
+            "calculation": "50 zł po kupnie lub sprzedaży łącznie minimum 100 EUR w Nest Kantorze w ciągu 30 dni od otwarcia Nest Konta.",
+            "conditionActionIds": ["nest-open-eur-account", "nest-exchange-eur", "nest-maintain-consent"],
+            "combinability": "Łączy się ze zwrotem za transakcje.",
+            "conditional": true,
+            "usability": { "liquidity": "cash", "usableValueRule": "Wartość użyteczna równa 50 zł pomniejszonemu o indywidualny koszt spreadu/alternatywnej wymiany EUR.", "restrictions": ["Wymaga Nest Konta Waluta EUR i wymiany minimum 100 EUR.", "Koszt różnicy kursowej nie jest określony stałą opłatą w regulaminie promocji."], "expiry": null, "transferability": "unrestricted_after_payout" }
+          }
+        ],
+        "easyFloor": null,
+        "scenarioFormula": {
+          "humanReadable": "W każdym z 24 miesięcy zwrot wynosi 2% kwalifikowanych wydatków, maksymalnie 50 zł, ale tylko przy kwalifikowanym wpływie wynagrodzenia, pełnej zgodzie marketingowej i co najmniej jednej płatności. Dodaj 50 zł, jeśli w 30 dni wymieniono łącznie minimum 100 EUR i spełniono warunki walutowe.",
+          "expression": "cashback = sum(m=1..24, monthlySalaryMet[m] && allChannelConsent[m] && eligibleSpend[m] > 0 ? min(0.02 * eligibleSpend[m], 50) : 0); fxBonus = eurAccount && consentMaintained && eurExchangedWithin30Days >= 100 ? 50 : 0; total = min(cashback, 1200) + fxBonus",
+          "inputs": ["ageBand", "eligibleSalaryInflows[24]", "eligibleSpend[24]", "allChannelConsent[24]", "firstQualifyingMonth", "eurAccountOpened", "eurExchangedWithin30Days"],
+          "caps": [{ "scope": "monthly cashback", "amount": { "amount": 50, "currency": "PLN" } }, { "scope": "24-month cashback", "amount": { "amount": 1200, "currency": "PLN" } }, { "scope": "total", "amount": { "amount": 1250, "currency": "PLN" } }],
+          "horizon": "24 kolejne miesiące kalendarzowe od pierwszego spełnienia warunków cashbacku; 30 dni dla premii EUR.",
+          "assumptions": ["Pierwszy miesiąc kwalifikowany musi wystąpić najpóźniej do końca drugiego pełnego miesiąca po otwarciu.", "Każdy pominięty miesiąc pozostaje w 24-miesięcznym liczniku.", "Formuła nie przypisuje prawdopodobieństwa ukończenia."]
+        },
+        "conditionalMax": {
+          "scenarioId": "nest-well-fitted",
+          "grossValue": { "amount": 1250, "currency": "PLN" },
+          "usableValue": { "min": { "amount": 1200, "currency": "PLN" }, "max": { "amount": 1250, "currency": "PLN" } },
+          "includedComponentIds": ["nest-transaction-cashback", "nest-eur-exchange-bonus"],
+          "excludedComponentIds": [],
+          "assumptions": ["Kwalifikowane wydatki wynoszą co najmniej 2 500 zł w każdym z 24 miesięcy.", "W każdym miesiącu spełniono próg wynagrodzenia i utrzymano wszystkie kanały zgody.", "W 30 dni wymieniono minimum 100 EUR; dolna wartość użyteczna nie zalicza 50 zł przed oceną kosztu kursowego."],
+          "calculatedAt": "2026-08-16",
+          "methodologyVersion": "north-value-v1"
+        },
+        "rewardForms": ["cashback", "cash"],
+        "usabilityConstraints": ["Cashback jest płynny po wypłacie, ale zależy od miesięcznego wpływu wynagrodzenia.", "Premia EUR wymaga dodatkowego rachunku walutowego i transakcji po kursie Nest Kantoru."],
+        "scenarioExamples": [
+          {
+            "id": "nest-low-qualified-spend",
+            "label": "Niskie kwalifikowane wydatki",
+            "userInputs": { "eligibleSpendPerMonth": 500, "salaryConditionMet": true, "allChannelConsent": true, "activeMonths": 24, "eurExchange": false },
+            "grossValue": { "amount": 240, "currency": "PLN" },
+            "usableValue": { "amount": 240, "currency": "PLN" },
+            "calculation": "24 × min(2% × 500 zł, 50 zł) = 240 zł; bez premii EUR.",
+            "verdict": "TAKE IF",
+            "verdictReason": "Ma sens głównie, jeśli użytkownik i tak chce to konto i bez kosztu kieruje na nie wynagrodzenie; 10 zł miesięcznie samo w sobie może nie uzasadniać 24-miesięcznego zobowiązania behawioralnego.",
+            "confidenceBand": "HIGH"
+          },
+          {
+            "id": "nest-no-salary-transfer",
+            "label": "Brak chęci przeniesienia wynagrodzenia",
+            "userInputs": { "eligibleSpendPerMonth": 2500, "salaryConditionMet": false, "allChannelConsent": true, "activeMonths": 24, "eurExchange": false },
+            "grossValue": { "amount": 0, "currency": "PLN" },
+            "usableValue": { "amount": 0, "currency": "PLN" },
+            "calculation": "Warunek wynagrodzenia dla cashbacku nie jest spełniony; scenariusz nie zakłada osobnej wymiany EUR.",
+            "verdict": "SKIP",
+            "verdictReason": "Dla tego jawnego scenariusza główny składnik ma wartość 0 zł, a brak działania nie dodaje obowiązków. Premię EUR można ocenić osobno, jeśli użytkownik rzeczywiście chce wymieniać euro.",
+            "confidenceBand": "HIGH"
+          },
+          {
+            "id": "nest-well-fitted",
+            "label": "Dobrze dopasowany do warunków",
+            "userInputs": { "eligibleSpendPerMonth": 2500, "salaryConditionMet": true, "allChannelConsent": true, "activeMonths": 24, "eurExchangeWithin30Days": 100, "eurAccount": true },
+            "grossValue": { "amount": 1250, "currency": "PLN" },
+            "usableValue": { "min": { "amount": 1200, "currency": "PLN" }, "max": { "amount": 1250, "currency": "PLN" } },
+            "calculation": "24 × 50 zł cashbacku + 50 zł premii EUR; przed uznaniem pełnych 50 zł za użyteczne trzeba zaakceptować kurs wymiany.",
+            "verdict": "TAKE IF",
+            "verdictReason": "Maksimum jest obronione tylko przy naturalnych wydatkach co najmniej 2 500 zł, kwalifikowanym wynagrodzeniu co miesiąc i akceptacji 24-miesięcznego horyzontu.",
+            "confidenceBand": "MEDIUM"
+          }
+        ]
+      },
+      "eligibility": {
+        "geography": { "allowed": ["Poland"], "excluded": [], "basis": "Pełnoletni konsument mieszkający w Polsce, z pełną zdolnością do czynności prawnych." },
+        "age": { "min": 18, "max": null, "note": "Próg wpływu wynagrodzenia: 1 500 zł dla 18–25, 3 000 zł powyżej 25 lat." },
+        "newCustomer": { "required": true, "definition": "Brak Nest Konta od 1 stycznia 2021 r.", "lookbackFrom": "2021-01-01", "lookbackTo": "joining_date", "relationshipTypes": ["Nest Konto"] },
+        "priorRelationshipExclusions": ["Posiadanie Nest Konta od 1.01.2021 r.", "Brak wyboru opcji udziału we wniosku, gdy jest wymagana.", "Brak wszystkich kanałów zgody marketingowej najpóźniej w dniu otwarcia.", "Niezawarcie umowy ramowej w 14 dni od wniosku."],
+        "requiredIncome": {
+          "required": true,
+          "type": "salary_or_named_benefit",
+          "amount": null,
+          "cadence": "Każdy miesiąc, za który ma być naliczony cashback.",
+          "qualifyingSources": ["Pracodawca niebędący osobą fizyczną: umowa o pracę, mianowanie/powołanie, kontrakt menedżerski/wojskowy/marynarski, zlecenie lub dzieło.", "Instytucja wypłacająca emeryturę, świadczenie przedemerytalne lub rentę.", "Uczelnia lub samorząd wypłacający stypendium.", "ZUS lub samorząd wypłacający 800+ albo inne świadczenie rodzinne."],
+          "excludedSources": ["Przelew, którego odbiorcą nie jest posiadacz.", "Tytuł niewskazujący jednoznacznie kwalifikowanego wynagrodzenia/świadczenia.", "Przelew, w którym nadawca jest jednocześnie odbiorcą."],
+          "ageBands": [{ "age": "18-25", "amount": { "amount": 1500, "currency": "PLN" } }, { "age": "26+", "amount": { "amount": 3000, "currency": "PLN" } }],
+          "appliesToComponentIds": ["nest-transaction-cashback"]
+        },
+        "requiredSpend": [{ "amount": null, "cadence": "Co najmniej jedna transakcja w miesiącu; wartość cashbacku zależy od sumy kwalifikowanych wydatków.", "eligibleTransactions": "Zakup towarów i usług kartą lub BLIK w sklepie stacjonarnym albo online, w tym płatność powtarzalna BLIK.", "excludedTransactions": "Gotówka, zwroty, money transfer (m.in. Curve, PayPal, zasilenie Revolut), hazard oraz przelew BLIK na telefon.", "appliesToComponentIds": ["nest-transaction-cashback"] }],
+        "requiredCapital": { "amount": { "amount": 100, "currency": "EUR" }, "holdingPeriod": "Brak wymogu utrzymania; wymiana w ciągu 30 dni.", "capitalAtRisk": false, "appliesToComponentIds": ["nest-eur-exchange-bonus"], "note": "To obrót walutowy, nie depozyt; występuje ryzyko spreadu/kursu." },
+        "disqualifiers": ["Używanie konta do działalności gospodarczej.", "Wypowiedzenie lub odstąpienie od umowy Nest Konta.", "Niespełnienie pierwszego miesiąca cashbacku do końca drugiego pełnego miesiąca po otwarciu."],
+        "userInputsRequired": ["age", "priorNestAccountSince2021", "salarySourceAndAmount", "eligibleMonthlySpend", "willingnessToMaintainAllMarketingChannels", "willingnessToCommitFor24Months", "eurExchangeIntent"]
+      },
+      "execution": {
+        "actions": [
+          { "id": "nest-open", "label": "Złóż kwalifikowany wniosek, wybierz promocję i zawrzyj umowę Nest Konta.", "type": "open_account", "timing": "Do 30.09.2026; umowa w 14 dni od wniosku.", "cadence": "once", "activeMonths": 0, "threshold": null, "appliesToComponentIds": ["nest-transaction-cashback", "nest-eur-exchange-bonus"], "consequenceIfMissed": "Brak udziału w promocji.", "recoverable": false },
+          { "id": "nest-activate-cashback", "label": "Po raz pierwszy spełnij miesięczny komplet warunków cashbacku.", "type": "activation", "timing": "Najpóźniej do końca drugiego pełnego miesiąca po otwarciu.", "cadence": "once", "activeMonths": 0, "threshold": null, "appliesToComponentIds": ["nest-transaction-cashback"], "consequenceIfMissed": "Utrata całego prawa do cashbacku.", "recoverable": false },
+          { "id": "nest-monthly-salary", "label": "Zapewnij kwalifikowany wpływ wynagrodzenia.", "type": "income", "timing": "Każdy kwalifikowany miesiąc.", "cadence": "monthly", "activeMonths": 24, "threshold": "1 500 zł dla 18–25; 3 000 zł dla 26+.", "appliesToComponentIds": ["nest-transaction-cashback"], "consequenceIfMissed": "0 zł cashbacku za miesiąc; miesiąc nadal liczy się do 24.", "recoverable": false },
+          { "id": "nest-monthly-spend", "label": "Wykonaj co najmniej jedną kwalifikowaną płatność kartą lub BLIK.", "type": "spend", "timing": "Każdy kwalifikowany miesiąc.", "cadence": "monthly", "activeMonths": 24, "threshold": "co najmniej 1 transakcja", "appliesToComponentIds": ["nest-transaction-cashback"], "consequenceIfMissed": "0 zł cashbacku za miesiąc; miesiąc nadal liczy się do 24.", "recoverable": false },
+          { "id": "nest-maintain-consent", "label": "Utrzymuj zgodę marketingową na wszystkie kanały.", "type": "consent", "timing": "Przez cały miesiąc cashbacku i przy warunku EUR.", "cadence": "continuous", "activeMonths": 24, "threshold": "SMS/MMS, telefon, e-mail, bankowość internetowa i aplikacja", "appliesToComponentIds": ["nest-transaction-cashback", "nest-eur-exchange-bonus"], "consequenceIfMissed": "Brak odpowiedniej premii.", "recoverable": false },
+          { "id": "nest-open-eur-account", "label": "Otwórz Nest Konto Waluta EUR.", "type": "open_account", "timing": "Przed wymianą EUR w 30-dniowym oknie.", "cadence": "once", "activeMonths": 1, "threshold": null, "appliesToComponentIds": ["nest-eur-exchange-bonus"], "consequenceIfMissed": "Brak premii EUR.", "recoverable": false },
+          { "id": "nest-exchange-eur", "label": "Kup lub sprzedaj łącznie minimum 100 EUR w Nest Kantorze.", "type": "exchange", "timing": "W ciągu 30 dni od otwarcia Nest Konta.", "cadence": "once", "activeMonths": 1, "threshold": "100 EUR", "appliesToComponentIds": ["nest-eur-exchange-bonus"], "consequenceIfMissed": "Brak premii 50 zł.", "recoverable": false }
+        ],
+        "cadence": { "summary": "Aktywacja w pierwszych dwóch pełnych miesiącach, potem 24 miesięczne zestawy wpływ + zgoda + płatność; osobne 30 dni dla EUR.", "repeatedActionIds": ["nest-monthly-salary", "nest-monthly-spend", "nest-maintain-consent"] },
+        "activeMonths": { "min": 1, "max": 24, "basis": "Premia EUR jest jednorazowa; cashback biegnie przez 24 kolejne miesiące bez pauzy." },
+        "deadlines": [{ "type": "entry", "date": "2026-09-30", "relativeRule": "Bank może zakończyć nabór wcześniej po komunikacie z 7-dniowym wyprzedzeniem.", "appliesTo": "promotion" }, { "type": "framework_agreement", "date": null, "relativeRule": "14 dni od wniosku.", "appliesTo": "promotion" }, { "type": "cashback_activation", "date": null, "relativeRule": "Do końca drugiego pełnego miesiąca po miesiącu otwarcia.", "appliesTo": "nest-transaction-cashback" }, { "type": "eur_exchange", "date": null, "relativeRule": "30 dni kalendarzowych od otwarcia Nest Konta.", "appliesTo": "nest-eur-exchange-bonus" }],
+        "payoutLag": { "earliest": "Po zakończeniu miesiąca spełnienia warunków.", "latest": "Ostatni dzień następnego miesiąca kalendarzowego.", "relativeTo": "Miesiąc spełnienia warunków danego składnika.", "payoutForm": "Przelew pieniężny na Nest Konto.", "uncertaintyNote": null },
+        "failurePoints": [
+          { "id": "nest-late-activation", "label": "Brak pierwszego kwalifikowanego miesiąca w terminie", "severity": "high", "scope": "nest-transaction-cashback", "consequence": "Utrata prawa do całego cashbacku do 1 200 zł.", "mitigation": "Ustawić pierwszy wpływ i płatność najpóźniej w drugim pełnym miesiącu.", "sourceRequired": true },
+          { "id": "nest-missed-month", "label": "Pominięty wpływ, zgoda lub płatność", "severity": "medium", "scope": "monthly cashback", "consequence": "0 zł za miesiąc bez zatrzymania ani wydłużenia 24-miesięcznego okresu.", "mitigation": "Miesięczna checklista i bufor wydatków.", "sourceRequired": true },
+          { "id": "nest-invalid-salary", "label": "Wpływ nie spełnia definicji wynagrodzenia", "severity": "high", "scope": "monthly cashback", "consequence": "Brak cashbacku; bank może poprosić o dokument w reklamacji.", "mitigation": "Zweryfikować nadawcę i tytuł przelewu; zachować dokumenty wynagrodzenia.", "sourceRequired": true },
+          { "id": "nest-early-exit", "label": "Wypowiedzenie konta lub rezygnacja z promocji", "severity": "high", "scope": "future rewards", "consequence": "Wykluczenie z promocji i utrata przyszłych zwrotów.", "mitigation": "Zamykać po ostatniej planowanej wypłacie.", "sourceRequired": true }
+        ],
+        "safeExit": { "status": "partial", "earliestExit": "Po ostatnim zaplanowanym cashbacku i jego wypłacie; wcześniej rezygnacja kończy przyszłe korzyści.", "notice": "Miesięczny okres wypowiedzenia albo uzgodniony z bankiem dzień; dyspozycja w bankowości elektronicznej lub placówce rozpoczyna termin.", "fee": { "amount": 0, "currency": "PLN" }, "clawback": "Regulamin promocji nie zawiera klauzuli zwrotu prawidłowo wypłaconych premii; potwierdza wykluczenie i utratę przyszłych wypłat.", "steps": ["Poczekać na ostatnią należną wypłatę.", "Złożyć dyspozycję wypowiedzenia i wskazać rachunek dla salda."], "uncertaintyNote": "Brak afirmatywnej klauzuli no-clawback; wniosek o już wypłaconych premiach jest interpretacją braku takiej klauzuli." }
+      },
+      "cost": {
+        "directFees": [{ "label": "Otwarcie i prowadzenie Nest Konta", "amount": { "amount": 0, "currency": "PLN" }, "cadence": "monthly", "unavoidable": true, "appliesDuring": "Cały okres." }, { "label": "Wydanie i obsługa pierwszej karty plastikowej lub karty wirtualnej", "amount": { "amount": 0, "currency": "PLN" }, "cadence": "monthly", "unavoidable": true, "appliesDuring": "Cały okres." }],
+        "avoidableFees": [],
+        "downstreamCosts": [{ "label": "Spread/kurs wymiany EUR", "amountOrRule": null, "trigger": "Skorzystanie z premii 50 zł za wymianę EUR.", "uncertaintyNote": "Regulamin promocji nie podaje stałej opłaty ani gwarantowanego kursu; koszt trzeba ocenić w chwili wymiany względem porównywalnej alternatywy." }, { "label": "Dodatkowe usługi poza scenariuszem", "amountOrRule": "Np. 5 zł przelew natychmiastowy, 6 zł wypłata kartą z bankomatu innego niż Euronet; nie są konieczne do promocji.", "trigger": "Dobrowolne użycie płatnej usługi.", "uncertaintyNote": null }],
+        "opportunityCost": [{ "label": "Użycie wynagrodzenia i wydatków przez 24 miesiące", "amountOrRange": null, "assumption": "Może wykluczać lub utrudniać inną promocję; bez konkretnej alternatywy nie jest monetyzowane.", "comparisonId": "do-nothing", "monetized": false }],
+        "totalsByScenario": [{ "scenarioId": "nest-low-qualified-spend", "direct": { "amount": 0, "currency": "PLN" }, "avoidableIfMissed": { "amount": 0, "currency": "PLN" }, "downstream": null, "opportunity": null }, { "scenarioId": "nest-no-salary-transfer", "direct": { "amount": 0, "currency": "PLN" }, "avoidableIfMissed": { "amount": 0, "currency": "PLN" }, "downstream": null, "opportunity": null }, { "scenarioId": "nest-well-fitted", "direct": { "amount": 0, "currency": "PLN" }, "avoidableIfMissed": { "amount": 0, "currency": "PLN" }, "downstream": "nieustalony spread EUR", "opportunity": null }]
+      },
+      "decision": {
+        "scenarios": [{ "id": "nest-low-qualified-spend", "label": "Niskie wydatki", "userInputs": ["500 zł eligible spend/month", "salary met", "24 months", "no EUR exchange"], "eligibilityResult": "eligible_if_prior_relationship_check_passes" }, { "id": "nest-no-salary-transfer", "label": "Bez wynagrodzenia", "userInputs": ["salary not met", "no EUR exchange"], "eligibilityResult": "eligible_for_promotion_but_not_cashback_component" }, { "id": "nest-well-fitted", "label": "Dobrze dopasowany", "userInputs": ["2 500 zł eligible spend/month", "salary met", "24 months", "100 EUR exchange"], "eligibilityResult": "eligible_if_prior_relationship_check_passes" }],
+        "northValue": [
+          { "scenarioId": "nest-low-qualified-spend", "advertisedMax": { "amount": 1250, "currency": "PLN" }, "easyFloor": null, "likelyGrossValue": { "amount": 240, "currency": "PLN" }, "expectedUsableValue": { "amount": 240, "currency": "PLN" }, "netScenarioValue": { "amount": 240, "currency": "PLN" }, "rewardQuality": "HIGH: wypłacana gotówka", "effortBurden": "HIGH względem 10 zł miesięcznie", "duration": "24 miesiące", "directCost": { "amount": 0, "currency": "PLN" }, "opportunityCost": "Niepoliczony", "failureRisk": "MEDIUM: pominięty miesiąc przepada", "flexibility": "LOW dla zachowania pełnej wartości; rezygnacja kończy przyszłe wypłaty", "completionOutlook": "CONDITIONAL", "assumptions": ["Stałe 500 zł kwalifikowanych wydatków i wynagrodzenie przez 24 miesiące."] },
+          { "scenarioId": "nest-no-salary-transfer", "advertisedMax": { "amount": 1250, "currency": "PLN" }, "easyFloor": null, "likelyGrossValue": { "amount": 0, "currency": "PLN" }, "expectedUsableValue": { "amount": 0, "currency": "PLN" }, "netScenarioValue": { "amount": 0, "currency": "PLN" }, "rewardQuality": "Nie dotyczy w tym scenariuszu", "effortBurden": "Nieuzasadniony dla 0 zł", "duration": "brak rekomendowanego commitmentu", "directCost": { "amount": 0, "currency": "PLN" }, "opportunityCost": "Do nothing zachowuje swobodę", "failureRisk": "ROBUST negatywny powód: brak twardego warunku składnika", "flexibility": "HIGH przy braku działania", "completionOutlook": "ROBUST", "assumptions": ["Brak wynagrodzenia i brak wymiany EUR."] },
+          { "scenarioId": "nest-well-fitted", "advertisedMax": { "amount": 1250, "currency": "PLN" }, "easyFloor": null, "likelyGrossValue": { "amount": 1250, "currency": "PLN" }, "expectedUsableValue": { "min": { "amount": 1200, "currency": "PLN" }, "max": { "amount": 1250, "currency": "PLN" } }, "netScenarioValue": { "min": { "amount": 1200, "currency": "PLN" }, "max": { "amount": 1250, "currency": "PLN" } }, "rewardQuality": "HIGH dla cashbacku; MEDIUM dla premii EUR przed oceną kursu", "effortBurden": "HIGH", "duration": "24 miesiące", "directCost": { "amount": 0, "currency": "PLN" }, "opportunityCost": "Niepoliczony", "failureRisk": "MEDIUM: każdy pominięty miesiąc obniża wynik bez możliwości odrobienia", "flexibility": "LOW dla pełnego maksimum", "completionOutlook": "CONDITIONAL", "assumptions": ["Naturalne wydatki 2 500 zł miesięcznie, wynagrodzenie i zgody przez 24 miesiące."] }
+        ],
+        "northConfidence": { "scope": "offer-facts", "band": "MEDIUM", "factors": { "sourceQuality": "HIGH", "completeness": "MEDIUM", "freshness": "HIGH", "ambiguity": "MEDIUM", "editionCertainty": "HIGH" }, "reasons": ["Regulamin bezpośrednio definiuje wzór, capy, 24 miesiące, skutek pominięcia i wypłatę.", "Aktualne oficjalne tabele potwierdzają brak opłaty za konto i pierwszą kartę.", "Dynamiczny kurs Nest Kantoru nie pozwala z góry uznać pełnych 50 zł premii EUR za wartość użyteczną; scenariusze bez tego składnika zachowują HIGH."], "blockers": ["Przed indywidualnym pozytywnym Verdict obejmującym premię EUR trzeba porównać kurs wymiany z realną alternatywą."], "assessedAt": "2026-08-16" },
+        "verdict": { "scenarioId": "user-scenario-required", "state": "NOT ENOUGH DATA", "summary": "Rekord oferty jest kompletny, lecz Verdict użytkownika zależy przede wszystkim od wynagrodzenia, wydatków i akceptacji 24 miesięcy.", "reasons": ["Różnica między 0 zł, 240 zł i 1 250 zł wynika z jawnych danych scenariusza."], "conditions": [], "positiveBlockers": ["Brak scenariusza użytkownika."], "missingData": ["age", "prior relationship", "salary source", "eligible spend", "24-month willingness", "EUR exchange intent", "alternative"] },
+        "comparison": { "doNothing": { "reward": { "amount": 0, "currency": "PLN" }, "directCost": { "amount": 0, "currency": "PLN" }, "effort": "minimal", "failureRisk": "none-added" }, "alternatives": [], "conclusion": "Wartość jest dodatnia dla dopasowanych scenariuszy, ale 24-miesięczny horyzont powinien być porównany z alternatywą przed indywidualnym pozytywnym Verdict.", "limitations": ["Brak kompletnej analizy alternatywnej promocji w tym samym horyzoncie."] }
+      },
+      "evidence": {
+        "regulationUrl": "https://nestbank.pl/assets/gen/regulamin-promocji-zyskaj-do-1250-zl-premii-z-nest-kontem.pdf",
+        "officialUrl": "https://nestbank.pl/nest-konto/",
+        "sources": [
+          { "id": "nest-reg-1250", "type": "official_regulation", "title": "Regulamin promocji „Zyskaj do 1250 zł premii z Nest Kontem”", "url": "https://nestbank.pl/assets/gen/regulamin-promocji-zyskaj-do-1250-zl-premii-z-nest-kontem.pdf", "editionReference": "nabór 1.04.2026–30.09.2026", "publishedAt": "2026-04-01", "accessedAt": "2026-08-16", "status": "current_as_reviewed" },
+          { "id": "nest-product", "type": "official_product_page", "title": "Nest Konto", "url": "https://nestbank.pl/nest-konto/", "editionReference": "do 1 250 zł", "publishedAt": null, "accessedAt": "2026-08-16", "status": "current_as_reviewed" },
+          { "id": "nest-fees", "type": "official_fee_table", "title": "Dokument dotyczący opłat dla Nest Konta", "url": "https://nestbank.pl/assets/gen/57-57-01-dokument_dotyczacy_oplat_nest_konto.pdf", "editionReference": "23.04.2025; aktualnie linkowany dokument opłat produktu", "publishedAt": "2025-04-23", "accessedAt": "2026-08-16", "status": "current_official_document" },
+          { "id": "nest-fee-table", "type": "official_fee_table", "title": "Tabela opłat i prowizji dla klientów indywidualnych – oferta rachunków i kart", "url": "https://nestbank.pl/assets/gen/57-18-00-toip_ki.pdf", "editionReference": "dla nowych umów od 15.05.2026; aktualna tabela", "publishedAt": "2026-05-15", "accessedAt": "2026-08-16", "status": "current_as_reviewed" },
+          { "id": "nest-account-reg", "type": "official_regulation", "title": "Regulamin rachunków bankowych oraz usług płatniczych dla klientów indywidualnych", "url": "https://nestbank.pl/assets/gen/regulamin_rachunkow_ki.pdf", "editionReference": "aktualny dla nowych umów", "publishedAt": "2026-05-15", "accessedAt": "2026-08-16", "status": "current_as_reviewed" }
+        ],
+        "fieldSources": [
+          { "fieldPath": "identity.edition", "sourceId": "nest-reg-1250", "sourceType": "official_regulation", "reference": "tytuł; Czas promocji ust. 1–2", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Brak osobnego kodu; ID North oparto na tytule i dacie początku." },
+          { "fieldPath": "identity.status", "sourceId": "nest-product", "sourceType": "official_product_page", "reference": "sekcja „Zyskaj do 1250 zł premii”; aktywny produkt i CTA", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Bank może zakończyć nabór wcześniej po 7-dniowym komunikacie; recheck przed publikacją." },
+          { "fieldPath": "value.advertisedMax", "sourceId": "nest-reg-1250", "sourceType": "official_regulation", "reference": "Premia za transakcje ust. 5; Premia za wymianę euro ust. 1", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "value.rewardComponents[nest-transaction-cashback]", "sourceId": "nest-reg-1250", "sourceType": "official_regulation", "reference": "Premia za transakcje ust. 1–6", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "value.rewardComponents[nest-eur-exchange-bonus]", "sourceId": "nest-reg-1250", "sourceType": "official_regulation", "reference": "Premia za wymianę euro ust. 1–2", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Koszt kursowy nie jest stałą opłatą regulaminową." },
+          { "fieldPath": "value.rewardComponents[*].combinability", "sourceId": "nest-reg-1250", "sourceType": "official_regulation", "reference": "Definicja promocji w słowniku; oba składniki opisane w jednym regulaminie i sumują się do komunikowanego 1 250 zł", "checkedAt": "2026-08-16", "supportLevel": "interpreted", "uncertaintyNote": "Łączność wynika z konstrukcji jednej promocji i reklamowanego maksimum." },
+          { "fieldPath": "value.easyFloor", "sourceId": "nest-reg-1250", "sourceType": "official_regulation", "reference": "Premia za transakcje i Premia za wymianę euro", "checkedAt": "2026-08-16", "supportLevel": "interpreted", "uncertaintyNote": "Ustawiono null: każdy składnik wymaga istotnego zachowania; brak uniwersalnie uczciwego easy floor." },
+          { "fieldPath": "value.scenarioFormula", "sourceId": "nest-reg-1250", "sourceType": "official_regulation", "reference": "Premia za transakcje ust. 1–6; Premia za wymianę euro ust. 1–2", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Obliczenia scenariuszy są deterministycznym zastosowaniem wzoru, nie estymacją prawdopodobieństwa." },
+          { "fieldPath": "value.scenarioExamples", "sourceId": "nest-reg-1250", "sourceType": "official_regulation", "reference": "2% i cap 50 zł; 24 miesiące; warunek wpływu", "checkedAt": "2026-08-16", "supportLevel": "interpreted", "uncertaintyNote": "500 zł i 2 500 zł to jawne wejścia demonstracyjne, nie twierdzenia o typowym kliencie." },
+          { "fieldPath": "eligibility", "sourceId": "nest-reg-1250", "sourceType": "official_regulation", "reference": "Do kogo skierowana jest promocja lit. a–h", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "eligibility.requiredIncome", "sourceId": "nest-reg-1250", "sourceType": "official_regulation", "reference": "Premia za transakcje ust. 1 lit. a; Słownik „Wpływ wynagrodzenia”", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Wpływ warunkuje cashback, nie sam udział ani premię EUR." },
+          { "fieldPath": "eligibility.requiredSpend", "sourceId": "nest-reg-1250", "sourceType": "official_regulation", "reference": "Premia za transakcje ust. 1; wyjaśnienia transakcji kartą i BLIK", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "eligibility.requiredCapital", "sourceId": "nest-reg-1250", "sourceType": "official_regulation", "reference": "Premia za wymianę euro ust. 1–2: obrót minimum 100 EUR, bez wymogu utrzymania", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "To próg wymiany, nie depozyt; ryzyko kursowe jest opisane osobno." },
+          { "fieldPath": "execution.actions", "sourceId": "nest-reg-1250", "sourceType": "official_regulation", "reference": "Do kogo skierowana jest promocja; Premia za transakcje; Premia za wymianę euro", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "execution.deadlines", "sourceId": "nest-reg-1250", "sourceType": "official_regulation", "reference": "Czas promocji; warunek umowy 14 dni; Premia za transakcje ust. 3; Premia EUR ust. 1", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Możliwy wcześniejszy koniec naboru po komunikacie." },
+          { "fieldPath": "execution.activeMonths", "sourceId": "nest-reg-1250", "sourceType": "official_regulation", "reference": "Premia za transakcje ust. 2–6", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "execution.payoutLag", "sourceId": "nest-reg-1250", "sourceType": "official_regulation", "reference": "Dodatkowe informacje ust. 1", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "cost.directFees", "sourceId": "nest-fees", "sourceType": "official_fee_table", "reference": "prowadzenie rachunku; wydanie i obsługa pierwszej karty, s. 1–2", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "cost.avoidableFees", "sourceId": "nest-fees", "sourceType": "official_fee_table", "reference": "pierwsza karta i rachunek: 0 zł bez warunku", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Płatne usługi dodatkowe są downstream, nie opłatą wymaganą promocją." },
+          { "fieldPath": "cost.downstreamCosts[nest-eur-spread]", "sourceId": "nest-reg-1250", "sourceType": "official_regulation", "reference": "Premia EUR wymaga wymiany w Nest Kantorze; brak stałej opłaty/kursu w regulaminie", "checkedAt": "2026-08-16", "supportLevel": "missing", "uncertaintyNote": "Kurs jest dynamiczny; sprawdzić w chwili scenariusza, zanim pełne 50 zł zostanie nazwane wartością użyteczną." },
+          { "fieldPath": "execution.failurePoints", "sourceId": "nest-reg-1250", "sourceType": "official_regulation", "reference": "Premia za transakcje ust. 3–6; Dodatkowe informacje ust. 3–4", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "execution.safeExit", "sourceId": "nest-account-reg", "sourceType": "official_regulation", "reference": "„Jak możesz rozwiązać umowę” ust. 1–7", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Promocyjny skutek wcześniejszej rezygnacji pochodzi z regulaminu promocji." },
+          { "fieldPath": "execution.safeExit.clawback", "sourceId": "nest-reg-1250", "sourceType": "official_regulation", "reference": "Dodatkowe informacje ust. 3–4: wykluczenie i rezygnacja; brak klauzuli zwrotu wypłaconej premii", "checkedAt": "2026-08-16", "supportLevel": "interpreted", "uncertaintyNote": "Nie przedstawiać braku klauzuli jako osobnej gwarancji banku." },
+          { "fieldPath": "decision.northValue", "sourceId": "nest-reg-1250", "sourceType": "official_regulation", "reference": "deterministyczne zastosowanie stawki, capów i warunków do jawnych scenariuszy", "checkedAt": "2026-08-16", "supportLevel": "interpreted", "uncertaintyNote": "Nie uwzględnia ceny czasu ani niewskazanej alternatywy." }
+        ],
+        "conflicts": [],
+        "recheckBy": "2026-08-23",
+        "owner": "ProjectNorth manual evidence review",
+        "notes": ["Nie użyto źródeł wtórnych dla krytycznych pól.", "Przed CTA sprawdzić, czy bank nie opublikował komunikatu o wcześniejszym końcu naboru."]
+      },
+      "listing": { "problemLabel": "1 250 zł wymaga 24 miesięcy konsekwencji", "summary": "2% zwrotu, maks. 50 zł miesięcznie przez 24 miesiące, plus 50 zł za wymianę EUR.", "featured": true },
+      "affiliate": { "available": false, "url": null, "disclosure": "Brak aktywnego linku afiliacyjnego w tym rekordzie." }
+    },
+    {
+      "identity": {
+        "id": "bank-pekao-konto-przekorzystne",
+        "slug": "bank-pekao-konto-przekorzystne",
+        "provider": "Bank Polska Kasa Opieki S.A.",
+        "category": "bank_account",
+        "title": "Konto Przekorzystne: 300 zł premii i Promocja Podróżna do 2 400 zł",
+        "status": "active",
+        "verifiedAt": "2026-08-16",
+        "edition": {
+          "id": "north-pekao-composite-2026-07-16",
+          "name": "Pakiet dwóch promocji: „Otwórz konto online i ruszaj po więcej – edycja II” + „Promocja Podróżna”",
+          "validFrom": "2026-07-16",
+          "validTo": "2026-08-31",
+          "certainty": "confirmed",
+          "composite": true,
+          "officialIdentifiers": ["Otwórz konto online i ruszaj po więcej – edycja II", "Promocja Podróżna, obowiązuje od 1.06.2026"],
+          "identifierNote": "2 700 zł nie jest jedną promocją ani jednym bonusem. To Northowy rekord kompozytowy dwóch oficjalnie łączących się promocji w ich wspólnym oknie wejścia. Promocja Podróżna może skończyć się wcześniej po 65 500 kontach."
+        }
+      },
+      "value": {
+        "advertisedMax": {
+          "displayLabel": "do 2 700 zł łącznie",
+          "faceValueTotal": { "amount": 2700, "currency": "PLN" },
+          "componentIds": ["pekao-opening-reward", "pekao-month-one-reward", "pekao-month-two-reward", "pekao-travel-rewards"],
+          "aggregationBasis": "Do 300 zł przelewów pieniężnych w edycji II oraz do 2 400 zł nagród podróżnych; oba regulaminy wprost pozwalają łączyć te promocje.",
+          "isCashEquivalent": false,
+          "caveat": "300 zł to proste przelewy po warunkach. 2 400 zł najpierw istnieje jako niepieniężne saldo informacyjne i staje się wypłatą tylko przy kwalifikowanych wydatkach podróżnych, maks. 20% wydatku i do dostępnego salda."
+        },
+        "rewardComponents": [
+          { "id": "pekao-opening-reward", "label": "Nagroda I stopnia", "form": "cash", "advertisedValue": { "amount": 100, "currency": "PLN" }, "calculation": "100 zł za kwalifikowane otwarcie konta z kartą i Pekao24/PeoPay oraz zalogowanie w dniu przystąpienia.", "conditionActionIds": ["pekao-open-composite", "pekao-login", "pekao-consents"], "combinability": "Łączy się z nagrodami II i III oraz Promocją Podróżną.", "conditional": true, "usability": { "liquidity": "cash", "usableValueRule": "Wartość użyteczna równa wypłaconej kwocie.", "restrictions": ["Konto, karta, Pekao24 i zgody muszą pozostać do wypłaty."], "expiry": null, "transferability": "unrestricted_after_payout" } },
+          { "id": "pekao-month-one-reward", "label": "Nagroda II stopnia", "form": "cash", "advertisedValue": { "amount": 100, "currency": "PLN" }, "calculation": "100 zł za co najmniej pięć kwalifikowanych transakcji kartą w pierwszym miesiącu po otwarciu.", "conditionActionIds": ["pekao-open-composite", "pekao-five-card-month-one", "pekao-consents"], "combinability": "Łączy się z pozostałymi składnikami; wypłaty II i III są niezależne.", "conditional": true, "usability": { "liquidity": "cash", "usableValueRule": "Wartość użyteczna równa wypłaconej kwocie.", "restrictions": ["BLIK nie liczy się w promocji 300 zł.", "Konto, karta, Pekao24 i zgody muszą pozostać do wypłaty."], "expiry": null, "transferability": "unrestricted_after_payout" } },
+          { "id": "pekao-month-two-reward", "label": "Nagroda III stopnia", "form": "cash", "advertisedValue": { "amount": 100, "currency": "PLN" }, "calculation": "100 zł za co najmniej pięć kwalifikowanych transakcji kartą w drugim miesiącu po otwarciu.", "conditionActionIds": ["pekao-open-composite", "pekao-five-card-month-two", "pekao-consents"], "combinability": "Łączy się z pozostałymi składnikami; wypłaty II i III są niezależne.", "conditional": true, "usability": { "liquidity": "cash", "usableValueRule": "Wartość użyteczna równa wypłaconej kwocie.", "restrictions": ["BLIK nie liczy się w promocji 300 zł.", "Konto, karta, Pekao24 i zgody muszą pozostać do wypłaty."], "expiry": null, "transferability": "unrestricted_after_payout" } },
+          {
+            "id": "pekao-travel-rewards",
+            "label": "Nagrody w Promocji Podróżnej",
+            "form": "cashback",
+            "advertisedValue": { "amount": 2400, "currency": "PLN" },
+            "calculation": "Najpierw 3% wartości pierwszych 20 kwalifikowanych transakcji w miesiącu (maks. 100 zł) i 6% od 21. transakcji, łącznie maks. 200 zł miesięcznie, zapisuje się jako wirtualne saldo. Bank wypłaca 20% kwalifikowanego wydatku podróżnego, do dostępnego salda i maks. 2 000 zł jednorazowo.",
+            "conditionActionIds": ["pekao-open-composite", "pekao-use-gold-card", "pekao-build-travel-wallet", "pekao-make-travel-expense"],
+            "combinability": "Regulamin Promocji Podróżnej wyłącza z zakazu łączenia promocję „Otwórz konto online i ruszaj po więcej”; regulamin edycji II potwierdza łączenie.",
+            "conditional": true,
+            "usability": {
+              "liquidity": "restricted",
+              "usableValueRule": "min(20% kwalifikowanego wydatku podróżnego, dostępne saldo portfela, 2 000 zł na jedną nagrodę). Dopiero wypłata na konto/Skarbonkę jest gotówką.",
+              "restrictions": ["Saldo portfela nie jest pieniądzem i nie ma ekwiwalentu.", "Nagroda wymaga wydatku na paliwo, kwalifikowany transport albo wycieczkę.", "Naliczanie trwa 12 miesięcy; wykorzystanie salda kończy się dwa miesiące później."],
+              "expiry": "Dwa miesiące po zakończeniu 12-miesięcznego okresu promocji; niewykorzystane saldo jest zerowane.",
+              "transferability": "not_transferable_before_cash_payout"
+            }
+          }
+        ],
+        "easyFloor": {
+          "scenarioId": "pekao-opening-100",
+          "grossValue": { "amount": 100, "currency": "PLN" },
+          "usableValue": { "amount": 100, "currency": "PLN" },
+          "includedComponentIds": ["pekao-opening-reward"],
+          "excludedComponentIds": [{ "id": "pekao-month-one-reward", "reason": "Wymaga kolejnego miesiąca i pięciu płatności." }, { "id": "pekao-month-two-reward", "reason": "Wymaga drugiego miesiąca i pięciu płatności." }, { "id": "pekao-travel-rewards", "reason": "Wymaga naliczania salda oraz wydatku podróżnego." }],
+          "assumptions": ["Użytkownik spełnia przecięcie kryteriów obu promocji.", "Otwiera konto online kwalifikowaną ścieżką, loguje się i składa wymagane oświadczenia.", "Utrzymuje konto, kartę, Pekao24 i zgody do wypłaty."],
+          "calculatedAt": "2026-08-16",
+          "methodologyVersion": "north-value-v1"
+        },
+        "scenarioFormula": {
+          "humanReadable": "Część startowa daje 100 zł za otwarcie oraz po 100 zł za pięć płatności kartą w każdym z dwóch kolejnych miesięcy. Część podróżna najpierw buduje wirtualny portfel z 3%/6% zwykłych płatności do 200 zł miesięcznie, a potem wypłaca do 20% kwalifikowanych wydatków podróżnych, nie więcej niż saldo portfela.",
+          "expression": "start = (openConditions ? 100 : 0) + (month1CardCount >= 5 ? 100 : 0) + (month2CardCount >= 5 ? 100 : 0); monthlyAccrual[m] = min(min(0.03 * first20EligibleSpend[m], 100) + 0.06 * spendFromTransaction21[m], 200); wallet = min(sum(monthlyAccrual[1..12]) - paidTravelRewards, 2400); travelReward[t] = min(0.20 * eligibleTravelExpense[t], walletBefore[t], 2000); total = start + sum(travelReward)",
+          "inputs": ["openingPath", "eligibilityForBothPromotions", "monthOneEligibleCardCount", "monthTwoEligibleCardCount", "monthlyEligibleTransactions[12]", "monthlyEligibleSpendByTransactionOrder[12]", "eligibleTravelExpenses", "accountAndConsentsMaintained"],
+          "caps": [{ "scope": "first 20 transactions accrual per month", "amount": { "amount": 100, "currency": "PLN" } }, { "scope": "all monthly travel accrual", "amount": { "amount": 200, "currency": "PLN" } }, { "scope": "travel wallet total", "amount": { "amount": 2400, "currency": "PLN" } }, { "scope": "single travel reward", "amount": { "amount": 2000, "currency": "PLN" } }, { "scope": "composite total", "amount": { "amount": 2700, "currency": "PLN" } }],
+          "horizon": "Dwa miesiące działań dla 300 zł; 12 miesięcy naliczania plus dwa miesiące wykorzystania salda dla części podróżnej.",
+          "assumptions": ["Obie promocje są aktywne i użytkownik spełnia surowsze przecięcie kryteriów.", "Wirtualne saldo nie jest liczone jako wartość użyteczna przed kwalifikowanym wydatkiem podróżnym.", "Nie stosuje się completion probability."]
+        },
+        "conditionalMax": {
+          "scenarioId": "pekao-composite-maximum",
+          "grossValue": { "amount": 2700, "currency": "PLN" },
+          "usableValue": { "amount": 2700, "currency": "PLN" },
+          "includedComponentIds": ["pekao-opening-reward", "pekao-month-one-reward", "pekao-month-two-reward", "pekao-travel-rewards"],
+          "excludedComponentIds": [],
+          "assumptions": ["Spełniono warunki 300 zł.", "Przez 12 miesięcy naliczono pełne 200 zł salda miesięcznie.", "W okresie wykorzystania wykonano wystarczające kwalifikowane wydatki podróżne, aby 20% ich wartości pozwoliło wypłacić całe 2 400 zł.", "Konto pozostało otwarte do ostatniej wypłaty."],
+          "calculatedAt": "2026-08-16",
+          "methodologyVersion": "north-value-v1"
+        },
+        "rewardForms": ["cash", "cashback"],
+        "usabilityConstraints": ["Nie prezentować 2 700 zł jako jednego bonusu gotówkowego.", "2 400 zł jest podwójnie warunkowe: trzeba zbudować saldo oraz wydać środki na kwalifikowaną podróż.", "Niewykorzystane wirtualne saldo wygasa."],
+        "scenarioExamples": [
+          { "id": "pekao-opening-actions-only", "label": "Użytkownik realizuje część startową, bez założonej podróży", "userInputs": { "qualifiedForBoth": true, "openingConditions": true, "monthOneCardPayments": 5, "monthTwoCardPayments": 5, "travelExpenses": 0 }, "grossValue": { "amount": 300, "currency": "PLN" }, "usableValue": { "amount": 300, "currency": "PLN" }, "verdict": "TAKE IF", "verdictReason": "300 zł ma dodatnią wartość, jeśli użytkownik kwalifikuje się, chce konto i utrzyma kartę/zgody do wypłat; 2 400 zł nie jest zaliczane bez danych o podróży.", "confidenceBand": "HIGH" },
+          { "id": "pekao-travel-input-required", "label": "Użytkownik rozważa pełną część podróżną", "userInputs": { "monthlyTransactionOrderAndSpend": null, "eligibleTravelExpenses": null }, "grossValue": null, "usableValue": null, "verdict": "NOT ENOUGH DATA", "verdictReason": "Bez miesięcznego układu płatności i kwalifikowanych wydatków podróżnych nie da się uczciwie obliczyć Your Likely Value.", "confidenceBand": "LOW" }
+        ]
+      },
+      "eligibility": {
+        "geography": { "allowed": ["Poland"], "excluded": [], "basis": "Dla pakietu: pełnoletni konsument mieszkający w Polsce, z pełną zdolnością; promocja 300 zł wymaga polskiego dowodu osobistego." },
+        "age": { "min": 18, "max": null, "note": "Obie promocje wymagają ukończonych 18 lat." },
+        "newCustomer": { "required": true, "definition": "Dla pakietu trzeba jednocześnie spełnić oba lookbacki: brak konta Pekao od 1.06.2024 do 15.07.2026 oraz brak jakiejkolwiek umowy o produkty/usługi banku od 1.06.2024 do 31.05.2026.", "lookbackFrom": "2024-06-01", "lookbackTo": "2026-07-15", "relationshipTypes": ["account holder or co-holder for 300 PLN promotion", "any Pekao product/service agreement for travel promotion"] },
+        "priorRelationshipExclusions": ["Posiadanie/współposiadanie konta 1.06.2024–15.07.2026.", "Jakakolwiek umowa o produkt/usługę Pekao 1.06.2024–31.05.2026.", "Produkt kredytowy, w tym karta kredytowa, w dniu wejścia do promocji 300 zł."],
+        "requiredIncome": { "required": false, "type": null, "amount": null, "cadence": null, "qualifyingSources": [], "excludedSources": [], "appliesToComponentIds": [] },
+        "requiredSpend": [
+          { "amount": null, "cadence": "Co najmniej pięć transakcji kartą w pierwszym i osobno w drugim miesiącu po otwarciu.", "eligibleTransactions": "Transakcje bezgotówkowe kartą do konta.", "excludedTransactions": "Zwroty, odrzucone/nieautoryzowane, bankomaty, MCC 4829/6050/6051 oraz BLIK.", "appliesToComponentIds": ["pekao-month-one-reward", "pekao-month-two-reward"] },
+          { "amount": null, "cadence": "W okresie 12 miesięcy; wartość i kolejność transakcji w każdym miesiącu wpływają na naliczenie 3%/6%.", "eligibleTransactions": "Bezgotówkowe płatności złotą kartą lub BLIK, z wyłączeniami regulaminowymi.", "excludedTransactions": "Przekazy pieniężne, instytucje finansowe, zasilenia portfeli, hazard, sklepy/hurtownie alkoholowe i wyspecjalizowane sklepy tytoniowe.", "appliesToComponentIds": ["pekao-travel-rewards"] },
+          { "amount": null, "cadence": "W miarę wykorzystywania salda, do końca dwóch miesięcy po okresie promocji.", "eligibleTransactions": "Paliwo; bilety lotnicze; kolej/autokar bez komunikacji miejskiej; wycieczki w biurach podróży i u agentów.", "excludedTransactions": "Inne kategorie, w tym komunikacja miejska i niekwalifikowane noclegi niezależne.", "appliesToComponentIds": ["pekao-travel-rewards"] }
+        ],
+        "requiredCapital": { "amount": null, "holdingPeriod": null, "capitalAtRisk": false, "appliesToComponentIds": [], "note": "Brak depozytu, ale wypłata części podróżnej wymaga realnego wydatku; pełne 2 400 zł wymaga co najmniej 12 000 zł kwalifikowanych wydatków podróżnych przy regule 20% i wcześniej dostępnego salda. Te same transakcje podróżne mogą także budować saldo zgodnie z kolejnością opisaną w regulaminie. To dolna granica arytmetyczna, nie twierdzenie o typowym zachowaniu." },
+        "disqualifiers": ["Niespełnienie któregokolwiek z dwóch lookbacków dla kompozytu.", "Konto wspólne w Promocji Podróżnej.", "Otwarcie poza ścieżką kwalifikowaną dla promocji 300 zł.", "Zamknięcie konta lub wycofanie wymaganych zgód przed wypłatą."],
+        "userInputsRequired": ["priorPekaoRelationships", "creditProductsAtJoining", "openingPath", "monthOneAndTwoCardCount", "monthlyTransactionOrderAndSpend", "eligibleTravelExpenses", "willingnessToUseGoldCardAndKeepConsents"]
+      },
+      "execution": {
+        "actions": [
+          { "id": "pekao-open-composite", "label": "Otwórz indywidualne Konto Przekorzystne ze złotą kartą i Pekao24/PeoPay ścieżką kwalifikowaną dla obu promocji.", "type": "open_account", "timing": "Do 31.08.2026 lub wcześniejszego wyczerpania puli Promocji Podróżnej.", "cadence": "once", "activeMonths": 0, "threshold": null, "appliesToComponentIds": ["pekao-opening-reward", "pekao-month-one-reward", "pekao-month-two-reward", "pekao-travel-rewards"], "consequenceIfMissed": "Brak wspólnego pakietu 2 700 zł.", "recoverable": false },
+          { "id": "pekao-login", "label": "Zaloguj się do Pekao24 lub PeoPay w dniu przystąpienia.", "type": "setup", "timing": "Dzień otwarcia.", "cadence": "once", "activeMonths": 0, "threshold": null, "appliesToComponentIds": ["pekao-opening-reward", "pekao-month-one-reward", "pekao-month-two-reward"], "consequenceIfMissed": "Brak promocji 300 zł.", "recoverable": false },
+          { "id": "pekao-consents", "label": "Złóż i utrzymaj wymagane oświadczenia i zgody.", "type": "consent", "timing": "Przy wejściu oraz do wypłat.", "cadence": "continuous", "activeMonths": 14, "threshold": null, "appliesToComponentIds": ["pekao-opening-reward", "pekao-month-one-reward", "pekao-month-two-reward", "pekao-travel-rewards"], "consequenceIfMissed": "Rezygnacja/brak niewypłaconej nagrody.", "recoverable": false },
+          { "id": "pekao-five-card-month-one", "label": "Wykonaj pięć kwalifikowanych płatności kartą w pierwszym miesiącu po otwarciu.", "type": "spend", "timing": "Pierwszy miesiąc po miesiącu otwarcia.", "cadence": "monthly", "activeMonths": 1, "threshold": "5 transakcji", "appliesToComponentIds": ["pekao-month-one-reward"], "consequenceIfMissed": "Utrata Nagrody II; Nagroda III pozostaje niezależna.", "recoverable": false },
+          { "id": "pekao-five-card-month-two", "label": "Wykonaj pięć kwalifikowanych płatności kartą w drugim miesiącu po otwarciu.", "type": "spend", "timing": "Drugi miesiąc po miesiącu otwarcia.", "cadence": "monthly", "activeMonths": 1, "threshold": "5 transakcji", "appliesToComponentIds": ["pekao-month-two-reward"], "consequenceIfMissed": "Utrata Nagrody III; nie wpływa wstecz na Nagrodę II.", "recoverable": false },
+          { "id": "pekao-use-gold-card", "label": "Utrzymuj złotą kartę wymaganą definicją Promocji Podróżnej.", "type": "maintenance", "timing": "Przez okres promocji.", "cadence": "continuous", "activeMonths": 12, "threshold": null, "appliesToComponentIds": ["pekao-travel-rewards"], "consequenceIfMissed": "Brak możliwości dalszego naliczania/realizacji zgodnie z warunkami produktu.", "recoverable": false },
+          { "id": "pekao-build-travel-wallet", "label": "Buduj saldo portfela kwalifikowanymi płatnościami.", "type": "spend", "timing": "12 miesięcy od wejścia.", "cadence": "monthly", "activeMonths": 12, "threshold": "do 200 zł naliczenia miesięcznie", "appliesToComponentIds": ["pekao-travel-rewards"], "consequenceIfMissed": "Niższe saldo i niższa możliwa nagroda; brak minimalnego obowiązku miesięcznego.", "recoverable": true },
+          { "id": "pekao-make-travel-expense", "label": "Wykonaj kwalifikowany wydatek podróżny, aby zamienić saldo na wypłatę.", "type": "spend", "timing": "W ciągu 12 miesięcy i dwóch dodatkowych miesięcy wykorzystania.", "cadence": "as_needed", "activeMonths": 14, "threshold": "Nagroda do 20% wydatku, salda i 2 000 zł jednorazowo.", "appliesToComponentIds": ["pekao-travel-rewards"], "consequenceIfMissed": "Niewykorzystane saldo zostanie wyzerowane.", "recoverable": false }
+        ],
+        "cadence": { "summary": "Dwa miesiące po pięć płatności kartą dla 300 zł; 12 miesięcy naliczania i maksymalnie dwa dodatkowe miesiące wykorzystania salda podróżnego.", "repeatedActionIds": ["pekao-build-travel-wallet", "pekao-make-travel-expense"] },
+        "activeMonths": { "min": 2, "max": 14, "basis": "Część 300 zł trwa dwa miesiące działań; część podróżna 12 miesięcy plus dwa miesiące na realizację salda." },
+        "deadlines": [{ "type": "entry", "date": "2026-08-31", "relativeRule": "Promocja Podróżna może zakończyć się wcześniej po 65 500 kontach.", "appliesTo": "composite promotion" }, { "type": "cash_actions", "date": null, "relativeRule": "Pierwszy i drugi miesiąc po miesiącu otwarcia.", "appliesTo": "300 PLN promotion" }, { "type": "travel_accrual", "date": null, "relativeRule": "12 miesięcy od spełnienia warunków wejścia.", "appliesTo": "pekao-travel-rewards" }, { "type": "travel_redemption", "date": null, "relativeRule": "Do dwóch miesięcy po końcu 12-miesięcznego okresu.", "appliesTo": "pekao-travel-rewards" }],
+        "payoutLag": { "earliest": "Nagroda podróżna najpóźniej następnego dnia roboczego po kwalifikowanym wydatku; 100 zł startowe zgodnie z tabelą edycji.", "latest": "Dla otwarcia w sierpniu 2026: odpowiednio do 15.10, 15.11 i 15.12.2026 dla trzech nagród po 100 zł; podróżna do następnego dnia roboczego.", "relativeTo": "Miesiąc otwarcia i data kwalifikowanego wydatku podróżnego.", "payoutForm": "Przelew na konto; nagroda podróżna na Skarbonkę, jeśli istnieje, w przeciwnym razie na konto.", "uncertaintyNote": "Dla otwarcia 16–31.07 terminy 100 zł to 15.09, 15.10 i 15.11.2026." },
+        "failurePoints": [
+          { "id": "pekao-confuse-wallet-with-cash", "label": "Uznanie portfela zwrotów za gotówkę", "severity": "high", "scope": "pekao-travel-rewards", "consequence": "Zawyżenie North Value nawet o całe niewykorzystane saldo.", "mitigation": "Liczyć tylko wypłaty poparte kwalifikowanymi wydatkami podróżnymi.", "sourceRequired": true },
+          { "id": "pekao-insufficient-travel-spend", "label": "Brak kwalifikowanych wydatków podróżnych", "severity": "high", "scope": "pekao-travel-rewards", "consequence": "Saldo nie staje się nagrodą i po terminie jest zerowane.", "mitigation": "Przed pozytywnym Verdict zebrać planowane kategorie i kwoty podróży.", "sourceRequired": true },
+          { "id": "pekao-card-fee", "label": "Niespełnienie warunków bezpłatnej złotej karty", "severity": "medium", "scope": "cost", "consequence": "9 zł miesięcznie dla posiadacza 26+.", "mitigation": "Zapewnić 1 000 zł wpływu, pięć płatności złotą kartą i utrzymać wymagane zgody; osoby poniżej 26 lat mają 0 zł.", "sourceRequired": true },
+          { "id": "pekao-close-before-payout", "label": "Zamknięcie konta lub wycofanie zgód", "severity": "high", "scope": "unpaid rewards and travel participation", "consequence": "Brak niewypłaconych 100-zł nagród; koniec Promocji Podróżnej i niewykorzystanej przyszłej wartości.", "mitigation": "Utrzymywać konto do ostatniej należnej wypłaty i wykorzystania portfela.", "sourceRequired": true }
+        ],
+        "safeExit": { "status": "partial", "earliestExit": "Po wypłacie wszystkich nagród 300 zł i wykorzystaniu salda podróżnego, najpóźniej przed jego wyzerowaniem.", "notice": "Standardowo miesięczny okres wypowiedzenia; dyspozycja w Pekao24, jednostce lub listownie. Rozwiązanie za porozumieniem stron jest możliwe za zgodą banku.", "fee": { "amount": 0, "currency": "PLN" }, "clawback": "Regulaminy nie przewidują zwrotu prawidłowo wypłaconych nagród; przedwczesne zamknięcie blokuje przyszłe wypłaty i kończy udział.", "steps": ["Odebrać nagrody 100 zł.", "Wykorzystać dostępne saldo podróżne w terminie.", "Spłacić ewentualne należności i złożyć wypowiedzenie ze wskazaniem salda."], "uncertaintyNote": "Brak afirmatywnej klauzuli no-clawback; nie zamykać przed ostatnią wypłatą." }
+      },
+      "cost": {
+        "directFees": [{ "label": "Prowadzenie Konta Przekorzystnego", "amount": { "amount": 0, "currency": "PLN" }, "cadence": "monthly", "unavoidable": true, "appliesDuring": "Cały okres." }, { "label": "Wydanie złotej karty ze standardową szatą", "amount": { "amount": 0, "currency": "PLN" }, "cadence": "once", "unavoidable": true, "appliesDuring": "Otwarcie." }],
+        "avoidableFees": [{ "label": "Obsługa złotej karty dla klienta 26+", "amount": { "amount": 9, "currency": "PLN" }, "cadence": "monthly", "avoidanceCondition": "W poprzednim miesiącu łącznie minimum 1 000 zł kwalifikowanego wpływu, pięć płatności złotą kartą oraz utrzymane zgody marketingowe; poniżej 26 lat 0 zł.", "failurePointId": "pekao-card-fee" }],
+        "downstreamCosts": [{ "label": "Wydatki podróżne potrzebne do wykorzystania portfela", "amountOrRule": "Aby wypłacić 2 400 zł przy stawce 20%, potrzeba łącznie co najmniej 12 000 zł kwalifikowanych wydatków podróżnych i wcześniej zbudowanego salda.", "trigger": "Próba osiągnięcia pełnego maksimum podróżnego.", "uncertaintyNote": "Nie traktować całych wydatków jako kosztu nagrody, jeśli są naturalnie planowane; North musi zebrać scenariusz użytkownika." }, { "label": "Przewalutowanie i operatorzy ATM", "amountOrRule": "1,35% dla części transakcji wymagających przewalutowania; operator bankomatu może pobrać własną opłatę.", "trigger": "Transakcja w obcej walucie lub wypłata; nie jest wymagana promocją.", "uncertaintyNote": null }],
+        "opportunityCost": [{ "label": "Użycie wpływu i płatności do zwolnienia złotej karty", "amountOrRange": null, "assumption": "Może kolidować z inną promocją; bez konkretnej alternatywy nie jest monetyzowane.", "comparisonId": "do-nothing", "monetized": false }, { "label": "Wybór podróży/kategorii tylko dla nagrody", "amountOrRange": null, "assumption": "Jeżeli wydatek nie był planowany, jego pełna nadwyżka może przewyższyć nagrodę. Wymaga danych użytkownika.", "comparisonId": "do-nothing", "monetized": false }],
+        "totalsByScenario": [{ "scenarioId": "pekao-opening-actions-only", "direct": { "amount": 0, "currency": "PLN" }, "avoidableIfMissed": "0–9 zł miesięcznie zależnie od wieku i spełnienia warunków karty", "downstream": null, "opportunity": null }, { "scenarioId": "pekao-travel-input-required", "direct": { "amount": 0, "currency": "PLN" }, "avoidableIfMissed": "0–9 zł miesięcznie", "downstream": "zależny od planowanych wydatków podróżnych", "opportunity": null }]
+      },
+      "decision": {
+        "scenarios": [{ "id": "pekao-opening-actions-only", "label": "Część startowa bez podróży", "userInputs": ["eligible for both", "five card transactions in month 1 and 2", "no travel value assumed"], "eligibilityResult": "eligible_if_both_lookbacks_pass" }, { "id": "pekao-travel-input-required", "label": "Część podróżna", "userInputs": ["monthly transaction order missing", "travel expenses missing"], "eligibilityResult": "unknown_value" }],
+        "northValue": [{ "scenarioId": "pekao-opening-actions-only", "advertisedMax": { "amount": 2700, "currency": "PLN" }, "easyFloor": { "amount": 100, "currency": "PLN" }, "likelyGrossValue": { "amount": 300, "currency": "PLN" }, "expectedUsableValue": { "amount": 300, "currency": "PLN" }, "netScenarioValue": { "amount": 300, "currency": "PLN" }, "rewardQuality": "HIGH dla 300 zł gotówki; część podróżna wyłączona", "effortBurden": "MEDIUM", "duration": "Dwa miesiące działań plus wypłata", "directCost": { "amount": 0, "currency": "PLN" }, "opportunityCost": "Niepoliczony", "failureRisk": "MEDIUM: dwa niezależne miesiące płatności", "flexibility": "MEDIUM: trzeba utrzymać produkty do wypłat", "completionOutlook": "CONDITIONAL", "assumptions": ["Pięć kwalifikowanych płatności w obu miesiącach.", "Brak wartości podróżnej bez danych." ] }, { "scenarioId": "pekao-travel-input-required", "advertisedMax": { "amount": 2700, "currency": "PLN" }, "easyFloor": { "amount": 100, "currency": "PLN" }, "likelyGrossValue": null, "expectedUsableValue": null, "netScenarioValue": null, "rewardQuality": "RESTRICTED przed wypłatą", "effortBurden": "UNKNOWN", "duration": "Do 14 miesięcy", "directCost": { "amount": 0, "currency": "PLN" }, "opportunityCost": "UNKNOWN", "failureRisk": "HIGH bez planu wykorzystania salda", "flexibility": "LOW dla pełnej wartości", "completionOutlook": "UNKNOWN", "assumptions": ["Brak danych o transakcjach i podróży."] }],
+        "northConfidence": { "scope": "offer-facts", "band": "HIGH", "factors": { "sourceQuality": "HIGH", "completeness": "HIGH", "freshness": "HIGH", "ambiguity": "MEDIUM", "editionCertainty": "HIGH" }, "reasons": ["Dwa aktualne regulaminy wprost opisują kwoty, łączenie, wirtualny portfel, wypłaty i terminy.", "Niejednoznaczność dotyczy komunikacji agregatu 2 700 zł, nie regulaminowej mechaniki; model jawnie rozdziela składniki."], "blockers": [], "assessedAt": "2026-08-16" },
+        "verdict": { "scenarioId": "user-scenario-required", "state": "NOT ENOUGH DATA", "summary": "300 zł można policzyć po prostych danych, lecz użyteczna wartość części 2 400 zł wymaga konkretnego scenariusza płatności i podróży.", "reasons": ["Wirtualny portfel nie jest gotówką.", "Wypłata wymaga kwalifikowanych wydatków podróżnych."], "conditions": [], "positiveBlockers": ["Brak danych o wydatkach i podróży użytkownika."], "missingData": ["both lookbacks", "credit products", "opening path", "monthly transaction order", "eligible travel spend", "gold card fee conditions", "alternative"] },
+        "comparison": { "doNothing": { "reward": { "amount": 0, "currency": "PLN" }, "directCost": { "amount": 0, "currency": "PLN" }, "effort": "minimal", "failureRisk": "none-added" }, "alternatives": [], "conclusion": "Część startowa może mieć dodatnią wartość; część podróżna nie ma ogólnej Your Likely Value bez danych użytkownika i nie może być przedstawiona jako 2 400 zł gotówki.", "limitations": ["Brak porównania alternatywy.", "Brak planu wydatków podróżnych użytkownika."] }
+      },
+      "evidence": {
+        "regulationUrl": "https://www.pekao.com.pl/dam/ROOT-EXTERNAL/DOCS/Regulamin_promocji_Otworz_konto_online_i_ruszaj_po_wiecej.pdf",
+        "officialUrl": "https://www.pekao.com.pl/konto",
+        "sources": [
+          { "id": "pekao-reg-start-ii", "type": "official_regulation", "title": "Regulamin promocji „Otwórz konto online i ruszaj po więcej – edycja II”", "url": "https://www.pekao.com.pl/dam/ROOT-EXTERNAL/DOCS/Regulamin_promocji_Otworz_konto_online_i_ruszaj_po_wiecej.pdf", "editionReference": "obowiązuje od 16.07.2026; nabór do 31.08.2026", "publishedAt": "2026-07-16", "accessedAt": "2026-08-16", "status": "current_as_reviewed" },
+          { "id": "pekao-reg-travel", "type": "official_regulation", "title": "Regulamin „Promocji Podróżnej”", "url": "https://www.pekao.com.pl/dam/ROOT-EXTERNAL/DOCS/Promocja_Podrozna_regulamin.pdf", "editionReference": "obowiązuje od 1.06.2026; nabór do 31.08.2026", "publishedAt": "2026-06-01", "accessedAt": "2026-08-16", "status": "current_as_reviewed" },
+          { "id": "pekao-product", "type": "official_product_page", "title": "Konto Przekorzystne", "url": "https://www.pekao.com.pl/konto", "editionReference": "300 zł + do 2 400 zł; oba nabory do 31.08.2026", "publishedAt": null, "accessedAt": "2026-08-16", "status": "current_as_reviewed" },
+          { "id": "pekao-fees", "type": "official_fee_table", "title": "Taryfa prowizji i opłat – rachunki bankowe w bieżącej ofercie", "url": "https://www.pekao.com.pl/dam/jcr%3Aeab0d421-5e06-4d39-a23a-a4b9a98e9c0c/Taryfa-prowizji-i-oplat-oferta-biezaca-od-1-11-2025.pdf", "editionReference": "obowiązuje od 1.11.2025", "publishedAt": "2025-11-01", "accessedAt": "2026-08-16", "status": "current_as_reviewed" },
+          { "id": "pekao-account-reg", "type": "official_regulation", "title": "Regulamin rachunków bankowych dla osób fizycznych – umowy od 1.07.2026", "url": "https://www.pekao.com.pl/dam/jcr%3A951ed9bc-fb22-4382-978a-123e1ed977a2/Regulamin_Rachunkow_Bankowych_dla_umow_zawartych_od_1072026.pdf", "editionReference": "dla umów od 1.07.2026", "publishedAt": "2026-07-01", "accessedAt": "2026-08-16", "status": "current_as_reviewed" }
+        ],
+        "fieldSources": [
+          { "fieldPath": "identity.edition", "sourceId": "pekao-reg-start-ii", "sourceType": "official_regulation", "reference": "tytuł; pkt 2 okres naboru", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Rekord North jest kompozytem dwóch edycji, nie oficjalną pojedynczą promocją." },
+          { "fieldPath": "identity.edition", "sourceId": "pekao-reg-travel", "sourceType": "official_regulation", "reference": "tytuł; pkt 2 okres naboru; pkt 23 limit kont", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Wspólne okno dla kompozytu zaczyna się 16.07.2026." },
+          { "fieldPath": "identity.status", "sourceId": "pekao-product", "sourceType": "official_product_page", "reference": "aktualne sekcje promocji 300 zł i do 2 400 zł, obie do 31.08.2026", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Przed CTA sprawdzić komunikat o puli 65 500 kont." },
+          { "fieldPath": "value.advertisedMax", "sourceId": "pekao-reg-start-ii", "sourceType": "official_regulation", "reference": "pkt 1: do 300 zł; pkt 10: łączenie z Promocją Podróżną", "checkedAt": "2026-08-16", "supportLevel": "interpreted", "uncertaintyNote": "2 700 zł jest poprawną sumą łączących się maksimów, ale nie pojedynczą oficjalną nagrodą." },
+          { "fieldPath": "value.advertisedMax", "sourceId": "pekao-reg-travel", "sourceType": "official_regulation", "reference": "pkt 1: do 2 400 zł; pkt 25: łączenie z promocją startową", "checkedAt": "2026-08-16", "supportLevel": "interpreted", "uncertaintyNote": "Suma nie jest cash-equivalent przed spełnieniem warunków wykorzystania portfela." },
+          { "fieldPath": "value.rewardComponents[pekao-opening-reward]", "sourceId": "pekao-reg-start-ii", "sourceType": "official_regulation", "reference": "pkt 6 ppkt 1; pkt 8 tabela wypłat", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "value.rewardComponents[pekao-month-one-reward]", "sourceId": "pekao-reg-start-ii", "sourceType": "official_regulation", "reference": "pkt 6 ppkt 2 i tabela; pkt 7 wyłączenia", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "value.rewardComponents[pekao-month-two-reward]", "sourceId": "pekao-reg-start-ii", "sourceType": "official_regulation", "reference": "pkt 6 ppkt 3 i tabela; pkt 9 niezależność", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "value.rewardComponents[pekao-travel-rewards]", "sourceId": "pekao-reg-travel", "sourceType": "official_regulation", "reference": "pkt 6–22; szczególnie 8–10, 13–18 i 22", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Portfel ma charakter wyłącznie informacyjny; cash powstaje dopiero jako nagroda za wydatek podróżny." },
+          { "fieldPath": "value.rewardComponents[*].combinability", "sourceId": "pekao-reg-start-ii", "sourceType": "official_regulation", "reference": "pkt 10: promocja łączy się z Promocją Podróżną", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "value.easyFloor", "sourceId": "pekao-reg-start-ii", "sourceType": "official_regulation", "reference": "pkt 4–6 i pkt 12", "checkedAt": "2026-08-16", "supportLevel": "interpreted", "uncertaintyNote": "100 zł to Northowy easy-floor przy jawnych założeniach, nie gwarantowana wypłata." },
+          { "fieldPath": "value.scenarioFormula", "sourceId": "pekao-reg-travel", "sourceType": "official_regulation", "reference": "pkt 8–10 oraz 14–18; przykład działania promocji", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Formuła zachowuje kolejność transakcji, miesięczne capy i saldo portfela." },
+          { "fieldPath": "eligibility", "sourceId": "pekao-reg-start-ii", "sourceType": "official_regulation", "reference": "pkt 3–5", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Dla kompozytu stosuje się przecięcie z kryteriami Promocji Podróżnej." },
+          { "fieldPath": "eligibility", "sourceId": "pekao-reg-travel", "sourceType": "official_regulation", "reference": "pkt 3–5; pkt 24 i 26", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Wymóg braku jakiejkolwiek umowy jest surowszy niż sam brak konta." },
+          { "fieldPath": "eligibility.requiredIncome", "sourceId": "pekao-reg-start-ii", "sourceType": "official_regulation", "reference": "pkt 6: brak warunku wpływu dla nagród", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Wpływ 1 000 zł dotyczy zwolnienia z opłaty za złotą kartę dla 26+, nie nagrody." },
+          { "fieldPath": "eligibility.requiredSpend", "sourceId": "pekao-reg-start-ii", "sourceType": "official_regulation", "reference": "pkt 6–7", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "eligibility.requiredSpend", "sourceId": "pekao-reg-travel", "sourceType": "official_regulation", "reference": "pkt 7–18", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Dla pełnych 2 400 zł minimalne 12 000 zł travel spend jest arytmetyczną konsekwencją 20%, nie osobnym progiem regulaminowym." },
+          { "fieldPath": "eligibility.requiredCapital", "sourceId": "pekao-reg-travel", "sourceType": "official_regulation", "reference": "pkt 7–18: brak depozytu; wartość wymaga płatności i wydatków podróżnych", "checkedAt": "2026-08-16", "supportLevel": "interpreted", "uncertaintyNote": "12 000 zł dla pełnej wypłaty to dolna granica arytmetyczna wydatków przy 20%, a nie kapitał blokowany w produkcie." },
+          { "fieldPath": "execution.actions", "sourceId": "pekao-reg-start-ii", "sourceType": "official_regulation", "reference": "pkt 4–7", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "execution.actions", "sourceId": "pekao-reg-travel", "sourceType": "official_regulation", "reference": "pkt 4–22; definicja „karta” w słowniku", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "execution.deadlines", "sourceId": "pekao-reg-start-ii", "sourceType": "official_regulation", "reference": "pkt 2; pkt 6 tabela", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "execution.deadlines", "sourceId": "pekao-reg-travel", "sourceType": "official_regulation", "reference": "pkt 2; pkt 6; pkt 22–23", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Pula 65 500 kont może skrócić wejście." },
+          { "fieldPath": "execution.activeMonths", "sourceId": "pekao-reg-travel", "sourceType": "official_regulation", "reference": "pkt 6 i 22", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "execution.payoutLag", "sourceId": "pekao-reg-start-ii", "sourceType": "official_regulation", "reference": "pkt 8 tabela terminów", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Daty zależą od lipcowego lub sierpniowego wejścia." },
+          { "fieldPath": "execution.payoutLag", "sourceId": "pekao-reg-travel", "sourceType": "official_regulation", "reference": "pkt 15–19", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "cost.directFees", "sourceId": "pekao-fees", "sourceType": "official_fee_table", "reference": "Rozdział 2, wiersze 1, 4 i 6 dla Konta Przekorzystnego", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "cost.avoidableFees", "sourceId": "pekao-fees", "sourceType": "official_fee_table", "reference": "Rozdział 2, wiersz 6; przypisy 10–11", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Dla nowej złotej karty 26+: 9 zł albo 0 zł po spełnieniu czterech warunków; poniżej 26 lat 0 zł." },
+          { "fieldPath": "execution.failurePoints", "sourceId": "pekao-reg-travel", "sourceType": "official_regulation", "reference": "pkt 13–22; pkt 27", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "execution.failurePoints[pekao-card-fee]", "sourceId": "pekao-fees", "sourceType": "official_fee_table", "reference": "Rozdział 2, wiersz 6; przypisy 10–11", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": null },
+          { "fieldPath": "execution.failurePoints[pekao-close-before-payout]", "sourceId": "pekao-reg-start-ii", "sourceType": "official_regulation", "reference": "pkt 12", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Skutek dla portfela podróżnego dodatkowo opisują pkt 21–22 regulaminu podróżnego." },
+          { "fieldPath": "execution.safeExit", "sourceId": "pekao-account-reg", "sourceType": "official_regulation", "reference": "Rozdział 22, §106 i §112–115", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Promocyjne skutki pochodzą z obu regulaminów promocji." },
+          { "fieldPath": "execution.safeExit.clawback", "sourceId": "pekao-reg-start-ii", "sourceType": "official_regulation", "reference": "pkt 12: brak niewypłaconej nagrody po wycofaniu zgód/wypowiedzeniu; brak klauzuli zwrotu wypłaconej nagrody", "checkedAt": "2026-08-16", "supportLevel": "interpreted", "uncertaintyNote": "Nie przedstawiać jako afirmatywnej gwarancji no-clawback." },
+          { "fieldPath": "decision.northValue[pekao-opening-actions-only]", "sourceId": "pekao-reg-start-ii", "sourceType": "official_regulation", "reference": "pkt 6–9; deterministyczny scenariusz pięciu płatności w obu miesiącach", "checkedAt": "2026-08-16", "supportLevel": "interpreted", "uncertaintyNote": "Nie zawiera części podróżnej." },
+          { "fieldPath": "decision.verdict[pekao-travel-input-required]", "sourceId": "pekao-reg-travel", "sourceType": "official_regulation", "reference": "pkt 13–18 i 22", "checkedAt": "2026-08-16", "supportLevel": "interpreted", "uncertaintyNote": "NOT ENOUGH DATA wynika z braku transakcji i wydatków użytkownika, nie z braku dowodów ofertowych." }
+        ],
+        "conflicts": [],
+        "recheckBy": "2026-08-23",
+        "owner": "ProjectNorth manual evidence review",
+        "notes": ["Landing demo może użyć 2 700 zł tylko z pełnym breakdownem i ograniczeniem użyteczności.", "Przed publikacją sprawdzić termin 31.08.2026 i komunikat o puli 65 500 kont.", "Nie użyto źródeł wtórnych dla krytycznych pól."]
+      },
+      "listing": { "problemLabel": "2 700 zł nie oznacza 2 700 zł prostego bonusu", "summary": "300 zł przelewów i do 2 400 zł warunkowych nagród podróżnych po zbudowaniu oraz wykorzystaniu wirtualnego salda.", "featured": true },
+      "affiliate": { "available": false, "url": null, "disclosure": "Brak aktywnego linku afiliacyjnego w tym rekordzie." }
+    }
+  ]
+}
