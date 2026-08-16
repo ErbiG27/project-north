@@ -48,6 +48,55 @@
         }).format(new Date(Date.UTC(year, month - 1, day)));
     }
 
+    function localIsoDate(date = new Date()) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+    }
+
+    function freshnessFor(offer, today = localIsoDate()) {
+        const status = offer?.identity?.status;
+        const verifiedAt = offer?.identity?.verifiedAt;
+        const validTo = offer?.identity?.edition?.validTo;
+        const recheckBy = offer?.evidence?.recheckBy;
+        const hasEvidence = Array.isArray(offer?.evidence?.sources) && offer.evidence.sources.length > 0;
+
+        if (["expired", "withdrawn"].includes(status) || (validTo && today > validTo)) {
+            return {
+                state: "EXPIRED",
+                label: "EXPIRED",
+                explanation: validTo
+                    ? `Okno wejścia zakończyło się ${formatDate(validTo)}. Sprawdź, czy istnieje nowa edycja.`
+                    : "Oferta została oznaczona jako zakończona."
+            };
+        }
+
+        if (!verifiedAt || !hasEvidence || ["draft", "under_verification", "unverified"].includes(status)) {
+            return {
+                state: "UNVERIFIED",
+                label: "UNVERIFIED",
+                explanation: "Brakuje pełnej ręcznej weryfikacji bieżącej edycji lub jej oficjalnych źródeł."
+            };
+        }
+
+        if (recheckBy && today > recheckBy) {
+            return {
+                state: "RECHECK_DUE",
+                label: "RECHECK DUE",
+                explanation: `Termin ręcznego sprawdzenia minął ${formatDate(recheckBy)}. Dane nie są automatycznie uznawane za aktualne.`
+            };
+        }
+
+        return {
+            state: "VERIFIED",
+            label: "VERIFIED",
+            explanation: recheckBy
+                ? `Ręcznie sprawdzono ${formatDate(verifiedAt)}; kolejny recheck zaplanowano do ${formatDate(recheckBy)}.`
+                : `Ręcznie sprawdzono ${formatDate(verifiedAt)}.`
+        };
+    }
+
     function escapeHtml(value) {
         return String(value ?? "")
             .replaceAll("&", "&amp;")
@@ -57,5 +106,5 @@
             .replaceAll("'", "&#039;");
     }
 
-    global.NorthOffers = { load, formatMoney, formatValue, formatDate, escapeHtml };
+    global.NorthOffers = { load, formatMoney, formatValue, formatDate, freshnessFor, escapeHtml };
 }(window));

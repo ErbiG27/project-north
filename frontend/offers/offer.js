@@ -1,7 +1,7 @@
 (function renderDecisionOffer() {
     "use strict";
 
-    const { load, formatMoney, formatValue, formatDate, escapeHtml } = window.NorthOffers;
+    const { load, formatMoney, formatValue, formatDate, freshnessFor, escapeHtml } = window.NorthOffers;
     const root = document.getElementById("offer-content");
     const offerId = document.body.dataset.offerId;
 
@@ -51,6 +51,56 @@
     function readableForm(form) {
         const labels = { cash: "gotówka", cashback: "zwrot / nagroda pieniężna", voucher: "voucher", points: "punkty", interest: "odsetki", fee_waiver: "zwolnienie z opłaty", asset: "aktywo", other: "inna forma" };
         return labels[form] || form;
+    }
+
+    function readableSourceType(type) {
+        const labels = {
+            official_regulation: "Oficjalny regulamin",
+            official_fee_table: "Oficjalna tabela opłat",
+            official_product_page: "Oficjalna strona produktu",
+            official_faq: "Oficjalne FAQ",
+            official_support_confirmation: "Oficjalne potwierdzenie",
+            secondary: "Źródło wtórne"
+        };
+        return labels[type] || "Oficjalne źródło";
+    }
+
+    function readableSupportLevel(level) {
+        const labels = {
+            direct: "Potwierdzone wprost",
+            interpreted: "Interpretacja North",
+            missing: "Brak pełnego potwierdzenia",
+            conflicting: "Konflikt źródeł"
+        };
+        return labels[level] || level;
+    }
+
+    function evidenceFieldLabel(item, offer) {
+        const path = item.fieldPath;
+        if (path.startsWith("identity.edition")) return "Edycja i okres oferty";
+        if (path.startsWith("identity.status")) return "Dostępność oferty";
+        if (path.startsWith("value.advertisedMax")) return "Advertised Max";
+        if (path.startsWith("value.rewardComponents")) {
+            const componentId = path.match(/\[([^\]]+)\]/)?.[1];
+            if (componentId === "*") return "Łączenie składników nagrody";
+            const component = offer.value.rewardComponents.find((entry) => entry.id === componentId);
+            return component ? `Składnik: ${component.label}` : "Składniki nagrody";
+        }
+        if (path.startsWith("value.easyFloor")) return "Easy Floor";
+        if (path.startsWith("value.scenarioFormula")) return "Formuła wartości";
+        if (path.startsWith("eligibility.requiredIncome")) return "Warunek wpływu";
+        if (path.startsWith("eligibility.requiredSpend")) return "Warunek wydatków";
+        if (path.startsWith("eligibility")) return "Kwalifikacja";
+        if (path.startsWith("execution.deadlines")) return "Terminy";
+        if (path.startsWith("execution.actions")) return "Wymagane działania";
+        if (path.startsWith("execution.failurePoints")) return "Ryzyko utraty";
+        if (path.startsWith("execution.safeExit")) return "Wyjście z oferty";
+        if (path.startsWith("cost.directFees")) return "Koszty bezpośrednie";
+        if (path.startsWith("cost.avoidableFees")) return "Opłaty możliwe do uniknięcia";
+        if (path.startsWith("cost.downstreamCosts")) return "Koszty dalsze";
+        if (path.startsWith("decision.northValue")) return "North Value scenariusza";
+        if (path.startsWith("decision.verdict")) return "North Verdict scenariusza";
+        return "Krytyczny warunek";
     }
 
     function valueFromScenario(value, key) {
@@ -236,60 +286,94 @@
     }
 
     function criticalEvidence(offer) {
-        const priorities = ["identity.status", "value.advertisedMax", "value.easyFloor", "eligibility", "execution.actions", "execution.failurePoints", "cost.", "decision."];
         const selected = [];
-        priorities.forEach((prefix) => {
-            const found = offer.evidence.fieldSources.find((item) => item.fieldPath.startsWith(prefix) && !selected.includes(item));
+        const addFirst = (prefix) => {
+            const found = offer.evidence.fieldSources.find((item) => item.fieldPath.startsWith(prefix));
             if (found) selected.push(found);
-        });
+        };
+        const addAll = (prefix) => {
+            offer.evidence.fieldSources.filter((item) => item.fieldPath.startsWith(prefix)).forEach((item) => selected.push(item));
+        };
+        const addExact = (path) => {
+            offer.evidence.fieldSources.filter((item) => item.fieldPath === path).forEach((item) => selected.push(item));
+        };
+        const addOnePerField = (prefix) => {
+            const seen = new Set();
+            offer.evidence.fieldSources.filter((item) => item.fieldPath.startsWith(prefix)).forEach((item) => {
+                if (!seen.has(item.fieldPath)) {
+                    selected.push(item);
+                    seen.add(item.fieldPath);
+                }
+            });
+        };
+
+        addFirst("identity.status");
+        addAll("value.advertisedMax");
+        addOnePerField("value.rewardComponents[");
+        addFirst("value.easyFloor");
+        addExact("eligibility");
+        addExact("execution.actions");
+        addFirst("execution.failurePoints");
+        addFirst("cost.directFees");
+        addFirst("cost.avoidableFees");
+        addFirst("decision.northValue");
+        addFirst("decision.verdict");
         return selected;
     }
 
     function renderEvidence(offer) {
         const ledger = criticalEvidence(offer);
-        const uncertainty = offer.evidence.fieldSources.filter((item) => item.uncertaintyNote).slice(0, 3);
+        const freshness = freshnessFor(offer);
+        const sourceById = new Map(offer.evidence.sources.map((source) => [source.id, source]));
         const affiliate = offer.affiliate.available
-            ? `<a class="north-button" href="${escapeHtml(offer.affiliate.url)}" target="_blank" rel="sponsored noopener">Przejdź do oferty <span aria-hidden="true">↗</span></a>`
-            : `<p class="affiliate-note">${escapeHtml(offer.affiliate.disclosure)}</p>`;
+            ? `<div class="affiliate-action"><a class="north-button" href="${escapeHtml(offer.affiliate.url)}" target="_blank" rel="sponsored noopener">Przejdź do oferty partnerskiej <span aria-hidden="true">↗</span><span class="visually-hidden"> (otwiera nową kartę)</span></a><p>${escapeHtml(offer.affiliate.disclosure)} Link nie wpływa na Value, Confidence ani Verdict.</p></div>`
+            : "";
         return `
             <section class="offer-section" id="sources" aria-labelledby="sources-title">
-                <div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> Evidence</p><h2 id="sources-title">Źródła, status i niepewność</h2></div><p>Nie renderujemy całego technicznego ledgera. Pokazujemy krytyczne pola, oficjalne dokumenty i noty wpływające na decyzję.</p></div>
+                <div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> Evidence</p><h2 id="sources-title">Skąd wiemy i kiedy sprawdziliśmy</h2></div><p>Przy każdej kluczowej liczbie i regule pokazujemy rodzaj źródła, dokładne miejsce w dokumencie, datę sprawdzenia oraz niepewność.</p></div>
                 <div class="evidence-status-grid">
-                    <div><span>Status</span><strong>${escapeHtml(readableStatus(offer.identity.status))}</strong></div>
-                    <div><span>Zweryfikowano</span><strong>${formatDate(offer.identity.verifiedAt)}</strong></div>
+                    <div><span>Aktualność danych</span><strong class="freshness-text freshness-text--${freshness.state.toLowerCase().replaceAll("_", "-")}">${escapeHtml(freshness.label)}</strong></div>
+                    <div><span>Ostatni pełny review</span><strong>${formatDate(offer.identity.verifiedAt)}</strong></div>
                     <div><span>North Confidence</span><strong>${escapeHtml(offer.decision.northConfidence.band)}</strong></div>
-                    <div><span>Recheck do</span><strong>${formatDate(offer.evidence.recheckBy)}</strong></div>
+                    <div><span>Ręczny recheck do</span><strong>${formatDate(offer.evidence.recheckBy)}</strong></div>
                 </div>
+                <p class="freshness-explanation"><span class="freshness-badge freshness-badge--${freshness.state.toLowerCase().replaceAll("_", "-")}">${escapeHtml(freshness.label)}</span>${escapeHtml(freshness.explanation)}</p>
                 <div class="sources-layout">
                     <div>
                         <h3>Oficjalne źródła</h3>
-                        <ul class="source-list">${offer.evidence.sources.map((source) => `<li><a href="${escapeHtml(source.url)}" target="_blank" rel="noopener">${escapeHtml(source.title)} <span aria-hidden="true">↗</span></a><span>${escapeHtml(source.type)} · sprawdzono ${formatDate(source.accessedAt)}</span></li>`).join("")}</ul>
+                        <ul class="source-list">${offer.evidence.sources.map((source) => `<li><a href="${escapeHtml(source.url)}" target="_blank" rel="noopener">${escapeHtml(source.title)} <span aria-hidden="true">↗</span><span class="visually-hidden"> (otwiera nową kartę)</span></a><span>${escapeHtml(readableSourceType(source.type))} · sprawdzono ${formatDate(source.accessedAt)} · ${escapeHtml(source.editionReference || "bieżąca edycja")}</span></li>`).join("")}</ul>
                     </div>
                     <aside class="confidence-reasons"><h3>Dlaczego ${escapeHtml(offer.decision.northConfidence.band)}</h3><ul>${offer.decision.northConfidence.reasons.map((reason) => `<li>${escapeHtml(reason)}</li>`).join("")}</ul>${offer.decision.northConfidence.blockers.length ? `<h4>Blockers</h4><ul>${offer.decision.northConfidence.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}</ul>` : ""}</aside>
                 </div>
                 <div class="evidence-ledger">
-                    <h3>Krytyczne pola i referencje</h3>
-                    ${ledger.map((item) => `<article><div><span>${escapeHtml(item.fieldPath)}</span><strong>${escapeHtml(item.supportLevel)}</strong></div><p>${escapeHtml(item.reference)}</p><small>Sprawdzono ${formatDate(item.checkedAt)}</small>${item.uncertaintyNote ? `<p class="uncertainty-note">${escapeHtml(item.uncertaintyNote)}</p>` : ""}</article>`).join("")}
+                    <h3>Dowody dla kluczowych liczb i warunków</h3>
+                    ${ledger.map((item) => {
+                        const source = sourceById.get(item.sourceId);
+                        return `<article><div><span>${escapeHtml(evidenceFieldLabel(item, offer))}</span><strong>${escapeHtml(readableSupportLevel(item.supportLevel))}</strong></div>${source ? `<a class="evidence-source-link" href="${escapeHtml(source.url)}" target="_blank" rel="noopener">${escapeHtml(readableSourceType(source.type))}: ${escapeHtml(source.title)} <span aria-hidden="true">↗</span><span class="visually-hidden"> (otwiera nową kartę)</span></a>` : ""}<p><strong>Gdzie:</strong> ${escapeHtml(item.reference)}</p><small>Sprawdzono ${formatDate(item.checkedAt)}</small>${item.uncertaintyNote ? `<p class="uncertainty-note"><strong>Niepewność:</strong> ${escapeHtml(item.uncertaintyNote)}</p>` : ""}</article>`;
+                    }).join("")}
                 </div>
-                ${uncertainty.length ? `<div class="uncertainty-box"><h3>Najważniejsze noty niepewności</h3><ul>${uncertainty.map((item) => `<li>${escapeHtml(item.uncertaintyNote)}</li>`).join("")}</ul></div>` : ""}
-                <div class="source-actions"><a class="north-link" href="${escapeHtml(offer.evidence.regulationUrl)}" target="_blank" rel="noopener">Otwórz główny regulamin <span aria-hidden="true">↗</span></a><a class="north-link" href="${escapeHtml(offer.evidence.officialUrl)}" target="_blank" rel="noopener">Oficjalna strona produktu <span aria-hidden="true">↗</span></a>${affiliate}</div>
+                ${offer.evidence.conflicts.length ? `<div class="conflicts-box"><h3>Konflikty źródeł</h3>${offer.evidence.conflicts.map((conflict) => `<article><strong>${escapeHtml(evidenceFieldLabel({ fieldPath: conflict.fieldPath }, offer))}</strong><p>${escapeHtml(conflict.description)}</p><small>Jak traktuje to North: ${escapeHtml(conflict.resolutionStatus)}</small></article>`).join("")}</div>` : `<p class="no-conflicts">Nie wykryto konfliktu źródeł, który blokowałby ten rekord.</p>`}
+                <div class="source-actions"><a class="north-link" href="${escapeHtml(offer.evidence.regulationUrl)}" target="_blank" rel="noopener">Otwórz główny regulamin <span aria-hidden="true">↗</span><span class="visually-hidden"> (otwiera nową kartę)</span></a><a class="north-link" href="${escapeHtml(offer.evidence.officialUrl)}" target="_blank" rel="noopener">Oficjalna strona produktu <span aria-hidden="true">↗</span><span class="visually-hidden"> (otwiera nową kartę)</span></a></div>
+                ${affiliate}
             </section>`;
     }
 
     function renderOffer(offer) {
+        const freshness = freshnessFor(offer);
         document.title = `${shortProvider(offer)} — analiza North`;
         const meta = document.querySelector('meta[name="description"]');
-        meta.content = `${offer.listing.problemLabel}. Zweryfikowana analiza ${shortProvider(offer)} według North Decision Model v1.`;
+        meta.content = `${offer.listing.problemLabel}. Analiza ${shortProvider(offer)} według North Decision Model v1 z widoczną aktualnością danych.`;
         root.removeAttribute("aria-live");
         root.innerHTML = `
             <section class="offer-decision-hero" aria-labelledby="offer-title">
                 <div class="offer-decision-hero__copy">
-                    <p class="section-kicker"><span aria-hidden="true"></span> ${escapeHtml(readableStatus(offer.identity.status))} · zweryfikowano ${formatDate(offer.identity.verifiedAt)}</p>
+                    <p class="section-kicker"><span aria-hidden="true"></span> ${escapeHtml(readableStatus(offer.identity.status))} · review ${formatDate(offer.identity.verifiedAt)}</p>
                     <div class="offer-provider-row"><span class="bank-monogram" aria-hidden="true">${escapeHtml(monogram(offer))}</span><p>${escapeHtml(shortProvider(offer))}</p></div>
                     <h1 id="offer-title">${escapeHtml(offer.identity.title)}</h1>
                     <p class="offer-hero-problem">${escapeHtml(offer.listing.problemLabel)}</p>
                     <p>${escapeHtml(offer.listing.summary)}</p>
                     <div class="action-row"><a class="north-button" href="#scenarios">Zobacz scenariusze <span aria-hidden="true">↓</span></a><a class="north-link" href="#sources">Sprawdź źródła</a></div>
+                    <div class="hero-freshness"><span class="freshness-badge freshness-badge--${freshness.state.toLowerCase().replaceAll("_", "-")}">${escapeHtml(freshness.label)}</span><p>${escapeHtml(freshness.explanation)}</p></div>
                     <p class="record-meta">Edycja: ${escapeHtml(offer.identity.edition.name)} · wejście do ${formatDate(offer.identity.edition.validTo)}</p>
                 </div>
                 <aside class="offer-hero-verdict">
@@ -308,7 +392,7 @@
             ${renderCosts(offer)}
             ${renderVerdict(offer)}
             ${renderEvidence(offer)}
-            <footer class="offer-footer-page"><img src="../assets/brand/north-logo.svg" alt="North"><p>Decision Model v1 · Dane sprawdzone ${formatDate(offer.identity.verifiedAt)}. North nie gwarantuje nagrody i nie zastępuje regulaminu ani indywidualnej porady.</p><a class="north-link" href="../index.html#opportunities">Wróć do analiz</a></footer>`;
+            <footer class="offer-footer-page"><img src="../assets/brand/north-logo.svg" alt="North"><p>Decision Model v1 · ${escapeHtml(freshness.label)} · review ${formatDate(offer.identity.verifiedAt)}. North nie gwarantuje nagrody i nie zastępuje regulaminu ani indywidualnej porady.<br>North może otrzymać wynagrodzenie za wybrane linki; nie wpływa to na Value, Confidence ani Verdict.</p><nav aria-label="Linki analizy"><a class="north-link" href="../methodology.html">Metodologia</a><a class="north-link" href="../index.html#opportunities">Wróć do analiz</a></nav></footer>`;
     }
 
     load("../data/decision-offers.json")

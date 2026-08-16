@@ -1,7 +1,7 @@
 (function renderNorthLanding() {
     "use strict";
 
-    const { load, formatMoney, formatValue, formatDate, escapeHtml } = window.NorthOffers;
+    const { load, formatMoney, formatValue, formatDate, freshnessFor, escapeHtml } = window.NorthOffers;
 
     const offerRoutes = {
         "bank-millennium-millennium-360": "offers/millennium.html",
@@ -29,8 +29,14 @@
         return `verdict-badge verdict-badge--${String(verdict).toLowerCase().replaceAll("_", "-")}`;
     }
 
+    function freshnessBadge(offer) {
+        const freshness = freshnessFor(offer);
+        return `<span class="freshness-badge freshness-badge--${freshness.state.toLowerCase().replaceAll("_", "-")}">${escapeHtml(freshness.label)}</span>`;
+    }
+
     function renderPekaoDemo(offer) {
         const target = document.getElementById("pekao-demo");
+        const freshness = freshnessFor(offer);
         const advertisedMoney = offer.value.advertisedMax.displayLabel.replace(/^do\s+/i, "").replace(/\s+łącznie$/i, "");
         document.getElementById("value-demo-title").textContent = `${advertisedMoney} nie zawsze znaczy ${advertisedMoney}`;
         const travel = offer.value.rewardComponents.find((component) => component.id === "pekao-travel-rewards");
@@ -65,7 +71,7 @@
                     <strong>Saldo podróżne nie jest gotówką.</strong>
                     <p>${escapeHtml(travel.usability.restrictions[0])} ${escapeHtml(travel.usability.restrictions[1])}</p>
                 </div>
-                <p class="record-meta">${escapeHtml(offer.identity.edition.name)} · zweryfikowano ${formatDate(offer.identity.verifiedAt)} · Confidence ${escapeHtml(offer.decision.northConfidence.band)}</p>
+                <p class="record-meta">${freshnessBadge(offer)} Edycja sprawdzona ${formatDate(offer.identity.verifiedAt)} · Confidence ${escapeHtml(offer.decision.northConfidence.band)}</p>
                 <a class="north-link" href="${offerRoutes[offer.identity.id]}#sources">Zobacz źródła i punkty regulaminu <span aria-hidden="true">→</span></a>
             </article>
             <aside class="snapshot-panel">
@@ -148,11 +154,12 @@
         target.innerHTML = offers.map((offer) => {
             const firstExample = offer.value.scenarioExamples[0];
             const firstValue = offer.decision.northValue.find((item) => item.scenarioId === firstExample.id);
+            const freshness = freshnessFor(offer);
             return `
                 <article class="decision-offer-card">
                     <div class="decision-offer-card__top">
                         <span class="bank-monogram" aria-hidden="true">${escapeHtml(monogram(offer))}</span>
-                        <div><p>${escapeHtml(shortProvider(offer))}</p><span class="offer-status">${escapeHtml(offer.identity.status)} · ${formatDate(offer.identity.verifiedAt)}</span></div>
+                        <div><p>${escapeHtml(shortProvider(offer))}</p><span class="offer-status">${escapeHtml(freshness.label)} · sprawdzono ${formatDate(offer.identity.verifiedAt)}</span></div>
                         <span class="confidence-badge">${escapeHtml(offer.decision.northConfidence.band)}</span>
                     </div>
                     <p class="problem-label">${escapeHtml(offer.listing.problemLabel)}</p>
@@ -173,8 +180,13 @@
         target.classList.remove("data-loading");
         target.innerHTML = offers.map((offer) => `<div><dt>${escapeHtml(shortProvider(offer).replace("Bank ", ""))}</dt><dd>${escapeHtml(offer.decision.northConfidence.band)}</dd></div>`).join("");
         const recheckBy = offers.map((offer) => offer.evidence.recheckBy).sort()[0];
-        document.getElementById("confidence-review").textContent = `Pełny review: ${formatDate(data.reviewedAt)} · kolejny recheck do ${formatDate(recheckBy)}`;
-        document.getElementById("footer-review").textContent = `review ${formatDate(data.reviewedAt)}`;
+        const dueCount = offers.filter((offer) => freshnessFor(offer).state === "RECHECK_DUE").length;
+        document.getElementById("confidence-review").textContent = dueCount
+            ? `${dueCount} ${dueCount === 1 ? "analiza wymaga" : "analizy wymagają"} ręcznego rechecku · poprzedni review: ${formatDate(data.reviewedAt)}`
+            : `Pełny review: ${formatDate(data.reviewedAt)} · kolejny recheck do ${formatDate(recheckBy)}`;
+        document.getElementById("footer-review").textContent = dueCount
+            ? `ręczny recheck wymagany dla ${dueCount} ${dueCount === 1 ? "analizy" : "analiz"}`
+            : `review ${formatDate(data.reviewedAt)} · recheck do ${formatDate(recheckBy)}`;
     }
 
     function renderError(message) {
@@ -190,6 +202,13 @@
             const pekao = activeOffers.find((offer) => offer.identity.id.includes("pekao"));
             const nest = activeOffers.find((offer) => offer.identity.id.includes("nest"));
             document.getElementById("published-count").textContent = activeOffers.length;
+            const states = activeOffers.map((offer) => freshnessFor(offer).state);
+            const structureStatus = document.getElementById("structure-status");
+            if (structureStatus) {
+                structureStatus.textContent = states.every((state) => state === "VERIFIED")
+                    ? "Dane ręcznie zweryfikowane"
+                    : "Sprawdź aktualność danych";
+            }
             renderPekaoDemo(pekao);
             renderNestScenarios(nest);
             renderOffers(activeOffers);

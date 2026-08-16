@@ -4,7 +4,35 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 
 ## [Unreleased]
 
-Brak zmian po wydaniu v0.6.1.
+Brak zmian po wydaniu v0.6.2.
+
+## [0.6.2] — 2026-08-16
+
+### Added
+
+- Publiczna strona metodologii Decision Model v1 z definicjami North Value, Confidence, Verdict, zasadą `do nothing`, granicami `WAIT` i polityką afiliacyjną.
+- Cztery uczciwe stany aktualności danych: `VERIFIED`, `RECHECK DUE`, `EXPIRED` i `UNVERIFIED`, wyliczane z istniejących pól rekordu bez automatycznego monitoringu.
+- Czytelny evidence ledger na stronach ofert: nazwy pól dla użytkownika, typ oficjalnego źródła, bezpośredni link, dokładna referencja, data sprawdzenia, poziom wsparcia, niepewność i konflikty.
+
+### Changed
+
+- Wszystkie istniejące linki „Metodologia” na Landing 2.1 i stronach Decision Model prowadzą do publicznej metodologii.
+- Footer i przyszłe aktywne CTA afiliacyjne otrzymały spójne disclosure; brak afiliacji nie renderuje pustego placeholdera.
+- Landing na 390 px szybciej pokazuje strukturę wartości, a tytuły ofert na mobile zachowują charakter editorial bez dominowania nad informacją decyzyjną.
+- Copy aktualności odróżnia datę pełnego review od terminu ręcznego rechecku i nie obiecuje stałej aktualności.
+
+### Verified
+
+- Landing przeszedł smoke test w 1440×900 i 390×844.
+- Millennium, Nest i Pekao przeszły testy desktop i 390×844; metodologia przeszła test desktop i mobile, a Revolut test regresji.
+- Sprawdzono konsolę, brakujące zasoby, 404 dla plików lokalnych, duplikaty ID, strukturę nagłówków, overflow, skip linki, focus styles, linki zewnętrzne oraz `noopener` / `sponsored noopener`.
+- Stany freshness przeszły test deterministyczny dla dat: `VERIFIED`, `RECHECK DUE`, `EXPIRED` i `UNVERIFIED`.
+
+### Known limitations
+
+- Aktualność opiera się na ręcznym review; nie ma automatycznego monitoringu regulaminów.
+- Ogólny Verdict nadal wymaga danych scenariusza użytkownika i nie aktywuje `WAIT`.
+- Legacy strona Revolut pozostaje poza Decision Model v1 i zachowuje swój wcześniejszy, nieprodukcyjny placeholder CTA.
 
 ## [0.6.1] — 2026-08-16
 

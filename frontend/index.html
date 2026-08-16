@@ -9,7 +9,7 @@
     <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="assets/brand/favicon-32x32.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
-    <link rel="stylesheet" href="style.css?v=0.6.1">
+    <link rel="stylesheet" href="style.css?v=0.6.2">
     <title>North — sprawdź, która oferta ma sens dla Ciebie</title>
 </head>
 <body class="north-landing">
@@ -22,7 +22,7 @@
         <nav class="site-nav" aria-label="Główna nawigacja">
             <a href="#value-demo">Jak działa</a>
             <a href="#opportunities">Analizy</a>
-            <a href="#methodology">Metodologia</a>
+            <a href="methodology.html">Metodologia</a>
         </nav>
         <a class="north-button north-button--small" href="#opportunities">Zobacz analizy</a>
     </header>
@@ -37,13 +37,13 @@
                     <a class="north-button" href="#opportunities">Zobacz pierwsze analizy <span aria-hidden="true">→</span></a>
                     <a class="north-link" href="#value-demo">Jak liczymy wartość <span aria-hidden="true">↓</span></a>
                 </div>
-                <p class="hero-note"><span id="published-count">—</span> zweryfikowane analizy · Bez rankingu po reklamowanym maksimum</p>
+                <p class="hero-note"><span id="published-count">—</span> opublikowane analizy · Każda z widocznym stanem aktualności</p>
             </div>
 
             <aside class="value-preview" aria-label="Przykład struktury analizy North">
                 <div class="panel-topline">
                     <span>Przykład struktury analizy</span>
-                    <span class="status-dot">Dane zweryfikowane</span>
+                    <span class="status-dot" id="structure-status">Sprawdzanie aktualności danych</span>
                 </div>
                 <dl class="value-preview__grid">
                     <div><dt>Advertised Max</dt><dd>Twierdzenie oferenta</dd></div>
@@ -75,7 +75,7 @@
                 <p>Reklamowane maksimum może łączyć różne mechaniki. North pokazuje każdy składnik osobno, zanim policzy wartość dla scenariusza.</p>
             </div>
             <div id="pekao-demo" class="data-loading" aria-live="polite">Ładowanie zweryfikowanego breakdownu…</div>
-            <noscript><p class="notice">Włącz JavaScript, aby zobaczyć czytelną projekcję danych. Zweryfikowany wspólny rekord pozostaje dostępny jako <a href="data/decision-offers.json">Decision Model v1 JSON</a>.</p></noscript>
+            <noscript><p class="notice">Włącz JavaScript, aby zobaczyć czytelną projekcję danych i ich aktualność. Wspólny rekord pozostaje dostępny jako <a href="data/decision-offers.json">Decision Model v1 JSON</a>.</p></noscript>
         </section>
 
         <section class="north-section persona-demo" id="persona-demo" aria-labelledby="persona-title">
@@ -89,7 +89,7 @@
             <div id="nest-scenarios" class="scenario-grid data-loading" aria-live="polite">Ładowanie trzech zweryfikowanych scenariuszy…</div>
         </section>
 
-        <section class="north-section verdict-explainer" id="methodology" aria-labelledby="verdict-title">
+        <section class="north-section verdict-explainer" id="verdicts" aria-labelledby="verdict-title">
             <div class="section-heading">
                 <p class="section-kicker"><span aria-hidden="true"></span> North Verdict</p>
                 <h2 id="verdict-title">Decyzja, nie miejsce w rankingu</h2>
@@ -102,6 +102,7 @@
                 <article class="verdict-state verdict-state--unknown"><span>NOT ENOUGH DATA</span><h3>Najpierw uzupełnij krytyczne dane</h3><p>Powód: rozsądne scenariusze prowadzą do różnych decyzji.</p><p><strong>Warunek:</strong> pokazujemy konkretną listę braków.</p><p><strong>Bloker:</strong> bez danych nie ma pozytywnego CTA.</p></article>
             </div>
             <p class="method-note">Każdy Verdict porównuje scenariusz co najmniej z „do nothing”: 0 zł nagrody, 0 zł nowego kosztu, minimalny wysiłek i brak nowego ryzyka utraty.</p>
+            <a class="north-link section-link" href="methodology.html#verdict">Poznaj pełne reguły Verdict <span aria-hidden="true">→</span></a>
         </section>
 
         <section class="north-section evidence-section" id="evidence" aria-labelledby="evidence-title">
@@ -124,6 +125,7 @@
                     <p>Oceniamy jakość i kompletność źródeł, świeżość, niejednoznaczność oraz pewność edycji. Bez procentów.</p>
                     <dl id="confidence-summary" class="data-loading"><div><dt>Ładowanie statusów evidence…</dt><dd>—</dd></div></dl>
                     <p class="verified-date" id="confidence-review">Daty wczytywane ze wspólnego rekordu.</p>
+                    <a class="north-link" href="methodology.html#confidence">Jak działa Confidence <span aria-hidden="true">→</span></a>
                 </aside>
             </div>
         </section>
@@ -171,17 +173,17 @@
             <p class="section-kicker"><span aria-hidden="true"></span> Następny krok</p>
             <h2 id="final-cta-title">Zobacz wartość, warunki i ryzyko przed wyborem</h2>
             <p>Zacznij od jednej z opublikowanych analiz i sprawdź nie tylko maksimum, ale też scenariusz, obowiązki, koszty oraz źródła.</p>
-            <div class="action-row"><a class="north-button" href="#opportunities">Zobacz pierwsze analizy <span aria-hidden="true">↑</span></a><a class="north-link" href="#methodology">Przeczytaj metodologię</a></div>
+            <div class="action-row"><a class="north-button" href="#opportunities">Zobacz pierwsze analizy <span aria-hidden="true">↑</span></a><a class="north-link" href="methodology.html">Przeczytaj metodologię</a></div>
         </section>
     </main>
 
     <footer class="site-footer">
         <div><img src="assets/brand/north-logo.svg" alt="North"><p>North porządkuje publiczne warunki ofert i pokazuje scenariusze decyzji. Nie gwarantuje otrzymania nagrody i nie zastępuje regulaminu ani indywidualnej porady.</p></div>
-        <nav aria-label="Linki w stopce"><a href="#methodology">Metodologia</a><a href="#evidence">Źródła i korekty</a><a href="#opportunities">Status analiz</a></nav>
-        <p>Decision Model v1 · <span id="footer-review">data review ze wspólnego rekordu</span><br>Link partnerski może przynieść North wynagrodzenie bez dodatkowego kosztu; nie wpływa na Value, Confidence ani Verdict.</p>
+        <nav aria-label="Linki w stopce"><a href="methodology.html">Metodologia</a><a href="#evidence">Źródła i korekty</a><a href="#opportunities">Status analiz</a></nav>
+        <p>Decision Model v1 · <span id="footer-review">data review ze wspólnego rekordu</span><br>North może otrzymać wynagrodzenie za wybrane linki. Nie wpływa to na Value, Confidence ani Verdict; oferta bez afiliacji może być lepsza.</p>
     </footer>
 
-    <script src="data/offers.js?v=0.6.1"></script>
-    <script src="script.js?v=0.6.1"></script>
+    <script src="data/offers.js?v=0.6.2"></script>
+    <script src="script.js?v=0.6.2"></script>
 </body>
 </html>

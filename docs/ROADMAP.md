@@ -6,11 +6,11 @@
 
 Element trafia do sprintu tylko z celem, właścicielem, zakresem i Definition of Done. Roadmapa jest kolejnością hipotez, nie obietnicą terminu. Funkcje finansowe, afiliacyjne i analityczne wymagają najpierw zasad transparentności oraz zgodności prawnej.
 
-## Stan obecny — v0.6.1
+## Stan obecny — v0.6.2
 
-**Cel osiągnięty:** wdrożono Landing 2.1 i Decision Model v1 dla podstawowej trójki ofert.
+**Cel osiągnięty:** wdrożono fundament dowodów i zaufania dla Landing 2.1 oraz Decision Model v1.
 
-Bank Millennium, Nest Bank i Bank Pekao mają kompletne analizy z Value, kosztami, wykonaniem, Confidence, Verdict i evidence. Landing pokazuje zweryfikowany breakdown Pekao oraz trzy jawne scenariusze Nest. Listing, dema i strony szczegółowe korzystają z jednego źródła faktów ofertowych. Testy desktop, mobile i regresja Revolut zakończyły się powodzeniem.
+Bank Millennium, Nest Bank i Bank Pekao mają czytelne pochodzenie kluczowych liczb i warunków, ręczny freshness status, widoczne daty review, Confidence, niepewność, konflikty i linki do oficjalnych dokumentów. Publiczna metodologia wyjaśnia Value, Confidence, Verdict, `do nothing`, brak aktywnego `WAIT`, brak magicznego Score oraz zasady afiliacji. Landing, analizy i metodologia przeszły testy desktop/mobile; Revolut przeszedł test regresji.
 
 ## Następne etapy
 
@@ -70,12 +70,14 @@ Ten etap może rozpocząć się wyłącznie po walidacji podstawowej trójki v0.
 
 ### v0.6.2 — Evidence & freshness foundation
 
-- Opublikować metodologię modelu decyzji i definicje kryteriów, w tym granice North Confidence.
-- Rozwinąć ręczny evidence ledger o wersjonowanie edycji, snapshot regulaminu, statusy `active`, `closing`, `expired`, `unverified` oraz widoczny log korekt.
-- Zaprojektować proces ręcznego QA i aktualizacji wygasających ofert przed rozważeniem automatyzacji.
-- Opublikować politykę afiliacyjną, która dopuszcza zwycięstwo oferty bez linku partnerskiego i werdykt `SKIP`.
+- **Status:** zaimplementowano 2026-08-16.
+- Opublikowano audytowalną metodologię modelu decyzji i granice North Confidence.
+- Evidence UI pokazuje typ oficjalnego źródła, dokładną referencję, datę sprawdzenia, poziom wsparcia, niepewność, konflikty i bezpośredni link bez renderowania technicznego JSON 1:1.
+- Freshness wylicza `VERIFIED`, `RECHECK DUE`, `EXPIRED` i `UNVERIFIED` z `verifiedAt`, `recheckBy`, statusu, okresu edycji i obecności evidence. Proces pozostaje ręczny.
+- Opublikowano politykę afiliacyjną, która nie wpływa na Value, Confidence ani Verdict i dopuszcza przewagę oferty bez linku oraz `SKIP` dla oferty partnerskiej.
+- Poprawiono hierarchię mobilną landingu i stron ofert oraz zakończono smoke testy jakości i dostępności.
 
-**Definition of Done:** każda liczba i rekomendacja ma określone pochodzenie oraz właściciela aktualizacji.
+**Definition of Done — spełnione:** każda prezentowana krytyczna liczba i reguła prowadzi do określonego pochodzenia oraz daty ręcznego review, a użytkownik widzi status aktualności i granice wniosku.
 
 ### v0.7.0 — Explainable North Match
 

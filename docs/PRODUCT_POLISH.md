@@ -7,20 +7,20 @@ Backlog jakościowy. Priorytet określa wpływ na zaufanie i ukończenie zadania
 - Naprawić wszystkie linki kart i CTA; nie publikować `href="#"` ani stron nieistniejących.
 - Potwierdzić aktualność bonusów, warunków, dostępności oraz informacji o partnerach.
 - Ujednolicić kodowanie plików do UTF-8, aby polskie znaki i ikony nie były uszkodzone.
-- Oznaczyć linki partnerskie, dodać podstawową politykę afiliacyjną oraz źródła warunków.
-- Dla Millennium, Nest i Pekao ręcznie połączyć krytyczne pola z konkretnym źródłem lub punktem regulaminu, datą weryfikacji i statusem pewności.
-- Nie pokazywać jednej „realnej nagrody” bez jawnego scenariusza; stosować `Advertised Max`, `Easy Floor` oraz `Your Likely Value` / `Conditional Max` tam, gdzie ma zastosowanie.
-- Nie publikować werdyktu `WAIT` ani precyzyjnego procentu Confidence/Match bez wystarczających danych i walidacji.
-- Sprawdzić wersję mobilną, klawiaturę i stany focus.
+- [x] Oznaczyć linki partnerskie, dodać podstawową politykę afiliacyjną oraz źródła warunków — v0.6.2.
+- [x] Dla Millennium, Nest i Pekao ręcznie połączyć krytyczne pola z konkretnym źródłem lub punktem regulaminu, datą weryfikacji i statusem pewności — v0.6.2.
+- [x] Nie pokazywać jednej „realnej nagrody” bez jawnego scenariusza; stosować `Advertised Max`, `Easy Floor` oraz `Your Likely Value` / `Conditional Max` tam, gdzie ma zastosowanie — v0.6.1.
+- [x] Nie publikować werdyktu `WAIT` ani precyzyjnego procentu Confidence/Match bez wystarczających danych i walidacji — v0.6.1/v0.6.2.
+- [x] Sprawdzić wersję mobilną, klawiaturę i stany focus — v0.6.2.
 
 ## P1 — fundament zaufania
 
 - Uzupełnić spójne użycie istniejących zasobów marki North w stopce i metadanych.
-- Dodać footer z informacją o metodologii, aktualizacji i kontakcie.
-- Dodać datę weryfikacji i status oferty.
-- Przygotować stronę metodologii modelu decyzji: North Value, North Confidence, scenariusze wartości, koszty, ryzyko niedowiezienia i zasady Verdict.
-- Zapewnić, że North Score — jeśli pozostaje widoczny — jest skrótem wtórnym z rozkładem i uzasadnieniem, a nie głównym USP.
-- Dodać czytelne stany `TAKE NOW`, `TAKE IF`, `SKIP` i `NOT ENOUGH DATA`; `WAIT` zachować jako późniejszy stan wymagający historii i backtestu.
+- [x] Dodać footer z informacją o metodologii i aktualizacji; kontakt pozostaje do zdefiniowania przed publikacją kanału wsparcia — v0.6.2.
+- [x] Dodać datę weryfikacji i status oferty — v0.6.2.
+- [x] Przygotować stronę metodologii modelu decyzji: North Value, North Confidence, scenariusze wartości, koszty, ryzyko niedowiezienia i zasady Verdict — v0.6.2.
+- [x] Zapewnić, że North Score — jeśli pozostaje widoczny — jest skrótem wtórnym z rozkładem i uzasadnieniem, a nie głównym USP — Decision Model v1 nie używa Score jako wyniku.
+- [x] Dodać czytelne stany `TAKE NOW`, `TAKE IF`, `SKIP` i `NOT ENOUGH DATA`; `WAIT` zachować jako późniejszy stan wymagający historii i backtestu — v0.6.1/v0.6.2.
 - Dodać puste stany dla braku wyników wyszukiwania oraz filtrów.
 - Uczynić całą kartę oferty logicznie klikalną bez zagnieżdżania interaktywnych elementów.
 
