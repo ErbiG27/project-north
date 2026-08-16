@@ -1,127 +1,75 @@
-# 🚀 North
+# ProjectNorth
 
-North to platforma zbierająca sprawdzone sposoby zarabiania online w jednym miejscu.
+![North](frontend/assets/brand/north-logo.svg#gh-dark-mode-only)
 
-## Cel projektu
+> Nie pytaj, która premia jest najwyższa. Sprawdź, która ma sens dla Ciebie.
 
-Ułatwić znalezienie wartościowych promocji, bonusów i metod zarabiania bez zbędnego marketingu.
+ProjectNorth to rozwijany po polsku **wyjaśnialny system decyzji dotyczących okazji finansowych**. Zamiast układać promocje w ranking według reklamowanej premii, North rozkłada ofertę na wartość dla konkretnego scenariusza, warunki, czas, wysiłek, koszty, ryzyka i źródła. Wynikiem ma być zrozumiała decyzja — także wtedy, gdy najlepszą opcją jest brak działania.
 
----
+## Stan produktu
 
-## Aktualna wersja
+Aktualny działający zakres to **Decision Model v1 + Explainable North Match (v0.7.0)**. To frontendowy produkt przed prywatną betą, oparty na małej liczbie celowo zróżnicowanych analiz, a nie rozbudowany katalog ofert.
 
-v0.5.0
+- aktywne przypadki: **Bank Millennium, Nest Bank i Bank Pekao**;
+- formularz scenariusza działa lokalnie w przeglądarce, bez konta i backendu;
+- krytyczne pola mają ręcznie prowadzony evidence ledger i widoczny status aktualności;
+- **Kraken** pozostaje wyłącznie nieafiliacyjnym hard case'em do walidacji modelu — poza głównym katalogiem i Match flow;
+- v0.7.1 jest quality passem treści, SEO i dostępności przed prywatną betą.
 
----
+North nie monitoruje jeszcze automatycznie regulaminów, nie zapisuje profilu użytkownika i nie obiecuje zysku. Dane scenariusza znikają po przeładowaniu strony.
 
-## Funkcje
+## Decision Model v1
 
-- Landing Page
-- Karty ofert
-- Pasek wyszukiwania (UI)
-- Filtry ofert (UI)
-- Sortowanie ofert (UI)
+| Element | Odpowiada na pytanie |
+| --- | --- |
+| **North Value** | Ile oferta jest warta w jawnym scenariuszu, po uwzględnieniu kosztów, czasu, wysiłku i ryzyka niedowiezienia? |
+| **North Confidence** | Jak kompletne, aktualne i dobrze poparte źródłami są dane oraz wniosek? |
+| **North Match** | Czy oferta pasuje do podanych założeń, co ją blokuje i które odpowiedzi zmieniają wynik? |
+| **North Verdict** | Czy w tym scenariuszu decyzja to `TAKE NOW`, `TAKE IF`, `SKIP` czy `NOT ENOUGH DATA`? |
+| **Evidence** | Z jakiego oficjalnego źródła pochodzi krytyczna liczba lub reguła, kiedy ją sprawdzono i z jaką pewnością? |
+| **Glossary** | Co znaczą terminy modelu, wyjaśnione prostym polskim językiem? |
 
----
+North Match używa jakościowych bandów (`FIT`, `CONDITIONAL FIT`, `POOR FIT`, `CANNOT ASSESS`), nie procentu, i nie zastępuje Verdict. Wartość jest scenariuszem, nie jedną uniwersalną liczbą. North Score występuje jedynie w starszym widoku demonstracyjnym i nie jest rdzeniem obecnego produktu.
 
-## Roadmap
+## Uruchomienie lokalne
 
-### v0.4.0 
-- Działająca wyszukiwarka
-- Filtrowanie ofert
-- Sortowanie JavaScript
+Projekt nie wymaga instalowania zależności ani procesu budowania. Ponieważ frontend pobiera dane z pliku JSON, uruchom go przez lokalny serwer HTTP zamiast otwierać `index.html` bezpośrednio:
 
-### v0.5.0
-- Dynamiczne generowanie ofert
-- Przeniesienie danych do offers.js
-- Automatyczne renderowanie kart
+```powershell
+cd frontend
+python -m http.server 8000
+```
 
-### v0.5.1
-- Tooltipy
-- KYC
-- Kategorie
+Następnie otwórz [http://localhost:8000](http://localhost:8000). Możesz użyć dowolnego innego serwera plików statycznych, jeśli nie masz Pythona.
 
-### v0.6.0
-- Logowanie
-- Panel użytkownika
+## Technologie i struktura
 
----
+Projekt wykorzystuje **HTML5, modułowy CSS i vanilla JavaScript**. Nie ma frameworka, backendu ani bazy danych.
 
-## Technologie
+```text
+frontend/
+├── index.html                  # landing i lista aktywnych analiz
+├── methodology.html            # publiczna metodologia Decision Model v1
+├── data/decision-offers.json   # wspólne źródło faktów ofertowych
+├── offers/
+│   ├── millennium.html
+│   ├── nest.html
+│   ├── pekao.html
+│   ├── offer.js                # wspólny renderer analiz
+│   └── match.js                # interpreter reguł scenariusza
+├── glossary.js                 # centralne definicje i dostępne popovery
+└── styles/                     # modułowe style interfejsu
 
-- HTML5
-- CSS3
-- JavaScript
+docs/                           # zasady produktu, decyzje i plan rozwoju
+```
 
----
+## Dokumentacja i roadmapa
 
-## v0.4.0
+Katalog [`/docs`](docs/) jest źródłem prawdy dla intencji produktu, standardów, roadmapy i historii decyzji; kod pozostaje źródłem prawdy dla implementacji. Najważniejsze dokumenty:
 
-### Added
-- Live Search
-- Category Filters
-- Active filter state
-- Unified filtering architecture 
+- [Handbook](docs/HANDBOOK.md) — wizja, zasady i aktywny kontrakt produktu;
+- [Roadmapa](docs/ROADMAP.md) — ukończone etapy i kolejność dalszej walidacji;
+- [Changelog](docs/CHANGELOG.md) — faktycznie wydane zmiany i ograniczenia;
+- [Decyzje](docs/DECISIONS.md) — uzasadnienie trwałych decyzji produktowych.
 
-## v0.5.0
-
-### Added
-
-- Dynamiczne generowanie kart ofert
-- Dane przeniesione do offers.js
-- Konfiguracja przeniesiona do config.js
-- Dynamiczne logotypy
-- Dynamiczne badge
-- Sortowanie ofert
-- bonusValue oraz timeValue
-- Komponenty renderujące (Badge, Logo, Button, Feature)
-
-Projekt rozwijany od podstaw jako długoterminowy produkt.
-
-### v0.5.1
-
-UI Improvements
-
-### v0.5.2
-
-How it Works + Hero Dashboard
-
-### v0.5.3
-
-Hero Polish + Visual improvements
-
-### v0.5.4
-Visual polish
-
-### Changelog v0.5.5
-🎨 Branding
-✅ wybrano roboczą nazwę ProjectNorth
-✅ wybrano kierunek logo (Kompas / Północ)
-✅ powstał pierwszy Brand Board
-✅ wybrano favicon concept
-✅ ustalono główną kolorystykę (czarny + zielony)
-✅ określono kierunek typografii
-📋 Decyzje projektowe
-Nazwa projektu: ProjectNorth
-Nazwa produktu na stronie: North
-Kierunek marki: Premium + Technology
-Styl: Minimalistyczny
-
-Changelog
-🚀 v0.5.8 — Premium Hero Framework
-✨ Added
-Premium Hero Layout
-Two-column Hero architecture
-North Hero Framework
-North Score v2
-North Snapshot v2
-North Badges
-Premium CTA
-Responsive Hero
-Reusable Hero structure
-🔧 Improved
-Visual hierarchy
-Information architecture
-Component organization
-Hero spacing
-Offer presentation
+Po v0.7.0 kolejność prac to quality pass v0.7.1, następnie **prywatna beta v0.8.0** i decyzje oparte na obserwacji użytkowników. Konta, backend, automatyczne monitorowanie regulaminów, pełny North Plan i krypto jako kategoria pozostają świadomie poza obecnym zakresem.
