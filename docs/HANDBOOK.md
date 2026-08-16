@@ -1,6 +1,6 @@
 # ProjectNorth Handbook
 
-> Wersja: 1.1 · Status: aktywny dokument roboczy · Produkt: v0.6.0 · Zatwierdzony kierunek: v0.6.1 Decision Model v1
+> Wersja: 1.2 · Status: aktywny dokument roboczy · Produkt: v0.6.1 · Decision Model v1
 
 ## Cel dokumentacji
 
@@ -37,43 +37,50 @@ Marka jest spokojna, konkretna i niezależna. Czerń oraz grafit budują skupien
 ## Obecna architektura
 
 ```text
-/
-├── index.html              # Landing i katalog ofert
-├── offers/revolut.html     # Strona oferty: wzorzec premium
-├── data/config.js          # Konfiguracja etykiet i ikon
-├── data/offers.js          # Dane kart ofert
-├── script.js               # Renderowanie, wyszukiwanie, filtry, sortowanie
-├── style.css               # Punkt wejścia do modułowych arkuszy CSS
-├── styles/                 # Base, layout, components, pages i utilities
-├── assets/brand/           # Logo, sygnet i favicony North
-├── assets/logos/           # Logotypy partnerów
-└── docs/                   # Dokumentacja produktu
+frontend/
+├── index.html                  # Landing 2.1
+├── offers/
+│   ├── millennium.html         # Cienkie wejście do wspólnego renderera
+│   ├── nest.html               # Cienkie wejście do wspólnego renderera
+│   ├── pekao.html              # Cienkie wejście do wspólnego renderera
+│   ├── offer.js                # Wspólny renderer Decision Model v1
+│   └── revolut.html            # Niezmieniona strona legacy/example
+├── data/
+│   ├── decision-offers.json    # Źródło prawdy dla faktów trzech ofert
+│   └── offers.js               # Cienki loader i formatowanie danych
+├── script.js                   # Projekcje landingu, dem i listingu
+├── style.css                   # Punkt wejścia do modułowych arkuszy CSS
+├── styles/pages/decision-model.css
+└── assets/brand/               # Logo, sygnet i favicony North
 ```
 
-Strona główna renderuje karty z `offers.js` po stronie klienta. `offers/revolut.html` zawiera obecny wzorzec stron analitycznych: Hero, North Score, Snapshot, Verdict i CTA. Statyczny Score na tej stronie jest przykładem istniejącego interfejsu, nie dowodem wdrożenia Decision Model v1 ani docelową metodologią. `style.css` pozostaje jednym punktem wejścia i importuje arkusze podzielone na base, layout, components, pages i utilities; style strony głównej znajdują się w `styles/pages/home.css`.
+Landing, listing oraz strony Millennium, Nest i Pekao pobierają fakty z `decision-offers.json`. Osobne dokumenty HTML przechowują wyłącznie routing i metadane, a ich pełną treść renderuje wspólny `offers/offer.js`. `offers/revolut.html` pozostaje stroną legacy z dawnym North Score; nie jest wzorcem danych ani docelową metodologią. `style.css` nadal jest jednym punktem wejścia dla modułowych arkuszy.
 
-## Model danych: kierunek
+## Model danych: implementacja v0.6.1
 
-Dzisiejszy model karty zawiera m.in. `id`, `name`, `category`, `badge`, `bonus`, `time`, `level`, `audience`, `availability`, `url`, `logo` i `featured`. W v0.6.1 planujemy sprawdzić produktowy kontrakt, w którym jedna oferta może zasilać katalog, stronę szczegółów, SEO i analitykę:
+`frontend/data/decision-offers.json` implementuje kontrakt `decision-model-v1`. Jeden rekord zasila listing, demo, Snapshot i stronę szczegółów:
 
 ```js
 {
-  id, slug, category, status, verifiedAt,
-  advertisedMax, easyFloor, scenarioFormula,
-  rewardForm, costs, opportunityCost, failurePoints,
-  northValue, northConfidence, verdict,
-  sources, regulationUrl,
-  hero, badges, affiliate, seo
+  identity,
+  value,
+  eligibility,
+  execution,
+  cost,
+  decision,
+  evidence,
+  listing,
+  affiliate
 }
 ```
 
-To kierunek produktowy, nie opis istniejącej implementacji. Najpierw testujemy go ręcznie na Millennium, Nest i Pekao. Nie budujemy teraz rozbudowanej automatyzacji ani katalogu dziesiątek ofert.
+Fakty nie są kopiowane do `offers.js` ani stron HTML. Evidence pozostaje procesem ręcznym; nie ma automatycznej aktualizacji ani katalogu dziesiątek ofert.
 
-## Model decyzji: kierunek
+## Model decyzji: aktywny kontrakt
 
 - **North Value** opisuje wartość dla jawnego scenariusza użytkownika, uwzględniając formę nagrody, koszty, opportunity cost, czas, wysiłek i ryzyko niedowiezienia.
 - **North Confidence** opisuje jakość, kompletność i aktualność danych oraz wniosku. Nie jest precyzyjnym procentem, dopóki nie ma danych uzasadniających taką skalę.
-- **North Verdict** docelowo przyjmuje `TAKE NOW`, `TAKE IF`, `WAIT`, `SKIP` albo `NOT ENOUGH DATA`. `WAIT` pozostaje późniejszą funkcją wymagającą historii porównywalnych edycji i backtestu.
+- **North Verdict** przyjmuje `TAKE NOW`, `TAKE IF`, `SKIP` albo `NOT ENOUGH DATA`. Stan oparty na prognozowaniu przyszłej edycji pozostaje wyłączony do czasu zbudowania historii porównywalnych edycji i backtestu.
 - **North Match** ma pokazywać, dlaczego oferta pasuje lub nie pasuje i jak zmiana założeń zmienia wynik. Sam procent dopasowania nie stanowi przewagi.
 - **Evidence ledger** łączy krytyczne pola ze źródłem, regulaminem, datą weryfikacji i statusem pewności. W v0.6.1 proces jest ręczny dla małej liczby ofert; historia zmian edycji i automatyczne monitorowanie należą do późniejszych etapów.
 
@@ -104,4 +111,4 @@ Przed połączeniem zmian sprawdzamy desktop, 600 px, 900 px, klawiaturę, fokus
 
 ## Zasada aktualizacji
 
-Ten handbook jest celowo konkretny dla v0.6.0. Rzeczy niezaimplementowane są oznaczane jako plan. Nie opisujemy ich jako istniejących funkcji.
+Ten handbook jest celowo konkretny dla v0.6.1. Rzeczy niezaimplementowane są oznaczane jako plan. Nie opisujemy ich jako istniejących funkcji.

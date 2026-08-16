@@ -6,11 +6,11 @@
 
 Element trafia do sprintu tylko z celem, właścicielem, zakresem i Definition of Done. Roadmapa jest kolejnością hipotez, nie obietnicą terminu. Funkcje finansowe, afiliacyjne i analityczne wymagają najpierw zasad transparentności oraz zgodności prawnej.
 
-## Stan obecny — v0.6.0
+## Stan obecny — v0.6.1
 
-**Cel osiągnięty:** uporządkowano fundamenty frontendu bez zmiany kierunku produktu.
+**Cel osiągnięty:** wdrożono Landing 2.1 i Decision Model v1 dla podstawowej trójki ofert.
 
-`style.css` jest jednym punktem wejścia do modułowych arkuszy, strona główna ma własny moduł `styles/pages/home.css`, a marka korzysta z własnego logo, sygnetu i faviconów. Usunięto stare, puste pliki zastępcze CSS oraz `frontend.zip`; testy smoke zakończyły się powodzeniem.
+Bank Millennium, Nest Bank i Bank Pekao mają kompletne analizy z Value, kosztami, wykonaniem, Confidence, Verdict i evidence. Landing pokazuje zweryfikowany breakdown Pekao oraz trzy jawne scenariusze Nest. Listing, dema i strony szczegółowe korzystają z jednego źródła faktów ofertowych. Testy desktop, mobile i regresja Revolut zakończyły się powodzeniem.
 
 ## Następne etapy
 
@@ -40,6 +40,8 @@ Research Sprint nie jest nową wersją produktu i nie wymaga numeru wersji.
 
 ### v0.6.1 — Decision Model v1
 
+**Status:** zaimplementowano 2026-08-16.
+
 **Cel:** udowodnić jakość wyjaśnialnej decyzji na małym, celowo zróżnicowanym zestawie ofert. Nie skalować katalogu do dziesiątek ofert.
 
 - **Bank Millennium:** klasyczna premia, wysiłek miesięczny i czas do nagrody.
@@ -52,7 +54,7 @@ Research Sprint nie jest nową wersją produktu i nie wymaga numeru wersji.
 - Użyć adekwatnego werdyktu spośród `TAKE NOW`, `TAKE IF`, `SKIP` i `NOT ENOUGH DATA`. `WAIT` pozostaje poza wiarygodnym zakresem tej wersji.
 - Prowadzić ręczny evidence ledger dla krytycznych pól: źródło, regulamin, data weryfikacji i status lub pewność danych.
 
-**Definition of Done:** trzy kompletne analizy testują różne przypadki modelu, ujawniają założenia i dowody na poziomie pól oraz prowadzą do wyjaśnialnych, niekoniecznie pozytywnych decyzji. Zakres dowodzi jakości decyzji, nie skali katalogu.
+**Definition of Done — spełnione:** trzy kompletne analizy testują różne przypadki modelu, ujawniają założenia i dowody na poziomie pól oraz prowadzą do wyjaśnialnych, niekoniecznie pozytywnych decyzji. Zakres dowodzi jakości decyzji, nie skali katalogu.
 
 ### Po core v0.6.1 — optional stretch: controlled crypto pilot
 

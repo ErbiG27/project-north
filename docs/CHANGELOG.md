@@ -4,9 +4,30 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 
 ## [Unreleased]
 
-### Planned
+Brak zmian po wydaniu v0.6.1.
 
-- Rozszerzenie modelu ofert o dane analityczne i datę weryfikacji.
+## [0.6.1] — 2026-08-16
+
+### Added
+
+- Landing 2.1 z demonstracją North Value dla Pekao, trzema scenariuszami Nest, czterema aktywnymi stanami Verdict i evidence UI.
+- Kompletne analizy Decision Model v1 dla Banku Millennium, Nest Banku i Banku Pekao.
+- Wspólny renderer stron ofert oraz widoki Value, kwalifikacji, wykonania, kosztów, Verdict, Confidence i oficjalnych źródeł.
+
+### Changed
+
+- Listing i dema landingu korzystają z `frontend/data/decision-offers.json` jako jednego źródła faktów ofertowych; `offers.js` jest cienkim adapterem danych.
+- Główna komunikacja produktu została przeniesiona z katalogu premii i North Score na wartość jawnego scenariusza, ryzyko oraz wyjaśnialną decyzję.
+
+### Verified
+
+- Landing, Millennium, Nest i Pekao przeszły smoke test w widokach 1440×900 i 390×844; Revolut przeszedł test regresji.
+- Sprawdzono brak poziomego overflow, błędów konsoli, brakujących zasobów i kotwic oraz poprawne atrybuty linków zewnętrznych i afiliacyjnych.
+
+### Known limitations
+
+- Verdict użytkownika wymaga jawnych danych scenariusza; rekord ogólny nie wymusza pozytywnej decyzji.
+- Dane mają ręczny recheck do 2026-08-23; nie ma automatycznego monitoringu regulaminów.
 
 ## [0.6.0] — 2026-08-16
 

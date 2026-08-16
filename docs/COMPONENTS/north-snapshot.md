@@ -4,24 +4,27 @@
 
 North Snapshot przekazuje najważniejsze fakty w około dziesięć sekund. Ma odróżnić marketingowe maksimum od wartości dla scenariusza użytkownika oraz pokazać obowiązki, czas i główne punkty utraty nagrody.
 
-## Obecny kontrakt
+## Obecny kontrakt — Decision Model v1
 
-Każda pozycja zawiera etykietę, wartość oraz krótki kontekst. W v0.5.9 komponent pokazuje cztery pola: Bonus, Start, Ryzyko, Trudność.
+Każda pozycja zawiera etykietę, wartość oraz krótki kontekst. Dla nowych analiz komponent pokazuje:
 
 ```js
 snapshot: {
-  bonus: { value, note },
-  start: { value, note },
-  risk: { value, note },
-  difficulty: { value, note }
+  advertisedMax,
+  easyFloor,
+  likelyValue,
+  expectedUsableValue,
+  netScenarioValue,
+  conditionalMax,
+  effort,
+  duration,
+  failureRisk,
+  flexibility,
+  confidence
 }
 ```
 
-To opis istniejącej implementacji, nie docelowy model Decision Model v1.
-
-## Kierunek Decision Model v1
-
-Snapshot dla nowych analiz powinien pokazywać w tej kolejności:
+Snapshot pokazuje w tej kolejności:
 
 1. `Advertised Max`.
 2. `Easy Floor`.
@@ -39,12 +42,13 @@ Snapshot dla nowych analiz powinien pokazywać w tej kolejności:
 - „Ryzyko” jest werbalne i wyjaśnione; nie komunikujemy go samym kolorem.
 - „Trudność” mierzy złożoność kroków dla użytkownika, nie atrakcyjność oferty.
 
-## Implementacja v0.5.9
+## Implementacja
 
-Kontener `.north-snapshot`, nagłówek `.north-snapshot__heading`, siatka `.north-snapshot-grid` i element `.snapshot-card`. Desktop używa czterech kolumn, mobile dwóch.
+Landing używa `.snapshot-panel`, `.snapshot-values` i `.scenario-qualities`. Strony analiz renderują odpowiadające pola przez wspólny `offers/offer.js`. Legacy Revolut zachowuje wcześniejszy komponent `.north-snapshot` z v0.5.9.
 
 ## Testy akceptacyjne
 
-- Wszystkie cztery wartości mają zrozumiały kontekst.
-- Karty zachowują wysokość i kolejność na mobile.
+- Wszystkie pola wartości mają zrozumiały kontekst i wskazany scenariusz.
+- Wysiłek, czas, ryzyko i elastyczność nie są przeliczane na arbitralne PLN.
+- Karty zachowują kolejność na mobile i nie tworzą poziomego overflow.
 - Brak emoji lub symbolu nie odbiera znaczenia etykiecie.

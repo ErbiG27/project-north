@@ -1,0 +1,323 @@
+(function renderDecisionOffer() {
+    "use strict";
+
+    const { load, formatMoney, formatValue, formatDate, escapeHtml } = window.NorthOffers;
+    const root = document.getElementById("offer-content");
+    const offerId = document.body.dataset.offerId;
+
+    const inputLabels = {
+        age: ["Wiek", " lat"],
+        eligibleInflowFirst14Days: ["Wpływ w 14 dni", " zł"],
+        walletPaymentsFirst14Days: ["Płatności portfelem w 14 dni", ""],
+        monthlyEligibleInflow: ["Miesięczny wpływ", " zł"],
+        monthlyEligibleSpend: ["Miesięczne wydatki", " zł"],
+        activeMonths: ["Horyzont", " mies."],
+        keepsBlikAndConsents: ["BLIK i zgody utrzymane", ""],
+        eligibleSpendPerMonth: ["Kwalifikowane wydatki", " zł/mies."],
+        salaryConditionMet: ["Kwalifikowany wpływ", ""],
+        allChannelConsent: ["Wszystkie kanały zgody", ""],
+        eurExchange: ["Wymiana EUR", ""],
+        eurExchangeWithin30Days: ["Wymiana EUR w terminie", " EUR"],
+        eurAccount: ["Konto EUR", ""],
+        qualifiedForBoth: ["Kwalifikacja do obu promocji", ""],
+        openingConditions: ["Warunki otwarcia", ""],
+        monthOneCardPayments: ["Płatności kartą — miesiąc 1", ""],
+        monthTwoCardPayments: ["Płatności kartą — miesiąc 2", ""],
+        travelExpenses: ["Założone wydatki podróżne", " zł"],
+        monthlyTransactionOrderAndSpend: ["Miesięczny układ transakcji", ""],
+        eligibleTravelExpenses: ["Kwalifikowane wydatki podróżne", ""]
+    };
+
+    function shortProvider(offer) {
+        if (offer.identity.id.includes("millennium")) return "Bank Millennium";
+        if (offer.identity.id.includes("nest")) return "Nest Bank";
+        if (offer.identity.id.includes("pekao")) return "Bank Pekao";
+        return offer.identity.provider;
+    }
+
+    function monogram(offer) {
+        return shortProvider(offer).split(" ").at(-1).slice(0, 1);
+    }
+
+    function verdictClass(verdict) {
+        return `verdict-badge verdict-badge--${String(verdict).toLowerCase().replaceAll("_", "-")}`;
+    }
+
+    function readableStatus(status) {
+        const labels = { active: "aktywna", closing: "kończy się", expired: "wygasła", under_verification: "w weryfikacji" };
+        return labels[status] || status;
+    }
+
+    function readableForm(form) {
+        const labels = { cash: "gotówka", cashback: "zwrot / nagroda pieniężna", voucher: "voucher", points: "punkty", interest: "odsetki", fee_waiver: "zwolnienie z opłaty", asset: "aktywo", other: "inna forma" };
+        return labels[form] || form;
+    }
+
+    function valueFromScenario(value, key) {
+        return value ? formatValue(value[key]) : "Wymaga danych scenariusza";
+    }
+
+    function renderInputs(inputs) {
+        return Object.entries(inputs).map(([key, rawValue]) => {
+            const [label, suffix] = inputLabels[key] || [key, ""];
+            let value = rawValue;
+            if (rawValue === true) value = "tak";
+            if (rawValue === false) value = "nie";
+            if (rawValue === null) value = "brak danych";
+            return `<li><span>${escapeHtml(label)}</span><strong>${escapeHtml(value)}${escapeHtml(suffix)}</strong></li>`;
+        }).join("");
+    }
+
+    function renderMoneyOrRule(item) {
+        if (item.amount) return formatMoney(item.amount);
+        if (item.amountOrRule) return escapeHtml(item.amountOrRule);
+        return "Brak stałej kwoty";
+    }
+
+    function renderValueSummary(offer) {
+        const floor = offer.value.easyFloor ? formatValue(offer.value.easyFloor.usableValue) : "Brak uczciwego łatwego rdzenia";
+        const conditional = offer.value.conditionalMax ? formatValue(offer.value.conditionalMax.usableValue) : "Nie dotyczy";
+        return `
+            <section class="offer-section offer-value-section" id="value" aria-labelledby="value-title">
+                <div class="offer-section-heading">
+                    <div><p class="section-kicker"><span aria-hidden="true"></span> North Value</p><h2 id="value-title">Najpierw rozbijamy reklamę na wartości</h2></div>
+                    <p>Nie łączymy pieniędzy, czasu, wysiłku i ryzyka w arbitralny wynik. Każdy jawny scenariusz ma własny Value i Verdict.</p>
+                </div>
+                <dl class="north-value-grid">
+                    <div><dt>Advertised Max</dt><dd>${escapeHtml(offer.value.advertisedMax.displayLabel)}</dd><span>${escapeHtml(offer.value.advertisedMax.caveat)}</span></div>
+                    <div><dt>Easy Floor</dt><dd>${floor}</dd><span>${offer.value.easyFloor ? "Tylko przy opisanych założeniach; nie jest gwarantowany." : "Model nie udaje, że istnieje prosty gwarantowany rdzeń."}</span></div>
+                    <div><dt>Your Likely Value</dt><dd>Wybierz jawny scenariusz</dd><span>Kwoty i zakresy są pokazane niżej.</span></div>
+                    <div><dt>Conditional Max</dt><dd>${conditional}</dd><span>${offer.value.conditionalMax ? escapeHtml(offer.value.conditionalMax.assumptions[0]) : "Nie jest potrzebny dla tej oferty."}</span></div>
+                    <div><dt>Expected Usable Value</dt><dd>Zależy od scenariusza</dd><span>Uwzględnia formę i ograniczenia nagrody, nie fikcyjne prawdopodobieństwo.</span></div>
+                    <div><dt>Net Scenario Value</dt><dd>Zależy od scenariusza</dd><span>Potwierdzone koszty bezpośrednie są odejmowane; wysiłek pozostaje osobno.</span></div>
+                </dl>
+            </section>`;
+    }
+
+    function scenarioBlocker(example, offer) {
+        if (example.verdict === "NOT ENOUGH DATA") {
+            return offer.decision.verdict.positiveBlockers.join(" ") || "Brak krytycznych danych scenariusza.";
+        }
+        if (example.verdict === "SKIP") {
+            return "Negatywny, potwierdzony warunek scenariusza nie uzasadnia nowych obowiązków.";
+        }
+        return "Niespełnienie któregokolwiek materialnego założenia scenariusza zmienia wartość lub Verdict.";
+    }
+
+    function renderScenarios(offer) {
+        const cards = offer.value.scenarioExamples.map((example, index) => {
+            const value = offer.decision.northValue.find((item) => item.scenarioId === example.id);
+            const confidence = example.confidenceBand || offer.decision.northConfidence.band;
+            return `
+                <article class="offer-scenario-card">
+                    <div class="scenario-card-head">
+                        <span>Scenariusz demonstracyjny ${index + 1}</span>
+                        <span class="${verdictClass(example.verdict)}">${escapeHtml(example.verdict)}</span>
+                    </div>
+                    <h3>${escapeHtml(example.label)}</h3>
+                    <ul class="input-list">${renderInputs(example.userInputs)}</ul>
+                    ${example.calculation ? `<p class="scenario-formula">${escapeHtml(example.calculation)}</p>` : ""}
+                    <dl class="scenario-value-grid">
+                        <div><dt>Advertised Max</dt><dd>${escapeHtml(offer.value.advertisedMax.displayLabel)}</dd></div>
+                        <div><dt>Easy Floor</dt><dd>${valueFromScenario(value, "easyFloor")}</dd></div>
+                        <div><dt>Your Likely Value</dt><dd>${valueFromScenario(value, "likelyGrossValue")}</dd></div>
+                        <div><dt>Expected Usable Value</dt><dd>${valueFromScenario(value, "expectedUsableValue")}</dd></div>
+                        <div><dt>Net Scenario Value</dt><dd>${valueFromScenario(value, "netScenarioValue")}</dd></div>
+                        <div><dt>Koszt bezpośredni</dt><dd>${valueFromScenario(value, "directCost")}</dd></div>
+                    </dl>
+                    <dl class="scenario-qualities">
+                        <div><dt>Wysiłek</dt><dd>${escapeHtml(value.effortBurden)}</dd></div>
+                        <div><dt>Czas</dt><dd>${escapeHtml(value.duration)}</dd></div>
+                        <div><dt>Ryzyko utraty</dt><dd>${escapeHtml(value.failureRisk)}</dd></div>
+                        <div><dt>Elastyczność</dt><dd>${escapeHtml(value.flexibility)}</dd></div>
+                    </dl>
+                    <div class="scenario-verdict-copy">
+                        <p><strong>Summary:</strong> ${escapeHtml(example.verdictReason)}</p>
+                        <p><strong>Conditions:</strong> założenia scenariusza wskazane powyżej.</p>
+                        <p><strong>Blockers:</strong> ${escapeHtml(scenarioBlocker(example, offer))}</p>
+                        <p><strong>Confidence:</strong> ${escapeHtml(confidence)}</p>
+                        <p><strong>Kontra do nothing:</strong> ${escapeHtml(offer.decision.comparison.conclusion)}</p>
+                    </div>
+                </article>`;
+        }).join("");
+
+        return `
+            <section class="offer-section" id="scenarios" aria-labelledby="scenarios-title">
+                <div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> Jawne założenia</p><h2 id="scenarios-title">Scenariusze zmieniają wartość i decyzję</h2></div><p>To przykłady demonstracyjne, nie statystyczne profile klientów. Bez procentowego dopasowania.</p></div>
+                <div class="offer-scenarios-grid">${cards}</div>
+            </section>`;
+    }
+
+    function renderComponents(offer) {
+        return `
+            <section class="offer-section" id="components" aria-labelledby="components-title">
+                <div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> Breakdown</p><h2 id="components-title">Co dokładnie składa się na wartość</h2></div><p>${escapeHtml(offer.value.advertisedMax.aggregationBasis)}</p></div>
+                <div class="reward-components-grid">
+                    ${offer.value.rewardComponents.map((component) => `
+                        <article class="reward-component-card">
+                            <div><span>${escapeHtml(readableForm(component.form))}</span><strong>${formatValue(component.advertisedValue)}</strong></div>
+                            <h3>${escapeHtml(component.label)}</h3>
+                            <p>${escapeHtml(component.calculation)}</p>
+                            <p class="usable-rule"><strong>Użyteczność:</strong> ${escapeHtml(component.usability.usableValueRule)}</p>
+                            ${component.usability.restrictions.length ? `<ul>${component.usability.restrictions.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
+                        </article>`).join("")}
+                </div>
+            </section>`;
+    }
+
+    function renderEligibility(offer) {
+        const income = offer.eligibility.requiredIncome;
+        return `
+            <section class="offer-section offer-section--split" id="conditions" aria-labelledby="conditions-title">
+                <div>
+                    <p class="section-kicker"><span aria-hidden="true"></span> Kwalifikacja</p>
+                    <h2 id="conditions-title">Krytyczne warunki wejścia</h2>
+                    <p>${escapeHtml(offer.eligibility.geography.basis)}</p>
+                    <div class="condition-block"><h3>Nowy klient</h3><p>${escapeHtml(offer.eligibility.newCustomer.definition)}</p></div>
+                    <div class="condition-block"><h3>Wpływ</h3><p>${income.required ? escapeHtml(income.cadence) : "Wpływ nie jest warunkiem nagrody w tej ofercie."}</p>${income.ageBands ? `<ul>${income.ageBands.map((band) => `<li>${escapeHtml(band.age)}: ${formatMoney(band.amount)}</li>`).join("")}</ul>` : ""}</div>
+                    <div class="condition-block"><h3>Wydatki</h3>${offer.eligibility.requiredSpend.map((spend) => `<p><strong>${escapeHtml(spend.cadence)}</strong><br>${escapeHtml(spend.eligibleTransactions)}</p>`).join("")}</div>
+                </div>
+                <aside class="blocker-panel">
+                    <h3>Co może wykluczyć</h3>
+                    <ul>${offer.eligibility.disqualifiers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>
+                    ${offer.eligibility.age.note ? `<p class="uncertainty-note"><strong>Nota:</strong> ${escapeHtml(offer.eligibility.age.note)}</p>` : ""}
+                </aside>
+            </section>`;
+    }
+
+    function renderExecution(offer) {
+        return `
+            <section class="offer-section" id="execution" aria-labelledby="execution-title">
+                <div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> Execution</p><h2 id="execution-title">Działania, rytm i punkty utraty</h2></div><p>${escapeHtml(offer.execution.cadence.summary)}</p></div>
+                <ol class="action-timeline">
+                    ${offer.execution.actions.map((action, index) => `<li><span>${String(index + 1).padStart(2, "0")}</span><div><h3>${escapeHtml(action.label)}</h3><p>${escapeHtml(action.timing)} · ${escapeHtml(action.cadence)}</p><small>Jeśli pominiesz: ${escapeHtml(action.consequenceIfMissed)}</small></div></li>`).join("")}
+                </ol>
+                <div class="failure-grid">
+                    ${offer.execution.failurePoints.map((point) => `<article><span class="risk-level risk-level--${escapeHtml(point.severity)}">${escapeHtml(point.severity)}</span><h3>${escapeHtml(point.label)}</h3><p>${escapeHtml(point.consequence)}</p><small>Ograniczenie ryzyka: ${escapeHtml(point.mitigation)}</small></article>`).join("")}
+                </div>
+                <article class="safe-exit-panel">
+                    <div><p class="section-kicker">Safe exit · ${escapeHtml(offer.execution.safeExit.status)}</p><h3>${escapeHtml(offer.execution.safeExit.earliestExit)}</h3><p>${escapeHtml(offer.execution.safeExit.notice)}</p></div>
+                    <div><strong>Przed wyjściem</strong><ol>${offer.execution.safeExit.steps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}</ol><p class="uncertainty-note">${escapeHtml(offer.execution.safeExit.uncertaintyNote)}</p></div>
+                </article>
+            </section>`;
+    }
+
+    function renderCosts(offer) {
+        const items = [
+            ...offer.cost.directFees.map((item) => ({ type: "Koszt bezpośredni", label: item.label, value: formatMoney(item.amount), detail: item.appliesDuring })),
+            ...offer.cost.avoidableFees.map((item) => ({ type: "Opłata możliwa do uniknięcia", label: item.label, value: item.amount ? formatMoney(item.amount) : "Zależna od wieku", detail: item.avoidanceCondition })),
+            ...offer.cost.downstreamCosts.map((item) => ({ type: "Koszt dalszy", label: item.label, value: renderMoneyOrRule(item), detail: item.trigger })),
+            ...offer.cost.opportunityCost.map((item) => ({ type: "Opportunity cost", label: item.label, value: item.monetized ? renderMoneyOrRule(item) : "Nie monetyzujemy", detail: item.assumption }))
+        ];
+        return `
+            <section class="offer-section" id="costs" aria-labelledby="costs-title">
+                <div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> Koszt bez fikcji</p><h2 id="costs-title">Co płacisz i z czego rezygnujesz</h2></div><p>Czas i wysiłek pozostają opisem jakościowym. Nie przeliczamy ich na arbitralne złotówki.</p></div>
+                <div class="cost-list">${items.map((item) => `<article><span>${escapeHtml(item.type)}</span><h3>${escapeHtml(item.label)}</h3><strong>${item.value}</strong><p>${escapeHtml(item.detail)}</p></article>`).join("")}</div>
+            </section>`;
+    }
+
+    function renderVerdict(offer) {
+        const verdict = offer.decision.verdict;
+        const comparison = offer.decision.comparison;
+        return `
+            <section class="offer-section" id="verdict" aria-labelledby="offer-verdict-title">
+                <article class="full-verdict">
+                    <div class="full-verdict__head"><div><p class="section-kicker"><span aria-hidden="true"></span> Verdict bez danych użytkownika</p><h2 id="offer-verdict-title">North Verdict</h2></div><span class="${verdictClass(verdict.state)}">${escapeHtml(verdict.state)}</span></div>
+                    <p class="verdict-summary">${escapeHtml(verdict.summary)}</p>
+                    <div class="verdict-details">
+                        <div><h3>Reasons</h3><ul>${verdict.reasons.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div>
+                        <div><h3>Conditions</h3>${verdict.conditions.length ? `<ul>${verdict.conditions.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : "<p>Brak warunków pozytywnego Verdict bez scenariusza użytkownika.</p>"}</div>
+                        <div><h3>Blockers</h3><ul>${verdict.positiveBlockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div>
+                        <div><h3>Confidence</h3><strong class="confidence-large">${escapeHtml(offer.decision.northConfidence.band)}</strong><p>${escapeHtml(offer.decision.northConfidence.reasons[0])}</p></div>
+                    </div>
+                    <div class="comparison-panel"><div><span>Do nothing</span><strong>${formatMoney(comparison.doNothing.reward)} nagrody · ${formatMoney(comparison.doNothing.directCost)} kosztu</strong><p>Wysiłek: ${escapeHtml(comparison.doNothing.effort)} · nowe ryzyko: ${escapeHtml(comparison.doNothing.failureRisk)}</p></div><div><span>Wniosek</span><p>${escapeHtml(comparison.conclusion)}</p></div></div>
+                </article>
+            </section>`;
+    }
+
+    function criticalEvidence(offer) {
+        const priorities = ["identity.status", "value.advertisedMax", "value.easyFloor", "eligibility", "execution.actions", "execution.failurePoints", "cost.", "decision."];
+        const selected = [];
+        priorities.forEach((prefix) => {
+            const found = offer.evidence.fieldSources.find((item) => item.fieldPath.startsWith(prefix) && !selected.includes(item));
+            if (found) selected.push(found);
+        });
+        return selected;
+    }
+
+    function renderEvidence(offer) {
+        const ledger = criticalEvidence(offer);
+        const uncertainty = offer.evidence.fieldSources.filter((item) => item.uncertaintyNote).slice(0, 3);
+        const affiliate = offer.affiliate.available
+            ? `<a class="north-button" href="${escapeHtml(offer.affiliate.url)}" target="_blank" rel="sponsored noopener">Przejdź do oferty <span aria-hidden="true">↗</span></a>`
+            : `<p class="affiliate-note">${escapeHtml(offer.affiliate.disclosure)}</p>`;
+        return `
+            <section class="offer-section" id="sources" aria-labelledby="sources-title">
+                <div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> Evidence</p><h2 id="sources-title">Źródła, status i niepewność</h2></div><p>Nie renderujemy całego technicznego ledgera. Pokazujemy krytyczne pola, oficjalne dokumenty i noty wpływające na decyzję.</p></div>
+                <div class="evidence-status-grid">
+                    <div><span>Status</span><strong>${escapeHtml(readableStatus(offer.identity.status))}</strong></div>
+                    <div><span>Zweryfikowano</span><strong>${formatDate(offer.identity.verifiedAt)}</strong></div>
+                    <div><span>North Confidence</span><strong>${escapeHtml(offer.decision.northConfidence.band)}</strong></div>
+                    <div><span>Recheck do</span><strong>${formatDate(offer.evidence.recheckBy)}</strong></div>
+                </div>
+                <div class="sources-layout">
+                    <div>
+                        <h3>Oficjalne źródła</h3>
+                        <ul class="source-list">${offer.evidence.sources.map((source) => `<li><a href="${escapeHtml(source.url)}" target="_blank" rel="noopener">${escapeHtml(source.title)} <span aria-hidden="true">↗</span></a><span>${escapeHtml(source.type)} · sprawdzono ${formatDate(source.accessedAt)}</span></li>`).join("")}</ul>
+                    </div>
+                    <aside class="confidence-reasons"><h3>Dlaczego ${escapeHtml(offer.decision.northConfidence.band)}</h3><ul>${offer.decision.northConfidence.reasons.map((reason) => `<li>${escapeHtml(reason)}</li>`).join("")}</ul>${offer.decision.northConfidence.blockers.length ? `<h4>Blockers</h4><ul>${offer.decision.northConfidence.blockers.map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}</ul>` : ""}</aside>
+                </div>
+                <div class="evidence-ledger">
+                    <h3>Krytyczne pola i referencje</h3>
+                    ${ledger.map((item) => `<article><div><span>${escapeHtml(item.fieldPath)}</span><strong>${escapeHtml(item.supportLevel)}</strong></div><p>${escapeHtml(item.reference)}</p><small>Sprawdzono ${formatDate(item.checkedAt)}</small>${item.uncertaintyNote ? `<p class="uncertainty-note">${escapeHtml(item.uncertaintyNote)}</p>` : ""}</article>`).join("")}
+                </div>
+                ${uncertainty.length ? `<div class="uncertainty-box"><h3>Najważniejsze noty niepewności</h3><ul>${uncertainty.map((item) => `<li>${escapeHtml(item.uncertaintyNote)}</li>`).join("")}</ul></div>` : ""}
+                <div class="source-actions"><a class="north-link" href="${escapeHtml(offer.evidence.regulationUrl)}" target="_blank" rel="noopener">Otwórz główny regulamin <span aria-hidden="true">↗</span></a><a class="north-link" href="${escapeHtml(offer.evidence.officialUrl)}" target="_blank" rel="noopener">Oficjalna strona produktu <span aria-hidden="true">↗</span></a>${affiliate}</div>
+            </section>`;
+    }
+
+    function renderOffer(offer) {
+        document.title = `${shortProvider(offer)} — analiza North`;
+        const meta = document.querySelector('meta[name="description"]');
+        meta.content = `${offer.listing.problemLabel}. Zweryfikowana analiza ${shortProvider(offer)} według North Decision Model v1.`;
+        root.removeAttribute("aria-live");
+        root.innerHTML = `
+            <section class="offer-decision-hero" aria-labelledby="offer-title">
+                <div class="offer-decision-hero__copy">
+                    <p class="section-kicker"><span aria-hidden="true"></span> ${escapeHtml(readableStatus(offer.identity.status))} · zweryfikowano ${formatDate(offer.identity.verifiedAt)}</p>
+                    <div class="offer-provider-row"><span class="bank-monogram" aria-hidden="true">${escapeHtml(monogram(offer))}</span><p>${escapeHtml(shortProvider(offer))}</p></div>
+                    <h1 id="offer-title">${escapeHtml(offer.identity.title)}</h1>
+                    <p class="offer-hero-problem">${escapeHtml(offer.listing.problemLabel)}</p>
+                    <p>${escapeHtml(offer.listing.summary)}</p>
+                    <div class="action-row"><a class="north-button" href="#scenarios">Zobacz scenariusze <span aria-hidden="true">↓</span></a><a class="north-link" href="#sources">Sprawdź źródła</a></div>
+                    <p class="record-meta">Edycja: ${escapeHtml(offer.identity.edition.name)} · wejście do ${formatDate(offer.identity.edition.validTo)}</p>
+                </div>
+                <aside class="offer-hero-verdict">
+                    <div class="panel-topline"><span>North Verdict</span><span class="confidence-badge">Confidence ${escapeHtml(offer.decision.northConfidence.band)}</span></div>
+                    <span class="${verdictClass(offer.decision.verdict.state)}">${escapeHtml(offer.decision.verdict.state)}</span>
+                    <h2>${escapeHtml(offer.decision.verdict.summary)}</h2>
+                    <p>${escapeHtml(offer.decision.verdict.reasons.join(" "))}</p>
+                    <div class="advertised-context"><span>Advertised Max</span><strong>${escapeHtml(offer.value.advertisedMax.displayLabel)}</strong><small>${escapeHtml(offer.value.advertisedMax.caveat)}</small></div>
+                </aside>
+            </section>
+            ${renderValueSummary(offer)}
+            ${renderScenarios(offer)}
+            ${renderComponents(offer)}
+            ${renderEligibility(offer)}
+            ${renderExecution(offer)}
+            ${renderCosts(offer)}
+            ${renderVerdict(offer)}
+            ${renderEvidence(offer)}
+            <footer class="offer-footer-page"><img src="../assets/brand/north-logo.svg" alt="North"><p>Decision Model v1 · Dane sprawdzone ${formatDate(offer.identity.verifiedAt)}. North nie gwarantuje nagrody i nie zastępuje regulaminu ani indywidualnej porady.</p><a class="north-link" href="../index.html#opportunities">Wróć do analiz</a></footer>`;
+    }
+
+    load("../data/decision-offers.json")
+        .then((data) => {
+            const offer = data.offers.find((item) => item.identity.id === offerId);
+            if (!offer) throw new Error("Nie znaleziono rekordu oferty.");
+            renderOffer(offer);
+        })
+        .catch(() => {
+            root.innerHTML = `<div class="notice notice--error"><h1>Nie udało się wczytać analizy</h1><p>Otwórz stronę przez lokalny serwer albo wróć do listy analiz.</p><a class="north-link" href="../index.html#opportunities">Wróć do analiz</a></div>`;
+        });
+}());
