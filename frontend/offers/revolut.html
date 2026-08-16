@@ -3,50 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Revolut — ocena oferty i bonusu według North Score.">
-    <title>Revolut — bonus 200 zł | North</title>
+    <meta name="description" content="Archiwalny prototyp strony Revolut. Nie przedstawia bieżącej, zweryfikowanej analizy ani dostępnej oferty North.">
+    <meta name="robots" content="noindex, follow">
+    <title>Revolut — archiwalny prototyp | North</title>
     <link rel="icon" href="../assets/brand/favicon.ico" sizes="any">
     <link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="../assets/brand/favicon-32x32.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="../assets/brand/apple-touch-icon.png">
-    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="../style.css?v=0.7.1">
 </head>
 <body class="north-offer-page">
+    <a class="skip-link" href="#legacy-content">Przejdź do treści</a>
     <header class="offer-header-page">
         <a href="../index.html" class="back-button">← Powrót do ofert</a>
         <a class="offer-header-page__brand" href="../index.html" aria-label="North — strona główna"><img src="../assets/brand/north-logo.svg" alt="North"></a>
     </header>
 
-    <main>
+    <main id="legacy-content">
+        <aside class="legacy-notice" id="legacy-notice" aria-labelledby="legacy-notice-title">
+            <p class="north-kicker">Archiwalny prototyp</p>
+            <h1 class="visually-hidden" id="legacy-page-title">Revolut — archiwalny prototyp strony oferty</h1>
+            <h2 id="legacy-notice-title">Ta strona nie jest bieżącą analizą North</h2>
+            <p>Pokazuje wcześniejszy kierunek interfejsu i pozostaje wyłącznie do testów regresji. Kwoty, warunki, ocena i status oferty poniżej nie są aktualnie weryfikowane. Nie podejmuj na ich podstawie decyzji.</p>
+        </aside>
         <!-- NORTH HERO v2: reusable two-column framework for offer pages. -->
-        <section class="north-hero" aria-labelledby="offer-title">
+        <section class="north-hero" aria-labelledby="offer-title" aria-describedby="legacy-notice-title">
             <div class="north-hero__summary north-hero__summary--offer">
                 <p class="north-kicker"><span class="north-kicker__dot"></span>Oferta konta osobistego</p>
                 <div class="north-brand-row">
-                    <img src="../assets/logos/revolut.svg" alt="Revolut" class="offer-page-logo">
+                    <img src="../assets/logos/revolut.svg" alt="" aria-hidden="true" class="offer-page-logo">
                     <div>
-                        <h1 id="offer-title">Revolut</h1>
-                        <p class="north-verified">Zweryfikowane przez North</p>
+                        <h2 id="offer-title">Revolut</h2>
+                        <p class="north-verified">Niezweryfikowany przykład legacy</p>
                     </div>
                 </div>
-                <p class="offer-tagline">Darmowe konto z bonusem dla nowych użytkowników — szczególnie wygodne na start i w podróży.</p>
+                <p class="offer-tagline">Historyczny przykład układu strony oferty. Treść nie opisuje bieżących warunków produktu.</p>
 
                 <!-- NORTH BADGES: use no more than three offer highlights. -->
                 <ul class="north-badges" aria-label="Wyróżniki oferty">
-                    <li class="north-badge north-badge--award"><span aria-hidden="true">★</span> Wybór redakcji</li>
-                    <li class="north-badge"><span aria-hidden="true">●</span> Dla początkujących</li>
-                    <li class="north-badge"><span aria-hidden="true">◎</span> Dla podróżujących</li>
+                    <li class="north-badge north-badge--award"><span aria-hidden="true">★</span> Dawny przykład badge’a</li>
+                    <li class="north-badge"><span aria-hidden="true">●</span> Nie jest rekomendacją</li>
+                    <li class="north-badge"><span aria-hidden="true">◎</span> Dane nieaktualne</li>
                 </ul>
 
-                <p class="offer-bonus"><span>Do</span> 200 zł <span>bonusu</span></p>
+                <p class="offer-bonus"><span>Kwota bonusu</span> — <span>niezweryfikowana</span></p>
                 <div class="offer-actions">
-                    <a href="#cta" class="btn green btn--premium">Załóż konto <span aria-hidden="true">→</span></a>
+                    <a href="#legacy-notice" class="btn green btn--premium">Sprawdź status prototypu <span aria-hidden="true">↑</span></a>
                     <a href="#snapshot" class="north-text-link">Zobacz warunki ↓</a>
                 </div>
                 <div class="offer-meta" aria-label="Status oferty">
-                    <span>Zweryfikowana oferta</span>
-                    <span>Aktualne warunki</span>
-                    <span>Bez opłat za konto</span>
+                    <span>Archiwalny widok</span>
+                    <span>Warunki niezweryfikowane</span>
+                    <span>Brak aktywnego CTA</span>
                 </div>
             </div>
 
@@ -55,23 +63,23 @@
                 <aside class="north-score-card" aria-labelledby="north-score-title">
                     <div class="north-score-card__header">
                         <div>
-                            <p class="north-kicker">Niezależna ocena</p>
-                            <h2 id="north-score-title">North Score</h2>
+                            <p class="north-kicker">Dawna makieta oceny</p>
+                            <h3 id="north-score-title">North Score</h3>
                         </div>
-                        <span class="north-grade" aria-label="Ocena A">A</span>
+                        <span class="north-grade" aria-label="Brak bieżącej oceny">—</span>
                     </div>
                     <div class="north-score-main">
-                        <div class="north-score-ring" role="img" aria-label="North Score: 94 na 100. Miejsce przygotowane pod przyszły pierścień SVG.">
-                            <div class="north-score-value"><strong>94</strong><span>/100</span></div>
+                        <div class="north-score-ring" role="img" aria-label="North Score nieaktywny. Brak bieżącej oceny.">
+                            <div class="north-score-value"><strong>—</strong><span>/100</span></div>
                         </div>
-                        <p class="score-description">Bardzo dobry wybór dla początkujących i osób często płacących w walutach.</p>
+                        <p class="score-description">North Score z tego prototypu nie jest aktywną metodą ani bieżącą oceną Revolut.</p>
                     </div>
                     <dl class="north-score-breakdown">
-                        <div><dt>Bonus</dt><dd>28/30</dd></div>
-                        <div><dt>Warunki</dt><dd>23/25</dd></div>
-                        <div><dt>Bezpieczeństwo</dt><dd>20/20</dd></div>
-                        <div><dt>Czas</dt><dd>14/15</dd></div>
-                        <div><dt>Dodatki</dt><dd>9/10</dd></div>
+                        <div><dt>Bonus</dt><dd>—</dd></div>
+                        <div><dt>Warunki</dt><dd>—</dd></div>
+                        <div><dt>Bezpieczeństwo</dt><dd>—</dd></div>
+                        <div><dt>Czas</dt><dd>—</dd></div>
+                        <div><dt>Dodatki</dt><dd>—</dd></div>
                     </dl>
                     <a href="#methodology" class="north-text-link">Jak liczymy wynik? <span aria-hidden="true">→</span></a>
                 </aside>
@@ -81,15 +89,15 @@
                     <div class="north-snapshot__heading">
                         <div>
                             <p class="north-kicker">W 10 sekund</p>
-                            <h2 id="snapshot-title">North Snapshot</h2>
+                            <h3 id="snapshot-title">North Snapshot</h3>
                         </div>
                         <span>Najważniejsze fakty</span>
                     </div>
                     <dl class="north-snapshot-grid">
-                        <div class="snapshot-card"><dt><span aria-hidden="true">↑</span> Bonus</dt><dd>200 zł</dd><span>po spełnieniu warunków</span></div>
-                        <div class="snapshot-card"><dt><span aria-hidden="true">◷</span> Start</dt><dd>5 min</dd><span>rejestracja w aplikacji</span></div>
-                        <div class="snapshot-card"><dt><span aria-hidden="true">◎</span> Ryzyko</dt><dd>Niskie</dd><span>dla nowych klientów</span></div>
-                        <div class="snapshot-card"><dt><span aria-hidden="true">✓</span> Trudność</dt><dd>Łatwa</dd><span>proste kroki promocyjne</span></div>
+                        <div class="snapshot-card"><dt><span aria-hidden="true">↑</span> Bonus</dt><dd>Brak danych</dd><span>niezweryfikowany</span></div>
+                        <div class="snapshot-card"><dt><span aria-hidden="true">◷</span> Start</dt><dd>Brak danych</dd><span>niezweryfikowany</span></div>
+                        <div class="snapshot-card"><dt><span aria-hidden="true">◎</span> Ryzyko</dt><dd>Nieocenione</dd><span>brak bieżącej analizy</span></div>
+                        <div class="snapshot-card"><dt><span aria-hidden="true">✓</span> Trudność</dt><dd>Nieoceniona</dd><span>brak bieżącej analizy</span></div>
                     </dl>
                 </section>
             </div>
@@ -97,37 +105,37 @@
 
         <section class="north-section north-content-grid" aria-label="Szczegóły oferty">
             <article class="north-info-card">
-                <p class="north-kicker">Dlaczego polecamy</p>
-                <h2>Prosto na start, wygodnie na co dzień</h2>
+                <p class="north-kicker">Zakres dawnego prototypu</p>
+                <h2>Elementy, które pokazywała makieta</h2>
                 <ul class="north-check-list">
-                    <li>Darmowe konto i szybka rejestracja.</li>
-                    <li>Intuicyjna aplikacja do kontroli wydatków.</li>
-                    <li>Przydatne funkcje podczas płatności w walutach.</li>
+                    <li>Skrót kosztów i procesu otwarcia.</li>
+                    <li>Opis aplikacji i codziennego użycia.</li>
+                    <li>Kontekst płatności w walutach.</li>
                 </ul>
             </article>
             <article class="north-info-card">
-                <p class="north-kicker">Jak odebrać bonus</p>
-                <h2>4 proste kroki</h2>
+                <p class="north-kicker">Niedostępny proces</p>
+                <h2>Kroki wymagają nowej weryfikacji</h2>
                 <ol class="north-steps">
-                    <li><span>1</span>Załóż konto w aplikacji.</li>
-                    <li><span>2</span>Zweryfikuj swoją tożsamość.</li>
-                    <li><span>3</span>Spełnij warunki promocji.</li>
-                    <li><span>4</span>Odbierz przyznany bonus.</li>
+                    <li><span>1</span>Potwierdź istnienie bieżącej edycji.</li>
+                    <li><span>2</span>Sprawdź oficjalne warunki.</li>
+                    <li><span>3</span>Oceń koszty, ryzyko i kwalifikację.</li>
+                    <li><span>4</span>Dopiero wtedy podejmij decyzję.</li>
                 </ol>
             </article>
         </section>
 
         <section class="north-section north-section--compact" id="verdict" aria-labelledby="verdict-title">
             <article class="north-verdict">
-                <div class="north-verdict__icon"><img src="../assets/brand/north-mark.svg" alt="North"></div>
+                <div class="north-verdict__icon"><img src="../assets/brand/north-mark.svg" alt="" aria-hidden="true"></div>
                 <div class="north-verdict__content">
-                    <p class="north-kicker">Nasza rekomendacja</p>
+                    <p class="north-kicker">Brak bieżącej rekomendacji</p>
                     <h2 id="verdict-title">North Verdict</h2>
-                    <p>Revolut polecamy osobom, które chcą zacząć bez opłat, lubią zarządzać finansami w aplikacji i często podróżują. Bonus ma sens, jeśli bez problemu spełnisz aktualne warunki promocji. Przed rejestracją przeczytaj regulamin.</p>
+                    <p>Ten prototyp nie ma aktualnego Decision Model, evidence ani danych scenariusza. North nie wydaje na tej podstawie Verdict dla Revolut.</p>
                     <ul class="north-verdict-list">
-                        <li>Dobry dla początkujących</li>
-                        <li>Wygodny w podróży</li>
-                        <li>Sprawdź warunki bonusu</li>
+                        <li>Brak bieżących źródeł</li>
+                        <li>Brak North Match</li>
+                        <li>Brak aktywnego CTA</li>
                     </ul>
                 </div>
                 <div class="north-verdict__action" id="cta">
@@ -139,8 +147,13 @@
 
         <section class="north-methodology" id="methodology" aria-labelledby="methodology-title">
             <h2 id="methodology-title">Ocena, którą można sprawdzić</h2>
-            <p>North Score łączy bonus, warunki, bezpieczeństwo, czas i wartość dodatkową. Szczegółową metodologię opublikujemy na osobnej stronie.</p>
+            <p>Ta sekcja dokumentuje dawny kierunek North Score. Obecny produkt używa scenariuszowego North Value, osobnego Confidence, North Match i Verdict opisanych w publicznej metodologii.</p>
         </section>
     </main>
+    <footer class="legacy-footer">
+        <img src="../assets/brand/north-logo.svg" alt="North">
+        <p>Archiwalny prototyp · dane i ocena nie są aktualnie weryfikowane.</p>
+        <nav aria-label="Linki strony legacy"><a href="../methodology.html">Aktualna metodologia</a><a href="../index.html#opportunities">Bieżące analizy</a></nav>
+    </footer>
 </body>
 </html>

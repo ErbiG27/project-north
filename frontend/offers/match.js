@@ -212,7 +212,7 @@
     function renderResult(container, result, offer) {
         const range = (min, max) => min === max ? formatMoney(money(min)) : `${formatMoney(money(min))}–${formatMoney(money(max))}`;
         const unavailable = result.match === "CANNOT ASSESS" ? "Brak danych" : null;
-        container.innerHTML = `<div class="match-result-head"><div><span>${global.NorthGlossary.label("northMatch")}</span><strong class="match-band match-band--${result.match.toLowerCase().replaceAll(" ", "-")}">${escapeHtml(result.match)}</strong></div><div><span>${global.NorthGlossary.label("verdict")}</span><strong class="match-verdict">${escapeHtml(result.verdict)}</strong></div></div><p class="match-summary">${escapeHtml(result.summary)}</p><dl class="match-values"><div><dt>${global.NorthGlossary.label("yourLikelyValue")}</dt><dd>${unavailable || formatMoney(money(result.gross))}</dd></div><div><dt>${global.NorthGlossary.label("expectedUsableValue")}</dt><dd>${unavailable || range(result.usableMin, result.usableMax)}</dd></div><div><dt>${global.NorthGlossary.label("netScenarioValue")}</dt><dd>${unavailable || range(result.netMin, result.netMax)}</dd></div><div><dt>Potwierdzony koszt</dt><dd>${unavailable || formatMoney(money(result.directCost))}</dd></div></dl><div class="match-explanation"><h3>Dlaczego ten wynik?</h3>${resultList("Pasuje", result.reasons, "✓", "match-reasons")}${resultList("Nie pasuje / blokuje", result.blockers, "×", "match-blockers")}${resultList("Warunki", result.conditions, "→", "match-conditions")}${resultList("Nie wiemy", result.unknowns, "?", "match-unknowns")}</div><details class="match-input-summary"><summary>Dane, które wpłynęły na wynik</summary><ul>${result.influenced.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></details><p class="match-local-note">Scenariusz został obliczony lokalnie w tej karcie przeglądarki. North nie wysyła tych odpowiedzi do backendu i nie zapisuje profilu.</p><p class="match-method-note">Match opisuje dopasowanie warunków do sytuacji. ${global.NorthGlossary.definitions.verdict.definition} Reklamowane maksimum tej oferty to ${escapeHtml(offer.value.advertisedMax.displayLabel)}.</p>`;
+        container.innerHTML = `<div class="match-result-head"><div><span>${global.NorthGlossary.label("northMatch")}</span><strong class="match-band match-band--${result.match.toLowerCase().replaceAll(" ", "-")}">${escapeHtml(result.match)}</strong></div><div><span>${global.NorthGlossary.label("verdict")}</span><strong class="match-verdict">${escapeHtml(result.verdict)}</strong></div></div><p class="match-summary">${escapeHtml(result.summary)}</p><dl class="match-values"><div><dt>${global.NorthGlossary.label("yourLikelyValue")}</dt><dd>${unavailable || formatMoney(money(result.gross))}</dd></div><div><dt>${global.NorthGlossary.label("expectedUsableValue")}</dt><dd>${unavailable || range(result.usableMin, result.usableMax)}</dd></div><div><dt>${global.NorthGlossary.label("netScenarioValue")}</dt><dd>${unavailable || range(result.netMin, result.netMax)}</dd></div><div><dt>Potwierdzony koszt</dt><dd>${unavailable || formatMoney(money(result.directCost))}</dd></div></dl><div class="match-explanation"><h3>Dlaczego ten wynik?</h3>${resultList("Co pasuje", result.reasons, "✓", "match-reasons")}${resultList("Co nie pasuje lub blokuje", result.blockers, "×", "match-blockers")}${resultList("Warunki", result.conditions, "→", "match-conditions")}${resultList("Brakujące dane", result.unknowns, "?", "match-unknowns")}</div><details class="match-input-summary"><summary>Dane, które wpłynęły na wynik</summary><ul>${result.influenced.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></details><p class="match-local-note">Odpowiedzi są przetwarzane tylko na tym urządzeniu. North ich nie wysyła ani nie zapisuje profilu.</p><p class="match-method-note">Match opisuje dopasowanie warunków do sytuacji. ${global.NorthGlossary.definitions.verdict.definition} Reklamowane maksimum tej oferty to ${escapeHtml(offer.value.advertisedMax.displayLabel)}.</p>`;
         global.NorthGlossary.init(container);
     }
 
@@ -220,7 +220,7 @@
         if (!offer.match) return;
         const core = offer.match.fields.filter((field) => field.stage === 1);
         const additional = offer.match.fields.filter((field) => field.stage === 2);
-        root.innerHTML = `<section class="offer-section north-match-section" id="match" aria-labelledby="match-title"><div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> ${global.NorthGlossary.label("northMatch")}</p><h2 id="match-title">Sprawdź tę ofertę dla siebie</h2></div><p>Odpowiedz tylko na pytania, które zmieniają wynik. Nie podawaj imienia, PESEL-u ani danych bankowych.</p></div><div class="match-layout"><form class="match-form" novalidate><fieldset class="match-step"><legend><span>Etap 1</span> Najważniejsze dane</legend>${core.map(fieldHtml).join("")}<button class="north-button match-next" type="button">Przejdź do pytań dodatkowych <span aria-hidden="true">→</span></button><p class="match-form-error" role="status" hidden>Nie wszystkie dane są znane. Możesz kontynuować — wynik pokaże braki jako CANNOT ASSESS.</p></fieldset><fieldset class="match-step match-step--additional" hidden><legend><span>Etap 2</span> Tylko warunki tej oferty</legend>${additional.map(fieldHtml).join("")}<button class="north-button" type="submit">Oblicz mój scenariusz</button><button class="match-reset" type="reset">Wyczyść odpowiedzi</button><p class="match-form-error" role="status" hidden>Nie wszystkie dane są znane. Wynik pokaże braki zamiast przyjmować domyślne założenia.</p></fieldset></form><aside class="match-result" aria-live="polite" aria-atomic="true"><div class="match-empty"><span>${global.NorthGlossary.label("northMatch")}</span><h3>Wynik bez procentów</h3><p>Po odpowiedzi zobaczysz band dopasowania, Value, osobny Verdict oraz konkretne reasons, conditions i blockers.</p></div></aside></div></section>`;
+        root.innerHTML = `<section class="offer-section north-match-section" id="match" aria-labelledby="match-title"><div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> ${global.NorthGlossary.label("northMatch")}</p><h2 id="match-title">Sprawdź tę ofertę dla siebie</h2></div><p>Odpowiedz tylko na pytania, które zmieniają wynik. Nie podawaj imienia, PESEL-u ani danych bankowych.</p></div><div class="match-layout"><form class="match-form" novalidate><fieldset class="match-step"><legend><span>Etap 1</span> Najważniejsze dane</legend>${core.map(fieldHtml).join("")}<button class="north-button match-next" type="button">Przejdź do pytań dodatkowych <span aria-hidden="true">→</span></button><p class="match-form-error" role="status" hidden>Nie wszystkie dane są znane. Możesz przejść dalej — wynik pokaże braki jako CANNOT ASSESS.</p></fieldset><fieldset class="match-step match-step--additional" hidden><legend><span>Etap 2</span> Tylko warunki tej oferty</legend>${additional.map(fieldHtml).join("")}<button class="north-button" type="submit">Oblicz mój scenariusz</button><button class="match-reset" type="reset">Wyczyść odpowiedzi</button><p class="match-form-error" role="status" hidden>Nie wszystkie dane są znane. Wynik pokaże braki zamiast przyjmować domyślne założenia.</p></fieldset></form><aside class="match-result" aria-label="Wynik North Match" aria-live="polite" aria-atomic="false"><div class="match-empty"><span>${global.NorthGlossary.label("northMatch")}</span><h3>Wynik bez procentów</h3><p>Po odpowiedzi zobaczysz poziom dopasowania, wartości, osobny Verdict oraz konkretne powody, warunki i blokery.</p></div></aside></div></section>`;
         global.NorthGlossary.init(root);
 
         const form = root.querySelector(".match-form");
@@ -252,6 +252,16 @@
             return missingField;
         }
 
+        function clearResolvedErrors() {
+            const values = valuesFromForm();
+            form.querySelectorAll(".match-step").forEach((step) => {
+                const error = step.querySelector(".match-form-error");
+                if (!error || error.hidden) return;
+                const stillMissing = offer.match.fields.some((field) => field.required && step.querySelector(`[data-match-field="${CSS.escape(field.id)}"]:not([hidden])`) && !isKnown(values[field.id]));
+                if (!stillMissing) error.hidden = true;
+            });
+        }
+
         next.addEventListener("click", () => {
             const step = next.closest("fieldset");
             markMissing(step);
@@ -259,20 +269,20 @@
             updateVisibility();
             additionalStep.querySelector("input:enabled")?.focus();
         });
-        form.addEventListener("change", updateVisibility);
-        form.addEventListener("input", updateVisibility);
+        form.addEventListener("change", () => { updateVisibility(); clearResolvedErrors(); });
+        form.addEventListener("input", () => { updateVisibility(); clearResolvedErrors(); });
         form.addEventListener("submit", (event) => {
             event.preventDefault();
             markMissing(additionalStep);
             const values = valuesFromForm();
             renderResult(resultContainer, evaluate(offer, values), offer);
-            resultContainer.focus({ preventScroll: true });
+            resultContainer.focus();
         });
         form.addEventListener("reset", () => {
             global.setTimeout(() => {
                 additionalStep.hidden = true;
                 updateVisibility();
-                resultContainer.innerHTML = `<div class="match-empty"><span>${global.NorthGlossary.label("northMatch")}</span><h3>Wynik bez procentów</h3><p>Po odpowiedzi zobaczysz band dopasowania, Value, osobny Verdict oraz konkretne reasons, conditions i blockers.</p></div>`;
+                resultContainer.innerHTML = `<div class="match-empty"><span>${global.NorthGlossary.label("northMatch")}</span><h3>Wynik bez procentów</h3><p>Po odpowiedzi zobaczysz poziom dopasowania, wartości, osobny Verdict oraz konkretne powody, warunki i blokery.</p></div>`;
                 global.NorthGlossary.init(resultContainer);
                 next.focus();
             });

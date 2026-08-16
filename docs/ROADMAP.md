@@ -6,11 +6,11 @@
 
 Element trafia do sprintu tylko z celem, właścicielem, zakresem i Definition of Done. Roadmapa jest kolejnością hipotez, nie obietnicą terminu. Funkcje finansowe, afiliacyjne i analityczne wymagają najpierw zasad transparentności oraz zgodności prawnej.
 
-## Stan obecny — v0.7.0
+## Stan obecny — v0.7.1
 
-**Cel osiągnięty:** użytkownik może policzyć Explainable North Match dla Millennium, Nest i Pekao na podstawie jawnych danych i zobaczyć, dlaczego zmieniły się wartość, dopasowanie oraz Verdict.
+**Cel osiągnięty:** użytkownik może znaleźć ofertę, policzyć Explainable North Match dla Millennium, Nest i Pekao oraz przejść kluczowe widoki na desktopie, tablecie, telefonie i klawiaturze bez krytycznych barier dostępności.
 
-Match nie jest procentem ani zamiennikiem Verdict. Wspólny klientowy silnik interpretuje reguły zapisane w istniejącym Decision Model, a wynik pokazuje reasons, blockers, conditions i brakujące dane. Glossary wyjaśnia angielskie terminy po polsku. Dane scenariusza pozostają lokalnie w bieżącej karcie. Kraken nadal jest wyłącznie validation case poza głównym Match flow i katalogiem.
+Match nie jest procentem ani zamiennikiem Verdict. Wspólny klientowy silnik interpretuje reguły zapisane w istniejącym Decision Model, a wynik pokazuje reasons, blockers, conditions i brakujące dane. Glossary wyjaśnia angielskie terminy po polsku. Dane scenariusza pozostają lokalnie w bieżącej karcie. Landing ma działające wyszukiwanie, filtry i pusty stan, a strony mają unikalne metadane. Kraken nadal jest wyłącznie validation case poza głównym Match flow i katalogiem.
 
 ## Następne etapy
 
@@ -93,11 +93,13 @@ Ten etap może rozpocząć się wyłącznie po walidacji podstawowej trójki v0.
 
 ### v0.7.1 — Treść, SEO i dostępność
 
-- Uzupełnić unikalne meta title, description, nagłówki oraz dane strukturalne tam, gdzie są zasadne.
-- Przeprowadzić audyt klawiatury, kontrastu, alternatyw tekstowych i responsywności.
-- Dodać puste stany dla wyszukiwania i filtrów.
+- **Status:** zaimplementowano 2026-08-16.
+- Uzupełniono unikalne meta title, description i nagłówki; dane strukturalne świadomie pominięto, ponieważ obecny model North i dostępne treści nie uzasadniają prawidłowego typu bez mylącego oznaczenia produktu, oferty lub recenzji.
+- Przeprowadzono audyt klawiatury, kontrastu, alternatyw tekstowych, landmarków, relacji ARIA, długich treści i responsywności w trzech viewportach.
+- Dodano wyszukiwanie, filtry, licznik wyników, reset i pusty stan bez przebudowy Decision Model.
+- Uporządkowano logotypy trzech banków, dostępność glossary i North Match, odporność renderera oraz status archiwalnego prototypu Revolut.
 
-**Definition of Done:** kluczowe strony mają pełne metadane, brak krytycznych problemów dostępności i czytelne stany braku wyników.
+**Definition of Done — spełnione:** kluczowe strony mają komplet metadanych możliwych bez produkcyjnego origin, brak wykrytych krytycznych problemów dostępności oraz czytelne stany wyszukiwania i braku wyników. Canonical, social metadata i sitemap pozostają blokowane do czasu ustalenia prawdziwej domeny oraz publicznej grafiki.
 
 ### v0.8.0 — Prywatna beta
 

@@ -1,6 +1,6 @@
 # ProjectNorth Handbook
 
-> Wersja: 1.3 · Status: aktywny dokument roboczy · Produkt: v0.7.0 · Decision Model v1
+> Wersja: 1.3 · Status: aktywny dokument roboczy · Produkt: v0.7.1 · Decision Model v1
 
 ## Cel dokumentacji
 

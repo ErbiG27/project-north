@@ -12,25 +12,26 @@ Backlog jakościowy. Priorytet określa wpływ na zaufanie i ukończenie zadania
 - [x] Nie pokazywać jednej „realnej nagrody” bez jawnego scenariusza; stosować `Advertised Max`, `Easy Floor` oraz `Your Likely Value` / `Conditional Max` tam, gdzie ma zastosowanie — v0.6.1.
 - [x] Nie publikować werdyktu `WAIT` ani precyzyjnego procentu Confidence/Match bez wystarczających danych i walidacji — v0.6.1/v0.6.2.
 - [x] Sprawdzić wersję mobilną, klawiaturę i stany focus — v0.6.2.
+- Ustalić produkcyjny origin i publiczną grafikę social, a następnie dodać poprawne canonical, Open Graph, Twitter Cards i sitemap; nie publikować fikcyjnych absolutnych adresów.
 
 ## P1 — fundament zaufania
 
-- Uzupełnić spójne użycie istniejących zasobów marki North w stopce i metadanych.
+- [x] Uzupełnić spójne użycie istniejących zasobów marki North w stopce i metadanych — v0.7.1.
 - [x] Dodać footer z informacją o metodologii i aktualizacji; kontakt pozostaje do zdefiniowania przed publikacją kanału wsparcia — v0.6.2.
 - [x] Dodać datę weryfikacji i status oferty — v0.6.2.
 - [x] Przygotować stronę metodologii modelu decyzji: North Value, North Confidence, scenariusze wartości, koszty, ryzyko niedowiezienia i zasady Verdict — v0.6.2.
 - [x] Zapewnić, że North Score — jeśli pozostaje widoczny — jest skrótem wtórnym z rozkładem i uzasadnieniem, a nie głównym USP — Decision Model v1 nie używa Score jako wyniku.
 - [x] Dodać czytelne stany `TAKE NOW`, `TAKE IF`, `SKIP` i `NOT ENOUGH DATA`; `WAIT` zachować jako późniejszy stan wymagający historii i backtestu — v0.6.1/v0.6.2.
-- Dodać puste stany dla braku wyników wyszukiwania oraz filtrów.
-- Uczynić całą kartę oferty logicznie klikalną bez zagnieżdżania interaktywnych elementów.
+- [x] Dodać puste stany dla braku wyników wyszukiwania oraz filtrów — v0.7.1.
+- Uczynić całą kartę oferty logicznie klikalną bez zagnieżdżania interaktywnych elementów; obecne karty zawierają przyciski glossary, więc prosty wrapper-link byłby błędem semantycznym.
 
 ## P2 — czytelność i komfort
 
 - Breadcrumb na stronach ofert, jeśli rośnie liczba kategorii i podstron.
 - Skeleton/loading tylko tam, gdzie pojawi się asynchroniczne ładowanie danych.
-- Spójne stany aktywne filtrów, sortowania i formularzy.
-- Testy na długich nazwach ofert oraz braku logo.
-- Przegląd treści pod kątem prostego języka i nieuzasadnionych obietnic.
+- [x] Spójne stany aktywne filtrów i formularzy — v0.7.1; sortowanie nie występuje w bieżącym interfejsie.
+- [x] Testy na długich nazwach ofert oraz braku logo — v0.7.1; fallback używa monogramu.
+- [x] Przegląd treści pod kątem prostego języka i nieuzasadnionych obietnic — v0.7.1.
 - Ustalić politykę zakończeń linii i uporządkować `.gitattributes` (nie blokuje kolejnego etapu).
 - Poprawić kontrast sygnetu North wewnątrz North Verdict (nie blokuje kolejnego etapu).
 

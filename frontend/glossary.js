@@ -54,6 +54,7 @@
 
     let openTrigger = null;
     let closeTimer = null;
+    let popoverId = 0;
 
     function escapeHtml(value) {
         return String(value ?? "")
@@ -112,16 +113,16 @@
         }, 120);
     }
 
-    function enhance(wrapper, index) {
+    function enhance(wrapper) {
         if (wrapper.dataset.glossaryReady === "true") return;
         const key = wrapper.dataset.glossary;
         const item = definitions[key];
         if (!item) return;
         const existingText = wrapper.querySelector(":scope > span")?.textContent?.trim() || wrapper.textContent.trim() || item.term;
-        const panelId = `north-glossary-${key}-${index}`;
+        const panelId = `north-glossary-${key}-${popoverId++}`;
         wrapper.dataset.glossaryReady = "true";
         wrapper.classList.add("glossary-term");
-        wrapper.innerHTML = `<span class="glossary-label">${escapeHtml(existingText)}</span><button class="glossary-trigger" type="button" aria-label="Wyjaśnij termin ${escapeHtml(item.term)}" aria-expanded="false" aria-controls="${panelId}"><span aria-hidden="true">i</span></button><span class="glossary-popover" id="${panelId}" role="tooltip"><strong>${escapeHtml(item.term)}</strong><span>${escapeHtml(item.definition)}</span></span>`;
+        wrapper.innerHTML = `<span class="glossary-label">${escapeHtml(existingText)}</span><button class="glossary-trigger" type="button" aria-label="Wyjaśnij termin ${escapeHtml(item.term)}" aria-expanded="false" aria-controls="${panelId}" aria-describedby="${panelId}"><span aria-hidden="true">i</span></button><span class="glossary-popover" id="${panelId}" role="tooltip"><strong>${escapeHtml(item.term)}</strong><span>${escapeHtml(item.definition)}</span></span>`;
 
         const trigger = wrapper.querySelector(".glossary-trigger");
         trigger.addEventListener("click", (event) => {
@@ -129,15 +130,12 @@
             open(wrapper);
         });
         trigger.addEventListener("keydown", (event) => {
-            if (["Enter", " "].includes(event.key)) {
-                event.preventDefault();
-                open(wrapper);
-            }
             if (event.key === "Escape") {
                 event.preventDefault();
                 close({ restoreFocus: true });
             }
         });
+        trigger.addEventListener("focus", () => open(wrapper));
         wrapper.addEventListener("mouseenter", () => open(wrapper));
         wrapper.addEventListener("mouseleave", () => scheduleClose(wrapper));
         wrapper.addEventListener("focusout", () => scheduleClose(wrapper));

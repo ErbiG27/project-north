@@ -10,7 +10,16 @@
         "bank-pekao-konto-przekorzystne": "offers/pekao.html"
     };
 
+    const providerLogos = {
+        "bank-millennium-millennium-360": "assets/logos/bank-millennium.svg",
+        "nest-bank-nest-konto": "assets/logos/nest-bank.png",
+        "bank-pekao-konto-przekorzystne": "assets/logos/bank-pekao.svg"
+    };
+
     const scenarioLetters = ["A", "B", "C"];
+    let listedOffers = [];
+    let selectedFilter = "all";
+    let resultsAnnouncementTimer = null;
 
     function shortProvider(offer) {
         if (offer.identity.id.includes("millennium")) return "Bank Millennium";
@@ -24,6 +33,21 @@
         if (offer.identity.id.includes("nest")) return "N";
         if (offer.identity.id.includes("pekao")) return "P";
         return shortProvider(offer).slice(0, 1);
+    }
+
+    function providerMark(offer) {
+        const src = providerLogos[offer.identity.id];
+        const fallback = `<span class="bank-monogram" aria-hidden="true">${escapeHtml(monogram(offer))}</span>`;
+        if (!src) return fallback;
+        return `<span class="bank-mark"><img class="bank-logo" src="${src}" alt="" aria-hidden="true" decoding="async">${fallback}</span>`;
+    }
+
+    function initBankMarkFallbacks(scope) {
+        scope.querySelectorAll(".bank-logo").forEach((image) => {
+            const showFallback = () => image.closest(".bank-mark")?.classList.add("bank-mark--fallback");
+            image.addEventListener("error", showFallback, { once: true });
+            if (image.complete && image.naturalWidth === 0) showFallback();
+        });
     }
 
     function verdictClass(verdict) {
@@ -159,7 +183,7 @@
             return `
                 <article class="decision-offer-card">
                     <div class="decision-offer-card__top">
-                        <span class="bank-monogram" aria-hidden="true">${escapeHtml(monogram(offer))}</span>
+                        ${providerMark(offer)}
                         <div><p>${escapeHtml(shortProvider(offer))}</p><span class="offer-status">${escapeHtml(freshness.label)} · sprawdzono ${formatDate(offer.identity.verifiedAt)}</span></div>
                         <span class="confidence-badge">${escapeHtml(offer.decision.northConfidence.band)}</span>
                     </div>
@@ -174,6 +198,82 @@
                     <a class="north-button north-button--card" href="${offerRoutes[offer.identity.id]}#match">Sprawdź dla siebie <span aria-hidden="true">→</span></a>
                 </article>`;
         }).join("");
+        initBankMarkFallbacks(target);
+        window.NorthGlossary.init(target);
+    }
+
+    function normalized(value) {
+        return String(value || "").toLocaleLowerCase("pl-PL").normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    }
+
+    function searchableOfferText(offer) {
+        return normalized([
+            shortProvider(offer),
+            offer.identity.title,
+            offer.listing.problemLabel,
+            offer.listing.summary,
+            ...(offer.value.rewardComponents || []).flatMap((component) => [component.label, component.form, component.calculation])
+        ].join(" "));
+    }
+
+    function hasFilter(offer, filter) {
+        if (filter === "all") return true;
+        const components = offer.value.rewardComponents || [];
+        if (filter === "cash") return components.some((component) => component.form === "cash");
+        if (filter === "cashback") return components.some((component) => component.form === "cashback");
+        if (filter === "travel") return normalized(components.map((component) => [component.label, component.calculation, ...(component.usability?.restrictions || [])].join(" ")).join(" ")).includes("podroz");
+        return true;
+    }
+
+    function resultCountCopy(count) {
+        if (count === 1) return "1 pasująca analiza";
+        if ([2, 3, 4].includes(count)) return `${count} pasujące analizy`;
+        return `${count} pasujących analiz`;
+    }
+
+    function updateOfferResults({ announceImmediately = false } = {}) {
+        const search = document.getElementById("offer-search");
+        const query = normalized(search.value.trim());
+        const filtered = listedOffers.filter((offer) => hasFilter(offer, selectedFilter) && (!query || searchableOfferText(offer).includes(query)));
+        const grid = document.getElementById("decision-offers");
+        const empty = document.getElementById("offer-empty-state");
+        const summary = document.getElementById("offer-results-summary");
+
+        renderOffers(filtered);
+        grid.hidden = filtered.length === 0;
+        empty.hidden = filtered.length !== 0;
+
+        globalThis.clearTimeout(resultsAnnouncementTimer);
+        const announce = () => { summary.textContent = resultCountCopy(filtered.length); };
+        if (announceImmediately) announce();
+        else resultsAnnouncementTimer = globalThis.setTimeout(announce, 350);
+    }
+
+    function setupOfferFilters(offers) {
+        listedOffers = offers;
+        const form = document.getElementById("offer-filters");
+        const search = document.getElementById("offer-search");
+        const buttons = [...form.querySelectorAll("[data-offer-filter]")];
+        const reset = document.getElementById("offer-filters-reset");
+
+        form.addEventListener("submit", (event) => event.preventDefault());
+        search.addEventListener("input", () => updateOfferResults());
+        buttons.forEach((button) => {
+            button.addEventListener("click", () => {
+                selectedFilter = button.dataset.offerFilter;
+                buttons.forEach((item) => item.setAttribute("aria-pressed", String(item === button)));
+                updateOfferResults({ announceImmediately: true });
+            });
+        });
+        reset.addEventListener("click", () => {
+            search.value = "";
+            selectedFilter = "all";
+            buttons.forEach((button) => button.setAttribute("aria-pressed", String(button.dataset.offerFilter === "all")));
+            updateOfferResults({ announceImmediately: true });
+            search.focus();
+        });
+
+        updateOfferResults({ announceImmediately: true });
     }
 
     function renderConfidence(offers, data) {
@@ -212,7 +312,7 @@
             }
             renderPekaoDemo(pekao);
             renderNestScenarios(nest);
-            renderOffers(activeOffers);
+            setupOfferFilters(activeOffers);
             renderConfidence(activeOffers, data);
             window.NorthGlossary.init(document);
         })

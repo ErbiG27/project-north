@@ -9,7 +9,7 @@
     <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="assets/brand/favicon-32x32.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
-    <link rel="stylesheet" href="style.css?v=0.7.0">
+    <link rel="stylesheet" href="style.css?v=0.7.1">
     <title>North — sprawdź, która oferta ma sens dla Ciebie</title>
 </head>
 <body class="north-landing">
@@ -153,7 +153,28 @@
                 </div>
                 <p>Trzy oferty, trzy różne pytania. Otwórz analizę i wybierz „Sprawdź dla siebie”, aby policzyć lokalny scenariusz bez konta i bez procentowego score’u.</p>
             </div>
-            <div class="decision-offers-grid data-loading" id="decision-offers" aria-live="polite">Ładowanie analiz…</div>
+            <form class="offer-filters" id="offer-filters" role="search">
+                <div class="offer-search-field">
+                    <label for="offer-search">Wyszukaj analizę</label>
+                    <input id="offer-search" name="query" type="search" autocomplete="off" placeholder="Np. Millennium, cashback, podróże">
+                </div>
+                <fieldset>
+                    <legend>Filtruj według rodzaju korzyści</legend>
+                    <div class="offer-filter-buttons">
+                        <button type="button" data-offer-filter="all" aria-pressed="true">Wszystkie</button>
+                        <button type="button" data-offer-filter="cash">Premia pieniężna</button>
+                        <button type="button" data-offer-filter="cashback">Cashback</button>
+                        <button type="button" data-offer-filter="travel">Podróże</button>
+                    </div>
+                </fieldset>
+            </form>
+            <p class="offer-results-summary" id="offer-results-summary" aria-live="polite" aria-atomic="true">Ładowanie analiz…</p>
+            <div class="decision-offers-grid data-loading" id="decision-offers">Ładowanie analiz…</div>
+            <div class="offer-empty-state" id="offer-empty-state" role="status" hidden>
+                <h3>Brak ofert pasujących do tych kryteriów</h3>
+                <p>Zmień zapytanie albo wyczyść filtry, aby ponownie zobaczyć wszystkie analizy.</p>
+                <button class="north-button" id="offer-filters-reset" type="button">Wyczyść wyszukiwanie i filtry</button>
+            </div>
         </section>
 
         <section class="north-section faq" aria-labelledby="faq-title">
@@ -183,8 +204,8 @@
         <p>Decision Model v1 · <span id="footer-review">data review ze wspólnego rekordu</span><br>North może otrzymać wynagrodzenie za wybrane linki. Nie wpływa to na Value, Confidence ani Verdict; oferta bez afiliacji może być lepsza.</p>
     </footer>
 
-    <script src="data/offers.js?v=0.7.0"></script>
-    <script src="glossary.js?v=0.7.0"></script>
-    <script src="script.js?v=0.7.0"></script>
+    <script src="data/offers.js?v=0.7.1"></script>
+    <script src="glossary.js?v=0.7.1"></script>
+    <script src="script.js?v=0.7.1"></script>
 </body>
 </html>

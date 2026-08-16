@@ -4,7 +4,37 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 
 ## [Unreleased]
 
-Brak zmian po wydaniu v0.7.0.
+Brak zmian po wydaniu v0.7.1.
+
+## [0.7.1] — 2026-08-16
+
+### Added
+
+- Działające wyszukiwanie i filtry ofert na landingu, z licznikiem wyników, czytelnym pustym stanem oraz resetem przywracającym fokus do wyszukiwarki.
+- Zweryfikowane, znormalizowane logotypy Banku Millennium, Nest Banku i Banku Pekao z dekoracyjnym tekstem alternatywnym oraz odpornym fallbackiem do monogramu.
+- Unikalne tytuły i opisy meta dla landingu, metodologii oraz stron Millennium, Nest, Pekao i Kraken.
+
+### Changed
+
+- Popovery North Glossary mają unikalne identyfikatory, właściwe relacje ARIA i przewidywalną obsługę focus, hover, tap, Enter, Space, Escape oraz kliknięcia poza panelem.
+- North Match używa prostszego copy, czyści nieaktualne błędy po uzupełnieniu pola, przenosi fokus do wyniku i jawnie komunikuje lokalne przetwarzanie odpowiedzi.
+- Wspólny renderer stron ofert toleruje brak opcjonalnych akcji, kosztów, dowodów, źródeł, powodów Confidence, safe exit, logotypu i afiliacji bez pustych lub uszkodzonych sekcji.
+- Wzmocniono kontrast drugorzędnego tekstu i granic kontrolek, widoczność focus, minimalne cele dotykowe, zawijanie długich treści oraz zachowanie przy `prefers-reduced-motion`.
+- Revolut jest jednoznacznie oznaczony jako archiwalny prototyp i otrzymał `noindex, follow`; nie zawiera aktywnego CTA ani pozornej bieżącej rekomendacji.
+
+### Verified
+
+- Landing, metodologia, Millennium, Nest, Pekao, Kraken i Revolut przeszły audyt w 1440×900, 820×900 i 390×844 bez poziomego overflow, duplikatów ID, brakujących obrazów, zerwanych relacji ARIA oraz błędów lub ostrzeżeń konsoli.
+- Potwierdzono dokładnie jeden `h1`, landmarki, skip linki, etykiety formularzy, stany focus, obsługę klawiatury i dotyku oraz odnośniki kotwicowe na każdej stronie.
+- Pełne i niepełne scenariusze North Match sprawdzono dla Millennium, Nest i Pekao; wynik otrzymuje fokus, brak danych pozostaje odrębny od negatywnego scenariusza, a reset przywraca formularz.
+- Składnia JavaScript i dane JSON przechodzą walidację, a użyte kolory tekstu i kontrolek spełniają założone progi kontrastu WCAG AA.
+
+### Known limitations
+
+- Repozytorium nie definiuje produkcyjnego origin ani publicznej grafiki social. Canonical, Open Graph, Twitter Cards i sitemap należy dodać dopiero po ustaleniu rzeczywistych absolutnych adresów.
+- Nie dodano danych strukturalnych: North nie jest sprzedawcą analizowanych produktów, a obecne strony nie uzasadniają typu rich result bez ryzyka mylącego `Product`, `Offer`, `Review` lub `FAQPage`.
+- Kraken pozostaje publicznym validation case poza katalogiem. Przed wdrożeniem produkcyjnym trzeba potwierdzić, czy powinien pozostać indeksowalny; Revolut ma pozostać wyłączony z indeksu albo zostać usunięty z publikowanego artefaktu.
+- Cała karta oferty nie jest jednym linkiem, ponieważ zawiera interaktywne przyciski glossary. Rozszerzenie obszaru kliknięcia wymaga wzorca bez zagnieżdżania kontrolek.
 
 ## [0.7.0] — 2026-08-16
 

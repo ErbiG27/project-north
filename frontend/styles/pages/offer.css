@@ -62,7 +62,7 @@
 
 .north-brand-row { display: flex; align-items: center; gap: var(--space-5); }
 
-.north-brand-row h1 {
+.north-brand-row :is(h1, h2) {
     margin: 0;
     font-size: clamp(2.5rem, 6vw, 4.5rem);
     line-height: 1;
@@ -120,7 +120,7 @@
 }
 
 .north-score-card__header { display: flex; justify-content: space-between; gap: var(--space-5); }
-.north-score-card h2 { margin: 0; font-size: var(--font-size-xl); }
+.north-score-card :is(h2, h3) { margin: 0; font-size: var(--font-size-xl); }
 .north-grade { display: grid; place-items: center; width: 2.625rem; height: 2.625rem; border-radius: var(--radius-sm); background: var(--color-primary-hover); color: var(--color-bg); font-weight: 800; }
 .north-score-value { display: flex; align-items: baseline; margin: var(--space-8) 0 var(--space-2); }
 .north-score-value strong { font-size: clamp(4rem, 10vw, 5.75rem); line-height: .85; letter-spacing: -0.09em; }
@@ -261,7 +261,7 @@
 
 .north-brand-row { gap: var(--space-6); margin-top: var(--space-3); }
 
-.north-brand-row h1 {
+.north-brand-row :is(h1, h2) {
     font-size: clamp(3.25rem, 7vw, 5.5rem);
     letter-spacing: -0.075em;
 }
@@ -351,7 +351,7 @@
 
 .north-score-card::after { top: -7rem; right: -7rem; width: 15rem; height: 15rem; border-color: rgb(0 208 132 / 13%); }
 .north-score-card__header { align-items: flex-start; }
-.north-score-card h2 { font-size: 1.5rem; }
+.north-score-card :is(h2, h3) { font-size: 1.5rem; }
 
 .north-grade {
     width: 2.875rem;
@@ -392,7 +392,7 @@
 }
 
 .north-snapshot__heading { display: flex; align-items: end; justify-content: space-between; gap: var(--space-4); margin-bottom: var(--space-5); }
-.north-snapshot__heading h2 { margin: 0; font-size: 1.125rem; }
+.north-snapshot__heading :is(h2, h3) { margin: 0; font-size: 1.125rem; }
 .north-snapshot__heading > span { color: var(--color-text-muted); font-size: var(--font-size-xs); }
 .north-snapshot .north-kicker { margin-bottom: .2rem; font-size: .6rem; }
 
@@ -424,7 +424,7 @@
     .north-hero { gap: 2rem; padding: 1.5rem; border-radius: 1.25rem; }
     .north-hero::before { top: -18rem; left: -23rem; }
     .north-brand-row { align-items: flex-start; }
-    .north-brand-row h1 { font-size: 3rem; }
+    .north-brand-row :is(h1, h2) { font-size: 3rem; }
     .offer-page-logo { flex: 0 0 auto; width: 3.75rem; height: 3.75rem; border-radius: 1rem; }
     .offer-tagline { margin: var(--space-7) 0; font-size: 1rem; }
     .north-badges { margin-bottom: var(--space-8); }
