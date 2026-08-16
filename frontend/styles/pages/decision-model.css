@@ -147,7 +147,7 @@
     letter-spacing: .12em;
     text-transform: uppercase;
 }
-.section-kicker > span {
+.section-kicker > span[aria-hidden="true"] {
     flex: 0 0 auto;
     width: .42rem;
     height: .42rem;

@@ -4,6 +4,7 @@
     const { load, formatMoney, formatValue, formatDate, freshnessFor, escapeHtml } = window.NorthOffers;
     const root = document.getElementById("offer-content");
     const offerId = document.body.dataset.offerId;
+    const term = (key, label) => window.NorthGlossary.label(key, label);
 
     const inputLabels = {
         age: ["Wiek", " lat"],
@@ -162,12 +163,12 @@
                     <p>Nie łączymy pieniędzy, czasu, wysiłku i ryzyka w arbitralny wynik. Każdy jawny scenariusz ma własny Value i Verdict.</p>
                 </div>
                 <dl class="north-value-grid">
-                    <div><dt>Advertised Max</dt><dd>${escapeHtml(offer.value.advertisedMax.displayLabel)}</dd><span>${escapeHtml(offer.value.advertisedMax.caveat)}</span></div>
-                    <div><dt>Easy Floor</dt><dd>${floor}</dd><span>${offer.value.easyFloor ? "Tylko przy opisanych założeniach; nie jest gwarantowany." : "Model nie udaje, że istnieje prosty gwarantowany rdzeń."}</span></div>
-                    <div><dt>Your Likely Value</dt><dd>Wybierz jawny scenariusz</dd><span>Kwoty i zakresy są pokazane niżej.</span></div>
-                    <div><dt>Conditional Max</dt><dd>${conditional}</dd><span>${offer.value.conditionalMax ? escapeHtml(offer.value.conditionalMax.assumptions[0]) : "Nie jest potrzebny dla tej oferty."}</span></div>
-                    <div><dt>Expected Usable Value</dt><dd>Zależy od scenariusza</dd><span>Uwzględnia formę i ograniczenia nagrody, nie fikcyjne prawdopodobieństwo.</span></div>
-                    <div><dt>Net Scenario Value</dt><dd>Zależy od scenariusza</dd><span>Potwierdzone koszty bezpośrednie są odejmowane; wysiłek pozostaje osobno.</span></div>
+                    <div><dt>${term("advertisedMax")}</dt><dd>${escapeHtml(offer.value.advertisedMax.displayLabel)}</dd><span>${escapeHtml(offer.value.advertisedMax.caveat)}</span></div>
+                    <div><dt>${term("easyFloor")}</dt><dd>${floor}</dd><span>${offer.value.easyFloor ? "Tylko przy opisanych założeniach; nie jest gwarantowany." : "Model nie udaje, że istnieje prosty gwarantowany rdzeń."}</span></div>
+                    <div><dt>${term("yourLikelyValue")}</dt><dd>Wybierz jawny scenariusz</dd><span>Kwoty i zakresy są pokazane niżej.</span></div>
+                    <div><dt>${term("conditionalMax")}</dt><dd>${conditional}</dd><span>${offer.value.conditionalMax ? escapeHtml(offer.value.conditionalMax.assumptions[0]) : "Nie jest potrzebny dla tej oferty."}</span></div>
+                    <div><dt>${term("expectedUsableValue")}</dt><dd>Zależy od scenariusza</dd><span>Uwzględnia formę i ograniczenia nagrody, nie fikcyjne prawdopodobieństwo.</span></div>
+                    <div><dt>${term("netScenarioValue")}</dt><dd>Zależy od scenariusza</dd><span>Potwierdzone koszty bezpośrednie są odejmowane; wysiłek pozostaje osobno.</span></div>
                 </dl>
             </section>`;
     }
@@ -196,18 +197,18 @@
                     <ul class="input-list">${renderInputs(example.userInputs)}</ul>
                     ${example.calculation ? `<p class="scenario-formula">${escapeHtml(example.calculation)}</p>` : ""}
                     <dl class="scenario-value-grid">
-                        <div><dt>Advertised Max</dt><dd>${escapeHtml(offer.value.advertisedMax.displayLabel)}</dd></div>
-                        <div><dt>Easy Floor</dt><dd>${valueFromScenario(value, "easyFloor")}</dd></div>
-                        <div><dt>Your Likely Value</dt><dd>${valueFromScenario(value, "likelyGrossValue")}</dd></div>
-                        <div><dt>Expected Usable Value</dt><dd>${valueFromScenario(value, "expectedUsableValue")}</dd></div>
-                        <div><dt>Net Scenario Value</dt><dd>${valueFromScenario(value, "netScenarioValue")}</dd></div>
+                        <div><dt>${term("advertisedMax")}</dt><dd>${escapeHtml(offer.value.advertisedMax.displayLabel)}</dd></div>
+                        <div><dt>${term("easyFloor")}</dt><dd>${valueFromScenario(value, "easyFloor")}</dd></div>
+                        <div><dt>${term("yourLikelyValue")}</dt><dd>${valueFromScenario(value, "likelyGrossValue")}</dd></div>
+                        <div><dt>${term("expectedUsableValue")}</dt><dd>${valueFromScenario(value, "expectedUsableValue")}</dd></div>
+                        <div><dt>${term("netScenarioValue")}</dt><dd>${valueFromScenario(value, "netScenarioValue")}</dd></div>
                         <div><dt>Koszt bezpośredni</dt><dd>${valueFromScenario(value, "directCost")}</dd></div>
                     </dl>
                     <dl class="scenario-qualities">
                         <div><dt>Wysiłek</dt><dd>${escapeHtml(value.effortBurden)}</dd></div>
                         <div><dt>Czas</dt><dd>${escapeHtml(value.duration)}</dd></div>
-                        <div><dt>Ryzyko utraty</dt><dd>${escapeHtml(value.failureRisk)}</dd></div>
-                        <div><dt>Elastyczność</dt><dd>${escapeHtml(value.flexibility)}</dd></div>
+                        <div><dt>${term("failureRisk", "Ryzyko utraty")}</dt><dd>${escapeHtml(value.failureRisk)}</dd></div>
+                        <div><dt>${term("flexibility", "Elastyczność")}</dt><dd>${escapeHtml(value.flexibility)}</dd></div>
                     </dl>
                     <div class="scenario-verdict-copy">
                         <p><strong>Summary:</strong> ${escapeHtml(example.verdictReason)}</p>
@@ -285,12 +286,12 @@
             ...offer.cost.directFees.map((item) => ({ type: "Koszt bezpośredni", label: item.label, value: formatMoney(item.amount), detail: item.appliesDuring })),
             ...offer.cost.avoidableFees.map((item) => ({ type: "Opłata możliwa do uniknięcia", label: item.label, value: item.amount ? formatMoney(item.amount) : (offer.identity.category === "crypto_validation" ? "Dynamiczna" : "Zależna od wieku"), detail: item.avoidanceCondition })),
             ...offer.cost.downstreamCosts.map((item) => ({ type: "Koszt dalszy", label: item.label, value: renderMoneyOrRule(item), detail: item.trigger })),
-            ...offer.cost.opportunityCost.map((item) => ({ type: "Opportunity cost", label: item.label, value: item.monetized ? renderMoneyOrRule(item) : "Nie monetyzujemy", detail: item.assumption }))
+            ...offer.cost.opportunityCost.map((item) => ({ type: "Opportunity Cost", glossary: "opportunityCost", label: item.label, value: item.monetized ? renderMoneyOrRule(item) : "Nie monetyzujemy", detail: item.assumption }))
         ];
         return `
             <section class="offer-section" id="costs" aria-labelledby="costs-title">
                 <div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> Koszt bez fikcji</p><h2 id="costs-title">Co płacisz i z czego rezygnujesz</h2></div><p>Czas i wysiłek pozostają opisem jakościowym. Nie przeliczamy ich na arbitralne złotówki.</p></div>
-                <div class="cost-list">${items.map((item) => `<article><span>${escapeHtml(item.type)}</span><h3>${escapeHtml(item.label)}</h3><strong>${item.value}</strong><p>${escapeHtml(item.detail)}</p></article>`).join("")}</div>
+                <div class="cost-list">${items.map((item) => `<article><span>${item.glossary ? term(item.glossary) : escapeHtml(item.type)}</span><h3>${escapeHtml(item.label)}</h3><strong>${item.value}</strong><p>${escapeHtml(item.detail)}</p></article>`).join("")}</div>
             </section>`;
     }
 
@@ -306,7 +307,7 @@
                         <div><h3>Reasons</h3><ul>${verdict.reasons.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div>
                         <div><h3>Conditions</h3>${verdict.conditions.length ? `<ul>${verdict.conditions.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : "<p>Brak warunków pozytywnego Verdict bez scenariusza użytkownika.</p>"}</div>
                         <div><h3>Blockers</h3><ul>${verdict.positiveBlockers.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div>
-                        <div><h3>Confidence</h3><strong class="confidence-large">${escapeHtml(offer.decision.northConfidence.band)}</strong><p>${escapeHtml(offer.decision.northConfidence.reasons[0])}</p></div>
+                        <div><h3>${term("northConfidence")}</h3><strong class="confidence-large">${escapeHtml(offer.decision.northConfidence.band)}</strong><p>${escapeHtml(offer.decision.northConfidence.reasons[0])}</p></div>
                     </div>
                     <div class="comparison-panel"><div><span>Do nothing</span><strong>${formatMoney(comparison.doNothing.reward)} nagrody · ${formatMoney(comparison.doNothing.directCost)} kosztu</strong><p>Wysiłek: ${escapeHtml(comparison.doNothing.effort)} · nowe ryzyko: ${escapeHtml(comparison.doNothing.failureRisk)}</p></div><div><span>Wniosek</span><p>${escapeHtml(comparison.conclusion)}</p></div></div>
                 </article>
@@ -362,7 +363,7 @@
                 <div class="evidence-status-grid">
                     <div><span>Aktualność danych</span><strong class="freshness-text freshness-text--${freshness.state.toLowerCase().replaceAll("_", "-")}">${escapeHtml(freshness.label)}</strong></div>
                     <div><span>Ostatni pełny review</span><strong>${formatDate(offer.identity.verifiedAt)}</strong></div>
-                    <div><span>North Confidence</span><strong>${escapeHtml(offer.decision.northConfidence.band)}</strong></div>
+                    <div><span>${term("northConfidence")}</span><strong>${escapeHtml(offer.decision.northConfidence.band)}</strong></div>
                     <div><span>Ręczny recheck do</span><strong>${formatDate(offer.evidence.recheckBy)}</strong></div>
                 </div>
                 <p class="freshness-explanation"><span class="freshness-badge freshness-badge--${freshness.state.toLowerCase().replaceAll("_", "-")}">${escapeHtml(freshness.label)}</span>${escapeHtml(freshness.explanation)}</p>
@@ -405,20 +406,21 @@
                     <h1 id="offer-title">${escapeHtml(offer.identity.title)}</h1>
                     <p class="offer-hero-problem">${escapeHtml(offer.listing.problemLabel)}</p>
                     <p>${escapeHtml(offer.listing.summary)}</p>
-                    <div class="action-row"><a class="north-button" href="#scenarios">Zobacz scenariusze <span aria-hidden="true">↓</span></a><a class="north-link" href="#sources">Sprawdź źródła</a></div>
+                    <div class="action-row"><a class="north-button" href="${offer.match ? "#match" : "#scenarios"}">${offer.match ? "Sprawdź dla siebie" : "Zobacz scenariusze"} <span aria-hidden="true">↓</span></a><a class="north-link" href="#sources">Sprawdź źródła</a></div>
                     <div class="hero-freshness"><span class="freshness-badge freshness-badge--${freshness.state.toLowerCase().replaceAll("_", "-")}">${escapeHtml(freshness.label)}</span><p>${escapeHtml(freshness.explanation)}</p></div>
                     <p class="record-meta">Edycja: ${escapeHtml(offer.identity.edition.name)}${validityCopy}</p>
                 </div>
                 <aside class="offer-hero-verdict">
-                    <div class="panel-topline"><span>North Verdict</span><span class="confidence-badge">Confidence ${escapeHtml(offer.decision.northConfidence.band)}</span></div>
+                    <div class="panel-topline"><span>${term("verdict", "North Verdict")}</span><span class="confidence-badge">${term("northConfidence", "Confidence")} ${escapeHtml(offer.decision.northConfidence.band)}</span></div>
                     <span class="${verdictClass(offer.decision.verdict.state)}">${escapeHtml(offer.decision.verdict.state)}</span>
                     <h2>${escapeHtml(offer.decision.verdict.summary)}</h2>
                     <p>${escapeHtml(offer.decision.verdict.reasons.join(" "))}</p>
-                    <div class="advertised-context"><span>Advertised Max</span><strong>${escapeHtml(offer.value.advertisedMax.displayLabel)}</strong><small>${escapeHtml(offer.value.advertisedMax.caveat)}</small></div>
+                    <div class="advertised-context"><span>${term("advertisedMax")}</span><strong>${escapeHtml(offer.value.advertisedMax.displayLabel)}</strong><small>${escapeHtml(offer.value.advertisedMax.caveat)}</small></div>
                 </aside>
             </section>
             ${renderHardCaseSummary(offer)}
             ${renderValueSummary(offer)}
+            ${offer.match ? '<div id="north-match-root"></div>' : ""}
             ${renderScenarios(offer)}
             ${renderComponents(offer)}
             ${renderEligibility(offer)}
@@ -427,6 +429,8 @@
             ${renderVerdict(offer)}
             ${renderEvidence(offer)}
             <footer class="offer-footer-page"><img src="../assets/brand/north-logo.svg" alt="North"><p>Decision Model v1 · ${escapeHtml(freshness.label)} · review ${formatDate(offer.identity.verifiedAt)}. North nie gwarantuje nagrody i nie zastępuje regulaminu ani indywidualnej porady.<br>${escapeHtml(footerDisclosure)}</p><nav aria-label="Linki analizy"><a class="north-link" href="../methodology.html">Metodologia</a><a class="north-link" href="${isValidationCase ? "../methodology.html#validation" : "../index.html#opportunities"}">${isValidationCase ? "Wróć do validation case" : "Wróć do analiz"}</a></nav></footer>`;
+        window.NorthGlossary.init(root);
+        if (offer.match) window.NorthMatch.mount(root.querySelector("#north-match-root"), offer);
     }
 
     load("../data/decision-offers.json")

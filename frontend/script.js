@@ -2,6 +2,7 @@
     "use strict";
 
     const { load, formatMoney, formatValue, formatDate, freshnessFor, escapeHtml } = window.NorthOffers;
+    const term = (key, label) => window.NorthGlossary.label(key, label);
 
     const offerRoutes = {
         "bank-millennium-millennium-360": "offers/millennium.html",
@@ -50,7 +51,7 @@
         target.innerHTML = `
             <article class="breakdown-panel">
                 <div class="advertised-bar">
-                    <span>Advertised Max · reklamowane przez oferenta</span>
+                    <span>${term("advertisedMax")} · reklamowane przez oferenta</span>
                     <strong>${escapeHtml(offer.value.advertisedMax.displayLabel)}</strong>
                     <small>Łączna wartość nominalna; nie jedna gotówkowa premia.</small>
                 </div>
@@ -78,18 +79,18 @@
                 <div class="panel-topline"><span>North Snapshot</span><span class="confidence-badge">${escapeHtml(offer.decision.northConfidence.band)}</span></div>
                 <p class="snapshot-intro">Jawny scenariusz: ${escapeHtml(example.label)}.</p>
                 <dl class="snapshot-values">
-                    <div><dt>Advertised Max</dt><dd>${formatMoney(scenario.advertisedMax)}</dd><span>nie jest jedną gotówkową premią</span></div>
-                    <div><dt>Easy Floor</dt><dd>${formatMoney(scenario.easyFloor)}</dd><span>przy założeniach opisanych w analizie</span></div>
-                    <div><dt>Your Likely Value</dt><dd>${formatValue(scenario.likelyGrossValue)}</dd><span>część podróżna wyłączona bez danych</span></div>
-                    <div><dt>Expected Usable Value</dt><dd>${formatValue(scenario.expectedUsableValue)}</dd><span>dla części startowej</span></div>
-                    <div><dt>Net Scenario Value</dt><dd>${formatValue(scenario.netScenarioValue)}</dd><span>potwierdzony koszt bezpośredni: ${formatMoney(scenario.directCost)}</span></div>
-                    <div><dt>Conditional Max</dt><dd>${formatValue(offer.value.conditionalMax.grossValue)}</dd><span>wymaga pełnego salda i wydatków podróżnych</span></div>
+                    <div><dt>${term("advertisedMax")}</dt><dd>${formatMoney(scenario.advertisedMax)}</dd><span>nie jest jedną gotówkową premią</span></div>
+                    <div><dt>${term("easyFloor")}</dt><dd>${formatMoney(scenario.easyFloor)}</dd><span>przy założeniach opisanych w analizie</span></div>
+                    <div><dt>${term("yourLikelyValue")}</dt><dd>${formatValue(scenario.likelyGrossValue)}</dd><span>część podróżna wyłączona bez danych</span></div>
+                    <div><dt>${term("expectedUsableValue")}</dt><dd>${formatValue(scenario.expectedUsableValue)}</dd><span>dla części startowej</span></div>
+                    <div><dt>${term("netScenarioValue")}</dt><dd>${formatValue(scenario.netScenarioValue)}</dd><span>potwierdzony koszt bezpośredni: ${formatMoney(scenario.directCost)}</span></div>
+                    <div><dt>${term("conditionalMax")}</dt><dd>${formatValue(offer.value.conditionalMax.grossValue)}</dd><span>wymaga pełnego salda i wydatków podróżnych</span></div>
                 </dl>
                 <dl class="scenario-qualities">
                     <div><dt>Wysiłek</dt><dd>${escapeHtml(scenario.effortBurden)}</dd></div>
                     <div><dt>Czas</dt><dd>${escapeHtml(scenario.duration)}</dd></div>
                     <div><dt>Ryzyko</dt><dd>${escapeHtml(scenario.failureRisk)}</dd></div>
-                    <div><dt>Elastyczność</dt><dd>${escapeHtml(scenario.flexibility)}</dd></div>
+                    <div><dt>${term("flexibility", "Elastyczność")}</dt><dd>${escapeHtml(scenario.flexibility)}</dd></div>
                 </dl>
                 <p class="risk-callout"><strong>Główny punkt utraty:</strong> ${escapeHtml(mainFailure.consequence)}</p>
                 <span class="${verdictClass(example.verdict)}">${escapeHtml(example.verdict)}</span>
@@ -131,15 +132,15 @@
                     <h3>${escapeHtml(example.label)}</h3>
                     <ul class="assumption-list">${inputs.map((input) => `<li>${escapeHtml(input)}</li>`).join("")}</ul>
                     <div class="scenario-result">
-                        <div><span>Your Likely Value</span><strong>${formatValue(example.grossValue)}</strong></div>
-                        <div><span>Expected Usable Value</span><strong>${formatValue(example.usableValue)}</strong></div>
+                        <div><span>${term("yourLikelyValue")}</span><strong>${formatValue(example.grossValue)}</strong></div>
+                        <div><span>${term("expectedUsableValue")}</span><strong>${formatValue(example.usableValue)}</strong></div>
                     </div>
                     ${example.calculation ? `<p class="calculation">${escapeHtml(example.calculation)}</p>` : ""}
                     <dl class="compact-qualities">
                         <div><dt>Wysiłek</dt><dd>${escapeHtml(value.effortBurden)}</dd></div>
                         <div><dt>Czas</dt><dd>${escapeHtml(value.duration)}</dd></div>
                         <div><dt>Ryzyko</dt><dd>${escapeHtml(value.failureRisk)}</dd></div>
-                        <div><dt>Elastyczność</dt><dd>${escapeHtml(value.flexibility)}</dd></div>
+                        <div><dt>${term("flexibility", "Elastyczność")}</dt><dd>${escapeHtml(value.flexibility)}</dd></div>
                     </dl>
                     <p class="verdict-reason"><strong>Powód Verdict:</strong> ${escapeHtml(example.verdictReason)}</p>
                     <p class="do-nothing"><strong>Kontra brak działania:</strong> 0 zł nagrody, 0 zł nowego kosztu, minimalny wysiłek.</p>
@@ -166,11 +167,11 @@
                     <h3>${escapeHtml(offer.identity.title)}</h3>
                     <p class="offer-summary">${escapeHtml(offer.listing.summary)}</p>
                     <dl class="offer-card-values">
-                        <div><dt>Advertised Max</dt><dd>${escapeHtml(offer.value.advertisedMax.displayLabel)}</dd></div>
-                        <div><dt>Przykład Your Likely Value</dt><dd>${formatValue(firstValue.likelyGrossValue)}</dd></div>
+                        <div><dt>${term("advertisedMax")}</dt><dd>${escapeHtml(offer.value.advertisedMax.displayLabel)}</dd></div>
+                        <div><dt>${term("yourLikelyValue", "Przykład Your Likely Value")}</dt><dd>${formatValue(firstValue.likelyGrossValue)}</dd></div>
                     </dl>
                     <div class="offer-card-verdict"><span>Bez danych użytkownika</span><strong>${escapeHtml(offer.decision.verdict.state)}</strong></div>
-                    <a class="north-button north-button--card" href="${offerRoutes[offer.identity.id]}">Zobacz analizę <span aria-hidden="true">→</span></a>
+                    <a class="north-button north-button--card" href="${offerRoutes[offer.identity.id]}#match">Sprawdź dla siebie <span aria-hidden="true">→</span></a>
                 </article>`;
         }).join("");
     }
@@ -213,6 +214,7 @@
             renderNestScenarios(nest);
             renderOffers(activeOffers);
             renderConfidence(activeOffers, data);
+            window.NorthGlossary.init(document);
         })
         .catch(() => renderError("Nie udało się wczytać zweryfikowanych danych. Otwórz stronę przez lokalny serwer i spróbuj ponownie."));
 }());

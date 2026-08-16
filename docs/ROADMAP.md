@@ -6,11 +6,11 @@
 
 Element trafia do sprintu tylko z celem, właścicielem, zakresem i Definition of Done. Roadmapa jest kolejnością hipotez, nie obietnicą terminu. Funkcje finansowe, afiliacyjne i analityczne wymagają najpierw zasad transparentności oraz zgodności prawnej.
 
-## Stan obecny — v0.6.3
+## Stan obecny — v0.7.0
 
-**Cel osiągnięty:** Decision Model v1 przeszedł kontrolowany crypto hard case bez rozszerzania zakresu MVP.
+**Cel osiągnięty:** użytkownik może policzyć Explainable North Match dla Millennium, Nest i Pekao na podstawie jawnych danych i zobaczyć, dlaczego zmieniły się wartość, dopasowanie oraz Verdict.
 
-Bank Millennium, Nest Bank i Bank Pekao pozostają podstawową trójką MVP. Kraken został przyjęty wyłącznie jako nieafiliacyjna analiza validation case: `LOW` Confidence i `NOT ENOUGH DATA`, bez karty katalogowej i bez referral CTA. Test potwierdził, że istniejące pola modelu wystarczają do pokazania niegwarantowanej nagrody, kapitału narażonego na zmianę ceny, dynamicznych kosztów i konfliktu źródeł. Krypto nie wchodzi szerzej do roadmapy.
+Match nie jest procentem ani zamiennikiem Verdict. Wspólny klientowy silnik interpretuje reguły zapisane w istniejącym Decision Model, a wynik pokazuje reasons, blockers, conditions i brakujące dane. Glossary wyjaśnia angielskie terminy po polsku. Dane scenariusza pozostają lokalnie w bieżącej karcie. Kraken nadal jest wyłącznie validation case poza głównym Match flow i katalogiem.
 
 ## Następne etapy
 
@@ -83,11 +83,13 @@ Ten etap może rozpocząć się wyłącznie po walidacji podstawowej trójki v0.
 
 ### v0.7.0 — Explainable North Match
 
-- Zbudować dopasowanie oparte na jawnych założeniach użytkownika, bez zbędnych danych wrażliwych.
-- Pokazywać, dlaczego oferta pasuje lub nie pasuje oraz jak zmiana założenia zmienia wartość i werdykt.
-- Porównywać ofertę z alternatywą i brakiem działania; sam procent dopasowania nie jest wynikiem wystarczającym.
+- **Status:** zaimplementowano 2026-08-16.
+- Dopasowanie opiera się na minimalnym zestawie jawnych założeń użytkownika, bez danych osobowych i bez konta.
+- Wynik używa bandów jakościowych oraz pokazuje, dlaczego oferta pasuje lub nie pasuje, co ją blokuje i jak dane zmieniają wartość oraz Verdict.
+- Millennium, Nest i Pekao korzystają ze wspólnego interpretera reguł w istniejącym rekordzie Decision Model; Pekao ujawnia dodatkowe pytania podróżne dopiero po ich wybraniu.
+- Centralny glossary zapewnia proste polskie definicje i dostępne popovery na desktopie, mobile i klawiaturze.
 
-**Definition of Done:** użytkownik potrafi wskazać czynniki wyniku i zobaczyć konsekwencję zmiany co najmniej jednego założenia.
+**Definition of Done — spełnione:** użytkownik może wskazać czynniki wyniku, zmienić założenia, zobaczyć konsekwencję dla `Your Likely Value`, `Expected Usable Value`, `Net Scenario Value`, Match i Verdict oraz odróżnić brak danych od potwierdzonego negatywnego scenariusza.
 
 ### v0.7.1 — Treść, SEO i dostępność
 

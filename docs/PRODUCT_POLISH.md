@@ -42,7 +42,8 @@ Backlog jakościowy. Priorytet określa wpływ na zaufanie i ukończenie zadania
 - [x] Przed publikacją Kraken ponownie sprawdzić aktualne warunki promocji, dostępność, ograniczenia linkowania, ryzyko rynkowe i niegwarantowany charakter nagrody — v0.6.3; publiczne linkowanie przez portal pozostaje niepotwierdzone, więc CTA nie istnieje.
 - Wersjonowanie edycji ofert i historia zmian regulaminów.
 - Automatyczne monitorowanie regulaminów po sprawdzeniu procesu ręcznego.
-- Explainable North Match pokazujący wpływ zmiany założeń, nie tylko procent.
+- [x] Explainable North Match pokazujący wpływ zmiany założeń bez procentowego score'u — v0.7.0.
+- [x] Centralny North Glossary z dostępnymi popoverami dla terminów Decision Model — v0.7.0.
 - Pełny North Plan, conflict engine i historyczne `WAIT` vs `TAKE`.
 
 ## Kryterium zamknięcia zadania

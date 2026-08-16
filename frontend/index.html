@@ -9,7 +9,7 @@
     <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="assets/brand/favicon-32x32.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
-    <link rel="stylesheet" href="style.css?v=0.6.3">
+    <link rel="stylesheet" href="style.css?v=0.7.0">
     <title>North — sprawdź, która oferta ma sens dla Ciebie</title>
 </head>
 <body class="north-landing">
@@ -46,10 +46,10 @@
                     <span class="status-dot" id="structure-status">Sprawdzanie aktualności danych</span>
                 </div>
                 <dl class="value-preview__grid">
-                    <div><dt>Advertised Max</dt><dd>Twierdzenie oferenta</dd></div>
-                    <div><dt>Easy Floor</dt><dd>Jawny prostszy scenariusz</dd></div>
-                    <div><dt>Your Likely Value</dt><dd>Wynik Twoich założeń</dd></div>
-                    <div><dt>North Confidence</dt><dd>HIGH / MEDIUM / LOW</dd></div>
+                    <div><dt><span data-glossary="advertisedMax">Advertised Max</span></dt><dd>Twierdzenie oferenta</dd></div>
+                    <div><dt><span data-glossary="easyFloor">Easy Floor</span></dt><dd>Jawny prostszy scenariusz</dd></div>
+                    <div><dt><span data-glossary="yourLikelyValue">Your Likely Value</span></dt><dd>Wynik Twoich założeń</dd></div>
+                    <div><dt><span data-glossary="northConfidence">North Confidence</span></dt><dd>HIGH / MEDIUM / LOW</dd></div>
                 </dl>
                 <div class="value-preview__footer">
                     <strong>Bez magicznego wyniku</strong>
@@ -151,7 +151,7 @@
                     <p class="section-kicker"><span aria-hidden="true"></span> Decision Model v1</p>
                     <h2 id="opportunities-title">Pierwsze analizy North</h2>
                 </div>
-                <p>Trzy oferty, trzy różne pytania: miesięczny wysiłek, wartość zależna od wydatków i nagrody o różnej użyteczności.</p>
+                <p>Trzy oferty, trzy różne pytania. Otwórz analizę i wybierz „Sprawdź dla siebie”, aby policzyć lokalny scenariusz bez konta i bez procentowego score’u.</p>
             </div>
             <div class="decision-offers-grid data-loading" id="decision-offers" aria-live="polite">Ładowanie analiz…</div>
         </section>
@@ -183,7 +183,8 @@
         <p>Decision Model v1 · <span id="footer-review">data review ze wspólnego rekordu</span><br>North może otrzymać wynagrodzenie za wybrane linki. Nie wpływa to na Value, Confidence ani Verdict; oferta bez afiliacji może być lepsza.</p>
     </footer>
 
-    <script src="data/offers.js?v=0.6.3"></script>
-    <script src="script.js?v=0.6.3"></script>
+    <script src="data/offers.js?v=0.7.0"></script>
+    <script src="glossary.js?v=0.7.0"></script>
+    <script src="script.js?v=0.7.0"></script>
 </body>
 </html>

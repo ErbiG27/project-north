@@ -4,7 +4,38 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 
 ## [Unreleased]
 
-Brak zmian po wydaniu v0.6.3.
+Brak zmian po wydaniu v0.7.0.
+
+## [0.7.0] — 2026-08-16
+
+### Added
+
+- Explainable North Match na stronach Millennium, Nest i Pekao: dwuetapowy formularz lokalnego scenariusza, bandy `FIT`, `CONDITIONAL FIT`, `POOR FIT` i `CANNOT ASSESS` oraz osobny Verdict.
+- Wspólny klientowy scenario engine interpretujący reguły zapisane przy ofertach w `decision-offers.json`, bez backendu, konta i profilu w chmurze.
+- Wyjaśnienie wyniku z reasons, blockers, conditions, brakującymi danymi oraz listą odpowiedzi, które wpłynęły na wynik.
+- Centralny North Glossary dla dwunastu terminów Decision Model i dostępne popovery obsługujące hover, tap, focus, Enter, Space, Escape oraz kliknięcie poza panelem.
+
+### Changed
+
+- Millennium dynamicznie rozdziela Premię I i all-or-nothing Premię II, uwzględnia próg wpływu zależny od wieku, karencję, pięciomiesięczny rytm i konflikt dla dokładnie 26 lat.
+- Nest liczy 2% kwalifikowanych wydatków z miesięcznym capem 50 zł przez wybrany horyzont; brak kwalifikowanego wpływu zeruje cashback, a premia EUR pozostaje osobnym, warunkowym składnikiem.
+- Pekao oddziela 300 zł części startowej od części podróżnej. Wirtualne saldo nie wchodzi do `Your Likely Value` bez jawnych danych o płatnościach i kwalifikowanych wydatkach podróżnych.
+- Landing prowadzi z kart ofert bezpośrednio do „Sprawdź dla siebie”, a metodologia wyjaśnia różnicę między Match i Verdict.
+- Legacy Revolut nie renderuje już pustego linku `href="#"`; niedostępne CTA jest jawnym, nieinteraktywnym stanem.
+
+### Verified
+
+- Scenariusze Millennium: pełne dopasowanie 700 zł, dyskwalifikacja i brak danych.
+- Scenariusze Nest: 500 zł i 2 500 zł miesięcznych wydatków, brak wymaganego wpływu oraz pełny wariant z EUR.
+- Scenariusze Pekao: tylko 300 zł, wyłączenie podróży, pełne dane podróżne oraz brak materialnej kwoty.
+- Landing, metodologia, Millennium, Nest, Pekao, Kraken i Revolut bez poziomego overflow i duplikatów ID w 1440×900 oraz 390×844; brak błędów i ostrzeżeń konsoli.
+- Popovery glossary: hover, click/tap, Enter, Space, Escape, focus return, outside click i granice viewportu desktop/mobile.
+
+### Known limitations
+
+- Dane scenariusza istnieją tylko w bieżącym formularzu i znikają po przeładowaniu; nie używamy `localStorage`.
+- Pekao wymaga osobnego podania wydatków z pierwszych 20 transakcji i od 21. transakcji, ponieważ kolejność materialnie zmienia saldo podróżne.
+- Match nie porównuje jeszcze kompletnej alternatywnej oferty; dodatni scenariusz podstawowych przypadków zachowuje Verdict `TAKE IF`.
 
 ## [0.6.3] — 2026-08-16
 
