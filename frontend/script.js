@@ -198,7 +198,7 @@
 
     load("data/decision-offers.json")
         .then((data) => {
-            const activeOffers = data.offers.filter((offer) => ["active", "closing"].includes(offer.identity.status) && offer.identity.verifiedAt);
+            const activeOffers = data.offers.filter((offer) => ["active", "closing"].includes(offer.identity.status) && offer.identity.verifiedAt && offer.identity.category !== "crypto_validation");
             const pekao = activeOffers.find((offer) => offer.identity.id.includes("pekao"));
             const nest = activeOffers.find((offer) => offer.identity.id.includes("nest"));
             document.getElementById("published-count").textContent = activeOffers.length;

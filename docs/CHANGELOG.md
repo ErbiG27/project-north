@@ -4,7 +4,31 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 
 ## [Unreleased]
 
-Brak zmian po wydaniu v0.6.2.
+Brak zmian po wydaniu v0.6.3.
+
+## [0.6.3] — 2026-08-16
+
+### Added
+
+- Pojedyncza strona `Kraken Referral Program — crypto hard case`, dostępna wyłącznie z metodologii i wyłączona z głównego katalogu.
+- Rekord validation case w Decision Model v1 oraz raport `CRYPTO_HARD_CASE_V1.md` z bieżącymi oficjalnymi dowodami.
+- Jawny widok nominal reward, usable reward, required capital, capital at risk, opłat, spreadu, market exposure i terminu.
+
+### Changed
+
+- Controlled crypto pilot otrzymał wynik `LOW` North Confidence i `NOT ENOUGH DATA`, bez referral lub afiliacyjnego CTA.
+- UI i dokumentacja rozróżniają aktywny program od niepełnych, indywidualnych Promotion Details oraz konfliktu oficjalnego deadline'u 15/30 dni.
+
+### Verified
+
+- Decision Model v1 obsłużył hard case bez zmiany schema i bez osobnej architektury krypto.
+- Krypto pozostaje poza zakresem katalogu i dalszej roadmapy MVP.
+- Kraken oraz regresja Landing, Millennium, Nest, Pekao, Methodology i Revolut przeszły smoke test w 1440×900 i 390×844; sprawdzono konsolę, 404, overflow, kotwice, evidence links, focus i `noopener`.
+
+### Known limitations
+
+- Próg depozytu, minimalny obrót, wiążący deadline, pełna forma nagrody i część zasad wyjścia wymagają Promotion Details z konkretnego konta.
+- Nie potwierdzono publicznego użycia indywidualnego linku referral przez portal North.
 
 ## [0.6.2] — 2026-08-16
 

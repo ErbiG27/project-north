@@ -36,10 +36,10 @@ Backlog jakościowy. Priorytet określa wpływ na zaufanie i ukończenie zadania
 
 ## Później — po walidacji Decision Model v1
 
-- Przeprowadzić jeden kontrolowany crypto hard case: Kraken referral, wyłącznie jako stretch validation case po Millennium, Nest i Pekao — nie jako rozszerzenie katalogu.
-- W analizie Kraken jawnie pokazać reward uncertainty, market risk, `North Confidence`, user capital at risk, conditions required oraz możliwość Verdict `TAKE IF`, `SKIP` lub `NOT ENOUGH DATA`.
-- Nie nadawać pozytywnego Verdict z powodu samej afiliacji lub referral.
-- Przed publikacją Kraken ponownie sprawdzić aktualne warunki promocji, publiczną dostępność ścieżki wejścia, ograniczenia programu referral, dozwolone publikowanie i linkowanie, ryzyko rynkowe oraz niegwarantowany charakter nagrody.
+- [x] Przeprowadzić jeden kontrolowany crypto hard case: Kraken referral, wyłącznie jako stretch validation case po Millennium, Nest i Pekao — v0.6.3; poza katalogiem.
+- [x] W analizie Kraken jawnie pokazać reward uncertainty, market risk, `North Confidence`, user capital at risk i conditions required — v0.6.3; Verdict `NOT ENOUGH DATA`.
+- [x] Nie nadawać pozytywnego Verdict z powodu samej afiliacji lub referral — brak referral CTA.
+- [x] Przed publikacją Kraken ponownie sprawdzić aktualne warunki promocji, dostępność, ograniczenia linkowania, ryzyko rynkowe i niegwarantowany charakter nagrody — v0.6.3; publiczne linkowanie przez portal pozostaje niepotwierdzone, więc CTA nie istnieje.
 - Wersjonowanie edycji ofert i historia zmian regulaminów.
 - Automatyczne monitorowanie regulaminów po sprawdzeniu procesu ręcznego.
 - Explainable North Match pokazujący wpływ zmiany założeń, nie tylko procent.

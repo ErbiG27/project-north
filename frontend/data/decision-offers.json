@@ -685,6 +685,166 @@
       },
       "listing": { "problemLabel": "2 700 zł nie oznacza 2 700 zł prostego bonusu", "summary": "300 zł przelewów i do 2 400 zł warunkowych nagród podróżnych po zbudowaniu oraz wykorzystaniu wirtualnego salda.", "featured": true },
       "affiliate": { "available": false, "url": null, "disclosure": "Brak aktywnego linku afiliacyjnego w tym rekordzie." }
+    },
+    {
+      "identity": {
+        "id": "kraken-referral-crypto-hard-case",
+        "slug": "kraken-referral-hard-case",
+        "provider": "Kraken / Payward",
+        "category": "crypto_validation",
+        "title": "Kraken Referral Program — crypto hard case",
+        "status": "active",
+        "verifiedAt": "2026-08-16",
+        "edition": {
+          "id": "kraken-referral-personalized-2026-08-16",
+          "name": "Bieżący program referral z indywidualnymi Promotion Details",
+          "validFrom": null,
+          "validTo": null,
+          "certainty": "personalized",
+          "identifierNote": "Publiczne zasady potwierdzają aktywny program i Polskę, ale próg depozytu, wymagany obrót oraz część szczegółów edycji są widoczne dopiero w aplikacji lub panelu konkretnego zaproszenia."
+        }
+      },
+      "value": {
+        "advertisedMax": {
+          "displayLabel": "do 20 EUR",
+          "faceValueTotal": { "amount": 20, "currency": "EUR" },
+          "componentIds": ["kraken-referral-reward"],
+          "aggregationBasis": "Jedna premia referral dla nowego użytkownika; publiczna strona reklamuje wartość do 20 EUR, a właściwe Promotion Details mogą się różnić.",
+          "isCashEquivalent": false,
+          "caveat": "Nagroda nie jest gwarantowana, jej forma zależy od wariantu, a wartość aktywa może zmieniać się przed i po zaksięgowaniu."
+        },
+        "rewardComponents": [
+          {
+            "id": "kraken-referral-reward",
+            "label": "Referral Bonus dla nowego użytkownika",
+            "form": "asset",
+            "advertisedValue": { "amount": 20, "currency": "EUR" },
+            "calculation": "Publiczne FAQ opisuje stałą kwotę 20 w walucie domyślnej, potencjalnie jako 20 EUR w BTC; strona programu używa komunikatu „do 20 EUR”. Właściwa forma i zasady pochodzą z indywidualnych Promotion Details.",
+            "conditionActionIds": ["kraken-signup", "kraken-verify", "kraken-fiat-deposit", "kraken-qualifying-trade", "kraken-keep-account"],
+            "combinability": "Brak publicznego potwierdzenia łączenia z innymi promocjami.",
+            "conditional": true,
+            "usability": {
+              "liquidity": "market_exposed",
+              "usableValueRule": "Nie da się wyznaczyć z góry: zależy od faktycznie zaksięgowanej formy, kursu aktywa oraz kosztu sprzedaży lub wypłaty.",
+              "restrictions": ["Nagroda nie jest gwarantowana do czasu zaksięgowania.", "Regulamin określa ją jako nieprzenoszalną, niewymienialną i niedającą się wykupić za gotówkę, o ile Promotion Details nie stanowią inaczej.", "Konto musi pozostać aktywne, zweryfikowane i w dobrej kondycji; zamknięcie w ciągu miesiąca może zablokować lub cofnąć nagrodę."],
+              "expiry": null,
+              "transferability": "restricted_until_credited_and_subject_to_asset_rules"
+            }
+          }
+        ],
+        "easyFloor": null,
+        "scenarioFormula": {
+          "humanReadable": "Nie obliczaj expected value. Najpierw potwierdź indywidualny próg depozytu, wymagany obrót, termin i formę nagrody; następnie pokaż nominalną nagrodę osobno od opłat, spreadu i ryzyka ceny.",
+          "expression": "usableValue = NOT_DETERMINABLE until promotionDetails + executionPrice + fees + spread + creditedRewardAsset are known",
+          "inputs": ["referralOfferVisible", "requiredFiatDeposit", "requiredTradeVolume", "criteriaCompletionWindow", "qualifyingAsset", "executionFee", "executionSpread", "creditedRewardAsset", "assetPriceAtUse"],
+          "caps": [{ "scope": "publicly advertised referee reward", "amount": { "amount": 20, "currency": "EUR" } }],
+          "horizon": "Publiczne źródła są sprzeczne: 15 albo 30 dni na wykonanie warunków; wypłata do 14 dni po ich wykonaniu, przy obowiązku utrzymania konta przez co najmniej miesiąc.",
+          "assumptions": ["Brak pełnego rozkładu prawdopodobieństwa i brak gwarancji wypłaty, więc model nie liczy statystycznego expected value.", "Ryzyka ceny nie przelicza się na arbitralną kwotę EUR lub PLN."]
+        },
+        "conditionalMax": null,
+        "rewardForms": ["asset"],
+        "usabilityConstraints": ["Nominalne 20 EUR nie jest gwarantowaną gotówką.", "Faktyczna wartość użyteczna zależy od aktywa, ceny i kosztów wyjścia.", "Brak publicznego minimum gwarantowanego; możliwy wynik to brak wypłaty."],
+        "scenarioExamples": [
+          {
+            "id": "kraken-public-data-only",
+            "label": "Polski nowy użytkownik — tylko dane publiczne",
+            "userInputs": { "referralOfferVisible": true, "requiredFiatDeposit": null, "requiredTradeVolume": null, "qualifyingAsset": null, "executionFee": null, "executionSpread": null },
+            "grossValue": null,
+            "usableValue": null,
+            "verdict": "NOT ENOUGH DATA",
+            "verdictReason": "Nieznany próg depozytu i obrotu, konflikt terminu oraz dynamiczne koszty mogą zmienić wynik; publiczne „do 20 EUR” nie wystarcza do decyzji.",
+            "confidenceBand": "LOW"
+          }
+        ]
+      },
+      "eligibility": {
+        "geography": { "allowed": ["Poland", "eligible EEA"], "excluded": [], "basis": "Oficjalny support wymienia Polskę; w EEA polecający i polecony mogą mieszkać w różnych kwalifikowanych państwach EEA. Dostępność konkretnego wariantu musi być widoczna na koncie." },
+        "age": { "min": 18, "max": null, "note": "Pełnoletność i zdolność do zawarcia umowy wynikają z warunków konta EEA; konkretne ograniczenia zależą od jurysdykcji i onboardingu." },
+        "newCustomer": { "required": true, "definition": "Polecony nie może mieć ani wcześniej posiadać konta Kraken; musi utworzyć nowe konto przez prawidłowy link lub kod w aplikacji.", "lookbackFrom": null, "lookbackTo": "account_creation", "relationshipTypes": ["any current or former Kraken account"] },
+        "priorRelationshipExclusions": ["Obecne lub wcześniejsze konto Kraken.", "Duplikat konta lub urządzenia.", "Więcej niż jedna nagroda na urządzenie lub gospodarstwo domowe."],
+        "requiredIncome": { "required": true, "type": "fiat_deposit", "amount": null, "cadence": "Jednorazowy depozyt fiat z rachunku bankowego; kwota jest pokazana w aplikacji.", "qualifyingSources": ["Depozyt fiat metodą dopuszczoną w aplikacji."], "excludedSources": ["Depozyt kartą kredytową lub debetową według publicznej strony programu."], "ageBands": null, "appliesToComponentIds": ["kraken-referral-reward"] },
+        "requiredSpend": [{ "amount": null, "cadence": "Jeden lub więcej trade'ów do indywidualnego progu obrotu w oknie 15 albo 30 dni — oficjalne źródła są sprzeczne.", "eligibleTransactions": "Zakup, sprzedaż lub konwersja kwalifikowanego krypto zgodnie z konkretnym planem; Kraken app, web lub Kraken Pro mogą się kwalifikować.", "excludedTransactions": "Fiat–stablecoin, stablecoin–stablecoin, Bundles, equities oraz inne wyłączenia określone dla planu.", "appliesToComponentIds": ["kraken-referral-reward"] }],
+        "requiredCapital": { "amount": null, "holdingPeriod": "Brak publicznie określonego minimalnego holdingu aktywa; konto nie powinno być zamykane przez miesiąc. Natychmiastowa sprzedaż ogranicza czas ekspozycji, ale dodaje drugą opłatę/spread i nie ma publicznego potwierdzenia, że nie zostanie uznana za odwrócenie kryterium.", "capitalAtRisk": true, "appliesToComponentIds": ["kraken-referral-reward"], "note": "Wymagany depozyt i obrót są widoczne dopiero w aplikacji. Stablecoiny nie kwalifikują się, więc przynajmniej część kapitału musi przejść przez aktywo o zmiennej cenie." },
+        "disqualifiers": ["Brak indywidualnej oferty referral na koncie.", "Wcześniejsze konto Kraken.", "Rejestracja poza prawidłowym linkiem/kodem lub aplikacją.", "Brak KYC albo niedopasowanie kraju dokumentu i kraju rejestracji.", "Depozyt lub trade poniżej indywidualnego progu.", "Trade stablecoinowy lub inna wyłączona transakcja.", "Przekroczenie właściwego deadline'u.", "Zamknięcie, ograniczenie lub zła kondycja konta przed wypłatą."],
+        "userInputsRequired": ["visible promotion details", "prior Kraken account", "country and document match", "required fiat deposit", "required trade volume", "deadline shown in app", "qualifying asset", "fee and spread quote", "risk tolerance", "intended exit"]
+      },
+      "execution": {
+        "actions": [
+          { "id": "kraken-signup", "label": "Utwórz nowe konto w aplikacji przez ważny link lub kod referral.", "type": "open_account", "timing": "W aktywnym oknie konkretnego zaproszenia.", "cadence": "once", "activeMonths": 0, "threshold": null, "appliesToComponentIds": ["kraken-referral-reward"], "consequenceIfMissed": "Brak udziału w programie.", "recoverable": false },
+          { "id": "kraken-verify", "label": "Ukończ KYC i spełnij wymóg zgodności kraju dokumentu z krajem konta.", "type": "verification", "timing": "Przed wykonaniem warunków planu.", "cadence": "once", "activeMonths": 0, "threshold": null, "appliesToComponentIds": ["kraken-referral-reward"], "consequenceIfMissed": "Brak kwalifikacji lub wypłaty.", "recoverable": false },
+          { "id": "kraken-fiat-deposit", "label": "Wpłać fiat kwalifikowaną metodą do indywidualnego progu.", "type": "deposit", "timing": "W oknie pokazanym dla zaproszenia.", "cadence": "once", "activeMonths": 0, "threshold": "NOT DETERMINABLE z publicznych źródeł", "appliesToComponentIds": ["kraken-referral-reward"], "consequenceIfMissed": "Brak nagrody.", "recoverable": false },
+          { "id": "kraken-qualifying-trade", "label": "Wykonaj wymagany obrót na kwalifikowanym, niestabilnym cenowo aktywie.", "type": "trade", "timing": "15 albo 30 dni od rejestracji — sprawdzić licznik w aplikacji.", "cadence": "once_or_multiple", "activeMonths": 1, "threshold": "NOT DETERMINABLE z publicznych źródeł", "appliesToComponentIds": ["kraken-referral-reward"], "consequenceIfMissed": "Brak nagrody.", "recoverable": false },
+          { "id": "kraken-keep-account", "label": "Utrzymuj aktywne, zweryfikowane konto w dobrej kondycji do wypłaty.", "type": "maintenance", "timing": "Co najmniej do zaksięgowania; zamknięcie w ciągu miesiąca może cofnąć kwalifikację.", "cadence": "continuous", "activeMonths": 1, "threshold": null, "appliesToComponentIds": ["kraken-referral-reward"], "consequenceIfMissed": "Wstrzymanie, anulowanie lub cofnięcie nagrody.", "recoverable": false }
+        ],
+        "cadence": { "summary": "Jednorazowa rejestracja, KYC, depozyt fiat i wymagany obrót w krótkim, niejednoznacznym oknie; następnie oczekiwanie na weryfikację i wypłatę.", "repeatedActionIds": [] },
+        "activeMonths": { "min": 1, "max": 1, "basis": "Warunki trzeba wykonać w 15 albo 30 dni, a zamknięcie konta w ciągu miesiąca może zablokować lub cofnąć nagrodę." },
+        "deadlines": [{ "type": "criteria_completion", "date": null, "relativeRule": "Publiczna strona programu: 15 dni od rejestracji; support aplikacji: 30 dni od utworzenia konta. Wiążący licznik ma być pokazany w aplikacji.", "appliesTo": "referral bonus" }],
+        "payoutLag": { "earliest": "Po zakończeniu weryfikacji spełnienia warunków.", "latest": "Oficjalny support podaje wypłatę w ciągu 14 dni od wykonania warunków; strona programu prosi o odczekanie co najmniej 14 dni.", "relativeTo": "Wykonanie wszystkich kryteriów i zatwierdzenie przez Kraken.", "payoutForm": "Aktywo cyfrowe lub waluta prawna zależnie od Promotion Details; publiczne FAQ jako przykład wskazuje 20 EUR w BTC.", "uncertaintyNote": "Brak gwarancji wypłaty; Kraken może wstrzymać, opóźnić, anulować lub cofnąć nagrodę." },
+        "failurePoints": [
+          { "id": "kraken-hidden-thresholds", "label": "Próg depozytu i obrotu jest niewidoczny publicznie", "severity": "high", "scope": "qualification and value", "consequence": "Nie da się policzyć kosztu ani porównać go z nagrodą przed zobaczeniem Promotion Details.", "mitigation": "Nie używać pozytywnego CTA; przed decyzją przepisać parametry z aplikacji.", "sourceRequired": true },
+          { "id": "kraken-deadline-conflict", "label": "Sprzeczny deadline 15 / 30 dni", "severity": "high", "scope": "execution", "consequence": "Wykonanie po krótszym terminie może nie kwalifikować się mimo innego komunikatu supportu.", "mitigation": "Traktować licznik i plan-specific terms w aplikacji jako wiążące; bez nich Verdict pozostaje NOT ENOUGH DATA.", "sourceRequired": true },
+          { "id": "kraken-market-exposure", "label": "Obowiązkowa ekspozycja na niestabilne cenowo krypto", "severity": "high", "scope": "capital", "consequence": "Kapitał i nagroda mogą stracić wartość; możliwa jest częściowa lub pełna strata pozycji.", "mitigation": "Nie monetyzować ryzyka arbitralnie; ograniczyć wielkość i czas ekspozycji dopiero po potwierdzeniu, że wyjście nie narusza warunków.", "sourceRequired": true },
+          { "id": "kraken-fee-spread", "label": "Opłaty i spread zależą od ścieżki", "severity": "high", "scope": "net value", "consequence": "Kupno i ewentualna sprzedaż mogą istotnie zmniejszyć wartość premii do 20 EUR.", "mitigation": "Sprawdzić wycenę przed zleceniem i policzyć obie strony transakcji; nie zakładać kosztu zero.", "sourceRequired": true },
+          { "id": "kraken-reward-discretion", "label": "Nagroda nie jest gwarantowana", "severity": "high", "scope": "reward", "consequence": "Nawet po wykonaniu działań wypłata może zostać wstrzymana, anulowana lub cofnięta na zasadach programu.", "mitigation": "Nie traktować nominalnej nagrody jako należnej ani nie liczyć fikcyjnego expected value.", "sourceRequired": true }
+        ],
+        "safeExit": { "status": "uncertain", "earliestExit": "Po zaksięgowaniu nagrody i upływie co najmniej miesiąca od otwarcia, po sprawdzeniu plan-specific terms.", "notice": "Publiczne zasady nie potwierdzają minimalnego holdingu kupionego aktywa, ale nie wyjaśniają wprost, czy szybka sprzedaż jest dopuszczalna dla każdego planu.", "fee": null, "clawback": "Kraken może nie wypłacić lub cofnąć nagrodę m.in. po zamknięciu konta w ciągu miesiąca albo uznaniu naruszenia zasad.", "steps": ["Potwierdzić status nagrody w panelu.", "Sprawdzić brak withdrawal hold i ograniczeń planu.", "Policzyć opłatę, spread i ryzyko ceny przed sprzedażą lub wypłatą."], "uncertaintyNote": "Nie publikować instrukcji natychmiastowej sprzedaży jako bezpiecznego scenariusza bez potwierdzenia konkretnego planu." }
+      },
+      "cost": {
+        "directFees": [{ "label": "Opłata transakcyjna za wymagany trade", "amount": null, "cadence": "per_trade", "unavoidable": true, "appliesDuring": "Kraken Instant Buy pobiera publicznie 1% plus ewentualny spread; Kraken Pro używa dynamicznego tieru maker/taker. Właściwa ścieżka i stawka wymagają potwierdzenia dla planu." }],
+        "avoidableFees": [{ "label": "Druga opłata przy sprzedaży aktywa", "amount": null, "cadence": "per_trade", "avoidanceCondition": "Można jej uniknąć tylko pozostając w aktywie, co zachowuje market exposure; nie jest to kosztowo neutralne wyjście.", "failurePointId": "kraken-fee-spread" }],
+        "downstreamCosts": [
+          { "label": "Dynamiczny spread", "amountOrRule": "W Instant Buy jest wbudowany w cenę i zależy m.in. od aktywa, wielkości, metody oraz warunków rynkowych; przy sprzedaży może wystąpić ponownie.", "trigger": "Kupno lub sprzedaż przez Instant Buy / Convert.", "uncertaintyNote": "Brak stałej wartości przed wyceną transakcji." },
+          { "label": "Zmiana ceny aktywa", "amountOrRule": "Nieprzewidywalna; North nie przelicza jej na arbitralne EUR lub PLN.", "trigger": "Każdy czas między zakupem, ewentualną sprzedażą i użyciem nagrody.", "uncertaintyNote": "Stablecoiny nie kwalifikują się, więc nie da się usunąć ekspozycji tą drogą." },
+          { "label": "Ryzyko walutowe", "amountOrRule": "Możliwe, jeśli depozyt, kwotowanie, aktywo lub wypłata używają różnych walut.", "trigger": "Scenariusz inny niż jedna waluta bazowa albo nagroda w aktywie.", "uncertaintyNote": "Niepoliczone bez danych konkretnego konta i transakcji." }
+        ],
+        "opportunityCost": [{ "label": "Kapitał i alternatywne użycie oferty", "amountOrRange": null, "assumption": "Nieznany wymagany kapitał mógłby pozostać w fiat lub służyć innej ofercie; bez progu i alternatywy nie jest monetyzowany.", "comparisonId": "do-nothing", "monetized": false }],
+        "totalsByScenario": [{ "scenarioId": "kraken-public-data-only", "direct": null, "avoidableIfMissed": "dynamiczna druga opłata/spread przy wyjściu", "downstream": "market exposure i możliwe ryzyko walutowe", "opportunity": null }]
+      },
+      "decision": {
+        "scenarios": [{ "id": "kraken-public-data-only", "label": "Polski użytkownik bez Promotion Details", "userInputs": ["program visible", "deposit threshold unknown", "trade threshold unknown", "deadline conflicting", "fee and spread unknown"], "eligibilityResult": "country_supported_but_plan_not_fully_verifiable" }],
+        "northValue": [{ "scenarioId": "kraken-public-data-only", "advertisedMax": { "amount": 20, "currency": "EUR" }, "easyFloor": null, "likelyGrossValue": null, "expectedUsableValue": null, "netScenarioValue": null, "rewardQuality": "MARKET_EXPOSED AND NOT GUARANTEED", "effortBurden": "MEDIUM", "duration": "15 lub 30 dni plus do / co najmniej 14 dni wypłaty", "directCost": null, "opportunityCost": "NOT DETERMINABLE", "failureRisk": "HIGH", "flexibility": "LOW do czasu potwierdzenia warunków wyjścia", "completionOutlook": "UNKNOWN", "assumptions": ["Brak progów planu, pełnego deadline'u i kosztu wykonania.", "Nie zastosowano completion probability ani wyceny ryzyka rynkowego."] }],
+        "northConfidence": { "scope": "offer-facts-and-public-decision", "band": "LOW", "factors": { "sourceQuality": "HIGH", "completeness": "LOW", "freshness": "HIGH", "ambiguity": "LOW", "editionCertainty": "LOW" }, "reasons": ["Źródła są oficjalne i świeże, ale materialne progi oraz plan-specific terms są dostępne dopiero w aplikacji.", "Oficjalne strony podają sprzeczne okna 15 i 30 dni.", "Forma nagrody, koszt wykonania, spread i bezpieczny czas ekspozycji nie są znane z góry."], "blockers": ["Brak indywidualnych Promotion Details.", "Brak publicznego progu depozytu i obrotu.", "Konflikt deadline'u.", "Brak potwierdzenia publicznego użycia linku przez portal."], "assessedAt": "2026-08-16" },
+        "verdict": { "scenarioId": "kraken-public-data-only", "state": "NOT ENOUGH DATA", "summary": "Kraken działa jako hard case, ale publiczne dane nie wystarczają do uczciwej decyzji ani afiliacyjnego CTA.", "reasons": ["Nominalne do 20 EUR nie jest gwarantowane.", "Wymagany depozyt i obrót są nieznane.", "Stablecoiny nie kwalifikują się, więc kapitał podlega zmianie ceny.", "Opłaty, spread i termin mogą zmienić wynik."], "conditions": [], "positiveBlockers": ["Potrzebne są plan-specific terms z aplikacji: próg depozytu, obrót, termin, forma nagrody i zasady wyjścia.", "Portal nie ma potwierdzonego prawa do publicznego użycia indywidualnego linku referral."], "missingData": ["promotion details", "required fiat deposit", "required trade volume", "binding deadline", "reward asset/form", "execution route", "buy and exit fees", "spread", "holding/reversal interpretation", "portal referral permission"] },
+        "comparison": { "doNothing": { "reward": { "amount": 0, "currency": "EUR" }, "directCost": { "amount": 0, "currency": "EUR" }, "effort": "minimal", "failureRisk": "none-added" }, "alternatives": [], "conclusion": "Bez plan-specific terms brak działania zachowuje kapitał poza nową ekspozycją rynkową i nie generuje opłat; nie da się wykazać, że niegwarantowane do 20 EUR to kompensuje.", "limitations": ["To nie jest ocena Kraken jako giełdy ani krypto jako klasy aktywów.", "Brak indywidualnego zaproszenia uniemożliwia ocenę konkretnego wariantu."] }
+      },
+      "evidence": {
+        "regulationUrl": "https://www.kraken.com/pl/legal/referrals",
+        "officialUrl": "https://www.kraken.com/referrals",
+        "sources": [
+          { "id": "kraken-referral-terms", "type": "official_regulation", "title": "Kraken Referral Programs — Terms and Conditions", "url": "https://www.kraken.com/pl/legal/referrals", "editionReference": "bieżące warunki ogólne i plan-specific; strona bez daty edycji", "publishedAt": null, "accessedAt": "2026-08-16", "status": "current_as_reviewed" },
+          { "id": "kraken-referral-page", "type": "official_product_page", "title": "Kraken Referrals — Invite friends, get rewards", "url": "https://www.kraken.com/referrals", "editionReference": "do 20 EUR; 15 dni; strona bieżąca", "publishedAt": null, "accessedAt": "2026-08-16", "status": "current_as_reviewed" },
+          { "id": "kraken-referral-support", "type": "official_faq", "title": "Kraken app referral program", "url": "https://support.kraken.com/articles/kraken-app-referral-program", "editionReference": "aktualizacja 22.06.2026; Polska; 20 EUR w BTC jako przykład; 30 dni", "publishedAt": "2026-06-22", "accessedAt": "2026-08-16", "status": "current_as_reviewed" },
+          { "id": "kraken-instant-buy-fees", "type": "official_fee_table", "title": "Managing Card Purchases & FAQs About Buying Instantly", "url": "https://support.kraken.com/articles/360060101312-faq-s-about-buying-instantly?mode=consumerapp", "editionReference": "aktualizacja 22.06.2026; 1% plus dynamiczny spread", "publishedAt": "2026-06-22", "accessedAt": "2026-08-16", "status": "current_as_reviewed" },
+          { "id": "kraken-pro-fees", "type": "official_fee_table", "title": "Kraken fee schedule", "url": "https://www.kraken.com/features/fee-schedule", "editionReference": "bieżący tier maker/taker; stawka zależna od wolumenu i ścieżki", "publishedAt": null, "accessedAt": "2026-08-16", "status": "current_as_reviewed" },
+          { "id": "kraken-eea-terms", "type": "official_regulation", "title": "Kraken EEA Terms of Service", "url": "https://www.kraken.com/pl/legal/eea-terms", "editionReference": "bieżące warunki EEA; ostrzeżenia volatility, loss i liquidity risk", "publishedAt": null, "accessedAt": "2026-08-16", "status": "current_as_reviewed" }
+        ],
+        "fieldSources": [
+          { "fieldPath": "identity.edition", "sourceId": "kraken-referral-terms", "sourceType": "official_regulation", "reference": "How to Participate: plan-specific terms definiują kryteria, nagrody i timing oraz mogą różnić się między planami", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Brak pojedynczej publicznej edycji dla polskiego użytkownika." },
+          { "fieldPath": "identity.status", "sourceId": "kraken-referral-support", "sourceType": "official_faq", "reference": "Am I eligible: Polska na liście lokalizacji; link generowany z aktywnego konta", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Aktywność konkretnego wariantu zależy od widoczności zaproszenia na koncie." },
+          { "fieldPath": "value.advertisedMax", "sourceId": "kraken-referral-page", "sourceType": "official_product_page", "reference": "Receive rewards: obie strony do 20 EUR; FAQ: reward niegwarantowany", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "„Do” nie definiuje gwarantowanego minimum ani dokładnej formy dla każdego zaproszenia." },
+          { "fieldPath": "value.rewardComponents[kraken-referral-reward]", "sourceId": "kraken-referral-support", "sourceType": "official_faq", "reference": "How much is the referral bonus: fixed 20 in default currency, możliwe 20 EUR w BTC; payout subject to offer", "checkedAt": "2026-08-16", "supportLevel": "conflicting", "uncertaintyNote": "Strona marketingowa mówi „do 20 EUR”, a warunki pozostawiają formę Promotion Details." },
+          { "fieldPath": "value.easyFloor", "sourceId": "kraken-referral-terms", "sourceType": "official_regulation", "reference": "Reward Issuance: reward nie jest vested, earned ani guaranteed przed zaksięgowaniem", "checkedAt": "2026-08-16", "supportLevel": "missing", "uncertaintyNote": "Brak gwarantowanego minimum; North nie tworzy Easy Floor." },
+          { "fieldPath": "eligibility", "sourceId": "kraken-referral-terms", "sourceType": "official_regulation", "reference": "Referee Requirements i Eligibility: nowy użytkownik, link, KYC, document-country match, plan-specific actions", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Próg działań nie jest publiczny." },
+          { "fieldPath": "eligibility.requiredCapital", "sourceId": "kraken-referral-page", "sourceType": "official_product_page", "reference": "Additional Terms: depozyt fiat, minimalny trade volume i obowiązkowy zakup non-stablecoin crypto", "checkedAt": "2026-08-16", "supportLevel": "interpreted", "uncertaintyNote": "Kapitał jest narażony, ale jego kwota i czas ekspozycji nie są publicznie ustalone." },
+          { "fieldPath": "execution.actions", "sourceId": "kraken-referral-support", "sourceType": "official_faq", "reference": "To qualify: depozyt fiat do kwoty w aplikacji i trade do łącznej kwoty w aplikacji", "checkedAt": "2026-08-16", "supportLevel": "missing", "uncertaintyNote": "Mechanika jest znana, progi nie." },
+          { "fieldPath": "execution.deadlines", "sourceId": "kraken-referral-page", "sourceType": "official_product_page", "reference": "Complete terms within 15 days of signing up", "checkedAt": "2026-08-16", "supportLevel": "conflicting", "uncertaintyNote": "Support aplikacji podaje 30 dni." },
+          { "fieldPath": "execution.deadlines", "sourceId": "kraken-referral-support", "sourceType": "official_faq", "reference": "Deadline: 30 days after account creation; countdown in app", "checkedAt": "2026-08-16", "supportLevel": "conflicting", "uncertaintyNote": "Publiczna strona programu podaje 15 dni." },
+          { "fieldPath": "execution.failurePoints", "sourceId": "kraken-eea-terms", "sourceType": "official_regulation", "reference": "Risk warnings: volatility, partial/full loss and liquidity risk", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Nie przekłada się ryzyka na arbitralną kwotę." },
+          { "fieldPath": "cost.directFees", "sourceId": "kraken-instant-buy-fees", "sourceType": "official_fee_table", "reference": "Instant Buy: 1% trading fee oraz spread zależny od transakcji i rynku", "checkedAt": "2026-08-16", "supportLevel": "interpreted", "uncertaintyNote": "Kraken Pro ma inny tier; plan nie wskazuje obowiązkowej ścieżki wykonania." },
+          { "fieldPath": "cost.downstreamCosts[spread]", "sourceId": "kraken-instant-buy-fees", "sourceType": "official_fee_table", "reference": "Spread jest wliczony w cenę i może różnić się dla podobnych transakcji", "checkedAt": "2026-08-16", "supportLevel": "direct", "uncertaintyNote": "Kwota znana dopiero przy wycenie." },
+          { "fieldPath": "decision.northValue[kraken-public-data-only]", "sourceId": "kraken-referral-terms", "sourceType": "official_regulation", "reference": "Zmienne plan-specific terms oraz niegwarantowane wydanie nagrody", "checkedAt": "2026-08-16", "supportLevel": "missing", "uncertaintyNote": "Brak progów, kosztu i wiążącego terminu blokuje wartość użyteczną i netto." },
+          { "fieldPath": "decision.verdict[kraken-public-data-only]", "sourceId": "kraken-referral-terms", "sourceType": "official_regulation", "reference": "Plan-specific requirements oraz Reward Issuance zestawione z brakami i konfliktem deadline'u", "checkedAt": "2026-08-16", "supportLevel": "interpreted", "uncertaintyNote": "NOT ENOUGH DATA dotyczy publicznego przypadku, nie każdego indywidualnego zaproszenia." }
+        ],
+        "conflicts": [
+          { "fieldPath": "execution.deadlines", "sourceIds": ["kraken-referral-page", "kraken-referral-support"], "description": "Oficjalna strona programu wymaga wykonania warunków w 15 dni, a aktualny support aplikacji podaje 30 dni i licznik w aplikacji.", "resolutionStatus": "Nierozstrzygnięte publicznie; stosować plan-specific terms i licznik konkretnego konta, a bez nich blokować pozytywny Verdict." },
+          { "fieldPath": "value.rewardComponents[kraken-referral-reward]", "sourceIds": ["kraken-referral-page", "kraken-referral-support", "kraken-referral-terms"], "description": "Publiczna strona mówi „do 20 EUR”, support opisuje fixed 20 w walucie domyślnej, a warunki pozwalają planowi określić formę i zastrzegają brak gwarancji.", "resolutionStatus": "Pokazywać tylko nominalne do 20 EUR, bez Easy Floor, expected value i gwarancji formy." }
+        ],
+        "recheckBy": "2026-08-19",
+        "owner": "ProjectNorth manual evidence review",
+        "notes": ["Decyzja A/B/C: B — zaakceptowany wyłącznie jako analiza bez afiliacyjnego CTA.", "Nie publikować indywidualnego linku referral: publiczne materiały dopuszczają wiadomości tekstowe, e-mail i komunikatory, zakazują paid search, social ads i sponsored posts, ale nie potwierdzają użycia przez portal North.", "Krótki recheck wynika z dynamicznych plan-specific terms i sprzecznego deadline'u."]
+      },
+      "listing": { "problemLabel": "Do 20 EUR nie wystarcza do policzenia decyzji", "summary": "Publiczna mechanika wymaga depozytu fiat i trade'u niestabilnym aktywem, ale progi, wiążący termin, koszt oraz pełna forma nagrody zależą od zaproszenia.", "featured": false },
+      "affiliate": { "available": false, "url": null, "disclosure": "Brak CTA: publiczne użycie indywidualnego linku referral przez portal nie zostało potwierdzone, a sponsored posts są zakazane." }
     }
   ]
 }

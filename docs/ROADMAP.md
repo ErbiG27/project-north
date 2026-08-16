@@ -6,11 +6,11 @@
 
 Element trafia do sprintu tylko z celem, właścicielem, zakresem i Definition of Done. Roadmapa jest kolejnością hipotez, nie obietnicą terminu. Funkcje finansowe, afiliacyjne i analityczne wymagają najpierw zasad transparentności oraz zgodności prawnej.
 
-## Stan obecny — v0.6.2
+## Stan obecny — v0.6.3
 
-**Cel osiągnięty:** wdrożono fundament dowodów i zaufania dla Landing 2.1 oraz Decision Model v1.
+**Cel osiągnięty:** Decision Model v1 przeszedł kontrolowany crypto hard case bez rozszerzania zakresu MVP.
 
-Bank Millennium, Nest Bank i Bank Pekao mają czytelne pochodzenie kluczowych liczb i warunków, ręczny freshness status, widoczne daty review, Confidence, niepewność, konflikty i linki do oficjalnych dokumentów. Publiczna metodologia wyjaśnia Value, Confidence, Verdict, `do nothing`, brak aktywnego `WAIT`, brak magicznego Score oraz zasady afiliacji. Landing, analizy i metodologia przeszły testy desktop/mobile; Revolut przeszedł test regresji.
+Bank Millennium, Nest Bank i Bank Pekao pozostają podstawową trójką MVP. Kraken został przyjęty wyłącznie jako nieafiliacyjna analiza validation case: `LOW` Confidence i `NOT ENOUGH DATA`, bez karty katalogowej i bez referral CTA. Test potwierdził, że istniejące pola modelu wystarczają do pokazania niegwarantowanej nagrody, kapitału narażonego na zmianę ceny, dynamicznych kosztów i konfliktu źródeł. Krypto nie wchodzi szerzej do roadmapy.
 
 ## Następne etapy
 
@@ -58,6 +58,8 @@ Research Sprint nie jest nową wersją produktu i nie wymaga numeru wersji.
 
 ### Po core v0.6.1 — optional stretch: controlled crypto pilot
 
+**Status:** zakończono 2026-08-16 jako v0.6.3. Kraken zaakceptowano tylko jako non-affiliate analysis; wynik `LOW` / `NOT ENOUGH DATA`. Schema bez zmian, kategoria krypto nadal poza MVP.
+
 Ten etap może rozpocząć się wyłącznie po walidacji podstawowej trójki v0.6.1: Bank Millennium, Nest Bank i Bank Pekao. Pierwszy publiczny MVP nadal koncentruje się na ofertach niskiego ryzyka; krypto nie staje się główną kategorią produktu.
 
 - Przeanalizować dokładnie jeden crypto hard case: Kraken referral z Research Sprint #1.
@@ -66,7 +68,7 @@ Ten etap może rozpocząć się wyłącznie po walidacji podstawowej trójki v0.
 - Dopuścić Verdict `TAKE IF`, `SKIP` lub `NOT ENOUGH DATA`; nie publikować pozytywnego Verdict wyłącznie dlatego, że istnieje afiliacja lub referral.
 - Przed publikacją ponownie zweryfikować aktualne warunki promocji, publiczną dostępność ścieżki wejścia, ograniczenia programu referral, dozwolony sposób publikacji i linkowania, ryzyko rynkowe oraz niegwarantowany charakter nagrody.
 
-**Definition of Done:** analiza Kraken pokazuje, czy Decision Model v1 zachowuje użyteczność przy podwyższonym ryzyku i niepewności, bez zmiany core scope v0.6.1 i bez otwierania kategorii krypto.
+**Definition of Done — spełnione:** analiza Kraken pokazała, że Decision Model v1 zachowuje użyteczność przy podwyższonym ryzyku i niepewności, bez zmiany core scope v0.6.1 i bez otwierania kategorii krypto.
 
 ### v0.6.2 — Evidence & freshness foundation
 

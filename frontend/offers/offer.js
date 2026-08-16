@@ -25,7 +25,13 @@
         monthTwoCardPayments: ["Płatności kartą — miesiąc 2", ""],
         travelExpenses: ["Założone wydatki podróżne", " zł"],
         monthlyTransactionOrderAndSpend: ["Miesięczny układ transakcji", ""],
-        eligibleTravelExpenses: ["Kwalifikowane wydatki podróżne", ""]
+        eligibleTravelExpenses: ["Kwalifikowane wydatki podróżne", ""],
+        referralOfferVisible: ["Oferta widoczna w aplikacji", ""],
+        requiredFiatDeposit: ["Wymagany depozyt fiat", ""],
+        requiredTradeVolume: ["Wymagany obrót", ""],
+        qualifyingAsset: ["Kwalifikowane aktywo", ""],
+        executionFee: ["Opłata wykonania", ""],
+        executionSpread: ["Spread wykonania", ""]
     };
 
     function shortProvider(offer) {
@@ -122,6 +128,28 @@
         if (item.amount) return formatMoney(item.amount);
         if (item.amountOrRule) return escapeHtml(item.amountOrRule);
         return "Brak stałej kwoty";
+    }
+
+    function renderHardCaseSummary(offer) {
+        if (offer.identity.category !== "crypto_validation") return "";
+        const capital = offer.eligibility.requiredCapital;
+        const capitalAmount = capital.amount ? formatMoney(capital.amount) : "NOT DETERMINABLE";
+        const fee = offer.cost.directFees[0];
+        const spread = offer.cost.downstreamCosts.find((item) => item.label.toLowerCase().includes("spread"));
+        return `
+            <section class="offer-section hard-case-summary" id="risk" aria-labelledby="risk-title">
+                <div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> Controlled validation case</p><h2 id="risk-title">Nagroda i ryzyko nie są jedną liczbą</h2></div><p>To test odporności Decision Model v1, nie rekomendacja krypto ani nowa kategoria North.</p></div>
+                <dl class="hard-case-grid">
+                    <div><dt>Nominal reward</dt><dd>${escapeHtml(offer.value.advertisedMax.displayLabel)}</dd><span>${escapeHtml(offer.value.advertisedMax.caveat)}</span></div>
+                    <div><dt>Usable reward</dt><dd>NOT DETERMINABLE</dd><span>Forma i wartość aktywa mogą zmienić się przed zaksięgowaniem oraz po nim.</span></div>
+                    <div><dt>Required capital</dt><dd>${capitalAmount}</dd><span>${escapeHtml(capital.note || "Brak pełnych danych publicznych.")}</span></div>
+                    <div><dt>Capital at risk</dt><dd>${capital.capitalAtRisk ? "TAK" : "NIE"}</dd><span>${escapeHtml(capital.holdingPeriod || "Okres ekspozycji nie jest publicznie określony.")}</span></div>
+                    <div><dt>Trading fee</dt><dd>${fee && fee.amount ? formatMoney(fee.amount) : "DYNAMICZNA"}</dd><span>${escapeHtml(fee ? fee.appliesDuring : "Zależy od ścieżki wykonania.")}</span></div>
+                    <div><dt>Spread</dt><dd>DYNAMICZNY</dd><span>${escapeHtml(spread ? spread.amountOrRule : "Nie można ustalić z góry.")}</span></div>
+                    <div><dt>Market exposure</dt><dd>TAK</dd><span>Stablecoiny nie kwalifikują się; wymagany zakup aktywa o zmiennej cenie.</span></div>
+                    <div><dt>Time requirement</dt><dd>15 / 30 dni</dd><span>Oficjalne strony są sprzeczne, dlatego termin blokuje pozytywny Verdict.</span></div>
+                </dl>
+            </section>`;
     }
 
     function renderValueSummary(offer) {
@@ -255,7 +283,7 @@
     function renderCosts(offer) {
         const items = [
             ...offer.cost.directFees.map((item) => ({ type: "Koszt bezpośredni", label: item.label, value: formatMoney(item.amount), detail: item.appliesDuring })),
-            ...offer.cost.avoidableFees.map((item) => ({ type: "Opłata możliwa do uniknięcia", label: item.label, value: item.amount ? formatMoney(item.amount) : "Zależna od wieku", detail: item.avoidanceCondition })),
+            ...offer.cost.avoidableFees.map((item) => ({ type: "Opłata możliwa do uniknięcia", label: item.label, value: item.amount ? formatMoney(item.amount) : (offer.identity.category === "crypto_validation" ? "Dynamiczna" : "Zależna od wieku"), detail: item.avoidanceCondition })),
             ...offer.cost.downstreamCosts.map((item) => ({ type: "Koszt dalszy", label: item.label, value: renderMoneyOrRule(item), detail: item.trigger })),
             ...offer.cost.opportunityCost.map((item) => ({ type: "Opportunity cost", label: item.label, value: item.monetized ? renderMoneyOrRule(item) : "Nie monetyzujemy", detail: item.assumption }))
         ];
@@ -360,6 +388,11 @@
 
     function renderOffer(offer) {
         const freshness = freshnessFor(offer);
+        const isValidationCase = offer.identity.category === "crypto_validation";
+        const validityCopy = offer.identity.edition.validTo ? ` · wejście do ${formatDate(offer.identity.edition.validTo)}` : " · warunki dynamiczne";
+        const footerDisclosure = isValidationCase
+            ? "To nieafiliacyjny validation case bez linku referral."
+            : "North może otrzymać wynagrodzenie za wybrane linki; nie wpływa to na Value, Confidence ani Verdict.";
         document.title = `${shortProvider(offer)} — analiza North`;
         const meta = document.querySelector('meta[name="description"]');
         meta.content = `${offer.listing.problemLabel}. Analiza ${shortProvider(offer)} według North Decision Model v1 z widoczną aktualnością danych.`;
@@ -367,14 +400,14 @@
         root.innerHTML = `
             <section class="offer-decision-hero" aria-labelledby="offer-title">
                 <div class="offer-decision-hero__copy">
-                    <p class="section-kicker"><span aria-hidden="true"></span> ${escapeHtml(readableStatus(offer.identity.status))} · review ${formatDate(offer.identity.verifiedAt)}</p>
+                    <p class="section-kicker"><span aria-hidden="true"></span> ${isValidationCase ? "validation case · " : ""}${escapeHtml(readableStatus(offer.identity.status))} · review ${formatDate(offer.identity.verifiedAt)}</p>
                     <div class="offer-provider-row"><span class="bank-monogram" aria-hidden="true">${escapeHtml(monogram(offer))}</span><p>${escapeHtml(shortProvider(offer))}</p></div>
                     <h1 id="offer-title">${escapeHtml(offer.identity.title)}</h1>
                     <p class="offer-hero-problem">${escapeHtml(offer.listing.problemLabel)}</p>
                     <p>${escapeHtml(offer.listing.summary)}</p>
                     <div class="action-row"><a class="north-button" href="#scenarios">Zobacz scenariusze <span aria-hidden="true">↓</span></a><a class="north-link" href="#sources">Sprawdź źródła</a></div>
                     <div class="hero-freshness"><span class="freshness-badge freshness-badge--${freshness.state.toLowerCase().replaceAll("_", "-")}">${escapeHtml(freshness.label)}</span><p>${escapeHtml(freshness.explanation)}</p></div>
-                    <p class="record-meta">Edycja: ${escapeHtml(offer.identity.edition.name)} · wejście do ${formatDate(offer.identity.edition.validTo)}</p>
+                    <p class="record-meta">Edycja: ${escapeHtml(offer.identity.edition.name)}${validityCopy}</p>
                 </div>
                 <aside class="offer-hero-verdict">
                     <div class="panel-topline"><span>North Verdict</span><span class="confidence-badge">Confidence ${escapeHtml(offer.decision.northConfidence.band)}</span></div>
@@ -384,6 +417,7 @@
                     <div class="advertised-context"><span>Advertised Max</span><strong>${escapeHtml(offer.value.advertisedMax.displayLabel)}</strong><small>${escapeHtml(offer.value.advertisedMax.caveat)}</small></div>
                 </aside>
             </section>
+            ${renderHardCaseSummary(offer)}
             ${renderValueSummary(offer)}
             ${renderScenarios(offer)}
             ${renderComponents(offer)}
@@ -392,7 +426,7 @@
             ${renderCosts(offer)}
             ${renderVerdict(offer)}
             ${renderEvidence(offer)}
-            <footer class="offer-footer-page"><img src="../assets/brand/north-logo.svg" alt="North"><p>Decision Model v1 · ${escapeHtml(freshness.label)} · review ${formatDate(offer.identity.verifiedAt)}. North nie gwarantuje nagrody i nie zastępuje regulaminu ani indywidualnej porady.<br>North może otrzymać wynagrodzenie za wybrane linki; nie wpływa to na Value, Confidence ani Verdict.</p><nav aria-label="Linki analizy"><a class="north-link" href="../methodology.html">Metodologia</a><a class="north-link" href="../index.html#opportunities">Wróć do analiz</a></nav></footer>`;
+            <footer class="offer-footer-page"><img src="../assets/brand/north-logo.svg" alt="North"><p>Decision Model v1 · ${escapeHtml(freshness.label)} · review ${formatDate(offer.identity.verifiedAt)}. North nie gwarantuje nagrody i nie zastępuje regulaminu ani indywidualnej porady.<br>${escapeHtml(footerDisclosure)}</p><nav aria-label="Linki analizy"><a class="north-link" href="../methodology.html">Metodologia</a><a class="north-link" href="${isValidationCase ? "../methodology.html#validation" : "../index.html#opportunities"}">${isValidationCase ? "Wróć do validation case" : "Wróć do analiz"}</a></nav></footer>`;
     }
 
     load("../data/decision-offers.json")
