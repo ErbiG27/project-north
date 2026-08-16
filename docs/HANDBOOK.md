@@ -1,6 +1,6 @@
 # ProjectNorth Handbook
 
-> Wersja: 1.0 · Status: aktywny dokument roboczy · Produkt: v0.5.9
+> Wersja: 1.0 · Status: aktywny dokument roboczy · Produkt: v0.6.0
 
 ## Cel dokumentacji
 
@@ -40,13 +40,14 @@ Marka jest spokojna, konkretna i niezależna. Czerń oraz grafit budują skupien
 ├── data/config.js          # Konfiguracja etykiet i ikon
 ├── data/offers.js          # Dane kart ofert
 ├── script.js               # Renderowanie, wyszukiwanie, filtry, sortowanie
-├── style.css               # Aktualny arkusz główny i style North
-├── styles/                 # Początek podziału na moduły CSS
+├── style.css               # Punkt wejścia do modułowych arkuszy CSS
+├── styles/                 # Base, layout, components, pages i utilities
+├── assets/brand/           # Logo, sygnet i favicony North
 ├── assets/logos/           # Logotypy partnerów
 └── docs/                   # Dokumentacja produktu
 ```
 
-Strona główna renderuje karty z `offers.js` po stronie klienta. `offers/revolut.html` zawiera wzorzec dla stron analitycznych: Hero, North Score, Snapshot, Verdict i CTA. Aktualnie występują zarówno `style.css`, jak i `styles/`; jest to etap przejściowy, nie docelowy podział odpowiedzialności.
+Strona główna renderuje karty z `offers.js` po stronie klienta. `offers/revolut.html` zawiera wzorzec dla stron analitycznych: Hero, North Score, Snapshot, Verdict i CTA. `style.css` pozostaje jednym punktem wejścia i importuje arkusze podzielone na base, layout, components, pages i utilities; style strony głównej znajdują się w `styles/pages/home.css`.
 
 ## Model danych: kierunek
 
@@ -79,4 +80,4 @@ Przed połączeniem zmian sprawdzamy desktop, 600 px, 900 px, klawiaturę, fokus
 
 ## Zasada aktualizacji
 
-Ten handbook jest celowo konkretny dla v0.5.9. Rzeczy niezaimplementowane są oznaczane jako plan. Nie opisujemy ich jako istniejących funkcji.
+Ten handbook jest celowo konkretny dla v0.6.0. Rzeczy niezaimplementowane są oznaczane jako plan. Nie opisujemy ich jako istniejących funkcji.

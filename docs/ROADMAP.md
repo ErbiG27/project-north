@@ -6,22 +6,13 @@
 
 Element trafia do sprintu tylko z celem, właścicielem, zakresem i Definition of Done. Roadmapa jest kolejnością hipotez, nie obietnicą terminu. Funkcje finansowe, afiliacyjne i analityczne wymagają najpierw zasad transparentności oraz zgodności prawnej.
 
-## Stan obecny — v0.5.9
+## Stan obecny — v0.6.0
 
-**Cel osiągnięty:** landing prezentuje North jako metodę podejmowania decyzji; strona Revolut jest wzorcem analitycznej strony oferty.
+**Cel osiągnięty:** uporządkowano fundamenty frontendu bez zmiany kierunku produktu.
 
-Widoczne elementy: Hero 2.0, wyszukiwanie, filtry i sortowanie kart, oferta Revolut z Score/Snapshot/Verdict, pierwszy zestaw tokenów CSS.
+`style.css` jest jednym punktem wejścia do modułowych arkuszy, strona główna ma własny moduł `styles/pages/home.css`, a marka korzysta z własnego logo, sygnetu i faviconów. Usunięto stare, puste pliki zastępcze CSS oraz `frontend.zip`; testy smoke zakończyły się powodzeniem.
 
 ## Następne etapy
-
-### v0.6.0 — Stabilne fundamenty
-
-- Dokończyć bibliotekę komponentów i jej kontrakty.
-- Uporządkować CSS: jeden punkt wejścia i jasny podział na base, layout, components, pages, utilities.
-- Usunąć błędy danych oraz sprawdzić wszystkie linki i kodowanie UTF-8.
-- Dodać własne logo, ikonę i favicon.
-
-**Definition of Done:** brak martwych linków w katalogu; jedna udokumentowana ścieżka stylów; działający branding we wszystkich widokach.
 
 ### v0.6.1 — Pełne strony ofert
 

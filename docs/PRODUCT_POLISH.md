@@ -12,7 +12,7 @@ Backlog jakościowy. Priorytet określa wpływ na zaufanie i ukończenie zadania
 
 ## P1 — fundament zaufania
 
-- Dodać logo North, favicon i spójne użycie marki w nagłówku, stopce i metadanych.
+- Uzupełnić spójne użycie istniejących zasobów marki North w stopce i metadanych.
 - Dodać footer z informacją o metodologii, aktualizacji i kontakcie.
 - Dodać datę weryfikacji i status oferty.
 - Przygotować stronę metodologii North Score.
@@ -26,6 +26,8 @@ Backlog jakościowy. Priorytet określa wpływ na zaufanie i ukończenie zadania
 - Spójne stany aktywne filtrów, sortowania i formularzy.
 - Testy na długich nazwach ofert oraz braku logo.
 - Przegląd treści pod kątem prostego języka i nieuzasadnionych obietnic.
+- Ustalić politykę zakończeń linii i uporządkować `.gitattributes` (nie blokuje kolejnego etapu).
+- Poprawić kontrast sygnetu North wewnątrz North Verdict (nie blokuje kolejnego etapu).
 
 ## Kryterium zamknięcia zadania
 

@@ -6,9 +6,31 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 
 ### Planned
 
-- Uporządkowanie struktury CSS i UTF-8.
-- Własne zasoby marki: logo, ikona, favicon.
 - Rozszerzenie modelu ofert o dane analityczne i datę weryfikacji.
+
+## [0.6.0] — 2026-08-16
+
+### Added
+
+- Własne zasoby marki North: logo, sygnet oraz favicony.
+- Modułowe arkusze CSS dla stron, w tym `styles/pages/home.css`.
+
+### Changed
+
+- `style.css` jest jednym punktem wejścia dla arkuszy podzielonych na base, layout, components, pages i utilities.
+
+### Removed
+
+- Stare, puste pliki zastępcze CSS oraz archiwum `frontend.zip`.
+
+### Verified
+
+- Testy smoke dla frontendu zakończone powodzeniem.
+
+### Known limitations
+
+- Polityka zakończeń linii i porządkowanie `.gitattributes` pozostają nieblokującym zadaniem technicznym.
+- Sygnet North wewnątrz North Verdict ma niższy kontrast i wymaga późniejszego dopracowania.
 
 ## [0.5.9] — 2026-08-10
 
