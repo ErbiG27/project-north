@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-labelledby="title">
+  <title id="title">North</title>
+  <defs>
+    <linearGradient id="north-arrow" x1="50" y1="15" x2="50" y2="55" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#36D49A"/>
+      <stop offset="1" stop-color="#009973"/>
+    </linearGradient>
+  </defs>
+  <rect x="2" y="2" width="96" height="96" rx="23" fill="#000" stroke="#252525" stroke-width="2"/>
+  <g transform="translate(14 14) scale(.72)">
+    <g fill="#fff">
+      <path d="M7 48.5c13.8-2.5 24.4-8 35.2-18.3-3.8 7.4-5.9 12.6-6.2 16.1L22.4 50 7 48.5Z"/>
+      <path d="M93 48.5c-13.8-2.5-24.4-8-35.2-18.3 3.8 7.4 5.9 12.6 6.2 16.1L77.6 50 93 48.5Z"/>
+      <path d="M8 52c17.8 3.7 29.8 13.3 41 41-1.7-21.6-4.4-33.6-12.4-39.4L22.7 50.8 8 52Z"/>
+      <path d="M92 52c-17.8 3.7-29.8 13.3-41 41 1.7-21.6 4.4-33.6 12.4-39.4l13.9-2.8L92 52Z"/>
+    </g>
+    <path fill="url(#north-arrow)" d="M50 4 68.2 51.6 50 39.1 31.8 51.6 50 4Z"/>
+  </g>
+</svg>

@@ -1,0 +1,16 @@
+/* -------------------------------------------------------------------------- */
+/* Utilities                                                                   */
+/* -------------------------------------------------------------------------- */
+
+.placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 18.75rem;
+    height: 18.75rem;
+    border-radius: var(--radius-card);
+    background: var(--color-border);
+    color: var(--color-placeholder);
+    font-size: var(--font-size-xl);
+}
+

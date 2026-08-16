@@ -1,0 +1,80 @@
+/* -------------------------------------------------------------------------- */
+/* Design tokens                                                              */
+/* -------------------------------------------------------------------------- */
+
+:root {
+    /* Colors */
+    --color-bg: #000000;
+    --color-surface: #252525;
+    --color-surface-light: #2d2d2d;
+    --color-surface-hover: #313131;
+    --color-surface-input: #2a2a2a;
+    --color-surface-deep: #1b1b1b;
+
+    --color-border: #333333;
+    --color-border-light: #3b3b3b;
+
+    --color-primary: #00b894;
+    --color-primary-hover: #00d084;
+    --color-success: #00d084;
+    --color-warning: #ff9800;
+    --color-action-success: #008000;
+    --color-action-info: #0000ff;
+    --color-action-danger: #ff0000;
+    --color-card-border: #3a3a3a;
+    --color-step-text: #c7c7c7;
+    --color-placeholder-start: #4b4b4b;
+    --color-logo-bg: #ffffff;
+
+    --color-text: #ffffff;
+    --color-text-secondary: #bdbdbd;
+    --color-text-muted: #9c9c9c;
+    --color-text-subtle: #b8b8b8;
+    --color-placeholder: #888888;
+
+    /* Typography */
+    --font-sans: Arial, Helvetica, sans-serif;
+    --font-size-xs: 0.6875rem;
+    --font-size-sm: 0.875rem;
+    --font-size-base: 1rem;
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 1.75rem;
+    --font-size-2xl: 2.375rem;
+    --font-size-3xl: 3rem;
+
+    /* Spacing */
+    --space-1: 0.375rem;
+    --space-2: 0.5rem;
+    --space-3: 0.75rem;
+    --space-4: 0.9375rem;
+    --space-5: 1rem;
+    --space-6: 1.125rem;
+    --space-7: 1.25rem;
+    --space-8: 1.5625rem;
+    --space-9: 1.75rem;
+    --space-10: 2rem;
+    --space-12: 2.5rem;
+    --space-14: 3.75rem;
+    --space-16: 5rem;
+    --space-18: 5.625rem;
+
+    /* Shape */
+    --radius-sm: 0.75rem;
+    --radius-md: 1rem;
+    --radius-lg: 1.375rem;
+    --radius-input: 0.9375rem;
+    --radius-card: 1.25rem;
+    --radius-pill: 999px;
+
+    /* Effects */
+    --shadow-sm: 0 0.9375rem 2.5rem rgb(0 0 0 / 35%);
+    --shadow-md: 0 1.25rem 3.125rem rgb(0 0 0 / 45%);
+    --shadow-lg: 0 2.1875rem 5rem rgb(0 0 0 / 55%);
+    --glow-primary: 0 0 1.5625rem rgb(0 184 148 / 15%);
+    --glow-primary-strong: 0 0 2.1875rem rgb(0 184 148 / 18%);
+
+    /* Motion */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+}
+

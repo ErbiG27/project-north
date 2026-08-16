@@ -1,0 +1,42 @@
+/* -------------------------------------------------------------------------- */
+/* Hero                                                                        */
+/* -------------------------------------------------------------------------- */
+
+.hero {
+    padding: var(--space-16) 0;
+    text-align: center;
+}
+
+.hero-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-16);
+}
+
+.hero-text {
+    flex: 1;
+    max-width: 40.625rem;
+}
+
+.hero-image {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+}
+
+.hero h1 {
+    font-size: var(--font-size-3xl);
+}
+
+.hero p {
+    font-size: var(--font-size-lg);
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-7);
+}
+

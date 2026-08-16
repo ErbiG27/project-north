@@ -1,0 +1,62 @@
+/* ========================================================================== */
+/* Landing Hero 2.0 — product-first homepage                                  */
+/* ========================================================================== */
+
+html { scroll-behavior: smooth; }
+
+.hero {
+    position: relative;
+    isolation: isolate;
+    max-width: 80rem;
+    min-height: 43rem;
+    margin: 0 auto 3.5rem;
+    padding: clamp(2rem, 5vw, 5rem);
+    overflow: hidden;
+    border: 1px solid rgb(255 255 255 / 9%);
+    border-radius: clamp(1.5rem, 3vw, 2.25rem);
+    background:
+        radial-gradient(circle at 94% 7%, rgb(0 208 132 / 18%), transparent 25%),
+        radial-gradient(circle at 10% 105%, rgb(0 184 148 / 10%), transparent 29%),
+        linear-gradient(135deg, #202721, #101411 58%, #0d0f0e);
+    text-align: left;
+    box-shadow: 0 1.75rem 5rem rgb(0 0 0 / 30%);
+}
+
+.hero::before,
+.hero::after { position: absolute; z-index: -1; border: 1px solid rgb(255 255 255 / 4%); border-radius: 50%; content: ""; pointer-events: none; }
+.hero::before { top: -27rem; left: -22rem; width: 48rem; height: 48rem; box-shadow: 0 0 0 3.5rem rgb(255 255 255 / 1.5%), 0 0 0 7rem rgb(255 255 255 / 1%); }
+.hero::after { right: -20rem; bottom: -25rem; width: 42rem; height: 42rem; box-shadow: 0 0 0 4.5rem rgb(0 208 132 / 2%); }
+
+.hero-content { display: grid; grid-template-columns: minmax(0, 1.02fr) minmax(25rem, .98fr); align-items: center; gap: clamp(2.75rem, 7vw, 7rem); max-width: none; }
+.hero-text { max-width: 38rem; }
+.north-logo { display: inline-flex; align-items: center; color: #f5faf7; text-decoration: none; }
+.north-logo img { display: block; width: 6.6rem; height: 2rem; }
+.hero-eyebrow { display: flex; align-items: center; gap: .5rem; margin: clamp(2.5rem, 6vw, 5rem) 0 1.15rem; color: #aebbb2; font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+.hero-eyebrow span { width: .45rem; height: .45rem; border-radius: 50%; background: var(--color-primary-hover); box-shadow: 0 0 .8rem rgb(0 208 132 / 75%); }
+.hero h1 { max-width: 43rem; margin: 0; color: #f6faf7; font-size: clamp(3.15rem, 5.5vw, 5.25rem); line-height: .97; letter-spacing: -.075em; }
+.hero h1 em { color: var(--color-primary-hover); font-family: Georgia, serif; font-weight: 400; }
+.hero-lead { max-width: 33rem; margin: 1.6rem 0 0; color: #c0cac3; font-size: clamp(1rem, 1.5vw, 1.18rem); line-height: 1.65; }
+.hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; margin-top: 2.25rem; }
+.btn--primary { display: inline-block; padding: .95rem 1.4rem; background: linear-gradient(135deg, #00b894, #00d084); box-shadow: 0 .8rem 1.75rem rgb(0 208 132 / 18%); color: #06130e; font-weight: 800; text-decoration: none; }
+.btn--primary span { margin-left: .7rem; font-size: 1.2em; }
+.hero-text-link { color: #dbe5de; font-size: .9rem; font-weight: 700; text-decoration: none; }
+.hero-text-link span { margin-left: .35rem; color: var(--color-primary-hover); }
+.hero-text-link:hover { color: var(--color-primary-hover); }
+.hero-trust { display: flex; flex-wrap: wrap; gap: .75rem 1.15rem; margin: 2.25rem 0 0; padding: 1.15rem 0 0; border-top: 1px solid rgb(255 255 255 / 10%); color: #a6b1a9; font-size: .72rem; font-weight: 700; list-style: none; }
+.hero-trust li { display: flex; gap: .35rem; align-items: center; }
+.hero-trust li > span { color: var(--color-primary-hover); }
+
+.hero-preview { position: relative; }
+.preview-window { padding: 1.25rem; border: 1px solid rgb(255 255 255 / 12%); border-radius: 1.5rem; background: linear-gradient(145deg, rgb(29 38 32 / 97%), rgb(11 15 13 / 98%)); box-shadow: 0 1.75rem 4rem rgb(0 0 0 / 34%), 0 0 2.5rem rgb(0 208 132 / 8%); transform: rotate(1.5deg); transition: transform .3s ease, border-color .3s ease; }
+.hero-preview:hover .preview-window { border-color: rgb(0 208 132 / 42%); transform: rotate(0) translateY(-.35rem); }
+.preview-topbar, .preview-offer, .preview-verdict, .preview-score { display: flex; align-items: center; }
+.preview-topbar { justify-content: space-between; padding-bottom: 1rem; border-bottom: 1px solid rgb(255 255 255 / 9%); }
+.preview-brand, .preview-live { display: inline-flex; align-items: center; gap: .35rem; font-size: .61rem; font-weight: 800; letter-spacing: .1em; }
+.preview-brand { color: #bdc8c0; }.preview-brand__dot, .preview-live i { width: .36rem; height: .36rem; border-radius: 50%; background: var(--color-primary-hover); box-shadow: 0 0 .55rem rgb(0 208 132 / 70%); }.preview-live { color: #8d9a91; letter-spacing: 0; }
+.preview-offer { gap: .75rem; padding: 1.15rem 0; }.preview-offer__icon { display: grid; flex: 0 0 auto; place-items: center; width: 2.35rem; height: 2.35rem; border-radius: .75rem; background: #f4f6f5; color: #111; font-family: Georgia, serif; font-size: 1.35rem; font-style: italic; font-weight: 700; }.preview-offer div { display: grid; gap: .12rem; }.preview-offer strong { font-size: .88rem; }.preview-offer div span { color: #8e9b92; font-size: .68rem; }.preview-tag { margin-left: auto; border: 1px solid rgb(255 255 255 / 10%); border-radius: 999px; padding: .28rem .5rem; color: #aeb9b0; font-size: .6rem; font-weight: 700; }
+.preview-score { gap: 1.25rem; padding: 1.1rem; border: 1px solid rgb(0 208 132 / 22%); border-radius: 1.1rem; background: linear-gradient(135deg, rgb(0 208 132 / 10%), rgb(255 255 255 / 2%)); }.score-ring { display: grid; flex: 0 0 auto; place-items: center; width: 6.8rem; height: 6.8rem; border: .48rem solid rgb(0 208 132 / 15%); border-top-color: var(--color-primary-hover); border-right-color: var(--color-primary-hover); border-radius: 50%; transform: rotate(37deg); }.score-ring > div { display: grid; text-align: center; transform: rotate(-37deg); }.score-ring strong { font-size: 2.4rem; line-height: 1; letter-spacing: -.08em; }.score-ring span { color: #91a096; font-size: .62rem; font-weight: 700; }.score-copy { display: grid; gap: .45rem; }.score-copy p { display: flex; gap: .5rem; margin: 0; color: #aebbb2; font-size: .65rem; font-weight: 700; }.score-copy p span { color: var(--color-primary-hover); }.score-copy > strong { font-size: .78rem; line-height: 1.4; }.score-copy small { color: #8d9a91; font-size: .62rem; line-height: 1.4; }
+.preview-snapshot { margin-top: .8rem; padding: 1rem; border: 1px solid rgb(255 255 255 / 8%); border-radius: 1.1rem; background: rgb(255 255 255 / 2%); }.preview-section-label { display: flex; justify-content: space-between; margin-bottom: .7rem; color: #dbe4de; font-size: .72rem; font-weight: 800; }.preview-section-label span { color: #89968d; font-size: .61rem; font-weight: 600; }.snapshot-list { display: grid; gap: .45rem; }.snapshot-list div { display: flex; justify-content: space-between; gap: .6rem; }.snapshot-list span { color: #909d94; font-size: .62rem; }.snapshot-list strong { color: #d4ddd6; font-size: .62rem; text-align: right; }
+.preview-verdict { gap: .65rem; margin-top: .8rem; padding: .85rem 1rem; border: 1px solid rgb(0 208 132 / 25%); border-radius: 1rem; background: rgb(0 208 132 / 9%); }.verdict-icon { display: grid; place-items: center; width: 1.45rem; height: 1.45rem; border-radius: .45rem; background: var(--color-primary-hover); color: #06130e; font-size: .75rem; font-weight: 900; }.preview-verdict div { display: grid; gap: .12rem; }.preview-verdict div span { color: #a9b6ac; font-size: .6rem; }.preview-verdict div strong { color: #eff6f0; font-size: .75rem; }.preview-verdict > span:last-child { margin-left: auto; color: var(--color-primary-hover); font-weight: 800; }
+
+@media (max-width: 900px) { .hero { min-height: 0; }.hero-content { grid-template-columns: minmax(0, 1fr); }.hero-text { max-width: 42rem; }.hero-preview { max-width: 37rem; }.preview-window { transform: none; } }
+@media (max-width: 600px) { body { padding: 1rem; }.hero { margin-bottom: 2.5rem; padding: 1.5rem; border-radius: 1.25rem; }.hero::before { top: -24rem; left: -27rem; }.hero h1 { font-size: clamp(2.75rem, 13vw, 3.7rem); }.hero-eyebrow { margin-top: 3.25rem; }.hero-actions { align-items: stretch; flex-direction: column; gap: 1rem; }.btn--primary, .hero-text-link { text-align: center; }.hero-trust { gap: .6rem .9rem; }.preview-window { padding: 1rem; border-radius: 1.2rem; }.preview-score { gap: .8rem; padding: .85rem; }.score-ring { width: 5.8rem; height: 5.8rem; }.score-ring strong { font-size: 2rem; }.score-copy > strong { font-size: .72rem; }.preview-tag { display: none; } }
