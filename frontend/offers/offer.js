@@ -111,6 +111,24 @@
         return ({ HIGH: "wysoka", MEDIUM: "średnia", LOW: "niska" })[band] || band;
     }
 
+    function confidenceDescription(band) {
+        return ({
+            HIGH: "Dane są dobrze potwierdzone w oficjalnych źródłach.",
+            MEDIUM: "Większość danych jest potwierdzona, ale jedna rzecz pozostaje niejasna.",
+            LOW: "Brakuje ważnych informacji, które mogą zmienić decyzję."
+        })[band] || "Sprawdź uzasadnienie pewności danych.";
+    }
+
+    function confidenceReason(offer, band, example) {
+        if (band === "HIGH") return "";
+        if (example?.confidenceBand && example.confidenceBand !== offer.decision.northConfidence.band) return example.verdictReason || "";
+        const confidence = offer.decision.northConfidence;
+        return asArray(confidence.reasons).find((reason) => /nie pozwala|sprzeczne|dostępne dopiero|nie są znane/i.test(reason))
+            || asArray(confidence.blockers)[0]
+            || asArray(confidence.reasons)[0]
+            || "";
+    }
+
     function readableStatus(status) {
         const labels = { active: "aktywna", closing: "kończy się", expired: "wygasła", under_verification: "w weryfikacji" };
         return labels[status] || status;
@@ -275,7 +293,7 @@
                         <p><strong>Wniosek:</strong> ${escapeHtml(example.verdictReason)}</p>
                         <p><strong>Warunki:</strong> odpowiedzi wskazane powyżej.</p>
                         <p><strong>Co może zablokować wynik:</strong> ${escapeHtml(scenarioBlocker(example, offer))}</p>
-                        <p><strong>Jak pewne są dane:</strong> ${escapeHtml(confidenceLabel(confidence))} <small>(${escapeHtml(confidence)})</small></p>
+                        <p><strong>Jak pewne są dane:</strong> ${escapeHtml(confidenceDescription(confidence))} <small>${escapeHtml(confidenceLabel(confidence))} (${escapeHtml(confidence)})</small>${confidenceReason(offer, confidence, example) ? ` ${escapeHtml(confidenceReason(offer, confidence, example))}` : ""}</p>
                         <p><strong>W porównaniu z brakiem działania:</strong> ${escapeHtml(offer.decision.comparison.conclusion)}</p>
                     </div>
                 </article>`;
@@ -368,7 +386,7 @@
                         <div><h3>Dlaczego</h3><ul>${asArray(verdict.reasons).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div>
                         <div><h3>Pod jakimi warunkami</h3>${asArray(verdict.conditions).length ? `<ul>${asArray(verdict.conditions).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : "<p>Bez Twoich danych nie ma warunków pozytywnej oceny.</p>"}</div>
                         <div><h3>Co blokuje pozytywną ocenę</h3>${asArray(verdict.positiveBlockers).length ? `<ul>${asArray(verdict.positiveBlockers).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : "<p>Brak dodatkowych przeszkód w danych oferty.</p>"}</div>
-                        <div><h3>${term("northConfidence")}</h3><strong class="confidence-large">${escapeHtml(confidenceLabel(offer.decision.northConfidence.band))}</strong><p><small>${escapeHtml(offer.decision.northConfidence.band)}</small> · ${escapeHtml(asArray(offer.decision.northConfidence.reasons)[0] || "Brak dodatkowego uzasadnienia w rekordzie.")}</p></div>
+                        <div><h3>${term("northConfidence")}</h3><strong class="confidence-large">${escapeHtml(confidenceDescription(offer.decision.northConfidence.band))}</strong><p><small>${escapeHtml(confidenceLabel(offer.decision.northConfidence.band))} (${escapeHtml(offer.decision.northConfidence.band)})</small> · ${escapeHtml(confidenceReason(offer, offer.decision.northConfidence.band) || asArray(offer.decision.northConfidence.reasons)[0] || "Brak dodatkowego uzasadnienia w rekordzie.")}</p></div>
                     </div>
                     <div class="comparison-panel"><div><span>Jeśli nic nie zrobisz</span><strong>${formatMoney(comparison.doNothing.reward)} nagrody · ${formatMoney(comparison.doNothing.directCost)} kosztu</strong><p>Wysiłek: ${escapeHtml(comparison.doNothing.effort)} · nowe ryzyko: ${escapeHtml(comparison.doNothing.failureRisk)}</p></div><div><span>Wniosek</span><p>${escapeHtml(comparison.conclusion)}</p></div></div>
                 </article>
@@ -440,7 +458,7 @@
                         <h3>Oficjalne źródła</h3>
                         <ul class="source-list">${sources.length ? sources.map((source) => `<li>${source.url ? `<a href="${escapeHtml(source.url)}" target="_blank" rel="noopener">${escapeHtml(sourceTitle(source))} <span aria-hidden="true">↗</span><span class="visually-hidden"> (otwiera nową kartę)</span></a>` : `<span class="source-title">${escapeHtml(sourceTitle(source))}</span>`}<span>${escapeHtml(readableSourceType(source.type))} · sprawdzono ${formatDate(source.accessedAt)} · ${escapeHtml(source.editionReference || "bieżąca edycja")}</span></li>`).join("") : "<li><span class=\"source-title\">Brak źródeł do pokazania</span><span>Pozytywny Verdict jest zablokowany do czasu uzupełnienia evidence.</span></li>"}</ul>
                     </div>
-                    <aside class="confidence-reasons"><h3>Dlaczego pewność jest ${escapeHtml(confidenceLabel(offer.decision.northConfidence.band))}</h3>${asArray(offer.decision.northConfidence.reasons).length ? `<ul>${asArray(offer.decision.northConfidence.reasons).map((reason) => `<li>${escapeHtml(reason)}</li>`).join("")}</ul>` : "<p>Brak dodatkowego uzasadnienia w rekordzie.</p>"}${asArray(offer.decision.northConfidence.blockers).length ? `<h4>Co obniża pewność</h4><ul>${asArray(offer.decision.northConfidence.blockers).map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}</ul>` : ""}</aside>
+                    <aside class="confidence-reasons"><h3>${escapeHtml(confidenceDescription(offer.decision.northConfidence.band))}</h3><p><small>Stan systemowy: ${escapeHtml(offer.decision.northConfidence.band)}</small></p>${asArray(offer.decision.northConfidence.reasons).length ? `<ul>${asArray(offer.decision.northConfidence.reasons).map((reason) => `<li>${escapeHtml(reason)}</li>`).join("")}</ul>` : "<p>Brak dodatkowego uzasadnienia w rekordzie.</p>"}${asArray(offer.decision.northConfidence.blockers).length ? `<h4>Co obniża pewność</h4><ul>${asArray(offer.decision.northConfidence.blockers).map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}</ul>` : ""}</aside>
                 </div>
                 <div class="evidence-ledger">
                     <h3>Dowody dla kluczowych liczb i warunków</h3>

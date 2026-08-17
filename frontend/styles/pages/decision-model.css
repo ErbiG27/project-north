@@ -227,10 +227,13 @@
 .value-preview__footer strong { font-size: .82rem; }
 .value-preview__footer span { color: var(--north-muted); font-size: .69rem; }
 
-.proof-strip { display: grid; grid-template-columns: repeat(4, 1fr); margin-top: 1rem; border: 1px solid var(--north-line); border-radius: 1.1rem; background: #0d100e; }
-.proof-strip p { position: relative; margin: 0; padding: 1.25rem 1.25rem 1.25rem 2.4rem; color: #c5cec8; font-size: .76rem; font-weight: 750; }
+.proof-strip { margin: 0 0 1rem; padding: 1.5rem; border: 1px solid var(--north-line); border-radius: 1.1rem; background: #0d100e; }
+.proof-strip h2 { margin: 0 0 1rem; font-size: 1.15rem; }
+.proof-strip__items { display: grid; grid-template-columns: repeat(3, 1fr); }
+.proof-strip p { position: relative; margin: 0; padding: 1.1rem 1.25rem 1.1rem 2.4rem; color: #c5cec8; font-size: .76rem; line-height: 1.5; }
 .proof-strip p + p { border-left: 1px solid var(--north-line); }
-.proof-strip p::before { position: absolute; top: 1.43rem; left: 1.25rem; width: .45rem; height: .45rem; border: 1px solid var(--north-green); border-radius: 50%; content: ""; }
+.proof-strip p::before { position: absolute; top: 1.32rem; left: 1.25rem; width: .45rem; height: .45rem; border: 1px solid var(--north-green); border-radius: 50%; content: ""; }
+.proof-strip strong { display: block; color: var(--north-ink); }
 
 .north-section,
 .offer-section { padding-block: clamp(5rem, 10vw, 9rem); }
@@ -364,6 +367,8 @@
 .bank-mark--fallback .bank-monogram { display: grid; }
 .decision-offer-card__top p { margin: 0; font-size: .83rem; font-weight: 850; }
 .offer-status { color: var(--north-dim); font-size: .62rem; }
+.offer-confidence { margin: 0; padding: .8rem; border-radius: .8rem; background: rgb(255 255 255 / 3%); color: var(--north-muted); font-size: .7rem; line-height: 1.5; }
+.offer-confidence strong { color: var(--north-ink); }
 .problem-label { margin: 1.4rem 0 .7rem; color: var(--north-green); font-size: .67rem; font-weight: 850; letter-spacing: .07em; text-transform: uppercase; }
 .decision-offer-card h3 { min-height: 3.3rem; margin: 0; font-size: 1.22rem; line-height: 1.35; }
 .offer-summary { color: var(--north-muted); font-size: .78rem; line-height: 1.6; }
@@ -596,7 +601,7 @@
 .verdict-details p,
 .verdict-details li { color: var(--north-muted); font-size: .71rem; line-height: 1.5; }
 .verdict-details ul { margin: 0; padding-left: 1rem; }
-.confidence-large { color: var(--north-green); font-size: 1.55rem; }
+.confidence-large { color: var(--north-green); font-size: 1.15rem; line-height: 1.35; }
 .comparison-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1.4rem; padding: 1.1rem; border-radius: .9rem; background: rgb(255 255 255 / 3%); }
 .comparison-panel span { color: var(--north-dim); font-size: .6rem; font-weight: 850; text-transform: uppercase; }
 .comparison-panel strong { display: block; margin-top: .4rem; font-size: .8rem; }
@@ -654,9 +659,8 @@
     .pekao-demo-grid { grid-template-columns: 1fr; }
     .landing-hero { min-height: 0; }
     .value-preview { max-width: 39rem; }
-    .proof-strip { grid-template-columns: repeat(2, 1fr); }
-    .proof-strip p:nth-child(3) { border-left: 0; border-top: 1px solid var(--north-line); }
-    .proof-strip p:nth-child(4) { border-top: 1px solid var(--north-line); }
+    .proof-strip__items { grid-template-columns: 1fr; }
+    .proof-strip p + p { border-top: 1px solid var(--north-line); border-left: 0; }
     .scenario-grid,
     .decision-offers-grid { grid-template-columns: 1fr; }
     .offer-filters { grid-template-columns: 1fr; }
@@ -704,10 +708,7 @@
     .value-preview__grid div { min-height: 5.8rem; padding: .75rem; }
     .value-preview__grid dt { margin-bottom: .5rem; font-size: .59rem; }
     .value-preview__grid dd { font-size: .74rem; }
-    .proof-strip { grid-template-columns: 1fr; }
-    .proof-strip p + p,
-    .proof-strip p:nth-child(3),
-    .proof-strip p:nth-child(4) { border-top: 1px solid var(--north-line); border-left: 0; }
+    .proof-strip { padding: 1.2rem; }
     .north-section,
     .offer-section { padding-block: 4.5rem; }
     .section-heading--wide,

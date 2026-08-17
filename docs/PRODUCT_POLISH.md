@@ -2,6 +2,14 @@
 
 Backlog jakościowy. Priorytet określa wpływ na zaufanie i ukończenie zadania użytkownika; nie jest planem wydania.
 
+## Pre-UX Polish Patch — North UX Test #1
+
+- [x] Podnieść aktywne analizy bezpośrednio pod hero, przed rozbudowanymi przykładami; zachować wyszukiwanie, filtry, pusty stan i reset.
+- [x] Dodać krótki przepływ „Jak działa North?” między listingiem a przykładami bez tworzenia rankingu.
+- [x] Przenieść popovery Glossary do globalnej warstwy viewportu, aby kontenery z `overflow` ich nie ucinały na desktopie ani mobile.
+- [x] Zastąpić niejasne „Dane ręcznie zweryfikowane” komunikatem „Warunki sprawdzone w oficjalnych źródłach”.
+- [x] Pokazywać prosty sens Confidence przed bandem `HIGH` / `MEDIUM` / `LOW`, a przy niższej pewności także konkretny istniejący powód.
+
 ## P0 — przed publikacją
 
 - Naprawić wszystkie linki kart i CTA; nie publikować `href="#"` ani stron nieistniejących.

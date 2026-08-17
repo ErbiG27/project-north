@@ -62,6 +62,23 @@
         return ({ HIGH: "wysoka", MEDIUM: "średnia", LOW: "niska" })[band] || band;
     }
 
+    function confidenceDescription(band) {
+        return ({
+            HIGH: "Dane są dobrze potwierdzone w oficjalnych źródłach.",
+            MEDIUM: "Większość danych jest potwierdzona, ale jedna rzecz pozostaje niejasna.",
+            LOW: "Brakuje ważnych informacji, które mogą zmienić decyzję."
+        })[band] || "Sprawdź uzasadnienie pewności danych.";
+    }
+
+    function confidenceReason(offer) {
+        const confidence = offer.decision.northConfidence;
+        if (confidence.band === "HIGH") return "";
+        return confidence.reasons?.find((reason) => /nie pozwala|sprzeczne|dostępne dopiero|nie są znane/i.test(reason))
+            || confidence.blockers?.[0]
+            || confidence.reasons?.[0]
+            || "";
+    }
+
     function freshnessBadge(offer) {
         const freshness = freshnessFor(offer);
         return `<span class="freshness-badge freshness-badge--${freshness.state.toLowerCase().replaceAll("_", "-")}">${escapeHtml(freshness.label)}</span>`;
@@ -176,13 +193,14 @@
                     </dl>
                     <p class="verdict-reason"><strong>Dlaczego:</strong> ${escapeHtml(example.verdictReason)}</p>
                     <p class="do-nothing"><strong>Jeśli nic nie zrobisz:</strong> 0 zł nagrody, 0 zł nowego kosztu, minimalny wysiłek.</p>
-                    <p class="scenario-confidence">Pewność danych: <strong>${escapeHtml(confidenceLabel(example.confidenceBand))}</strong> <small>(${escapeHtml(example.confidenceBand)})</small></p>
+                    <p class="scenario-confidence"><strong>${escapeHtml(confidenceDescription(example.confidenceBand))}</strong> <small>${escapeHtml(confidenceLabel(example.confidenceBand))} (${escapeHtml(example.confidenceBand)})</small></p>
                 </article>`;
         }).join("");
     }
 
     function renderOffers(offers) {
         const target = document.getElementById("decision-offers");
+        window.NorthGlossary.cleanup(target);
         target.className = "decision-offers-grid";
         target.innerHTML = offers.map((offer) => {
             const firstExample = offer.value.scenarioExamples[0];
@@ -193,11 +211,12 @@
                     <div class="decision-offer-card__top">
                         ${providerMark(offer)}
                         <div><p>${escapeHtml(shortProvider(offer))}</p><span class="offer-status">${escapeHtml(freshness.label)} · sprawdzono ${formatDate(offer.identity.verifiedAt)}</span></div>
-                        <span class="confidence-badge">Pewność: ${escapeHtml(confidenceLabel(offer.decision.northConfidence.band))}</span>
+                        <span class="confidence-badge">Pewność danych: ${escapeHtml(confidenceLabel(offer.decision.northConfidence.band))} <small>(${escapeHtml(offer.decision.northConfidence.band)})</small></span>
                     </div>
                     <p class="problem-label">${escapeHtml(offer.listing.problemLabel)}</p>
                     <h3>${escapeHtml(offer.identity.title)}</h3>
                     <p class="offer-summary">${escapeHtml(offer.listing.summary)}</p>
+                    <p class="offer-confidence"><strong>${escapeHtml(confidenceDescription(offer.decision.northConfidence.band))}</strong>${confidenceReason(offer) ? ` ${escapeHtml(confidenceReason(offer))}` : ""}</p>
                     <dl class="offer-card-values">
                         <div><dt>${term("advertisedMax")}</dt><dd>${escapeHtml(offer.value.advertisedMax.displayLabel)}</dd></div>
                         <div><dt>${term("yourLikelyValue", "Przykładowa realna kwota")}</dt><dd>${formatValue(firstValue.likelyGrossValue)}</dd></div>
@@ -315,7 +334,7 @@
             const structureStatus = document.getElementById("structure-status");
             if (structureStatus) {
                 structureStatus.textContent = states.every((state) => state === "VERIFIED")
-                    ? "Dane ręcznie zweryfikowane"
+                    ? "Warunki sprawdzone w oficjalnych źródłach"
                     : "Sprawdź aktualność danych";
             }
             renderPekaoDemo(pekao);

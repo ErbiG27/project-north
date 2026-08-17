@@ -29,11 +29,9 @@
 .glossary-trigger:hover,
 .glossary-trigger[aria-expanded="true"] { border-color: var(--north-green, #36e39f); background: rgb(54 227 159 / 12%); }
 
-.glossary-term > .glossary-popover {
-    position: absolute;
-    z-index: 80;
-    bottom: calc(100% + .65rem);
-    left: 0;
+.glossary-popover {
+    position: fixed;
+    z-index: 120;
     display: none !important;
     width: min(19rem, calc(100vw - 1.5rem));
     padding: .9rem 1rem;
@@ -48,10 +46,9 @@
     line-height: 1.5;
     text-align: left;
     text-transform: none;
-    transform: translateX(var(--glossary-shift, 0));
 }
 
-.glossary-term > .glossary-popover[data-open] { display: grid !important; gap: .3rem; }
+.glossary-popover[data-open] { display: grid !important; gap: .3rem; }
 .glossary-popover strong { color: var(--north-green, #36e39f); font-size: .72rem; }
 
 .north-match-section { scroll-margin-top: 1rem; }
@@ -127,8 +124,7 @@
 }
 
 @media (max-width: 600px) {
-    .glossary-term > .glossary-popover {
-        position: fixed;
+    .glossary-popover {
         z-index: 120;
         right: .75rem;
         bottom: .75rem;

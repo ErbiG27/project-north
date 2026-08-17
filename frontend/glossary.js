@@ -65,6 +65,7 @@
     });
 
     let openTrigger = null;
+    let openPanel = null;
     let closeTimer = null;
     let popoverId = 0;
 
@@ -86,36 +87,52 @@
 
     function close({ restoreFocus = false } = {}) {
         if (!openTrigger) return;
-        const popover = openTrigger.querySelector(".glossary-popover");
         openTrigger.querySelector(".glossary-trigger")?.setAttribute("aria-expanded", "false");
-        popover?.removeAttribute("data-open");
+        openPanel?.removeAttribute("data-open");
         const previous = openTrigger;
         openTrigger = null;
+        openPanel = null;
         if (restoreFocus) previous.querySelector(".glossary-trigger")?.focus();
     }
 
-    function positionPopover(wrapper) {
-        const panel = wrapper.querySelector(".glossary-popover");
-        if (!panel || global.matchMedia("(max-width: 600px)").matches) return;
-        panel.style.removeProperty("--glossary-shift");
-        const rect = panel.getBoundingClientRect();
+    function positionPopover(wrapper, panel) {
+        if (!panel) return;
+        if (global.matchMedia("(max-width: 600px)").matches) {
+            panel.style.removeProperty("top");
+            panel.style.removeProperty("left");
+            panel.style.removeProperty("bottom");
+            return;
+        }
+        const trigger = wrapper.querySelector(".glossary-trigger");
+        if (!trigger) return;
+        panel.style.removeProperty("top");
+        panel.style.removeProperty("left");
+        panel.style.removeProperty("bottom");
+        const triggerRect = trigger.getBoundingClientRect();
+        const panelRect = panel.getBoundingClientRect();
         const margin = 12;
-        let shift = 0;
-        if (rect.right > global.innerWidth - margin) shift -= rect.right - global.innerWidth + margin;
-        if (rect.left < margin) shift += margin - rect.left;
-        panel.style.setProperty("--glossary-shift", `${shift}px`);
+        const gap = 10;
+        const maxLeft = Math.max(margin, global.innerWidth - panelRect.width - margin);
+        const left = Math.min(Math.max(triggerRect.left, margin), maxLeft);
+        const fitsAbove = triggerRect.top - panelRect.height - gap >= margin;
+        const top = fitsAbove
+            ? triggerRect.top - panelRect.height - gap
+            : Math.min(triggerRect.bottom + gap, global.innerHeight - panelRect.height - margin);
+        panel.style.left = `${left}px`;
+        panel.style.top = `${Math.max(margin, top)}px`;
     }
 
     function open(wrapper) {
         if (openTrigger && openTrigger !== wrapper) close();
         clearTimeout(closeTimer);
         const trigger = wrapper.querySelector(".glossary-trigger");
-        const panel = wrapper.querySelector(".glossary-popover");
+        const panel = document.getElementById(trigger?.getAttribute("aria-controls"));
         if (!trigger || !panel) return;
         openTrigger = wrapper;
+        openPanel = panel;
         trigger.setAttribute("aria-expanded", "true");
         panel.dataset.open = "";
-        positionPopover(wrapper);
+        positionPopover(wrapper, panel);
     }
 
     function scheduleClose(wrapper) {
@@ -138,6 +155,8 @@
         wrapper.innerHTML = `<span class="glossary-label">${escapeHtml(existingText)}</span><button class="glossary-trigger" type="button" aria-label="Wyjaśnij: ${escapeHtml(existingText)}" aria-expanded="false" aria-controls="${panelId}" aria-describedby="${panelId}"><span aria-hidden="true">i</span></button><span class="glossary-popover" id="${panelId}" role="tooltip"><strong>${escapeHtml(item.term + technicalName)}</strong><span>${escapeHtml(item.definition)}</span></span>`;
 
         const trigger = wrapper.querySelector(".glossary-trigger");
+        const panel = wrapper.querySelector(".glossary-popover");
+        document.body.append(panel);
         trigger.addEventListener("click", (event) => {
             event.stopPropagation();
             open(wrapper);
@@ -155,10 +174,19 @@
         wrapper.addEventListener("mouseenter", () => open(wrapper));
         wrapper.addEventListener("mouseleave", () => scheduleClose(wrapper));
         wrapper.addEventListener("focusout", () => scheduleClose(wrapper));
+        panel.addEventListener("mouseenter", () => clearTimeout(closeTimer));
+        panel.addEventListener("mouseleave", () => scheduleClose(wrapper));
     }
 
     function init(root = document) {
         root.querySelectorAll("[data-glossary]").forEach(enhance);
+    }
+
+    function cleanup(root) {
+        if (openTrigger && root.contains(openTrigger)) close();
+        root.querySelectorAll(".glossary-trigger[aria-controls]").forEach((trigger) => {
+            document.getElementById(trigger.getAttribute("aria-controls"))?.remove();
+        });
     }
 
     document.addEventListener("click", (event) => {
@@ -168,9 +196,12 @@
         if (event.key === "Escape" && openTrigger) close({ restoreFocus: true });
     });
     global.addEventListener("resize", () => {
-        if (openTrigger) positionPopover(openTrigger);
+        if (openTrigger) positionPopover(openTrigger, openPanel);
     });
+    global.addEventListener("scroll", () => {
+        if (openTrigger) positionPopover(openTrigger, openPanel);
+    }, true);
     document.addEventListener("DOMContentLoaded", () => init());
 
-    global.NorthGlossary = { definitions, label, init, close };
+    global.NorthGlossary = { definitions, label, init, cleanup, close };
 }(window));

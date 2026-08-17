@@ -4,6 +4,23 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 
 ## [Unreleased]
 
+### Changed
+
+- Landing prowadzi teraz od hero bezpośrednio do aktywnych analiz, następnie krótko wyjaśnia działanie North i dopiero później pokazuje rozbudowane przykłady oraz metodologię.
+- Hero komunikuje „Warunki sprawdzone w oficjalnych źródłach” zamiast niejasnego „Dane ręcznie zweryfikowane”.
+- Confidence zaczyna się od prostego opisu dla użytkownika; techniczny band pozostaje drugą warstwą, a `MEDIUM` i `LOW` pokazują konkretny powód zapisany w evidence.
+
+### Fixed
+
+- Popovery Glossary są renderowane w globalnej warstwie i ograniczane do viewportu, więc karty oraz moduły z ukrytym overflow nie ucinają ich przy krawędziach.
+
+### Verified
+
+- Landing, metodologia, Millennium, Nest, Pekao, Kraken i Revolut przeszły lokalny smoke w 1440×900, 820×900 i 390×844 bez poziomego overflow, duplikatów ID, zerwanych relacji ARIA, brakujących obrazów i błędów konsoli.
+- Wyszukiwanie, filtr Cashback, pusty stan oraz reset działają; Glossary obsługuje click/tap, Enter, Space i Escape z powrotem fokusu, a panel mieści się w viewportach przy skrajnych krawędziach.
+- Regresja Match zachowała: Millennium `FIT` / `TAKE IF` / 700 zł / koszt 0; Nest `CONDITIONAL FIT` / `TAKE IF` / 1 250 zł brutto / 1 200–1 250 zł użyteczne; Pekao start-only `FIT` / `TAKE IF` / 300 zł / koszt 0; Pekao full travel `FIT` / `TAKE IF` / 1 740 zł / koszt 0.
+- Brak danych nadal daje `CANNOT ASSESS` / `NOT ENOUGH DATA`, a potwierdzone wykluczenie `POOR FIT` / `SKIP`. Wszystkie śledzone pliki frontendu zwracają lokalnie HTTP 200.
+
 ## [0.7.2] — 2026-08-17
 
 ### Added

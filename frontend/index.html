@@ -68,12 +68,45 @@
             </aside>
         </section>
 
+        <section class="north-section opportunities" id="opportunities" aria-labelledby="opportunities-title">
+            <div class="section-heading section-heading--wide">
+                <div>
+                    <p class="section-kicker"><span aria-hidden="true"></span> Decision Model v1</p>
+                    <h2 id="opportunities-title">Pierwsze analizy North</h2>
+                </div>
+                <p>Trzy oferty, trzy różne pytania. Otwórz analizę i wybierz „Sprawdź dla siebie”, aby policzyć realną kwotę bez konta i bez niezrozumiałego wyniku procentowego.</p>
+            </div>
+            <form class="offer-filters" id="offer-filters" role="search">
+                <div class="offer-search-field">
+                    <label for="offer-search">Wyszukaj analizę</label>
+                    <input id="offer-search" name="query" type="search" autocomplete="off" placeholder="Np. Millennium, cashback, podróże">
+                </div>
+                <fieldset>
+                    <legend>Filtruj według rodzaju korzyści</legend>
+                    <div class="offer-filter-buttons">
+                        <button type="button" data-offer-filter="all" aria-pressed="true">Wszystkie</button>
+                        <button type="button" data-offer-filter="cash">Premia pieniężna</button>
+                        <button type="button" data-offer-filter="cashback">Cashback</button>
+                        <button type="button" data-offer-filter="travel">Podróże</button>
+                    </div>
+                </fieldset>
+            </form>
+            <p class="offer-results-summary" id="offer-results-summary" aria-live="polite" aria-atomic="true">Ładowanie analiz…</p>
+            <div class="decision-offers-grid data-loading" id="decision-offers">Ładowanie analiz…</div>
+            <div class="offer-empty-state" id="offer-empty-state" role="status" hidden>
+                <h3>Brak ofert pasujących do tych kryteriów</h3>
+                <p>Zmień zapytanie albo wyczyść filtry, aby ponownie zobaczyć wszystkie analizy.</p>
+                <button class="north-button" id="offer-filters-reset" type="button">Wyczyść wyszukiwanie i filtry</button>
+            </div>
+        </section>
+
         <section class="proof-strip" aria-labelledby="proof-title">
-            <h2 class="visually-hidden" id="proof-title">Co odróżnia analizę North</h2>
-            <p>Wartość rozbita na składniki</p>
-            <p>Scenariusz zamiast uniwersalnego wyniku</p>
-            <p>Źródła przy krytycznych polach</p>
-            <p>Afiliacja nie zmienia decyzji</p>
+            <h2 id="proof-title">Jak działa North?</h2>
+            <div class="proof-strip__items">
+                <p><strong>1. Wybierz analizę.</strong> Zobacz kwotę, warunki i źródła.</p>
+                <p><strong>2. Odpowiedz na pytania.</strong> North policzy wartość dla Twojej sytuacji.</p>
+                <p><strong>3. Sprawdź decyzję.</strong> Zobacz, co przemawia za ofertą i co może ją zablokować.</p>
+            </div>
         </section>
 
         <section class="north-section value-demo" id="value-demo" aria-labelledby="value-demo-title">
@@ -153,38 +186,6 @@
                 <li><span>04</span><div><strong>Bezpieczne wyjście</strong><p>Zamknij produkt dopiero po potwierdzonych wypłatach.</p></div></li>
             </ol>
             <a class="north-link" href="offers/millennium.html#execution">Zobacz kroki w analizie Millennium <span aria-hidden="true">→</span></a>
-        </section>
-
-        <section class="north-section opportunities" id="opportunities" aria-labelledby="opportunities-title">
-            <div class="section-heading section-heading--wide">
-                <div>
-                    <p class="section-kicker"><span aria-hidden="true"></span> Decision Model v1</p>
-                    <h2 id="opportunities-title">Pierwsze analizy North</h2>
-                </div>
-                <p>Trzy oferty, trzy różne pytania. Otwórz analizę i wybierz „Sprawdź dla siebie”, aby policzyć realną kwotę bez konta i bez niezrozumiałego wyniku procentowego.</p>
-            </div>
-            <form class="offer-filters" id="offer-filters" role="search">
-                <div class="offer-search-field">
-                    <label for="offer-search">Wyszukaj analizę</label>
-                    <input id="offer-search" name="query" type="search" autocomplete="off" placeholder="Np. Millennium, cashback, podróże">
-                </div>
-                <fieldset>
-                    <legend>Filtruj według rodzaju korzyści</legend>
-                    <div class="offer-filter-buttons">
-                        <button type="button" data-offer-filter="all" aria-pressed="true">Wszystkie</button>
-                        <button type="button" data-offer-filter="cash">Premia pieniężna</button>
-                        <button type="button" data-offer-filter="cashback">Cashback</button>
-                        <button type="button" data-offer-filter="travel">Podróże</button>
-                    </div>
-                </fieldset>
-            </form>
-            <p class="offer-results-summary" id="offer-results-summary" aria-live="polite" aria-atomic="true">Ładowanie analiz…</p>
-            <div class="decision-offers-grid data-loading" id="decision-offers">Ładowanie analiz…</div>
-            <div class="offer-empty-state" id="offer-empty-state" role="status" hidden>
-                <h3>Brak ofert pasujących do tych kryteriów</h3>
-                <p>Zmień zapytanie albo wyczyść filtry, aby ponownie zobaczyć wszystkie analizy.</p>
-                <button class="north-button" id="offer-filters-reset" type="button">Wyczyść wyszukiwanie i filtry</button>
-            </div>
         </section>
 
         <section class="north-section faq" aria-labelledby="faq-title">

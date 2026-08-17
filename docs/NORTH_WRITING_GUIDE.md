@@ -36,6 +36,8 @@
 | Failure Risk | Co może pójść nie tak |
 | Opportunity Cost | Z czego rezygnujesz, wybierając tę ofertę |
 
+Confidence pokazujemy w dwóch warstwach. Najpierw prosty sens: `HIGH` — „Dane są dobrze potwierdzone w oficjalnych źródłach.”, `MEDIUM` — „Większość danych jest potwierdzona, ale jedna rzecz pozostaje niejasna.”, `LOW` — „Brakuje ważnych informacji, które mogą zmienić decyzję.” Niżej pozostaje band systemowy i konkretny powód z evidence. Przy `MEDIUM` i `LOW` nie wolno poprzestać na ogólnej etykiecie ani wymyślać konfliktu, którego nie ma w danych.
+
 Nie trzeba używać tych zdań literalnie. Liczy się ten sam sens w naturalnym kontekście.
 
 ## Kontrola przed publikacją
