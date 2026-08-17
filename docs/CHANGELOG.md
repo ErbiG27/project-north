@@ -4,7 +4,29 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 
 ## [Unreleased]
 
-Brak zmian po wydaniu v0.7.1.
+### Added
+
+- Pierwszy publiczny deployment statycznego frontendu na Vercel pod `https://project-north-mu.vercel.app/`, publikujący wyłącznie katalog `frontend/` z gałęzi `main`.
+- Samoodwołujące canonical URL-e, podstawowe Open Graph i Twitter Summary Card dla indeksowalnych stron oraz produkcyjne `sitemap.xml` i `robots.txt`.
+- Minimalna konfiguracja Vercel z nagłówkami bezpieczeństwa i krótkim cache przeglądarki dla zasobów marki.
+
+### Changed
+
+- README, roadmapa, handbook, backlog jakości i rejestr decyzji odzwierciedlają publiczny origin oraz zakończenie Deployment & Infrastructure #1.
+- Kraken pozostaje indeksowalnym validation case'em dostępnym z metodologii; Revolut zachowuje `noindex, follow` i nie występuje w sitemap.
+
+### Verified
+
+- Landing, metodologia, Millennium, Nest, Pekao, Kraken i Revolut przeszły produkcyjny smoke test w 1440×900 i 390×844 bez błędów konsoli, mixed content, brakujących obrazów, duplikatów ID i poziomego overflow.
+- Produkcyjne wyszukiwanie, filtr Cashback, pusty stan i reset działają; glossary otwiera się kliknięciem/tapem i klawiaturą oraz zamyka Escape z powrotem fokusu.
+- North Match na produkcji zwrócił dla pełnych scenariuszy: Millennium `FIT` / `TAKE IF` / 700 zł, Nest `CONDITIONAL FIT` / `TAKE IF` / 1 250 zł oraz Pekao `FIT` / `TAKE IF` / 1 740 zł.
+- Wszystkie linki evidence otwierane w nowej karcie mają `noopener`; Revolut zachowuje nieinteraktywny stan niedostępnego CTA.
+- Lokalny artefakt produkcyjny zwraca `200` dla wszystkich stron, skryptów, danych, stylów, faviconów i logotypów; canonical, OG, Twitter Card, sitemap, robots i konfiguracja Vercel przechodzą walidację składni i spójności origin.
+
+### Known limitations
+
+- Brak dedykowanej grafiki social, dlatego metadata świadomie nie zawierają `og:image` ani `twitter:image`.
+- Structured data, analytics, backend, konta użytkowników i private beta pozostają poza tym wdrożeniem.
 
 ## [0.7.1] — 2026-08-16
 

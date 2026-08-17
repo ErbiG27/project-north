@@ -1,6 +1,6 @@
 # ProjectNorth Handbook
 
-> Wersja: 1.3 · Status: aktywny dokument roboczy · Produkt: v0.7.1 · Decision Model v1
+> Wersja: 1.4 · Status: aktywny dokument roboczy · Produkt: v0.7.1 · Decision Model v1
 
 ## Cel dokumentacji
 
@@ -53,10 +53,21 @@ frontend/
 ├── glossary.js                 # Centralne definicje i dostępny popover
 ├── style.css                   # Punkt wejścia do modułowych arkuszy CSS
 ├── styles/pages/decision-model.css
-└── assets/brand/               # Logo, sygnet i favicony North
+├── assets/brand/               # Logo, sygnet i favicony North
+├── sitemap.xml                 # Indeksowalne produkcyjne URL-e
+├── robots.txt                  # Reguły crawlerów i adres sitemap
+└── vercel.json                 # Minimalne nagłówki hostingu
 ```
 
 Landing, listing oraz strony Millennium, Nest i Pekao pobierają fakty z `decision-offers.json`. Osobne dokumenty HTML przechowują wyłącznie routing i metadane, a ich pełną treść renderuje wspólny `offers/offer.js`. `offers/revolut.html` pozostaje stroną legacy z dawnym North Score; nie jest wzorcem danych ani docelową metodologią. `style.css` nadal jest jednym punktem wejścia dla modułowych arkuszy.
+
+## Produkcja
+
+Frontend jest publicznie dostępny pod `https://project-north-mu.vercel.app/`. Vercel publikuje wyłącznie katalog `frontend/` z gałęzi GitHub `main`; projekt nie ma procesu budowania, backendu, sekretów ani zmiennych środowiskowych. `docs/`, lokalne artefakty i pliki z root repo nie są częścią publikowanej strony.
+
+Landing, metodologia, Millennium, Nest, Pekao i Kraken mają samoodwołujące canonical URL-e, `og:url`, podstawowe Open Graph oraz Twitter Summary Card. Sitemap obejmuje te sześć indeksowalnych ścieżek. Kraken pozostaje publicznym validation case'em z `LOW` Confidence i `NOT ENOUGH DATA`, poza katalogiem i Match flow. Revolut zachowuje `noindex, follow` i nie występuje w sitemap.
+
+Brak dedykowanej grafiki social oznacza świadomy brak `og:image` i `twitter:image`. Structured data nadal nie mają uczciwej podstawy semantycznej. Analytics nie są częścią Deployment & Infrastructure #1.
 
 ## Model danych: implementacja v0.7.0
 

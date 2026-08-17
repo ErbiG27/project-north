@@ -10,7 +10,7 @@ Element trafia do sprintu tylko z celem, właścicielem, zakresem i Definition o
 
 **Cel osiągnięty:** użytkownik może znaleźć ofertę, policzyć Explainable North Match dla Millennium, Nest i Pekao oraz przejść kluczowe widoki na desktopie, tablecie, telefonie i klawiaturze bez krytycznych barier dostępności.
 
-Match nie jest procentem ani zamiennikiem Verdict. Wspólny klientowy silnik interpretuje reguły zapisane w istniejącym Decision Model, a wynik pokazuje reasons, blockers, conditions i brakujące dane. Glossary wyjaśnia angielskie terminy po polsku. Dane scenariusza pozostają lokalnie w bieżącej karcie. Landing ma działające wyszukiwanie, filtry i pusty stan, a strony mają unikalne metadane. Kraken nadal jest wyłącznie validation case poza głównym Match flow i katalogiem.
+Match nie jest procentem ani zamiennikiem Verdict. Wspólny klientowy silnik interpretuje reguły zapisane w istniejącym Decision Model, a wynik pokazuje reasons, blockers, conditions i brakujące dane. Glossary wyjaśnia angielskie terminy po polsku. Dane scenariusza pozostają lokalnie w bieżącej karcie. Landing ma działające wyszukiwanie, filtry i pusty stan, a strony mają unikalne metadane. Kraken nadal jest wyłącznie validation case poza głównym Match flow i katalogiem. Frontend działa publicznie pod `https://project-north-mu.vercel.app/`; prywatna beta nie została jeszcze otwarta.
 
 ## Następne etapy
 
@@ -101,7 +101,20 @@ Ten etap może rozpocząć się wyłącznie po walidacji podstawowej trójki v0.
 
 **Definition of Done — spełnione:** kluczowe strony mają komplet metadanych możliwych bez produkcyjnego origin, brak wykrytych krytycznych problemów dostępności oraz czytelne stany wyszukiwania i braku wyników. Canonical, social metadata i sitemap pozostają blokowane do czasu ustalenia prawdziwej domeny oraz publicznej grafiki.
 
+### Deployment & Infrastructure #1
+
+- **Status:** zakończono 2026-08-16.
+- Statyczny katalog `frontend/` jest publikowany przez Vercel z GitHub `main`, bez frameworka, procesu budowania, backendu ani zmiennych środowiskowych.
+- Produkcyjny origin to `https://project-north-mu.vercel.app/`; HTTPS jest wymuszane przez hosting.
+- Indeksowalne strony mają canonical, `og:url`, podstawowe Open Graph i Twitter Summary Card. Sitemap obejmuje landing, metodologię, trzy core cases i Kraken validation case.
+- Revolut zachowuje `noindex, follow` i nie występuje w sitemap. Brak dedykowanej grafiki social blokuje wyłącznie metadata obrazkowe.
+- Structured data i analytics pozostają świadomie niewdrożone.
+
+**Definition of Done — spełnione:** publiczny origin jest rzeczywisty, hosting serwuje wyłącznie frontend, metadata nie używają fikcyjnych adresów, a krytyczne ścieżki produkcji przechodzą test desktop/mobile.
+
 ### v0.8.0 — Prywatna beta
+
+**Status:** nieotwarta.
 
 - Zdefiniować grupę testową i zadania testowe.
 - Mierzyć podstawowe przejścia: katalog → oferta → CTA.

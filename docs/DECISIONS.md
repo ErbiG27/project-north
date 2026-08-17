@@ -74,3 +74,13 @@ Analiza pilota musi jawnie pokazać niepewność nagrody, ryzyko rynkowe, `North
 **Kolejność:** przed v0.6.1 lub jako bezpośredni etap przygotowawczy powstaje specyfikacja Landing 2.1 oparta na komunikacie: „Nie pytaj, która premia jest najwyższa. Sprawdź, która ma sens dla Ciebie.” Landing ma demonstrować problem i sposób decyzji, nie sprzedawać Score jako głównej funkcji.
 
 **Świadomie później:** pełny North Plan / portfolio planner, conflict engine, historyczne `WAIT` vs `TAKE`, automatyczne monitorowanie regulaminów oraz kontrolowany pilot krypto opisany wyżej są wyłączone z pierwszego publicznego MVP i podstawowego zakresu v0.6.1. Pomysły pozostają w kierunku produktu, ale nie są obecnie funkcjami.
+
+## ADR-007 — Pierwszy production hosting wykorzystuje Vercel
+
+**Status:** accepted · **Data:** 2026-08-16
+
+Statyczny frontend ProjectNorth jest publikowany z GitHub `main` przez Vercel. Root Directory projektu wskazuje `frontend/`, bez frameworka, procesu budowania, backendu i zmiennych środowiskowych. Produkcyjny origin to `https://project-north-mu.vercel.app/`.
+
+**Uzasadnienie:** repo jest czystym HTML/CSS/JavaScript, więc Vercel zapewnia najkrótszą stabilną ścieżkę od istniejącego repo do HTTPS i automatycznego deploymentu bez przebudowy architektury. Publikowanie `frontend/` zapobiega przypadkowemu wystawieniu `docs/` oraz plików roboczych z root repo.
+
+**Konsekwencje:** push do `main` uruchamia deployment produkcyjny. Canonical, Open Graph, sitemap i robots używają rzeczywistego origin Vercel do czasu świadomej migracji na własną domenę. Zmiana providera lub domeny wymaga aktualizacji absolutnych URL-i i ponownego smoke testu, ale nie wymaga migracji frameworka.

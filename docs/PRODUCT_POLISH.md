@@ -12,7 +12,7 @@ Backlog jakościowy. Priorytet określa wpływ na zaufanie i ukończenie zadania
 - [x] Nie pokazywać jednej „realnej nagrody” bez jawnego scenariusza; stosować `Advertised Max`, `Easy Floor` oraz `Your Likely Value` / `Conditional Max` tam, gdzie ma zastosowanie — v0.6.1.
 - [x] Nie publikować werdyktu `WAIT` ani precyzyjnego procentu Confidence/Match bez wystarczających danych i walidacji — v0.6.1/v0.6.2.
 - [x] Sprawdzić wersję mobilną, klawiaturę i stany focus — v0.6.2.
-- Ustalić produkcyjny origin i publiczną grafikę social, a następnie dodać poprawne canonical, Open Graph, Twitter Cards i sitemap; nie publikować fikcyjnych absolutnych adresów.
+- [x] Ustalić produkcyjny origin i dodać poprawne canonical, podstawowe Open Graph, Twitter Summary Card, sitemap oraz robots — Deployment & Infrastructure #1. Dedykowana grafika social pozostaje osobnym zadaniem; nie używać przypadkowego logo jako `og:image`.
 
 ## P1 — fundament zaufania
 
@@ -23,6 +23,7 @@ Backlog jakościowy. Priorytet określa wpływ na zaufanie i ukończenie zadania
 - [x] Zapewnić, że North Score — jeśli pozostaje widoczny — jest skrótem wtórnym z rozkładem i uzasadnieniem, a nie głównym USP — Decision Model v1 nie używa Score jako wyniku.
 - [x] Dodać czytelne stany `TAKE NOW`, `TAKE IF`, `SKIP` i `NOT ENOUGH DATA`; `WAIT` zachować jako późniejszy stan wymagający historii i backtestu — v0.6.1/v0.6.2.
 - [x] Dodać puste stany dla braku wyników wyszukiwania oraz filtrów — v0.7.1.
+- Przygotować dedykowaną grafikę social zgodną z aktualnym brandingiem i dopiero wtedy dodać `og:image` / `twitter:image`.
 - Uczynić całą kartę oferty logicznie klikalną bez zagnieżdżania interaktywnych elementów; obecne karty zawierają przyciski glossary, więc prosty wrapper-link byłby błędem semantycznym.
 
 ## P2 — czytelność i komfort
