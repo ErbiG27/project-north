@@ -109,7 +109,7 @@ Ten etap może rozpocząć się wyłącznie po walidacji podstawowej trójki v0.
 - Indeksowalne strony mają canonical, `og:url`, podstawowe Open Graph i Twitter Summary Card. Sitemap obejmuje landing, metodologię, trzy core cases i Kraken validation case.
 - Revolut zachowuje `noindex, follow` i nie występuje w sitemap. Brak dedykowanej grafiki social blokuje wyłącznie metadata obrazkowe.
 - Structured data i analytics pozostają świadomie niewdrożone.
-- **Operacyjny follow-up:** naprawić i potwierdzić automatyczny trigger deploymentu po pushu do `main`; finalny snapshot tego etapu opublikowano przez uwierzytelnione API Vercela po braku reakcji webhooka.
+- **Operacyjny follow-up — zamknięty 2026-08-17:** push v0.7.2 do `main` automatycznie utworzył produkcyjny deployment `READY`. Sprawdzony manualny snapshot `frontend/` pozostaje wyłącznie fallbackiem.
 
 **Definition of Done — spełnione:** publiczny origin jest rzeczywisty, hosting serwuje wyłącznie frontend, metadata nie używają fikcyjnych adresów, a krytyczne ścieżki produkcji przechodzą test desktop/mobile.
 

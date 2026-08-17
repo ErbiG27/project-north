@@ -26,11 +26,12 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 - Landing, metodologia, Millennium, Nest, Pekao, Kraken i Revolut przeszły testy 1440×900, 820×900 i 390×844 bez poziomego overflow, duplikatów ID, brakujących obrazów i zerwanych relacji ARIA.
 - Wyszukiwanie, filtry, pusty stan, reset, fokus wyniku oraz Glossary przez click/tap, Enter, Space i Escape z powrotem fokusu działają.
 - Pekao i pozostałe długie tytuły zachowują pełne słowa na mobile; błędy i ostrzeżenia konsoli oraz żądania zasobów są czyste.
+- Push commita `e7a2efe` do `main` automatycznie uruchomił produkcyjny deployment Vercel w stanie `READY`; fallback nie był potrzebny. Publiczny smoke potwierdził canonical, sitemap, robots, Match 700 zł dla Millennium i brak błędów runtime.
 
 ### Known limitations
 
 - Prosty język nie zastępuje regulaminu. Szczególne definicje wpływów, płatności i wydatków pozostają w warunkach i źródłach.
-- Automatyczny trigger GitHub–Vercel wymaga ponownego potwierdzenia przy tym wydaniu; bez reakcji używany jest zweryfikowany manualny fallback dokładnego snapshotu `frontend/`.
+- Manualny fallback dokładnego snapshotu `frontend/` pozostaje udokumentowaną ścieżką awaryjną, ale v0.7.2 wdrożyło się automatycznie z GitHub `main`.
 
 ## [Deployment & Infrastructure #1] — 2026-08-16
 

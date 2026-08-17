@@ -65,7 +65,7 @@ Landing, listing oraz strony Millennium, Nest i Pekao pobierają fakty z `decisi
 
 ## Produkcja
 
-Frontend jest publicznie dostępny pod `https://project-north-mu.vercel.app/`. Projekt Vercel wskazuje katalog `frontend/` i gałąź GitHub `main`; projekt nie ma procesu budowania, backendu, sekretów ani zmiennych środowiskowych. Pierwszy finalny redeploy wymagał jednak awaryjnej publikacji zweryfikowanego snapshotu `frontend/`, ponieważ webhook po pushu nie uruchomił nowego builda. Przed kolejnym wydaniem trzeba potwierdzić naprawę automatycznego triggera. `docs/`, lokalne artefakty i pliki z root repo nie są częścią publikowanej strony.
+Frontend jest publicznie dostępny pod `https://project-north-mu.vercel.app/`. Projekt Vercel wskazuje katalog `frontend/` i gałąź GitHub `main`; projekt nie ma procesu budowania, backendu, sekretów ani zmiennych środowiskowych. Pierwszy finalny redeploy wymagał awaryjnej publikacji zweryfikowanego snapshotu `frontend/`, ale push v0.7.2 ponownie uruchomił automatyczny produkcyjny deployment z GitHub `main`. Manualny snapshot `frontend/` pozostaje wyłącznie fallbackiem. `docs/`, lokalne artefakty i pliki z root repo nie są częścią publikowanej strony.
 
 Landing, metodologia, Millennium, Nest, Pekao i Kraken mają samoodwołujące canonical URL-e, `og:url`, podstawowe Open Graph oraz Twitter Summary Card. Sitemap obejmuje te sześć indeksowalnych ścieżek. Kraken pozostaje publicznym validation case'em z `LOW` Confidence i `NOT ENOUGH DATA`, poza katalogiem i Match flow. Revolut zachowuje `noindex, follow` i nie występuje w sitemap.
 
