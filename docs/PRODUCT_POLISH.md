@@ -31,8 +31,10 @@ Backlog jakościowy. Priorytet określa wpływ na zaufanie i ukończenie zadania
 - Breadcrumb na stronach ofert, jeśli rośnie liczba kategorii i podstron.
 - Skeleton/loading tylko tam, gdzie pojawi się asynchroniczne ładowanie danych.
 - [x] Spójne stany aktywne filtrów i formularzy — v0.7.1; sortowanie nie występuje w bieżącym interfejsie.
-- [x] Testy na długich nazwach ofert oraz braku logo — v0.7.1; fallback używa monogramu.
-- [x] Przegląd treści pod kątem prostego języka i nieuzasadnionych obietnic — v0.7.1.
+- [x] Testy na długich nazwach ofert oraz braku logo — v0.7.2; wspólne nagłówki nie rozcinają pojedynczych słów, a fallback logo używa monogramu.
+- [x] Przegląd treści pod kątem prostego języka i nieuzasadnionych obietnic — v0.7.2; główny flow działa bez znajomości Glossary.
+- [x] Formularze Match pytają o sytuację użytkownika i wyjaśniają szczególne definicje banku bez zmiany faktów — v0.7.2.
+- [x] Wynik zaczyna się od sensu oferty, realnej kwoty, głównego warunku i największego ryzyka — v0.7.2.
 - Ustalić politykę zakończeń linii i uporządkować `.gitattributes` (nie blokuje kolejnego etapu).
 - Poprawić kontrast sygnetu North wewnątrz North Verdict (nie blokuje kolejnego etapu).
 

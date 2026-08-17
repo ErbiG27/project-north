@@ -1,6 +1,6 @@
 # ProjectNorth Handbook
 
-> Wersja: 1.4 · Status: aktywny dokument roboczy · Produkt: v0.7.1 · Decision Model v1
+> Wersja: 1.5 · Status: aktywny dokument roboczy · Produkt: v0.7.2 · Decision Model v1
 
 ## Cel dokumentacji
 
@@ -33,6 +33,8 @@ Początkowo dla polskojęzycznych osób porównujących konta, bonusy i inne nis
 ## Marka i język
 
 Marka jest spokojna, konkretna i niezależna. Czerń oraz grafit budują skupienie, a zielony akcent oznacza kierunek i pozytywną decyzję — nie presję sprzedażową. Copy powinno być proste, stanowcze i weryfikowalne. Unikamy: „najlepszy”, „gwarantowany”, „zarób”, jeśli nie są udowodnione i konieczne.
+
+Główne etykiety mówią najpierw językiem użytkownika: „ile realnie możesz dostać”, „jak pewne są dane” i „czy oferta ma dla Ciebie sens”. Nazwy Decision Model mogą pozostać drugą warstwą dla transparentności. Glossary pomaga, ale nie może być wymagane do wykonania głównego flow. Pełny standard utrzymuje [North Writing Guide](NORTH_WRITING_GUIDE.md).
 
 ## Obecna architektura
 
@@ -120,6 +122,8 @@ Przed połączeniem zmian sprawdzamy desktop, 600 px, 900 px, klawiaturę, fokus
 - [Decyzje](DECISIONS.md) — dlaczego wybrano dany kierunek.
 - [System projektowy](DESIGN_SYSTEM.md) — tokeny i reguły interfejsu.
 - [Product polish](PRODUCT_POLISH.md) — jakościowy backlog.
+- [North Writing Guide](NORTH_WRITING_GUIDE.md) — trwały standard prostego copy.
+- [AI Workflow](AI_WORKFLOW.md) — stałe reguły kolejnych zamkniętych tasków Work.
 - [Komponenty](COMPONENTS/) — kontrakty kluczowych bloków UI.
 
 ## Zasada aktualizacji

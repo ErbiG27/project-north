@@ -8,14 +8,14 @@ ProjectNorth to rozwijany po polsku **wyjaśnialny system decyzji dotyczących o
 
 ## Stan produktu
 
-Aktualny działający zakres to **Decision Model v1 + Explainable North Match (v0.7.1)**. To publicznie wdrożony frontend przed prywatną betą, oparty na małej liczbie celowo zróżnicowanych analiz, a nie rozbudowany katalog ofert.
+Aktualny działający zakres to **Decision Model v1 + Explainable North Match + Plain Language (v0.7.2)**. To publicznie wdrożony frontend przed prywatną betą, oparty na małej liczbie celowo zróżnicowanych analiz, a nie rozbudowany katalog ofert.
 
 - aktywne przypadki: **Bank Millennium, Nest Bank i Bank Pekao**;
 - formularz scenariusza działa lokalnie w przeglądarce, bez konta i backendu;
 - krytyczne pola mają ręcznie prowadzony evidence ledger i widoczny status aktualności;
 - **Kraken** pozostaje wyłącznie nieafiliacyjnym hard case'em do walidacji modelu — poza głównym katalogiem i Match flow;
 - **Revolut** jest archiwalnym przykładem wcześniejszego interfejsu, nie aktywnym wzorcem ani bieżącą analizą;
-- v0.7.1 zamknęło quality pass treści, SEO i dostępności, a frontend działa publicznie pod [project-north-mu.vercel.app](https://project-north-mu.vercel.app/).
+- v0.7.2 upraszcza główny flow tak, aby Glossary było pomocą, a nie warunkiem zrozumienia; frontend działa publicznie pod [project-north-mu.vercel.app](https://project-north-mu.vercel.app/).
 
 North nie monitoruje jeszcze automatycznie regulaminów, nie zapisuje profilu użytkownika i nie obiecuje zysku. Dane scenariusza znikają po przeładowaniu strony.
 
@@ -73,4 +73,4 @@ Katalog [`/docs`](docs/) jest źródłem prawdy dla intencji produktu, standard�
 - [Changelog](docs/CHANGELOG.md) — faktycznie wydane zmiany i ograniczenia;
 - [Decyzje](docs/DECISIONS.md) — uzasadnienie trwałych decyzji produktowych.
 
-v0.7.1 oraz pierwszy fundament produkcyjnego deploymentu są zamknięte. **Prywatna beta v0.8.0 nie została jeszcze otwarta**; jej zakres ma wynikać z przygotowanej strategii testów, a nie z dokładania funkcji. Konta, backend, analytics, automatyczne monitorowanie regulaminów, pełny North Plan i krypto jako kategoria pozostają świadomie poza obecnym zakresem.
+v0.7.2 oraz pierwszy fundament produkcyjnego deploymentu są zamknięte. **Prywatna beta v0.8.0 nie została jeszcze otwarta**; jej zakres ma wynikać z przygotowanej strategii testów, a nie z dokładania funkcji. Konta, backend, analytics, automatyczne monitorowanie regulaminów, pełny North Plan i krypto jako kategoria pozostają świadomie poza obecnym zakresem.

@@ -4,6 +4,36 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 
 ## [Unreleased]
 
+## [0.7.2] — 2026-08-17
+
+### Added
+
+- `NORTH_WRITING_GUIDE.md` z trwałym standardem prostego, precyzyjnego copy oraz `AI_WORKFLOW.md` ze stałymi regułami kolejnych tasków Work.
+- Krótkie podsumowanie wyniku Match: sens oferty, realna kwota, główny warunek i największe ryzyko; stan brakujących danych mówi, co uzupełnić.
+
+### Changed
+
+- Landing, metodologia i wspólny renderer ofert pokazują proste polskie etykiety przed technicznymi nazwami Decision Model.
+- Pytania Millennium, Nest i Pekao opisują sytuację użytkownika; pomoc wyjaśnia, że bank zalicza tylko określone wpływy i płatności.
+- Match, Verdict, Confidence i Evidence mają prostą pierwszą warstwę oraz zachowują techniczne stany jako informację wtórną.
+- Globalne reguły nagłówków używają normalnego łamania słów, dzięki czemu długie nazwy ofert przechodzą do nowej linii bez przypadkowego rozcinania.
+- Kraken otrzymał ograniczony plain-language pass bez zmiany statusu walidacji; Revolut pozostał stroną legacy.
+
+### Verified
+
+- Decision Model zachował wartości i stany pełnych scenariuszy: Millennium `FIT` / `TAKE IF` / 700 zł, Nest `CONDITIONAL FIT` / `TAKE IF` / 1 250 zł oraz Pekao `FIT` / `TAKE IF` / 300 zł bez części podróżnej.
+- Brak danych nadal daje `CANNOT ASSESS` / `NOT ENOUGH DATA`, a potwierdzone wykluczenie `POOR FIT` / `SKIP` dla każdej z trzech ofert.
+- Landing, metodologia, Millennium, Nest, Pekao, Kraken i Revolut przeszły testy 1440×900, 820×900 i 390×844 bez poziomego overflow, duplikatów ID, brakujących obrazów i zerwanych relacji ARIA.
+- Wyszukiwanie, filtry, pusty stan, reset, fokus wyniku oraz Glossary przez click/tap, Enter, Space i Escape z powrotem fokusu działają.
+- Pekao i pozostałe długie tytuły zachowują pełne słowa na mobile; błędy i ostrzeżenia konsoli oraz żądania zasobów są czyste.
+
+### Known limitations
+
+- Prosty język nie zastępuje regulaminu. Szczególne definicje wpływów, płatności i wydatków pozostają w warunkach i źródłach.
+- Automatyczny trigger GitHub–Vercel wymaga ponownego potwierdzenia przy tym wydaniu; bez reakcji używany jest zweryfikowany manualny fallback dokładnego snapshotu `frontend/`.
+
+## [Deployment & Infrastructure #1] — 2026-08-16
+
 ### Added
 
 - Pierwszy publiczny deployment statycznego frontendu na Vercel pod `https://project-north-mu.vercel.app/`, publikujący wyłącznie katalog `frontend/` z gałęzi `main`.

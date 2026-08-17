@@ -6,11 +6,11 @@
 
 Element trafia do sprintu tylko z celem, właścicielem, zakresem i Definition of Done. Roadmapa jest kolejnością hipotez, nie obietnicą terminu. Funkcje finansowe, afiliacyjne i analityczne wymagają najpierw zasad transparentności oraz zgodności prawnej.
 
-## Stan obecny — v0.7.1
+## Stan obecny — v0.7.2
 
-**Cel osiągnięty:** użytkownik może znaleźć ofertę, policzyć Explainable North Match dla Millennium, Nest i Pekao oraz przejść kluczowe widoki na desktopie, tablecie, telefonie i klawiaturze bez krytycznych barier dostępności.
+**Cel osiągnięty:** użytkownik może znaleźć ofertę, policzyć Explainable North Match dla Millennium, Nest i Pekao oraz zrozumieć kwotę, obowiązki, czas, ryzyko i ocenę sensu oferty bez otwierania Glossary.
 
-Match nie jest procentem ani zamiennikiem Verdict. Wspólny klientowy silnik interpretuje reguły zapisane w istniejącym Decision Model, a wynik pokazuje reasons, blockers, conditions i brakujące dane. Glossary wyjaśnia angielskie terminy po polsku. Dane scenariusza pozostają lokalnie w bieżącej karcie. Landing ma działające wyszukiwanie, filtry i pusty stan, a strony mają unikalne metadane. Kraken nadal jest wyłącznie validation case poza głównym Match flow i katalogiem. Frontend działa publicznie pod `https://project-north-mu.vercel.app/`; prywatna beta nie została jeszcze otwarta.
+Match nie jest procentem ani zamiennikiem Verdict. Wspólny silnik nadal interpretuje te same reguły Decision Model, ale pierwsza warstwa UI używa prostych polskich pytań i statusów. Wynik zaczyna się od sensu oferty, realnej kwoty, głównego warunku i największego ryzyka. Angielskie nazwy pozostają drugą warstwą. Dane scenariusza są lokalne w bieżącej karcie. Kraken pozostaje validation case poza głównym Match flow i katalogiem. Frontend działa pod `https://project-north-mu.vercel.app/`; prywatna beta nie została jeszcze otwarta.
 
 ## Następne etapy
 
@@ -112,6 +112,18 @@ Ten etap może rozpocząć się wyłącznie po walidacji podstawowej trójki v0.
 - **Operacyjny follow-up:** naprawić i potwierdzić automatyczny trigger deploymentu po pushu do `main`; finalny snapshot tego etapu opublikowano przez uwierzytelnione API Vercela po braku reakcji webhooka.
 
 **Definition of Done — spełnione:** publiczny origin jest rzeczywisty, hosting serwuje wyłącznie frontend, metadata nie używają fikcyjnych adresów, a krytyczne ścieżki produkcji przechodzą test desktop/mobile.
+
+### v0.7.2 — Plain Language & Comprehension
+
+- **Status:** zaimplementowano 2026-08-17.
+- Landing, strony bankowe i metodologia pokazują proste polskie etykiety przed nazwami Decision Model.
+- Pytania Match opisują sytuację użytkownika i wyjaśniają, że bank zalicza tylko określone wpływy lub płatności.
+- Wynik Match zaczyna się od krótkiego podsumowania: sens oferty, realna kwota, główny warunek i największe ryzyko; przy brakach wskazuje dane do uzupełnienia.
+- Evidence i Confidence są prezentowane jako „Skąd mamy te dane” i „Jak pewne są dane”.
+- Wspólna reguła nagłówków nie rozcina już słów takich jak „Przekorzystne” na mobile.
+- `NORTH_WRITING_GUIDE.md` i `AI_WORKFLOW.md` utrwalają standard copy i przebieg kolejnych tasków.
+
+**Definition of Done — spełnione:** główny flow jest zrozumiały bez Glossary, wartości i statusy Decision Model nie zmieniły semantyki, a landing, metodologia, trzy oferty bankowe, Kraken i Revolut przeszły testy desktop/tablet/mobile, dostępności i produkcyjny smoke.
 
 ### v0.8.0 — Prywatna beta
 

@@ -19,7 +19,7 @@
     <link rel="icon" href="assets/brand/favicon.svg" type="image/svg+xml">
     <link rel="icon" href="assets/brand/favicon-32x32.png" type="image/png" sizes="32x32">
     <link rel="apple-touch-icon" href="assets/brand/apple-touch-icon.png">
-    <link rel="stylesheet" href="style.css?v=0.7.1">
+    <link rel="stylesheet" href="style.css?v=0.7.2">
     <title>North — sprawdź, która oferta ma sens dla Ciebie</title>
 </head>
 <body class="north-landing">
@@ -40,9 +40,9 @@
     <main id="main-content">
         <section class="landing-hero" aria-labelledby="hero-title">
             <div class="landing-hero__copy">
-                <p class="section-kicker"><span aria-hidden="true"></span> North · decyzja oparta na warunkach</p>
+                <p class="section-kicker"><span aria-hidden="true"></span> North · sprawdź kwotę, warunki i ryzyko</p>
                 <h1 id="hero-title">Nie pytaj, która premia jest najwyższa. <em>Sprawdź, która ma sens dla Ciebie.</em></h1>
-                <p class="landing-hero__lead">North rozkłada ofertę na wartość, warunki, wysiłek, ryzyka i źródła. Zobaczysz nie tylko kwotę z reklamy, ale też wartość dla jawnego scenariusza i powód decyzji.</p>
+                <p class="landing-hero__lead">North pokazuje, ile możesz realnie dostać, co musisz zrobić, jak długo to potrwa i co może pójść nie tak. Na końcu dostajesz jasną ocenę, czy oferta ma dla Ciebie sens.</p>
                 <div class="action-row">
                     <a class="north-button" href="#opportunities">Zobacz pierwsze analizy <span aria-hidden="true">→</span></a>
                     <a class="north-link" href="#value-demo">Jak liczymy wartość <span aria-hidden="true">↓</span></a>
@@ -56,10 +56,10 @@
                     <span class="status-dot" id="structure-status">Sprawdzanie aktualności danych</span>
                 </div>
                 <dl class="value-preview__grid">
-                    <div><dt><span data-glossary="advertisedMax">Advertised Max</span></dt><dd>Twierdzenie oferenta</dd></div>
-                    <div><dt><span data-glossary="easyFloor">Easy Floor</span></dt><dd>Jawny prostszy scenariusz</dd></div>
-                    <div><dt><span data-glossary="yourLikelyValue">Your Likely Value</span></dt><dd>Wynik Twoich założeń</dd></div>
-                    <div><dt><span data-glossary="northConfidence">North Confidence</span></dt><dd>HIGH / MEDIUM / LOW</dd></div>
+                    <div><dt><span data-glossary="advertisedMax">Maksimum z reklamy</span></dt><dd>Kwota podana przez oferenta</dd></div>
+                    <div><dt><span data-glossary="easyFloor">Prostszy wariant</span></dt><dd>Mniej złożony zestaw warunków</dd></div>
+                    <div><dt><span data-glossary="yourLikelyValue">Ile realnie możesz dostać</span></dt><dd>Wynik z Twoich odpowiedzi</dd></div>
+                    <div><dt><span data-glossary="northConfidence">Jak pewne są dane</span></dt><dd>wysoka / średnia / niska</dd></div>
                 </dl>
                 <div class="value-preview__footer">
                     <strong>Bez magicznego wyniku</strong>
@@ -94,22 +94,22 @@
                     <p class="section-kicker"><span aria-hidden="true"></span> Scenariusz, nie profilowanie</p>
                     <h2 id="persona-title">Ta sama oferta, trzy różne osoby</h2>
                 </div>
-                <p>Reklamowane maksimum Nest się nie zmienia. Zmieniają się wydatki, kwalifikowany wpływ i gotowość do utrzymania działań przez pełny horyzont.</p>
+                <p>Maksimum z reklamy Nest się nie zmienia. Realna kwota zależy od płatności i wpływów, które bank zalicza, oraz od liczby miesięcy spełniania warunków.</p>
             </div>
             <div id="nest-scenarios" class="scenario-grid data-loading" aria-live="polite">Ładowanie trzech zweryfikowanych scenariuszy…</div>
         </section>
 
         <section class="north-section verdict-explainer" id="verdicts" aria-labelledby="verdict-title">
             <div class="section-heading">
-                <p class="section-kicker"><span aria-hidden="true"></span> North Verdict</p>
+                <p class="section-kicker"><span aria-hidden="true"></span> Czy oferta ma dla Ciebie sens</p>
                 <h2 id="verdict-title">Decyzja, nie miejsce w rankingu</h2>
                 <p>Wynik mówi, co zrobić i dlaczego — również wtedy, gdy najlepszą decyzją jest odpuścić albo zebrać brakujące dane.</p>
             </div>
             <div class="verdict-grid">
-                <article class="verdict-state verdict-state--take"><span>TAKE NOW</span><h3>Działaj przy kompletnym scenariuszu</h3><p>Powód: dodatnia wartość względem braku działania przy zaakceptowanym wysiłku i ryzyku.</p><p><strong>Warunek:</strong> kwalifikacja, komplet danych i Confidence HIGH.</p><p><strong>Bloker:</strong> niepewna edycja, koszt lub lepsza zweryfikowana alternatywa.</p></article>
-                <article class="verdict-state verdict-state--take-if"><span>TAKE IF</span><h3>Oferta ma sens pod warunkami</h3><p>Powód: wartość zależy od nazwanych wydatków, wpływów, czasu lub sposobu użycia nagrody.</p><p><strong>Warunek:</strong> spełniasz i akceptujesz wskazane założenia.</p><p><strong>Bloker:</strong> niespełnienie któregokolwiek warunku zmienia wynik.</p></article>
-                <article class="verdict-state verdict-state--skip"><span>SKIP</span><h3>Nie dokładaj sobie obowiązków</h3><p>Powód: brak kwalifikacji, zerowa wartość, nadmierny koszt albo ryzyko względem alternatywy.</p><p><strong>Warunek:</strong> negatywny powód jest potwierdzony.</p><p><strong>Bloker:</strong> sam brak danych nie wystarcza do SKIP.</p></article>
-                <article class="verdict-state verdict-state--unknown"><span>NOT ENOUGH DATA</span><h3>Najpierw uzupełnij krytyczne dane</h3><p>Powód: rozsądne scenariusze prowadzą do różnych decyzji.</p><p><strong>Warunek:</strong> pokazujemy konkretną listę braków.</p><p><strong>Bloker:</strong> bez danych nie ma pozytywnego CTA.</p></article>
+                <article class="verdict-state verdict-state--take"><span>TAKE NOW</span><h3>Ma sens teraz</h3><p>Kwota po kosztach jest dodatnia, dane są kompletne, a obowiązki i ryzyko są zaakceptowane.</p></article>
+                <article class="verdict-state verdict-state--take-if"><span>TAKE IF</span><h3>Ma sens pod warunkiem</h3><p>Wynik zależy od konkretnych wpływów, płatności, czasu lub sposobu użycia nagrody.</p></article>
+                <article class="verdict-state verdict-state--skip"><span>SKIP</span><h3>Lepiej odpuścić</h3><p>Potwierdzony brak kwalifikacji, koszt albo ryzyko przemawia przeciw dokładaniu nowych obowiązków.</p></article>
+                <article class="verdict-state verdict-state--unknown"><span>NOT ENOUGH DATA</span><h3>Najpierw uzupełnij dane</h3><p>Pokazujemy dokładnie, czego brakuje. Bez tych odpowiedzi nie zgadujemy kwoty ani decyzji.</p></article>
             </div>
             <p class="method-note">Każdy Verdict porównuje scenariusz co najmniej z „do nothing”: 0 zł nagrody, 0 zł nowego kosztu, minimalny wysiłek i brak nowego ryzyka utraty.</p>
             <a class="north-link section-link" href="methodology.html#verdict">Poznaj pełne reguły Verdict <span aria-hidden="true">→</span></a>
@@ -118,8 +118,8 @@
         <section class="north-section evidence-section" id="evidence" aria-labelledby="evidence-title">
             <div class="section-heading section-heading--wide">
                 <div>
-                    <p class="section-kicker"><span aria-hidden="true"></span> Evidence</p>
-                    <h2 id="evidence-title">Dlaczego możesz nam ufać</h2>
+                    <p class="section-kicker"><span aria-hidden="true"></span> Skąd mamy te dane</p>
+                    <h2 id="evidence-title">Źródła przy ważnych liczbach i zasadach</h2>
                 </div>
                 <p>Krytyczne liczby i warunki łączymy z konkretną edycją, oficjalnym źródłem, punktem regulaminu i datą sprawdzenia.</p>
             </div>
@@ -127,15 +127,15 @@
                 <div class="ledger-preview" aria-label="Przykładowe poziomy dowodów">
                     <article><span>01</span><div><strong>Konkretna edycja</strong><p>Nazwa, okres wejścia i status są sprawdzane razem.</p></div></article>
                     <article><span>02</span><div><strong>Regulamin przed reklamą</strong><p>Oficjalny dokument ma pierwszeństwo przed skrótem marketingowym.</p></div></article>
-                    <article><span>03</span><div><strong>Niepewność pozostaje widoczna</strong><p>Luka obniża Confidence albo blokuje pozytywny Verdict.</p></div></article>
+                    <article><span>03</span><div><strong>Niepewność pozostaje widoczna</strong><p>Brak lub konflikt obniża pewność danych albo blokuje pozytywną ocenę.</p></div></article>
                 </div>
                 <aside class="confidence-panel">
-                    <p class="section-kicker">North Confidence</p>
-                    <strong>HIGH / MEDIUM / LOW</strong>
-                    <p>Oceniamy jakość i kompletność źródeł, świeżość, niejednoznaczność oraz pewność edycji. Bez procentów.</p>
+                    <p class="section-kicker">Jak pewne są dane</p>
+                    <strong>wysoka / średnia / niska</strong>
+                    <p>Wyjaśniamy, czy źródła są kompletne i aktualne oraz czy zawierają konflikty. Techniczny stan HIGH / MEDIUM / LOW pozostaje drugą warstwą.</p>
                     <dl id="confidence-summary" class="data-loading"><div><dt>Ładowanie statusów evidence…</dt><dd>—</dd></div></dl>
                     <p class="verified-date" id="confidence-review">Daty wczytywane ze wspólnego rekordu.</p>
-                    <a class="north-link" href="methodology.html#confidence">Jak działa Confidence <span aria-hidden="true">→</span></a>
+                    <a class="north-link" href="methodology.html#confidence">Jak oceniamy pewność danych <span aria-hidden="true">→</span></a>
                 </aside>
             </div>
         </section>
@@ -161,7 +161,7 @@
                     <p class="section-kicker"><span aria-hidden="true"></span> Decision Model v1</p>
                     <h2 id="opportunities-title">Pierwsze analizy North</h2>
                 </div>
-                <p>Trzy oferty, trzy różne pytania. Otwórz analizę i wybierz „Sprawdź dla siebie”, aby policzyć lokalny scenariusz bez konta i bez procentowego score’u.</p>
+                <p>Trzy oferty, trzy różne pytania. Otwórz analizę i wybierz „Sprawdź dla siebie”, aby policzyć realną kwotę bez konta i bez niezrozumiałego wyniku procentowego.</p>
             </div>
             <form class="offer-filters" id="offer-filters" role="search">
                 <div class="offer-search-field">
@@ -191,9 +191,9 @@
             <div class="section-heading"><p class="section-kicker"><span aria-hidden="true"></span> FAQ</p><h2 id="faq-title">Najczęstsze pytania</h2></div>
             <div class="faq-list">
                 <details><summary>Czy North pokazuje najlepszą ofertę?</summary><p>Nie tworzymy uniwersalnego zwycięzcy. Pokazujemy wartość i warunki dla jawnego scenariusza oraz porównujemy je z rozsądną alternatywą lub brakiem działania.</p></details>
-                <details><summary>Czym różni się Advertised Max od Your Likely Value?</summary><p>Pierwsze to maksimum komunikowane przez oferenta. Drugie wynika z założeń, kwalifikacji, działań, kosztów i użyteczności nagrody.</p></details>
-                <details><summary>Czy Easy Floor jest gwarantowany?</summary><p>Nie. To relatywnie prosty, jawnie opisany zestaw warunków. Nadal trzeba spełnić regulamin i uniknąć punktów utraty.</p></details>
-                <details><summary>Co oznacza North Confidence?</summary><p>Jakość źródeł, kompletność, świeżość, pewność edycji i założeń. Pokazujemy LOW, MEDIUM lub HIGH wraz z powodami, nie pozornie dokładny procent.</p></details>
+                <details><summary>Czym różni się maksimum z reklamy od realnej kwoty?</summary><p>Maksimum z reklamy pokazuje najwyższą możliwą wartość. Realna kwota wynika z Twoich odpowiedzi, warunków, kosztów i sposobu użycia nagrody.</p></details>
+                <details><summary>Czy prostszy wariant jest gwarantowany?</summary><p>Nie. To mniej złożony zestaw warunków, ale nadal trzeba spełnić regulamin i uniknąć utraty nagrody.</p></details>
+                <details><summary>Co oznacza pewność danych?</summary><p>Pokazuje jakość, kompletność i aktualność źródeł oraz konflikty. Techniczne stany LOW, MEDIUM i HIGH zawsze mają krótkie wyjaśnienie.</p></details>
                 <details><summary>Czy link partnerski wpływa na werdykt?</summary><p>Nie. Oferta bez linku może być lepszą alternatywą, a oferta partnerska może otrzymać SKIP.</p></details>
                 <details><summary>Dlaczego North nie rekomenduje czekania?</summary><p>Bez historii porównywalnych edycji i backtestu nie umiemy wiarygodnie ocenić, czy czekanie będzie lepsze. Dlatego taki stan nie jest częścią aktywnego modelu.</p></details>
                 <details><summary>Czy North udziela porady finansowej?</summary><p>North porządkuje publiczne warunki i scenariusze. Decyzja należy do użytkownika; przed działaniem trzeba sprawdzić regulamin konkretnej edycji.</p></details>
@@ -214,8 +214,8 @@
         <p>Decision Model v1 · <span id="footer-review">data review ze wspólnego rekordu</span><br>North może otrzymać wynagrodzenie za wybrane linki. Nie wpływa to na Value, Confidence ani Verdict; oferta bez afiliacji może być lepsza.</p>
     </footer>
 
-    <script src="data/offers.js?v=0.7.1"></script>
-    <script src="glossary.js?v=0.7.1"></script>
-    <script src="script.js?v=0.7.1"></script>
+    <script src="data/offers.js?v=0.7.2"></script>
+    <script src="glossary.js?v=0.7.2"></script>
+    <script src="script.js?v=0.7.2"></script>
 </body>
 </html>

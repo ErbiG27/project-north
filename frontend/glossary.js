@@ -3,51 +3,63 @@
 
     const definitions = Object.freeze({
         advertisedMax: {
-            term: "Advertised Max",
+            term: "Maksimum z reklamy",
+            systemTerm: "Advertised Max",
             definition: "Maksymalna wartość komunikowana przez oferenta. Nie oznacza, że każdy otrzyma pełną kwotę."
         },
         easyFloor: {
-            term: "Easy Floor",
+            term: "Prostszy wariant",
+            systemTerm: "Easy Floor",
             definition: "Wartość dostępna przy relatywnie prostym zestawie warunków. Nadal trzeba spełnić regulamin."
         },
         yourLikelyValue: {
-            term: "Your Likely Value",
+            term: "Ile realnie możesz dostać",
+            systemTerm: "Your Likely Value",
             definition: "Wartość obliczona dla podanego przez Ciebie scenariusza."
         },
         conditionalMax: {
-            term: "Conditional Max",
+            term: "Maksimum po spełnieniu dodatkowych warunków",
+            systemTerm: "Conditional Max",
             definition: "Dodatkowa wartość dostępna tylko po spełnieniu trudniejszych lub dodatkowych warunków."
         },
         expectedUsableValue: {
-            term: "Expected Usable Value",
+            term: "Ile faktycznie wykorzystasz",
+            systemTerm: "Expected Usable Value",
             definition: "Ile nagroda jest realnie warta po uwzględnieniu jej formy i ograniczeń."
         },
         netScenarioValue: {
-            term: "Net Scenario Value",
+            term: "Ile zostaje po kosztach",
+            systemTerm: "Net Scenario Value",
             definition: "Użyteczna wartość po odjęciu potwierdzonych kosztów i jawnego kosztu alternatywy."
         },
         northConfidence: {
-            term: "North Confidence",
+            term: "Jak pewne są dane",
+            systemTerm: "North Confidence",
             definition: "Jak mocne i kompletne są dane oraz źródła użyte do analizy."
         },
         verdict: {
-            term: "Verdict",
+            term: "Czy ta oferta ma dla Ciebie sens",
+            systemTerm: "North Verdict",
             definition: "Wniosek North dla danego scenariusza: działaj, działaj pod warunkiem, odpuść albo potrzebujemy więcej danych."
         },
         failureRisk: {
-            term: "Failure Risk",
+            term: "Co może pójść nie tak",
+            systemTerm: "Failure Risk",
             definition: "Jak łatwo stracić część lub całość nagrody przez niespełnienie warunku."
         },
         flexibility: {
-            term: "Flexibility",
+            term: "Jak łatwo zrezygnować",
+            systemTerm: "Flexibility",
             definition: "Jak łatwo zmienić decyzję albo wyjść z oferty bez utraty wartości lub dodatkowych kosztów."
         },
         opportunityCost: {
-            term: "Opportunity Cost",
+            term: "Z czego rezygnujesz, wybierając tę ofertę",
+            systemTerm: "Opportunity Cost",
             definition: "Co tracisz, wybierając tę opcję zamiast sensownej alternatywy."
         },
         northMatch: {
-            term: "North Match",
+            term: "Jak dobrze oferta pasuje do Ciebie",
+            systemTerm: "North Match",
             definition: "Jak dobrze warunki oferty pasują do Twojej sytuacji. Nie jest procentową oceną."
         }
     });
@@ -122,7 +134,8 @@
         const panelId = `north-glossary-${key}-${popoverId++}`;
         wrapper.dataset.glossaryReady = "true";
         wrapper.classList.add("glossary-term");
-        wrapper.innerHTML = `<span class="glossary-label">${escapeHtml(existingText)}</span><button class="glossary-trigger" type="button" aria-label="Wyjaśnij termin ${escapeHtml(item.term)}" aria-expanded="false" aria-controls="${panelId}" aria-describedby="${panelId}"><span aria-hidden="true">i</span></button><span class="glossary-popover" id="${panelId}" role="tooltip"><strong>${escapeHtml(item.term)}</strong><span>${escapeHtml(item.definition)}</span></span>`;
+        const technicalName = item.systemTerm ? ` (${item.systemTerm})` : "";
+        wrapper.innerHTML = `<span class="glossary-label">${escapeHtml(existingText)}</span><button class="glossary-trigger" type="button" aria-label="Wyjaśnij: ${escapeHtml(existingText)}" aria-expanded="false" aria-controls="${panelId}" aria-describedby="${panelId}"><span aria-hidden="true">i</span></button><span class="glossary-popover" id="${panelId}" role="tooltip"><strong>${escapeHtml(item.term + technicalName)}</strong><span>${escapeHtml(item.definition)}</span></span>`;
 
         const trigger = wrapper.querySelector(".glossary-trigger");
         trigger.addEventListener("click", (event) => {
@@ -133,6 +146,9 @@
             if (event.key === "Escape") {
                 event.preventDefault();
                 close({ restoreFocus: true });
+            } else if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                open(wrapper);
             }
         });
         trigger.addEventListener("focus", () => open(wrapper));

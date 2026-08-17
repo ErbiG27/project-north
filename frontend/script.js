@@ -54,6 +54,14 @@
         return `verdict-badge verdict-badge--${String(verdict).toLowerCase().replaceAll("_", "-")}`;
     }
 
+    function verdictLabel(verdict) {
+        return ({ "TAKE NOW": "Ma sens teraz", "TAKE IF": "Ma sens pod warunkiem", "SKIP": "Lepiej odpuścić", "NOT ENOUGH DATA": "Najpierw uzupełnij dane" })[verdict] || verdict;
+    }
+
+    function confidenceLabel(band) {
+        return ({ HIGH: "wysoka", MEDIUM: "średnia", LOW: "niska" })[band] || band;
+    }
+
     function freshnessBadge(offer) {
         const freshness = freshnessFor(offer);
         return `<span class="freshness-badge freshness-badge--${freshness.state.toLowerCase().replaceAll("_", "-")}">${escapeHtml(freshness.label)}</span>`;
@@ -75,7 +83,7 @@
         target.innerHTML = `
             <article class="breakdown-panel">
                 <div class="advertised-bar">
-                    <span>${term("advertisedMax")} · reklamowane przez oferenta</span>
+                    <span>${term("advertisedMax")} · kwota podana przez oferenta</span>
                     <strong>${escapeHtml(offer.value.advertisedMax.displayLabel)}</strong>
                     <small>Łączna wartość nominalna; nie jedna gotówkowa premia.</small>
                 </div>
@@ -96,12 +104,12 @@
                     <strong>Saldo podróżne nie jest gotówką.</strong>
                     <p>${escapeHtml(travel.usability.restrictions[0])} ${escapeHtml(travel.usability.restrictions[1])}</p>
                 </div>
-                <p class="record-meta">${freshnessBadge(offer)} Edycja sprawdzona ${formatDate(offer.identity.verifiedAt)} · Confidence ${escapeHtml(offer.decision.northConfidence.band)}</p>
+                <p class="record-meta">${freshnessBadge(offer)} Edycja sprawdzona ${formatDate(offer.identity.verifiedAt)} · pewność danych: ${escapeHtml(confidenceLabel(offer.decision.northConfidence.band))}</p>
                 <a class="north-link" href="${offerRoutes[offer.identity.id]}#sources">Zobacz źródła i punkty regulaminu <span aria-hidden="true">→</span></a>
             </article>
             <aside class="snapshot-panel">
-                <div class="panel-topline"><span>North Snapshot</span><span class="confidence-badge">${escapeHtml(offer.decision.northConfidence.band)}</span></div>
-                <p class="snapshot-intro">Jawny scenariusz: ${escapeHtml(example.label)}.</p>
+                <div class="panel-topline"><span>Najważniejsze liczby</span><span class="confidence-badge">Pewność danych: ${escapeHtml(confidenceLabel(offer.decision.northConfidence.band))}</span></div>
+                <p class="snapshot-intro">Przykład: ${escapeHtml(example.label)}.</p>
                 <dl class="snapshot-values">
                     <div><dt>${term("advertisedMax")}</dt><dd>${formatMoney(scenario.advertisedMax)}</dd><span>nie jest jedną gotówkową premią</span></div>
                     <div><dt>${term("easyFloor")}</dt><dd>${formatMoney(scenario.easyFloor)}</dd><span>przy założeniach opisanych w analizie</span></div>
@@ -117,7 +125,7 @@
                     <div><dt>${term("flexibility", "Elastyczność")}</dt><dd>${escapeHtml(scenario.flexibility)}</dd></div>
                 </dl>
                 <p class="risk-callout"><strong>Główny punkt utraty:</strong> ${escapeHtml(mainFailure.consequence)}</p>
-                <span class="${verdictClass(example.verdict)}">${escapeHtml(example.verdict)}</span>
+                <span class="${verdictClass(example.verdict)}">${escapeHtml(verdictLabel(example.verdict))}<small>${escapeHtml(example.verdict)}</small></span>
             </aside>`;
     }
 
@@ -125,20 +133,20 @@
         const inputs = scenario.userInputs;
         if (scenario.id === "nest-low-qualified-spend") {
             return [
-                `${inputs.eligibleSpendPerMonth} zł kwalifikowanych wydatków miesięcznie`,
+                `${inputs.eligibleSpendPerMonth} zł miesięcznie w płatnościach, które bank zalicza`,
                 `wymagany wpływ i zgody przez ${inputs.activeMonths} miesiące`,
                 "bez wymiany EUR"
             ];
         }
         if (scenario.id === "nest-no-salary-transfer") {
             return [
-                `${inputs.eligibleSpendPerMonth} zł kwalifikowanych wydatków miesięcznie`,
-                "bez kwalifikowanego wpływu",
+                `${inputs.eligibleSpendPerMonth} zł miesięcznie w płatnościach, które bank zalicza`,
+                "bez wpływu, który bank zalicza",
                 "bez wymiany EUR"
             ];
         }
         return [
-            `${inputs.eligibleSpendPerMonth} zł kwalifikowanych wydatków miesięcznie`,
+            `${inputs.eligibleSpendPerMonth} zł miesięcznie w płatnościach, które bank zalicza`,
             `wymagany wpływ i zgody przez ${inputs.activeMonths} miesiące`,
             `wymiana ${inputs.eurExchangeWithin30Days} EUR w terminie`
         ];
@@ -152,7 +160,7 @@
             const inputs = scenarioInputs(example);
             return `
                 <article class="persona-card">
-                    <div class="persona-card__head"><span>Scenariusz demonstracyjny ${scenarioLetters[index]}</span><span class="${verdictClass(example.verdict)}">${escapeHtml(example.verdict)}</span></div>
+                    <div class="persona-card__head"><span>Przykład ${scenarioLetters[index]}</span><span class="${verdictClass(example.verdict)}">${escapeHtml(verdictLabel(example.verdict))}<small>${escapeHtml(example.verdict)}</small></span></div>
                     <h3>${escapeHtml(example.label)}</h3>
                     <ul class="assumption-list">${inputs.map((input) => `<li>${escapeHtml(input)}</li>`).join("")}</ul>
                     <div class="scenario-result">
@@ -166,9 +174,9 @@
                         <div><dt>Ryzyko</dt><dd>${escapeHtml(value.failureRisk)}</dd></div>
                         <div><dt>${term("flexibility", "Elastyczność")}</dt><dd>${escapeHtml(value.flexibility)}</dd></div>
                     </dl>
-                    <p class="verdict-reason"><strong>Powód Verdict:</strong> ${escapeHtml(example.verdictReason)}</p>
-                    <p class="do-nothing"><strong>Kontra brak działania:</strong> 0 zł nagrody, 0 zł nowego kosztu, minimalny wysiłek.</p>
-                    <p class="scenario-confidence">Confidence dla scenariusza: <strong>${escapeHtml(example.confidenceBand)}</strong></p>
+                    <p class="verdict-reason"><strong>Dlaczego:</strong> ${escapeHtml(example.verdictReason)}</p>
+                    <p class="do-nothing"><strong>Jeśli nic nie zrobisz:</strong> 0 zł nagrody, 0 zł nowego kosztu, minimalny wysiłek.</p>
+                    <p class="scenario-confidence">Pewność danych: <strong>${escapeHtml(confidenceLabel(example.confidenceBand))}</strong> <small>(${escapeHtml(example.confidenceBand)})</small></p>
                 </article>`;
         }).join("");
     }
@@ -185,16 +193,16 @@
                     <div class="decision-offer-card__top">
                         ${providerMark(offer)}
                         <div><p>${escapeHtml(shortProvider(offer))}</p><span class="offer-status">${escapeHtml(freshness.label)} · sprawdzono ${formatDate(offer.identity.verifiedAt)}</span></div>
-                        <span class="confidence-badge">${escapeHtml(offer.decision.northConfidence.band)}</span>
+                        <span class="confidence-badge">Pewność: ${escapeHtml(confidenceLabel(offer.decision.northConfidence.band))}</span>
                     </div>
                     <p class="problem-label">${escapeHtml(offer.listing.problemLabel)}</p>
                     <h3>${escapeHtml(offer.identity.title)}</h3>
                     <p class="offer-summary">${escapeHtml(offer.listing.summary)}</p>
                     <dl class="offer-card-values">
                         <div><dt>${term("advertisedMax")}</dt><dd>${escapeHtml(offer.value.advertisedMax.displayLabel)}</dd></div>
-                        <div><dt>${term("yourLikelyValue", "Przykład Your Likely Value")}</dt><dd>${formatValue(firstValue.likelyGrossValue)}</dd></div>
+                        <div><dt>${term("yourLikelyValue", "Przykładowa realna kwota")}</dt><dd>${formatValue(firstValue.likelyGrossValue)}</dd></div>
                     </dl>
-                    <div class="offer-card-verdict"><span>Bez danych użytkownika</span><strong>${escapeHtml(offer.decision.verdict.state)}</strong></div>
+                    <div class="offer-card-verdict"><span>Przed podaniem Twoich danych</span><strong>${escapeHtml(verdictLabel(offer.decision.verdict.state))}</strong><small>${escapeHtml(offer.decision.verdict.state)}</small></div>
                     <a class="north-button north-button--card" href="${offerRoutes[offer.identity.id]}#match">Sprawdź dla siebie <span aria-hidden="true">→</span></a>
                 </article>`;
         }).join("");
@@ -279,7 +287,7 @@
     function renderConfidence(offers, data) {
         const target = document.getElementById("confidence-summary");
         target.classList.remove("data-loading");
-        target.innerHTML = offers.map((offer) => `<div><dt>${escapeHtml(shortProvider(offer).replace("Bank ", ""))}</dt><dd>${escapeHtml(offer.decision.northConfidence.band)}</dd></div>`).join("");
+        target.innerHTML = offers.map((offer) => `<div><dt>${escapeHtml(shortProvider(offer).replace("Bank ", ""))}</dt><dd>${escapeHtml(confidenceLabel(offer.decision.northConfidence.band))} <small>(${escapeHtml(offer.decision.northConfidence.band)})</small></dd></div>`).join("");
         const recheckBy = offers.map((offer) => offer.evidence.recheckBy).sort()[0];
         const dueCount = offers.filter((offer) => freshnessFor(offer).state === "RECHECK_DUE").length;
         document.getElementById("confidence-review").textContent = dueCount

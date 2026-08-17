@@ -37,7 +37,7 @@
         walletPaymentsFirst14Days: ["Płatności portfelem w 14 dni", ""],
         monthlyEligibleInflow: ["Miesięczny wpływ", " zł"],
         monthlyEligibleSpend: ["Miesięczne wydatki", " zł"],
-        activeMonths: ["Horyzont", " mies."],
+        activeMonths: ["Liczba miesięcy", " mies."],
         keepsBlikAndConsents: ["BLIK i zgody utrzymane", ""],
         eligibleSpendPerMonth: ["Kwalifikowane wydatki", " zł/mies."],
         salaryConditionMet: ["Kwalifikowany wpływ", ""],
@@ -98,6 +98,19 @@
         return `verdict-badge verdict-badge--${String(verdict).toLowerCase().replaceAll("_", "-")}`;
     }
 
+    function verdictLabel(verdict) {
+        return ({
+            "TAKE NOW": "Ma sens teraz",
+            "TAKE IF": "Ma sens pod warunkiem",
+            "SKIP": "Lepiej odpuścić",
+            "NOT ENOUGH DATA": "Najpierw uzupełnij dane"
+        })[verdict] || verdict;
+    }
+
+    function confidenceLabel(band) {
+        return ({ HIGH: "wysoka", MEDIUM: "średnia", LOW: "niska" })[band] || band;
+    }
+
     function readableStatus(status) {
         const labels = { active: "aktywna", closing: "kończy się", expired: "wygasła", under_verification: "w weryfikacji" };
         return labels[status] || status;
@@ -134,14 +147,14 @@
         const path = item.fieldPath;
         if (path.startsWith("identity.edition")) return "Edycja i okres oferty";
         if (path.startsWith("identity.status")) return "Dostępność oferty";
-        if (path.startsWith("value.advertisedMax")) return "Advertised Max";
+        if (path.startsWith("value.advertisedMax")) return "Maksimum z reklamy";
         if (path.startsWith("value.rewardComponents")) {
             const componentId = path.match(/\[([^\]]+)\]/)?.[1];
             if (componentId === "*") return "Łączenie składników nagrody";
             const component = offer.value.rewardComponents.find((entry) => entry.id === componentId);
             return component ? `Składnik: ${component.label}` : "Składniki nagrody";
         }
-        if (path.startsWith("value.easyFloor")) return "Easy Floor";
+        if (path.startsWith("value.easyFloor")) return "Prostszy wariant";
         if (path.startsWith("value.scenarioFormula")) return "Formuła wartości";
         if (path.startsWith("eligibility.requiredIncome")) return "Warunek wpływu";
         if (path.startsWith("eligibility.requiredSpend")) return "Warunek wydatków";
@@ -153,8 +166,8 @@
         if (path.startsWith("cost.directFees")) return "Koszty bezpośrednie";
         if (path.startsWith("cost.avoidableFees")) return "Opłaty możliwe do uniknięcia";
         if (path.startsWith("cost.downstreamCosts")) return "Koszty dalsze";
-        if (path.startsWith("decision.northValue")) return "North Value scenariusza";
-        if (path.startsWith("decision.verdict")) return "North Verdict scenariusza";
+        if (path.startsWith("decision.northValue")) return "Wartość w tym scenariuszu";
+        if (path.startsWith("decision.verdict")) return "Czy oferta ma sens w tym scenariuszu";
         return "Krytyczny warunek";
     }
 
@@ -189,14 +202,14 @@
             <section class="offer-section hard-case-summary" id="risk" aria-labelledby="risk-title">
                 <div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> Controlled validation case</p><h2 id="risk-title">Nagroda i ryzyko nie są jedną liczbą</h2></div><p>To test odporności Decision Model v1, nie rekomendacja krypto ani nowa kategoria North.</p></div>
                 <dl class="hard-case-grid">
-                    <div><dt>Nominal reward</dt><dd>${escapeHtml(offer.value.advertisedMax.displayLabel)}</dd><span>${escapeHtml(offer.value.advertisedMax.caveat)}</span></div>
-                    <div><dt>Usable reward</dt><dd>NOT DETERMINABLE</dd><span>Forma i wartość aktywa mogą zmienić się przed zaksięgowaniem oraz po nim.</span></div>
-                    <div><dt>Required capital</dt><dd>${capitalAmount}</dd><span>${escapeHtml(capital.note || "Brak pełnych danych publicznych.")}</span></div>
-                    <div><dt>Capital at risk</dt><dd>${capital.capitalAtRisk ? "TAK" : "NIE"}</dd><span>${escapeHtml(capital.holdingPeriod || "Okres ekspozycji nie jest publicznie określony.")}</span></div>
-                    <div><dt>Trading fee</dt><dd>${fee && fee.amount ? formatMoney(fee.amount) : "DYNAMICZNA"}</dd><span>${escapeHtml(fee ? fee.appliesDuring : "Zależy od ścieżki wykonania.")}</span></div>
-                    <div><dt>Spread</dt><dd>DYNAMICZNY</dd><span>${escapeHtml(spread ? spread.amountOrRule : "Nie można ustalić z góry.")}</span></div>
-                    <div><dt>Market exposure</dt><dd>TAK</dd><span>Stablecoiny nie kwalifikują się; wymagany zakup aktywa o zmiennej cenie.</span></div>
-                    <div><dt>Time requirement</dt><dd>15 / 30 dni</dd><span>Oficjalne strony są sprzeczne, dlatego termin blokuje pozytywny Verdict.</span></div>
+                    <div><dt>Kwota z reklamy</dt><dd>${escapeHtml(offer.value.advertisedMax.displayLabel)}</dd><span>${escapeHtml(offer.value.advertisedMax.caveat)}</span></div>
+                    <div><dt>Ile faktycznie wykorzystasz</dt><dd>NIE DA SIĘ USTALIĆ</dd><span>Forma i wartość aktywa mogą zmienić się przed zaksięgowaniem oraz po nim.</span></div>
+                    <div><dt>Wymagany kapitał</dt><dd>${capitalAmount}</dd><span>${escapeHtml(capital.note || "Brak pełnych danych publicznych.")}</span></div>
+                    <div><dt>Kapitał narażony na stratę</dt><dd>${capital.capitalAtRisk ? "TAK" : "NIE"}</dd><span>${escapeHtml(capital.holdingPeriod || "Okres ekspozycji nie jest publicznie określony.")}</span></div>
+                    <div><dt>Opłata za transakcję</dt><dd>${fee && fee.amount ? formatMoney(fee.amount) : "ZMIENNA"}</dd><span>${escapeHtml(fee ? fee.appliesDuring : "Zależy od ścieżki wykonania.")}</span></div>
+                    <div><dt>Różnica między ceną kupna i sprzedaży</dt><dd>ZMIENNA</dd><span>${escapeHtml(spread ? spread.amountOrRule : "Nie można ustalić z góry.")}</span></div>
+                    <div><dt>Ryzyko zmiany ceny</dt><dd>TAK</dd><span>Stablecoiny nie kwalifikują się; wymagany zakup aktywa o zmiennej cenie.</span></div>
+                    <div><dt>Termin</dt><dd>15 / 30 dni</dd><span>Oficjalne strony są sprzeczne, dlatego termin blokuje pozytywną ocenę.</span></div>
                 </dl>
             </section>`;
     }
@@ -207,8 +220,8 @@
         return `
             <section class="offer-section offer-value-section" id="value" aria-labelledby="value-title">
                 <div class="offer-section-heading">
-                    <div><p class="section-kicker"><span aria-hidden="true"></span> North Value</p><h2 id="value-title">Najpierw rozbijamy reklamę na wartości</h2></div>
-                    <p>Nie łączymy pieniędzy, czasu, wysiłku i ryzyka w arbitralny wynik. Każdy jawny scenariusz ma własny Value i Verdict.</p>
+                    <div><p class="section-kicker"><span aria-hidden="true"></span> Ile możesz dostać</p><h2 id="value-title">Najpierw rozbijamy kwotę z reklamy</h2></div>
+                    <p>Pokazujemy osobno pieniądze, czas, obowiązki i ryzyko. Wynik zależy od Twoich odpowiedzi.</p>
                 </div>
                 <dl class="north-value-grid">
                     <div><dt>${term("advertisedMax")}</dt><dd>${escapeHtml(offer.value.advertisedMax.displayLabel)}</dd><span>${escapeHtml(offer.value.advertisedMax.caveat)}</span></div>
@@ -239,7 +252,7 @@
                 <article class="offer-scenario-card">
                     <div class="scenario-card-head">
                         <span>Scenariusz demonstracyjny ${index + 1}</span>
-                        <span class="${verdictClass(example.verdict)}">${escapeHtml(example.verdict)}</span>
+                        <span class="${verdictClass(example.verdict)}">${escapeHtml(verdictLabel(example.verdict))}<small>${escapeHtml(example.verdict)}</small></span>
                     </div>
                     <h3>${escapeHtml(example.label)}</h3>
                     <ul class="input-list">${renderInputs(example.userInputs)}</ul>
@@ -259,11 +272,11 @@
                         <div><dt>${term("flexibility", "Elastyczność")}</dt><dd>${escapeHtml(value.flexibility)}</dd></div>
                     </dl>
                     <div class="scenario-verdict-copy">
-                        <p><strong>Summary:</strong> ${escapeHtml(example.verdictReason)}</p>
-                        <p><strong>Conditions:</strong> założenia scenariusza wskazane powyżej.</p>
-                        <p><strong>Blockers:</strong> ${escapeHtml(scenarioBlocker(example, offer))}</p>
-                        <p><strong>Confidence:</strong> ${escapeHtml(confidence)}</p>
-                        <p><strong>Kontra do nothing:</strong> ${escapeHtml(offer.decision.comparison.conclusion)}</p>
+                        <p><strong>Wniosek:</strong> ${escapeHtml(example.verdictReason)}</p>
+                        <p><strong>Warunki:</strong> odpowiedzi wskazane powyżej.</p>
+                        <p><strong>Co może zablokować wynik:</strong> ${escapeHtml(scenarioBlocker(example, offer))}</p>
+                        <p><strong>Jak pewne są dane:</strong> ${escapeHtml(confidenceLabel(confidence))} <small>(${escapeHtml(confidence)})</small></p>
+                        <p><strong>W porównaniu z brakiem działania:</strong> ${escapeHtml(offer.decision.comparison.conclusion)}</p>
                     </div>
                 </article>`;
         }).join("");
@@ -278,7 +291,7 @@
     function renderComponents(offer) {
         return `
             <section class="offer-section" id="components" aria-labelledby="components-title">
-                <div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> Breakdown</p><h2 id="components-title">Co dokładnie składa się na wartość</h2></div><p>${escapeHtml(offer.value.advertisedMax.aggregationBasis)}</p></div>
+                <div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> Składniki nagrody</p><h2 id="components-title">Co dokładnie składa się na wartość</h2></div><p>${escapeHtml(offer.value.advertisedMax.aggregationBasis)}</p></div>
                 <div class="reward-components-grid">
                     ${offer.value.rewardComponents.map((component) => `
                         <article class="reward-component-card">
@@ -315,7 +328,7 @@
     function renderExecution(offer) {
         return `
             <section class="offer-section" id="execution" aria-labelledby="execution-title">
-                <div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> Execution</p><h2 id="execution-title">Działania, rytm i punkty utraty</h2></div><p>${escapeHtml(offer.execution.cadence.summary)}</p></div>
+                <div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> Co musisz zrobić</p><h2 id="execution-title">Działania, terminy i ryzyko utraty nagrody</h2></div><p>${escapeHtml(offer.execution.cadence.summary)}</p></div>
                 <ol class="action-timeline">
                     ${asArray(offer.execution.actions).map((action, index) => `<li><span>${String(index + 1).padStart(2, "0")}</span><div><h3>${escapeHtml(action.label)}</h3><p>${escapeHtml(action.timing)} · ${escapeHtml(action.cadence)}</p><small>Jeśli pominiesz: ${escapeHtml(action.consequenceIfMissed)}</small></div></li>`).join("") || "<li><div><h3>Brak osobnych kroków</h3><p>Rekord nie definiuje dodatkowej sekwencji działań.</p></div></li>"}
                 </ol>
@@ -323,7 +336,7 @@
                     ${asArray(offer.execution.failurePoints).map((point) => `<article><span class="risk-level risk-level--${escapeHtml(point.severity)}">${escapeHtml(point.severity)}</span><h3>${escapeHtml(point.label)}</h3><p>${escapeHtml(point.consequence)}</p><small>Ograniczenie ryzyka: ${escapeHtml(point.mitigation)}</small></article>`).join("") || "<article><h3>Brak osobnych punktów utraty</h3><p>Rekord nie definiuje dodatkowego failure point.</p></article>"}
                 </div>
                 <article class="safe-exit-panel">
-                    <div><p class="section-kicker">Safe exit · ${escapeHtml(offer.execution.safeExit.status)}</p><h3>${escapeHtml(offer.execution.safeExit.earliestExit)}</h3><p>${escapeHtml(offer.execution.safeExit.notice)}</p></div>
+                    <div><p class="section-kicker">Jak bezpiecznie zrezygnować · ${escapeHtml(offer.execution.safeExit.status)}</p><h3>${escapeHtml(offer.execution.safeExit.earliestExit)}</h3><p>${escapeHtml(offer.execution.safeExit.notice)}</p></div>
                     <div><strong>Przed wyjściem</strong>${asArray(offer.execution.safeExit.steps).length ? `<ol>${asArray(offer.execution.safeExit.steps).map((step) => `<li>${escapeHtml(step)}</li>`).join("")}</ol>` : "<p>Brak dodatkowej checklisty w rekordzie.</p>"}<p class="uncertainty-note">${escapeHtml(offer.execution.safeExit.uncertaintyNote || "Brak dodatkowej noty.")}</p></div>
                 </article>
             </section>`;
@@ -334,7 +347,7 @@
             ...asArray(offer.cost.directFees).map((item) => ({ type: "Koszt bezpośredni", label: item.label, value: formatMoney(item.amount), detail: item.appliesDuring })),
             ...asArray(offer.cost.avoidableFees).map((item) => ({ type: "Opłata możliwa do uniknięcia", label: item.label, value: item.amount ? formatMoney(item.amount) : (offer.identity.category === "crypto_validation" ? "Dynamiczna" : "Zależna od wieku"), detail: item.avoidanceCondition })),
             ...asArray(offer.cost.downstreamCosts).map((item) => ({ type: "Koszt dalszy", label: item.label, value: renderMoneyOrRule(item), detail: item.trigger })),
-            ...asArray(offer.cost.opportunityCost).map((item) => ({ type: "Opportunity Cost", glossary: "opportunityCost", label: item.label, value: item.monetized ? renderMoneyOrRule(item) : "Nie monetyzujemy", detail: item.assumption }))
+            ...asArray(offer.cost.opportunityCost).map((item) => ({ type: "Z czego rezygnujesz", glossary: "opportunityCost", label: item.label, value: item.monetized ? renderMoneyOrRule(item) : "Brak potwierdzonej kwoty", detail: item.assumption }))
         ];
         return `
             <section class="offer-section" id="costs" aria-labelledby="costs-title">
@@ -349,15 +362,15 @@
         return `
             <section class="offer-section" id="verdict" aria-labelledby="offer-verdict-title">
                 <article class="full-verdict">
-                    <div class="full-verdict__head"><div><p class="section-kicker"><span aria-hidden="true"></span> Verdict bez danych użytkownika</p><h2 id="offer-verdict-title">North Verdict</h2></div><span class="${verdictClass(verdict.state)}">${escapeHtml(verdict.state)}</span></div>
+                    <div class="full-verdict__head"><div><p class="section-kicker"><span aria-hidden="true"></span> Ocena przed podaniem Twoich danych</p><h2 id="offer-verdict-title">Czy ta oferta ma dla Ciebie sens</h2></div><span class="${verdictClass(verdict.state)}">${escapeHtml(verdictLabel(verdict.state))}<small>${escapeHtml(verdict.state)}</small></span></div>
                     <p class="verdict-summary">${escapeHtml(verdict.summary)}</p>
                     <div class="verdict-details">
-                        <div><h3>Powody (Reasons)</h3><ul>${asArray(verdict.reasons).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div>
-                        <div><h3>Warunki (Conditions)</h3>${asArray(verdict.conditions).length ? `<ul>${asArray(verdict.conditions).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : "<p>Brak warunków pozytywnego Verdict bez scenariusza użytkownika.</p>"}</div>
-                        <div><h3>Blokery (Blockers)</h3>${asArray(verdict.positiveBlockers).length ? `<ul>${asArray(verdict.positiveBlockers).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : "<p>Brak dodatkowych blokerów w rekordzie.</p>"}</div>
-                        <div><h3>${term("northConfidence")}</h3><strong class="confidence-large">${escapeHtml(offer.decision.northConfidence.band)}</strong><p>${escapeHtml(asArray(offer.decision.northConfidence.reasons)[0] || "Brak dodatkowego uzasadnienia w rekordzie.")}</p></div>
+                        <div><h3>Dlaczego</h3><ul>${asArray(verdict.reasons).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div>
+                        <div><h3>Pod jakimi warunkami</h3>${asArray(verdict.conditions).length ? `<ul>${asArray(verdict.conditions).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : "<p>Bez Twoich danych nie ma warunków pozytywnej oceny.</p>"}</div>
+                        <div><h3>Co blokuje pozytywną ocenę</h3>${asArray(verdict.positiveBlockers).length ? `<ul>${asArray(verdict.positiveBlockers).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : "<p>Brak dodatkowych przeszkód w danych oferty.</p>"}</div>
+                        <div><h3>${term("northConfidence")}</h3><strong class="confidence-large">${escapeHtml(confidenceLabel(offer.decision.northConfidence.band))}</strong><p><small>${escapeHtml(offer.decision.northConfidence.band)}</small> · ${escapeHtml(asArray(offer.decision.northConfidence.reasons)[0] || "Brak dodatkowego uzasadnienia w rekordzie.")}</p></div>
                     </div>
-                    <div class="comparison-panel"><div><span>Do nothing</span><strong>${formatMoney(comparison.doNothing.reward)} nagrody · ${formatMoney(comparison.doNothing.directCost)} kosztu</strong><p>Wysiłek: ${escapeHtml(comparison.doNothing.effort)} · nowe ryzyko: ${escapeHtml(comparison.doNothing.failureRisk)}</p></div><div><span>Wniosek</span><p>${escapeHtml(comparison.conclusion)}</p></div></div>
+                    <div class="comparison-panel"><div><span>Jeśli nic nie zrobisz</span><strong>${formatMoney(comparison.doNothing.reward)} nagrody · ${formatMoney(comparison.doNothing.directCost)} kosztu</strong><p>Wysiłek: ${escapeHtml(comparison.doNothing.effort)} · nowe ryzyko: ${escapeHtml(comparison.doNothing.failureRisk)}</p></div><div><span>Wniosek</span><p>${escapeHtml(comparison.conclusion)}</p></div></div>
                 </article>
             </section>`;
     }
@@ -414,12 +427,12 @@
         ].filter(Boolean).join("");
         return `
             <section class="offer-section" id="sources" aria-labelledby="sources-title">
-                <div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> Evidence</p><h2 id="sources-title">Skąd wiemy i kiedy sprawdziliśmy</h2></div><p>Przy każdej kluczowej liczbie i regule pokazujemy rodzaj źródła, dokładne miejsce w dokumencie, datę sprawdzenia oraz niepewność.</p></div>
+                <div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> Skąd mamy te dane</p><h2 id="sources-title">Źródła i data sprawdzenia</h2></div><p>Przy każdej ważnej liczbie i zasadzie pokazujemy źródło, miejsce w dokumencie, datę sprawdzenia i niepewność.</p></div>
                 <div class="evidence-status-grid">
                     <div><span>Aktualność danych</span><strong class="freshness-text freshness-text--${freshness.state.toLowerCase().replaceAll("_", "-")}">${escapeHtml(freshness.label)}</strong></div>
-                    <div><span>Ostatni pełny review</span><strong>${formatDate(offer.identity.verifiedAt)}</strong></div>
-                    <div><span>${term("northConfidence")}</span><strong>${escapeHtml(offer.decision.northConfidence.band)}</strong></div>
-                    <div><span>Ręczny recheck do</span><strong>${formatDate(offer.evidence?.recheckBy)}</strong></div>
+                    <div><span>Ostatnie pełne sprawdzenie</span><strong>${formatDate(offer.identity.verifiedAt)}</strong></div>
+                    <div><span>${term("northConfidence")}</span><strong>${escapeHtml(confidenceLabel(offer.decision.northConfidence.band))} <small>(${escapeHtml(offer.decision.northConfidence.band)})</small></strong></div>
+                    <div><span>Sprawdź ponownie do</span><strong>${formatDate(offer.evidence?.recheckBy)}</strong></div>
                 </div>
                 <p class="freshness-explanation"><span class="freshness-badge freshness-badge--${freshness.state.toLowerCase().replaceAll("_", "-")}">${escapeHtml(freshness.label)}</span>${escapeHtml(freshness.explanation)}</p>
                 <div class="sources-layout">
@@ -427,7 +440,7 @@
                         <h3>Oficjalne źródła</h3>
                         <ul class="source-list">${sources.length ? sources.map((source) => `<li>${source.url ? `<a href="${escapeHtml(source.url)}" target="_blank" rel="noopener">${escapeHtml(sourceTitle(source))} <span aria-hidden="true">↗</span><span class="visually-hidden"> (otwiera nową kartę)</span></a>` : `<span class="source-title">${escapeHtml(sourceTitle(source))}</span>`}<span>${escapeHtml(readableSourceType(source.type))} · sprawdzono ${formatDate(source.accessedAt)} · ${escapeHtml(source.editionReference || "bieżąca edycja")}</span></li>`).join("") : "<li><span class=\"source-title\">Brak źródeł do pokazania</span><span>Pozytywny Verdict jest zablokowany do czasu uzupełnienia evidence.</span></li>"}</ul>
                     </div>
-                    <aside class="confidence-reasons"><h3>Dlaczego ${escapeHtml(offer.decision.northConfidence.band)}</h3>${asArray(offer.decision.northConfidence.reasons).length ? `<ul>${asArray(offer.decision.northConfidence.reasons).map((reason) => `<li>${escapeHtml(reason)}</li>`).join("")}</ul>` : "<p>Brak dodatkowego uzasadnienia w rekordzie.</p>"}${asArray(offer.decision.northConfidence.blockers).length ? `<h4>Blokery</h4><ul>${asArray(offer.decision.northConfidence.blockers).map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}</ul>` : ""}</aside>
+                    <aside class="confidence-reasons"><h3>Dlaczego pewność jest ${escapeHtml(confidenceLabel(offer.decision.northConfidence.band))}</h3>${asArray(offer.decision.northConfidence.reasons).length ? `<ul>${asArray(offer.decision.northConfidence.reasons).map((reason) => `<li>${escapeHtml(reason)}</li>`).join("")}</ul>` : "<p>Brak dodatkowego uzasadnienia w rekordzie.</p>"}${asArray(offer.decision.northConfidence.blockers).length ? `<h4>Co obniża pewność</h4><ul>${asArray(offer.decision.northConfidence.blockers).map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}</ul>` : ""}</aside>
                 </div>
                 <div class="evidence-ledger">
                     <h3>Dowody dla kluczowych liczb i warunków</h3>
@@ -467,8 +480,8 @@
                     <p class="record-meta">Edycja: ${escapeHtml(offer.identity.edition.name)}${validityCopy}</p>
                 </div>
                 <aside class="offer-hero-verdict">
-                    <div class="panel-topline"><span>${term("verdict", "North Verdict")}</span><span class="confidence-badge">${term("northConfidence", "Confidence")} ${escapeHtml(offer.decision.northConfidence.band)}</span></div>
-                    <span class="${verdictClass(offer.decision.verdict.state)}">${escapeHtml(offer.decision.verdict.state)}</span>
+                    <div class="panel-topline"><span>${term("verdict")}</span><span class="confidence-badge">Pewność danych: ${escapeHtml(confidenceLabel(offer.decision.northConfidence.band))}</span></div>
+                    <span class="${verdictClass(offer.decision.verdict.state)}">${escapeHtml(verdictLabel(offer.decision.verdict.state))}<small>${escapeHtml(offer.decision.verdict.state)}</small></span>
                     <h2>${escapeHtml(offer.decision.verdict.summary)}</h2>
                     <p>${escapeHtml(asArray(offer.decision.verdict.reasons).join(" ") || "Brak dodatkowego powodu w rekordzie.")}</p>
                     <div class="advertised-context"><span>${term("advertisedMax")}</span><strong>${escapeHtml(offer.value.advertisedMax.displayLabel)}</strong><small>${escapeHtml(offer.value.advertisedMax.caveat)}</small></div>

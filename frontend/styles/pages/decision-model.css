@@ -34,9 +34,12 @@
 .north-landing p,
 .decision-offer-page p { overflow-wrap: anywhere; }
 
-.north-landing :where(h1, h2, h3, h4, a, dd, li),
-.decision-offer-page :where(h1, h2, h3, h4, a, dd, li),
-.north-offer-page :where(h1, h2, h3, h4, a, dd, li) { overflow-wrap: anywhere; }
+.north-landing :where(a, dd, li),
+.decision-offer-page :where(a, dd, li),
+.north-offer-page :where(a, dd, li) { overflow-wrap: anywhere; }
+.north-landing :where(h1, h2, h3, h4),
+.decision-offer-page :where(h1, h2, h3, h4),
+.north-offer-page :where(h1, h2, h3, h4) { overflow-wrap: normal; word-break: normal; hyphens: manual; }
 
 .north-landing :focus-visible,
 .decision-offer-page :focus-visible,

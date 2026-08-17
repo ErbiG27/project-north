@@ -7,7 +7,7 @@
     max-width: 100%;
 }
 
-.glossary-label { overflow-wrap: anywhere; }
+.glossary-label { overflow-wrap: normal; word-break: normal; hyphens: manual; }
 
 .glossary-trigger {
     display: inline-grid;
