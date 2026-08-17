@@ -25,6 +25,7 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 
 ### Known limitations
 
+- Automatyczny webhook GitHub–Vercel nie uruchomił redeployu po pushu commita `8fc5130`. Produkcję opublikowano awaryjnie jako zweryfikowany snapshot dokładnie 44 śledzonych plików `frontend/` z tego commita; przed kolejnym wydaniem trzeba naprawić i ponownie potwierdzić automatyczny trigger z `main`.
 - Brak dedykowanej grafiki social, dlatego metadata świadomie nie zawierają `og:image` ani `twitter:image`.
 - Structured data, analytics, backend, konta użytkowników i private beta pozostają poza tym wdrożeniem.
 
