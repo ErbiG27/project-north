@@ -43,6 +43,20 @@ python -m http.server 8000
 
 Następnie otwórz [http://localhost:8000](http://localhost:8000). Możesz użyć dowolnego innego serwera plików statycznych, jeśli nie masz Pythona.
 
+### Walidacja danych North
+
+Przed review zmian w `frontend/data/decision-offers.json` uruchom lokalny guard:
+
+```powershell
+node scripts/validate-north-data.mjs
+```
+
+Opcjonalne `--today=YYYY-MM-DD` ustawia datę odniesienia dla deterministycznego testu, np. `node scripts/validate-north-data.mjs --today=2026-08-20`. `PASS` i `PASS WITH WARNINGS` kończą się kodem `0`; `FAIL` kodem różnym od zera. Ostrzeżenie oznacza przede wszystkim recheck przypadający w ciągu 7 dni, a błąd m.in. uszkodzoną strukturę lub referencję, niemożliwy stan Confidence/Verdict albo przeterminowany aktywny rekord.
+
+Guard v0.1 sprawdza strukturę bieżącego Decision Modelu, obecność niepustych i unikalnych ID, referencje ofert, edycji, scenariuszy, komponentów, działań, Match i evidence, podstawowe kontrakty kwot, bramy landingu oraz istniejące daty review i `recheckBy`. Nie jest pełnym JSON Schema, nie ocenia prawdziwości treści regulaminów, nie przelicza metodologii North Value i nie aktualizuje danych automatycznie.
+
+Kontrolowane przypadki błędnego JSON-u, brakującego ID, zerwanej referencji oraz reguł Confidence/Verdict i freshness można uruchomić bez zmiany danych produkcyjnych: `node --test scripts/validate-north-data.test.mjs`.
+
 ## Technologie i struktura
 
 Projekt wykorzystuje **HTML5, modułowy CSS i vanilla JavaScript**. Nie ma frameworka, backendu ani bazy danych.
