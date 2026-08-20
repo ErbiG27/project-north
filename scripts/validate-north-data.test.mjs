@@ -9,10 +9,16 @@ import { validateNorthData, validateNorthDataText } from "./validate-north-data.
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const dataPath = path.resolve(scriptDir, "..", "frontend", "data", "decision-offers.json");
 const sourceData = JSON.parse(await readFile(dataPath, "utf8"));
+const REVIEW_DATE = sourceData.reviewedAt;
+const shiftIsoDate = (isoDate, days) => {
+    const date = new Date(`${isoDate}T00:00:00Z`);
+    date.setUTCDate(date.getUTCDate() + days);
+    return date.toISOString().slice(0, 10);
+};
 const copyData = () => structuredClone(sourceData);
 
 test("malformed JSON returns FAIL", () => {
-    const report = validateNorthDataText('{"offers": [', { today: "2026-08-20" });
+    const report = validateNorthDataText('{"offers": [', { today: REVIEW_DATE });
     assert.equal(report.status, "FAIL");
     assert.equal(report.exitCode, 1);
     assert(report.entries.some((entry) => entry.section === "Structure" && entry.level === "FAIL"));
@@ -21,7 +27,7 @@ test("malformed JSON returns FAIL", () => {
 test("broken landing offer reference returns FAIL", () => {
     const data = copyData();
     data.landingGates.pekaoDemo.offerId = "missing-offer";
-    const report = validateNorthData(data, { today: "2026-08-16" });
+    const report = validateNorthData(data, { today: REVIEW_DATE });
     assert.equal(report.status, "FAIL");
     assert(report.entries.some((entry) => entry.path === "$.landingGates.pekaoDemo.offerId"));
 });
@@ -29,25 +35,28 @@ test("broken landing offer reference returns FAIL", () => {
 test("structurally invalid offer returns FAIL instead of crashing", () => {
     const data = copyData();
     data.offers[0] = null;
-    const report = validateNorthData(data, { today: "2026-08-20" });
+    const report = validateNorthData(data, { today: REVIEW_DATE });
     assert.equal(report.status, "FAIL");
     assert(report.entries.some((entry) => entry.path === "$.offers[0]"));
 });
 
 test("recheck within seven days produces WARN without FAIL", () => {
     const data = copyData();
-    data.offers.forEach((offer) => { offer.evidence.recheckBy = "2026-08-23"; });
-    const report = validateNorthData(data, { today: "2026-08-20" });
+    const millenniumIndex = data.offers.findIndex((offer) => offer.identity.id === "bank-millennium-millennium-360");
+    data.offers[millenniumIndex].evidence.recheckBy = shiftIsoDate(REVIEW_DATE, 3);
+    const report = validateNorthData(data, { today: REVIEW_DATE });
     assert.equal(report.status, "PASS WITH WARNINGS");
     assert.equal(report.exitCode, 0);
-    assert(report.counts.WARN > 0);
     assert.equal(report.counts.FAIL, 0);
+    assert(report.entries.some((entry) =>
+        entry.level === "WARN"
+        && entry.path === `$.offers[${millenniumIndex}].evidence.recheckBy`));
 });
 
 test("zero does not masquerade as a missing requirement amount", () => {
     const data = copyData();
     data.offers[0].eligibility.requiredCapital.amount = { amount: 0, currency: "PLN" };
-    const report = validateNorthData(data, { today: "2026-08-16" });
+    const report = validateNorthData(data, { today: REVIEW_DATE });
     assert.equal(report.status, "FAIL");
     assert(report.entries.some((entry) => entry.path === "$.offers[0].eligibility.requiredCapital.amount"));
 });
@@ -55,7 +64,7 @@ test("zero does not masquerade as a missing requirement amount", () => {
 test("missing required collection ID returns FAIL with its exact path", () => {
     const data = copyData();
     delete data.offers[0].value.rewardComponents[0].id;
-    const report = validateNorthData(data, { today: "2026-08-16" });
+    const report = validateNorthData(data, { today: REVIEW_DATE });
     assert.equal(report.status, "FAIL");
     assert(report.entries.some((entry) =>
         entry.section === "IDs"
@@ -67,7 +76,7 @@ test("positive Verdict is forbidden with LOW Confidence", () => {
     const data = copyData();
     data.offers[0].decision.northConfidence.band = "LOW";
     data.offers[0].decision.verdict.state = "TAKE IF";
-    const report = validateNorthData(data, { today: "2026-08-16" });
+    const report = validateNorthData(data, { today: REVIEW_DATE });
     assert.equal(report.status, "FAIL");
     assert(report.entries.some((entry) =>
         entry.section === "Confidence & Verdict"
@@ -79,7 +88,7 @@ test("TAKE NOW requires HIGH Confidence", () => {
     const data = copyData();
     data.offers[0].decision.northConfidence.band = "MEDIUM";
     data.offers[0].decision.verdict.state = "TAKE NOW";
-    const report = validateNorthData(data, { today: "2026-08-16" });
+    const report = validateNorthData(data, { today: REVIEW_DATE });
     assert.equal(report.status, "FAIL");
     assert(report.entries.some((entry) =>
         entry.section === "Confidence & Verdict"
@@ -89,9 +98,9 @@ test("TAKE NOW requires HIGH Confidence", () => {
 
 test("expired recheck requires LOW freshness and fails as stale evidence", () => {
     const data = copyData();
-    data.offers[0].evidence.recheckBy = "2026-08-19";
+    data.offers[0].evidence.recheckBy = shiftIsoDate(REVIEW_DATE, -1);
     data.offers[0].decision.northConfidence.factors.freshness = "HIGH";
-    const report = validateNorthData(data, { today: "2026-08-20" });
+    const report = validateNorthData(data, { today: REVIEW_DATE });
     assert.equal(report.status, "FAIL");
     assert(report.entries.some((entry) =>
         entry.section === "Freshness"
@@ -104,7 +113,7 @@ test("expired recheck requires LOW freshness and fails as stale evidence", () =>
 });
 
 test("unchanged reviewed data has no false FAIL on its review date", () => {
-    const report = validateNorthData(copyData(), { today: "2026-08-16" });
+    const report = validateNorthData(copyData(), { today: REVIEW_DATE });
     assert.equal(report.exitCode, 0);
     assert.equal(report.counts.FAIL, 0);
 });
