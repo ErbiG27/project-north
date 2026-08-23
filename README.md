@@ -82,6 +82,7 @@ docs/                           # zasady produktu, decyzje i plan rozwoju
 
 Katalog [`/docs`](docs/) jest źródłem prawdy dla intencji produktu, standardów, roadmapy i historii decyzji; kod pozostaje źródłem prawdy dla implementacji. Najważniejsze dokumenty:
 
+- [North State](docs/NORTH_STATE.md) — pierwszy punkt wejścia dla AI i procedura odzyskania aktualnego kontekstu projektu;
 - [Handbook](docs/HANDBOOK.md) — wizja, zasady i aktywny kontrakt produktu;
 - [Roadmapa](docs/ROADMAP.md) — ukończone etapy i kolejność dalszej walidacji;
 - [Changelog](docs/CHANGELOG.md) — faktycznie wydane zmiany i ograniczenia;
