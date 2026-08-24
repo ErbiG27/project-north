@@ -21,6 +21,7 @@
       "No numeric score 0-100.",
       "preferredProductId may be null.",
       "Promotion value must not override product suitability.",
+      "Product eligibility gates user-specific promotion eligibility; edition applicability to a Product Identity is not itself proof that the user qualifies.",
       "Affiliate economics are excluded from comparison.",
       "Do nothing or no clear winner remain valid outcomes."
     ]
@@ -51,9 +52,9 @@
       "inputs": {"age": 35, "ownershipNeed": "individual", "monthlyInflowsPln": 12000, "monthlyCardSpendPln": 1500, "qualifyingAssetsPln": 0, "premiumServiceNeed": true, "travelNeed": true, "childNeed": false},
       "expected": {
         "preferredProductId": "mbank-mkonto-intensive",
-        "decisiveFactors": ["intensive_fee_waiver_met", "premium_need", "functional_value"],
+        "decisiveFactors": ["intensive_fee_waiver_met", "premium_need", "travel_functional_value"],
         "tradeoffs": ["premium value depends on actual use; cash promotion is not the deciding factor"],
-        "unresolvedFactors": ["user-specific valuation of premium capabilities"]
+        "unresolvedFactors": ["user-specific valuation of premium and travel capabilities"]
       }
     },
     {
