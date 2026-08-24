@@ -15,10 +15,10 @@
       "functionalCapabilities": ["standard_current_account", "debit_card", "foreign_atm_withdrawals"],
       "cashWithdrawalRules": {"polandFreeFromPln": 100, "belowThresholdFeePln": 2.5},
       "lifecycleTransitions": [
-        {"trigger": "age_out", "targetProductId": "mbank-ekonto-do-uslug", "note": "Model transition; exact operational timing remains evidence-controlled."}
+        {"trigger": "age_out", "targetProductId": "mbank-ekonto-do-uslug", "note": "Automatically transitions to eKonto do usług after the 18-24 product lifecycle ends; exact operational timing remains evidence-controlled."}
       ],
       "evidence": [
-        {"type": "official_product_page", "url": "https://www.mbank.pl/indywidualny/dla-mlodych/i-mozesz-wiecej/", "checkedAt": "2026-08-24", "supports": ["identity", "age_segment", "base_costs", "withdrawal_rules"]}
+        {"type": "official_product_page", "url": "https://www.mbank.pl/indywidualny/dla-mlodych/i-mozesz-wiecej/", "checkedAt": "2026-08-24", "supports": ["identity", "age_segment", "base_costs", "withdrawal_rules", "lifecycle_transition"]}
       ]
     },
     {
@@ -36,8 +36,8 @@
       "cashWithdrawalRules": {"polandFreeFromPln": 300, "belowThresholdFeePln": 2.5},
       "lifecycleTransitions": [],
       "evidence": [
-        {"type": "official_product_page", "url": "https://www.mbank.pl/indywidualny/konta/konta-osobiste/ekonto-do-uslug/", "checkedAt": "2026-08-24", "supports": ["identity", "base_costs", "card_waiver"]},
-        {"type": "official_legal_note", "url": "https://www.mbank.pl/nota/zaloz-konto/", "checkedAt": "2026-08-24", "supports": ["base_costs", "withdrawal_rules", "promotion_entry"]}
+        {"type": "official_product_page", "url": "https://www.mbank.pl/indywidualny/konta/konta-osobiste/ekonto-do-uslug/", "checkedAt": "2026-08-24", "supports": ["identity", "base_costs", "card_waiver", "joint_ownership", "withdrawal_rules"]},
+        {"type": "official_joint_product_page", "url": "https://www.mbank.pl/indywidualny/konta/konta-osobiste/wspolne/", "checkedAt": "2026-08-24", "supports": ["joint_ownership", "joint_cost_rules"]}
       ]
     },
     {
@@ -47,14 +47,26 @@
       "category": "bank_account",
       "segmentRules": {"ageMin": 18, "ageMax": null},
       "ownershipModes": ["individual", "joint"],
-      "baseCosts": {"accountMonthlyPln": 49.5},
+      "baseCosts": {"accountMonthlyPln": 49.5, "cardMonthlyPln": 0},
       "feeWaivers": [
         {"fee": "accountMonthlyPln", "condition": "monthly_inflows_pln >= 10000 OR qualifying_assets_pln >= 100000", "resultPln": 0}
       ],
-      "functionalCapabilities": ["premium_current_account", "premium_service", "debit_card", "joint_ownership", "enhanced_transfer_benefits"],
+      "functionalCapabilities": [
+        "premium_current_account",
+        "premium_service",
+        "debit_card",
+        "joint_ownership",
+        "free_express_transfers",
+        "foreign_atm_no_fee",
+        "fx_card_no_conversion_fee",
+        "fast_track_chopin",
+        "premium_support",
+        "concierge"
+      ],
+      "cashWithdrawalRules": {"polandFreeFromPln": 300, "belowThresholdFeePln": 2.5},
       "lifecycleTransitions": [],
       "evidence": [
-        {"type": "official_product_page", "url": "https://www.mbank.pl/indywidualny/konta/konta-osobiste/mkonto-intensive/", "checkedAt": "2026-08-24", "supports": ["identity", "base_costs", "fee_waiver", "premium_positioning"]},
+        {"type": "official_product_page", "url": "https://www.mbank.pl/indywidualny/konta/konta-osobiste/mkonto-intensive/", "checkedAt": "2026-08-24", "supports": ["identity", "base_costs", "fee_waiver", "premium_positioning", "travel_capabilities", "express_transfers", "premium_support"]},
         {"type": "official_joint_product_page", "url": "https://www.mbank.pl/indywidualny/konta/konta-osobiste/wspolne-mkonto-intensive/", "checkedAt": "2026-08-24", "supports": ["joint_ownership", "joint_fee_waiver"]}
       ]
     }
@@ -83,12 +95,26 @@
         {"id": "salary", "cashPln": 300}
       ],
       "productOverrides": {
-        "mbank-ekonto-mozliwosci-18-24": {"advertisedCashMaxPln": 900, "requiredInflowsPln": 1000},
-        "mbank-ekonto-do-uslug": {"advertisedCashMaxPln": 1000, "requiredInflowsPln": 2000, "additionalRewardComponents": [{"id": "child_account", "cashPln": 100}]},
-        "mbank-mkonto-intensive": {"advertisedCashMaxPln": 1000, "requiredInflowsPln": 2000, "additionalRewardComponents": [{"id": "child_account", "cashPln": 100}]}
+        "mbank-ekonto-mozliwosci-18-24": {
+          "advertisedCashMaxPln": 900,
+          "requiredInflowsPln": 1000,
+          "linkedSavings": {"annualRatePct": 5.3, "capPln": 50000, "relationship": "linked_not_summed"}
+        },
+        "mbank-ekonto-do-uslug": {
+          "advertisedCashMaxPln": 1000,
+          "requiredInflowsPln": 2000,
+          "additionalRewardComponents": [{"id": "child_account", "cashPln": 100}],
+          "linkedSavings": {"annualRatePct": 5.3, "capPln": 50000, "relationship": "linked_not_summed"}
+        },
+        "mbank-mkonto-intensive": {
+          "advertisedCashMaxPln": 1000,
+          "requiredInflowsPln": 2000,
+          "additionalRewardComponents": [{"id": "child_account", "cashPln": 100}],
+          "linkedSavings": {"annualRatePct": 5.5, "capPln": 100000, "relationship": "linked_not_summed"}
+        }
       },
       "evidence": [
-        {"type": "official_promotion_terms", "url": "https://www.mbank.pl/pdf/promocje/konta/regulamin-promocji-cala-naprzod-zyskuj-z-kontem-w-mbanku-edycja-i.pdf", "checkedAt": "2026-08-24", "supports": ["eligible_products", "dates", "ownership_mode", "reward_structure", "product_overrides"]}
+        {"type": "official_promotion_terms", "url": "https://www.mbank.pl/pdf/promocje/konta/regulamin-promocji-cala-naprzod-zyskuj-z-kontem-w-mbanku-edycja-i.pdf", "checkedAt": "2026-08-24", "supports": ["eligible_products", "dates", "ownership_mode", "reward_structure", "product_overrides", "yield_overrides"]}
       ],
       "recheckBy": "2026-08-31"
     }
