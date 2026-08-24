@@ -9,8 +9,28 @@
     const providerLogos = {
         "bank-millennium-millennium-360": "../assets/logos/bank-millennium.svg",
         "nest-bank-nest-konto": "../assets/logos/nest-bank.png",
-        "bank-pekao-konto-przekorzystne": "../assets/logos/bank-pekao.svg"
+        "bank-pekao-konto-przekorzystne": "../assets/logos/bank-pekao.svg",
+        "alior-konto-18-25": "../assets/logos/alior-bank.png",
+        "erste-konto-smart": "../assets/logos/erste.png",
+        "revolut-standard": "../assets/logos/revolut.svg",
+        "mbank-ekonto-do-uslug": "../assets/logos/mbank.jpg",
+        "pko-konto-za-zero": "../assets/logos/pko-bank-polski.svg",
+        "bnp-konto-otwarte-na-ciebie": "../assets/logos/bnp-paribas.png",
+        "unicredit-konto-osobiste": "../assets/logos/unicredit.svg",
+        "velobank-elastyczne-konto-oszczednosciowe": "../assets/logos/velobank.svg",
+        "alior-konto-plus": "../assets/logos/alior-bank.png"
     };
+
+    const wideLogoOfferIds = new Set([
+        "alior-konto-18-25",
+        "revolut-standard",
+        "mbank-ekonto-do-uslug",
+        "pko-konto-za-zero",
+        "bnp-konto-otwarte-na-ciebie",
+        "unicredit-konto-osobiste",
+        "velobank-elastyczne-konto-oszczednosciowe",
+        "alior-konto-plus"
+    ]);
 
     const seoMetadata = {
         "bank-millennium-millennium-360": {
@@ -64,6 +84,14 @@
         if (offer.identity.id.includes("millennium")) return "Bank Millennium";
         if (offer.identity.id.includes("nest")) return "Nest Bank";
         if (offer.identity.id.includes("pekao")) return "Bank Pekao";
+        if (offer.identity.id.includes("alior")) return "Alior Bank";
+        if (offer.identity.id.includes("erste")) return "Erste";
+        if (offer.identity.id.includes("revolut")) return "Revolut";
+        if (offer.identity.id.includes("mbank")) return "mBank";
+        if (offer.identity.id.includes("pko-")) return "PKO Bank Polski";
+        if (offer.identity.id.includes("bnp")) return "BNP Paribas";
+        if (offer.identity.id.includes("unicredit")) return "UniCredit";
+        if (offer.identity.id.includes("velobank")) return "VeloBank";
         return offer.identity.provider;
     }
 
@@ -79,7 +107,8 @@
         const src = providerLogos[offer.identity.id];
         const fallback = `<span class="bank-monogram" aria-hidden="true">${escapeHtml(monogram(offer))}</span>`;
         if (!src) return fallback;
-        return `<span class="bank-mark"><img class="bank-logo" src="${src}" alt="" aria-hidden="true" decoding="async">${fallback}</span>`;
+        const widthClass = wideLogoOfferIds.has(offer.identity.id) ? " bank-mark--wide" : "";
+        return `<span class="bank-mark${widthClass}"><img class="bank-logo" src="${src}" alt="" aria-hidden="true" decoding="async">${fallback}</span>`;
     }
 
     function initBankMarkFallbacks(scope) {
@@ -135,7 +164,7 @@
     }
 
     function readableForm(form) {
-        const labels = { cash: "gotówka", cashback: "zwrot / nagroda pieniężna", voucher: "voucher", points: "punkty", interest: "odsetki", fee_waiver: "zwolnienie z opłaty", asset: "aktywo", other: "inna forma" };
+        const labels = { cash: "gotówka", cashback: "zwrot / nagroda pieniężna", voucher: "voucher", physical_reward: "nagroda rzeczowa", functional: "wartość funkcjonalna", points: "punkty", interest: "odsetki", fee_waiver: "zwolnienie z opłaty", asset: "aktywo", other: "inna forma" };
         return labels[form] || form;
     }
 
@@ -250,6 +279,31 @@
                     <div><dt>${term("netScenarioValue")}</dt><dd>Zależy od scenariusza</dd><span>Potwierdzone koszty bezpośrednie są odejmowane; wysiłek pozostaje osobno.</span></div>
                 </dl>
             </section>`;
+    }
+
+    function renderFunctionalValue(offer) {
+        const value = offer.functionalValue;
+        if (!value) return "";
+        return `<section class="offer-section model-extension" id="functional-value" aria-labelledby="functional-value-title"><div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> Wartość funkcjonalna</p><h2 id="functional-value-title">Co dostajesz poza premią?</h2></div><p>Nie zamieniamy funkcji w arbitralny score ani kwotę.</p></div><dl class="model-extension-grid"><div><dt>Koszt bazowy</dt><dd>${formatMoney(value.baselineMonthlyCost)} / mies.</dd></div><div><dt>Bankomaty</dt><dd>${escapeHtml(value.atmProfile)}</dd></div><div><dt>Przelewy</dt><dd>${escapeHtml(value.transferProfile)}</dd></div><div><dt>Waluty</dt><dd>${escapeHtml(value.fxProfile)}</dd></div></dl><ul class="feature-list">${asArray(value.coreFeatures).map((feature) => `<li>${escapeHtml(feature)}</li>`).join("")}</ul><p class="uncertainty-note"><strong>Ograniczenie:</strong> ${escapeHtml(value.utilityCaveat)}</p></section>`;
+    }
+
+    function renderYieldOffer(offer) {
+        const value = offer.yieldOffer;
+        if (!value) return "";
+        const scenarios = asArray(offer.value.scenarioExamples);
+        return `<section class="offer-section model-extension" id="yield" aria-labelledby="yield-title"><div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> Oprocentowanie i kapitał</p><h2 id="yield-title">Stopa nie jest gwarantowaną kwotą</h2></div><p>${escapeHtml(value.requiredActivity)}</p></div><dl class="model-extension-grid"><div><dt>Okres</dt><dd>${escapeHtml(value.durationDays)} dni</dd></div><div><dt>Maksymalne kwalifikowane saldo</dt><dd>${formatMoney(value.maxEligibleBalance)}</dd></div><div><dt>Data salda referencyjnego</dt><dd>${formatDate(value.referenceBalanceDate)}</dd></div><div><dt>Założenie podatkowe</dt><dd>${Math.round(value.taxAssumption * 100)}% podatku od zysków kapitałowych</dd></div></dl><div class="yield-scenarios">${scenarios.map((scenario) => `<article><span>${escapeHtml(scenario.label)}</span><strong>${formatValue(scenario.grossValue)} brutto</strong><p>${formatValue(scenario.usableValue)} netto</p><small>Przykład dla wskazanego salda — nie gwarantowana wartość.</small></article>`).join("")}</div><p class="uncertainty-note"><strong>Nowe środki:</strong> ${escapeHtml(value.newMoneyDefinition)}</p></section>`;
+    }
+
+    function renderPromotionVariants(offer) {
+        const variants = asArray(offer.promotionVariants);
+        if (!variants.length) return "";
+        return `<section class="offer-section model-extension" id="variants" aria-labelledby="variants-title"><div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> Warianty promocji</p><h2 id="variants-title">Wybierz wariant — nie sumuj ich automatycznie</h2></div><p>Łączenie ma osobny, widoczny status.</p></div><div class="variant-grid">${variants.map((variant) => `<article><div><span>${escapeHtml(variant.status)}</span><strong>Łączenie: ${escapeHtml(variant.stackability)}</strong></div><h3>${escapeHtml(variant.name)}</h3><p>${escapeHtml(variant.requirements)}</p><small>Sprawdź ponownie do ${formatDate(variant.recheckBy)}${variant.shortLivedPromotion ? " · promocja krótkotrwała" : ""}</small></article>`).join("")}</div></section>`;
+    }
+
+    function renderLinkedPromotions(offer) {
+        const linked = asArray(offer.linkedPromotions);
+        if (!linked.length) return "";
+        return `<section class="offer-section model-extension" id="linked-promotions" aria-labelledby="linked-promotions-title"><div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> Osobne produkty powiązane</p><h2 id="linked-promotions-title">Nie dodajemy ich do głównej wartości</h2></div></div><div class="variant-grid">${linked.map((item) => `<article><span>${escapeHtml(item.status)}</span><h3>${escapeHtml(item.name)}</h3><p>${escapeHtml(item.summary)}</p><small>${escapeHtml(item.relationship)} · recheck ${formatDate(item.recheckBy)}</small></article>`).join("")}</div></section>`;
     }
 
     function scenarioBlocker(example, offer) {
@@ -507,6 +561,10 @@
             </section>
             ${renderHardCaseSummary(offer)}
             ${renderValueSummary(offer)}
+            ${renderFunctionalValue(offer)}
+            ${renderYieldOffer(offer)}
+            ${renderPromotionVariants(offer)}
+            ${renderLinkedPromotions(offer)}
             ${offer.match ? '<div id="north-match-root"></div>' : ""}
             ${renderScenarios(offer)}
             ${renderComponents(offer)}

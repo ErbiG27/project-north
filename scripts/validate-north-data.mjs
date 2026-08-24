@@ -34,6 +34,8 @@ const LANDING_DEMO_STATUSES = new Set(["verified", "structure_only", "blocked"])
 const OPPORTUNITY_STATUSES = new Set(["ready_for_implementation"]);
 const REVIEW_DATE_FIELDS = new Set(["reviewedAt", "verifiedAt", "assessedAt", "checkedAt", "accessedAt", "calculatedAt"]);
 const DATE_FIELDS = new Set([...REVIEW_DATE_FIELDS, "publishedAt", "validFrom", "validTo", "recheckBy"]);
+const REWARD_FORMS = new Set(["cash", "voucher", "physical_reward", "cashback", "interest", "fee_waiver", "functional", "points", "asset", "other"]);
+const STACKABILITY_STATES = new Set(["confirmed", "conditional", "unknown", "prohibited"]);
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 function isObject(value) {
@@ -462,6 +464,83 @@ function checkConfidenceAndVerdict(data, reporter) {
     checkpoint(reporter, "Confidence & Verdict", before, "Supported states and positive-Verdict confidence gates are respected.");
 }
 
+function checkCatalogExtensions(data, reporter) {
+    const before = countFailures(reporter);
+    data.offers.forEach((offer, offerIndex) => {
+        if (offer.identity?.category === "crypto_validation") return;
+        const base = `$.offers[${offerIndex}]`;
+        const name = offerName(offer, offerIndex);
+        const components = new Map((offer.value?.rewardComponents || []).map((component) => [component.id, component]));
+
+        components.forEach((component, componentId) => {
+            if (!REWARD_FORMS.has(component.form)) {
+                reporter.fail("Values", `Unsupported reward form: ${String(component.form)}.`, { path: `${base}.value.rewardComponents[${componentId}].form`, offer: name });
+            }
+            if (["voucher", "physical_reward"].includes(component.form) && component.valuation) {
+                if (component.valuation.cashEquivalent !== false || component.valuation.userValueMustBeEstimated !== true) {
+                    reporter.fail("Values", `${component.form} valuation must remain non-cash and user-estimated.`, { path: `${base}.value.rewardComponents[${componentId}].valuation`, offer: name });
+                }
+            }
+        });
+
+        const advertised = offer.value?.advertisedMax;
+        if (advertised?.faceValueTotal && advertised?.cashValueTotal && advertised?.nonCashValueTotal) {
+            const split = advertised.cashValueTotal.amount + advertised.nonCashValueTotal.amount;
+            if (split !== advertised.faceValueTotal.amount) {
+                reporter.fail("Values", "cashValueTotal + nonCashValueTotal must equal faceValueTotal.", { path: `${base}.value.advertisedMax`, offer: name });
+            }
+        }
+        if (offer.identity?.category === "savings_account" && advertised?.faceValueTotal !== null) {
+            reporter.fail("Values", "A yield-led savings offer must not store an interest rate as faceValueTotal.", { path: `${base}.value.advertisedMax.faceValueTotal`, offer: name });
+        }
+        if (offer.yieldOffer && (!Number.isFinite(offer.yieldOffer.durationDays) || !isObject(offer.yieldOffer.maxEligibleBalance))) {
+            reporter.fail("Structure", "yieldOffer requires durationDays and maxEligibleBalance.", { path: `${base}.yieldOffer`, offer: name });
+        }
+        if (offer.functionalValue && !Array.isArray(offer.functionalValue.coreFeatures)) {
+            reporter.fail("Structure", "functionalValue requires a coreFeatures array.", { path: `${base}.functionalValue.coreFeatures`, offer: name });
+        }
+
+        const variantComponentSets = new Map();
+        (offer.promotionVariants || []).forEach((variant, variantIndex) => {
+            const variantPath = `${base}.promotionVariants[${variantIndex}]`;
+            if (!STACKABILITY_STATES.has(variant.stackability)) {
+                reporter.fail("Values", `Unsupported stackability: ${String(variant.stackability)}.`, { path: `${variantPath}.stackability`, offer: name });
+            }
+            checkReferences(reporter, variant.rewardComponents, new Set(components.keys()), "promotion variant component", `${variantPath}.rewardComponents`, name);
+            (variant.rewardComponents || []).forEach((componentId) => {
+                if (!variantComponentSets.has(componentId)) variantComponentSets.set(componentId, []);
+                variantComponentSets.get(componentId).push(variant);
+            });
+        });
+        const selectedIds = new Set(advertised?.componentIds || []);
+        const selectedVariants = new Set();
+        (offer.promotionVariants || []).forEach((variant) => {
+            if ((variant.rewardComponents || []).some((componentId) => selectedIds.has(componentId))) selectedVariants.add(variant);
+        });
+        if (selectedVariants.size > 1 && [...selectedVariants].some((variant) => variant.stackability !== "confirmed")) {
+            reporter.fail("Values", "Advertised max must not automatically combine variants unless every selected variant has confirmed stackability.", { path: `${base}.value.advertisedMax.componentIds`, offer: name });
+        }
+        (offer.linkedPromotions || []).forEach((linked, linkedIndex) => {
+            if (selectedIds.has(linked.id)) {
+                reporter.fail("Values", "A linked promotion must not be included in the main advertised max.", { path: `${base}.linkedPromotions[${linkedIndex}].id`, offer: name });
+            }
+        });
+
+        if (["TAKE NOW", "TAKE IF"].includes(offer.decision?.verdict?.state)) {
+            reporter.fail("Confidence & Verdict", "A catalog record cannot store a positive static Verdict before scenario input.", { path: `${base}.decision.verdict.state`, offer: name });
+        }
+        const matchText = JSON.stringify(offer.match || {}).toLowerCase();
+        const economicField = (offer.match?.fields || []).some((field) => /affiliate|commission|cpa|cps/i.test(field.id));
+        if (economicField || matchText.includes("commission") || /\b(cpa|cps)\b/.test(matchText)) {
+            reporter.fail("References", "Affiliate economics must not appear in Match logic.", { path: `${base}.match`, offer: name });
+        }
+        if (offer.affiliate?.available || offer.affiliate?.url) {
+            reporter.fail("References", "Catalog Expansion #1 does not permit active affiliate CTA data.", { path: `${base}.affiliate`, offer: name });
+        }
+    });
+    checkpoint(reporter, "Values", before, "Catalog reward types, value splits, variants, linked promotions and yield records obey the extended model.");
+}
+
 function checkLanding(data, offersById, reporter, todayTime) {
     const before = countFailures(reporter);
     const gates = data.landingGates;
@@ -611,6 +690,7 @@ export function validateNorthData(data, options = {}) {
     const offersById = checkReferenceIntegrity(data, reporter);
     checkValueIntegrity(data, reporter);
     checkConfidenceAndVerdict(data, reporter);
+    checkCatalogExtensions(data, reporter);
     checkLanding(data, offersById, reporter, todayTime);
     checkDatesAndFreshness(data, reporter, todayTime);
     return finishReport(reporter);

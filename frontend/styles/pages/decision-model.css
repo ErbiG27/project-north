@@ -272,7 +272,7 @@
 .critical-note p { margin: .35rem 0 0; color: #c9b9a5; font-size: .8rem; line-height: 1.55; }
 .record-meta { color: var(--north-dim); font-size: .7rem; line-height: 1.6; }
 
-.confidence-badge { display: inline-flex; align-items: center; border: 1px solid rgb(54 227 159 / 31%); border-radius: 999px; padding: .35rem .55rem; background: rgb(54 227 159 / 8%); color: var(--north-green); font-size: .65rem; font-weight: 850; }
+.confidence-badge { display: inline-flex; align-items: center; gap: .25rem; border: 1px solid rgb(54 227 159 / 31%); border-radius: 999px; padding: .35rem .55rem; background: rgb(54 227 159 / 8%); color: var(--north-green); font-size: .65rem; font-weight: 850; }
 .freshness-badge { display: inline-flex; flex: 0 0 auto; width: max-content; align-items: center; padding: .35rem .55rem; border: 1px solid; border-radius: 999px; font-size: .6rem; font-weight: 900; letter-spacing: .045em; line-height: 1; white-space: nowrap; }
 .freshness-badge--verified { border-color: rgb(54 227 159 / 40%); background: rgb(54 227 159 / 9%); color: #76efbc; }
 .freshness-badge--recheck-due { border-color: rgb(255 200 116 / 42%); background: rgb(255 200 116 / 9%); color: #ffd697; }
@@ -317,7 +317,7 @@
 .scenario-confidence { margin: .85rem 0 0; color: var(--north-muted); font-size: .74rem; line-height: 1.55; }
 .scenario-confidence { padding-top: .75rem; border-top: 1px solid var(--north-line); }
 
-.verdict-badge { display: inline-flex; width: max-content; align-items: center; border: 1px solid; border-radius: 999px; padding: .38rem .6rem; font-size: .61rem; font-weight: 900; letter-spacing: .045em; line-height: 1; }
+.verdict-badge { display: inline-flex; width: max-content; align-items: center; gap: .35rem; border: 1px solid; border-radius: 999px; padding: .38rem .6rem; font-size: .61rem; font-weight: 900; letter-spacing: .045em; line-height: 1; }
 .verdict-badge--take-now { border-color: rgb(54 227 159 / 40%); background: rgb(54 227 159 / 10%); color: #76efbc; }
 .verdict-badge--take-if { border-color: rgb(112 204 255 / 38%); background: rgb(112 204 255 / 9%); color: #9fddff; }
 .verdict-badge--skip { border-color: rgb(255 126 126 / 40%); background: rgb(255 126 126 / 9%); color: #ffaaaa; }
@@ -358,9 +358,11 @@
 .execution-steps strong { display: block; margin: .7rem 0 .4rem; }
 .execution-steps p { margin: 0; color: var(--north-muted); font-size: .75rem; }
 
-.decision-offer-card__top { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: .8rem; }
+.decision-offer-card__top { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: .55rem .8rem; }
+.decision-offer-card__top .confidence-badge { grid-column: 1 / -1; justify-self: start; }
 .bank-monogram { display: grid; flex: 0 0 auto; width: 2.8rem; height: 2.8rem; place-items: center; border: 1px solid var(--north-line-strong); border-radius: .8rem; background: #ecf5ef; color: #111b14; font-family: Georgia, serif; font-size: 1.35rem; font-style: italic; font-weight: 800; }
 .bank-mark { display: grid; flex: 0 0 auto; width: 2.8rem; height: 2.8rem; overflow: hidden; place-items: center; border: 1px solid var(--north-line-strong); border-radius: .8rem; background: #ecf5ef; }
+.bank-mark--wide { width: 6rem; }
 .bank-mark .bank-logo { display: block; width: 100%; height: 100%; padding: .3rem; object-fit: contain; }
 .bank-mark .bank-monogram { display: none; border: 0; }
 .bank-mark--fallback .bank-logo { display: none; }

@@ -71,6 +71,42 @@
             const months = Math.min(Number(values[rule.formula.monthsField] || 0), rule.formula.maxMonths);
             return Math.min(spend * rule.formula.rate, rule.formula.monthlyCap) * months;
         }
+        if (rule.formula.type === "monthlyFixed") {
+            const months = Math.min(Number(values[rule.formula.monthsField] || 0), rule.formula.maxMonths);
+            return Math.min(months * rule.formula.amount, maximum || Number.POSITIVE_INFINITY);
+        }
+        if (rule.formula.type === "insuranceTier") {
+            const premium = Number(values[rule.formula.premiumField] || 0);
+            const tier = [...rule.formula.tiers].sort((a, b) => b.min - a.min).find((item) => premium >= item.min);
+            return Math.min(tier?.amount || 0, maximum);
+        }
+        if (rule.formula.type === "tieredMonthlyCappedRate") {
+            const spend = Number(values[rule.formula.spendField] || 0);
+            const months = Math.min(Number(values[rule.formula.monthsField] || 0), rule.formula.maxMonths);
+            const tier = rule.formula.tiers.find((item) => conditionMet(item.when, values));
+            const rate = tier?.rate ?? rule.formula.defaultRate;
+            return Math.min(spend * rate, rule.formula.monthlyCap) * months;
+        }
+        if (rule.formula.type === "yieldInterest") {
+            const principal = Math.max(0, Number(values[rule.formula.balanceField] || 0));
+            const customerType = values[rule.formula.customerTypeField];
+            const activityMet = values[rule.formula.activityField] === true;
+            const profile = offer.yieldOffer?.capitalScenarios?.[customerType];
+            if (!profile) return 0;
+            const tiers = activityMet ? profile.promotionalTiers : profile.fallbackTiers;
+            let remaining = Math.min(principal, offer.yieldOffer.maxEligibleBalance.amount);
+            let lowerBound = 0;
+            let annualInterest = 0;
+            for (const tier of tiers) {
+                const upperBound = Math.min(tier.upTo.amount, offer.yieldOffer.maxEligibleBalance.amount);
+                const tierPrincipal = Math.max(0, Math.min(remaining, upperBound - lowerBound));
+                annualInterest += tierPrincipal * tier.annualRate;
+                remaining -= tierPrincipal;
+                lowerBound = upperBound;
+                if (remaining <= 0) break;
+            }
+            return annualInterest * offer.yieldOffer.durationDays / 365;
+        }
         if (rule.formula.type === "travelWallet") {
             const firstSpend = Number(values[rule.formula.firstTransactionsSpendField] || 0);
             const laterSpend = Number(values[rule.formula.laterTransactionsSpendField] || 0);
@@ -89,6 +125,7 @@
 
     function costAmount(rule, values) {
         if (!conditionMet(rule.when, values)) return 0;
+        if (rule.formula.type === "fixed") return rule.formula.amount;
         if (rule.formula.type === "monthly") {
             const months = Math.max(0, Math.min(Number(values[rule.formula.monthsField] || 0), rule.formula.maxMonths) - (rule.formula.freeMonths || 0));
             const amount = conditionMet(rule.formula.lowerAmountWhen, values) ? rule.formula.lowerAmount : rule.formula.amount;
@@ -126,7 +163,9 @@
             const reason = result.blockers[0] || "W tym scenariuszu nie ma potwierdzonej użytecznej wartości.";
             return `Ta oferta raczej nie ma dla Ciebie sensu. ${reason}`;
         }
-        const amount = result.usableMin === result.usableMax
+        const amount = result.functionalFit && result.usableMax === 0
+            ? "wartość funkcjonalną bez arbitralnej wyceny pieniężnej"
+            : result.usableMin === result.usableMax
             ? formatMoney(money(result.usableMax))
             : `${formatMoney(money(result.usableMin))}–${formatMoney(money(result.usableMax))}`;
         const mainComponent = result.componentResults
@@ -151,11 +190,15 @@
         const unknowns = [...missing, ...explicitUnknown.filter((field) => !missing.includes(field))];
 
         let disqualified = false;
+        let forcedCannotAssess = false;
         for (const rule of config.eligibilityRules) {
             if (!conditionMet(rule.when, values)) continue;
             if (rule.outcome === "disqualified") {
                 disqualified = true;
                 blockers.push(rule.message);
+            } else if (rule.outcome === "cannot_assess") {
+                forcedCannotAssess = true;
+                unknowns.push({ label: rule.message });
             } else if (rule.outcome === "reason") {
                 reasons.push(rule.message);
             } else if (rule.outcome === "condition") {
@@ -164,30 +207,48 @@
         }
 
         const componentResults = config.componentRules.map((rule) => {
+            const component = offer.value.rewardComponents.find((item) => item.id === rule.componentId);
             const relevant = !rule.includeWhen || conditionMet(rule.includeWhen, values);
             if (!relevant) return { rule, relevant, earned: false, amount: 0 };
             const state = conditionState(rule.when, values);
             const hasUnknownDependency = state === null;
             const earned = state === true;
             const amount = earned ? componentAmount(rule, values, offer) : 0;
+            let usableMin = amount;
+            let usableMax = amount;
+            if (earned && rule.usabilityUncertain) usableMin = 0;
+            if (earned && Number.isFinite(rule.usableFactor)) {
+                usableMin = amount * rule.usableFactor;
+                usableMax = usableMin;
+            }
+            if (earned && rule.usabilityFactorField) {
+                const factor = values[rule.usabilityFactorField] === true ? 1 : 0;
+                usableMin = amount * factor;
+                usableMax = usableMin;
+            }
+            const usabilityRejected = earned && Boolean(rule.usabilityFactorField) && values[rule.usabilityFactorField] === false;
+            if (usabilityRejected) blockers.push(`${component?.label || "Ta nagroda"}: deklarujesz 0 zł użytecznej wartości tej formy nagrody.`);
             if (earned && amount > 0) reasons.push(rule.successReason);
             else if (!hasUnknownDependency && rule.failureReason) blockers.push(rule.failureReason);
             if (earned && rule.condition) conditions.push(rule.condition);
-            return { rule, relevant, earned, amount, hasUnknownDependency };
+            return { rule, relevant, earned, amount, usableMin, usableMax, hasUnknownDependency, usabilityRejected };
         });
 
-        const gross = componentResults.reduce((sum, item) => sum + item.amount, 0);
+        const calculatedGross = componentResults.reduce((sum, item) => sum + item.amount, 0);
         const costs = config.costRules.map((rule) => ({ rule, amount: costAmount(rule, values) }));
-        const directCost = costs.reduce((sum, item) => sum + item.amount, 0);
+        const calculatedDirectCost = costs.reduce((sum, item) => sum + item.amount, 0);
         costs.filter((item) => item.amount > 0).forEach((item) => blockers.push(item.rule.message));
         const uncertainUsability = componentResults.some((item) => item.earned && item.rule.usabilityUncertain);
-        const uncertainAmount = componentResults.filter((item) => item.earned && item.rule.usabilityUncertain).reduce((sum, item) => sum + item.amount, 0);
-        const usableMin = Math.max(0, gross - uncertainAmount);
-        const usableMax = gross;
+        const calculatedUsableMin = componentResults.reduce((sum, item) => sum + (item.usableMin || 0), 0);
+        const calculatedUsableMax = componentResults.reduce((sum, item) => sum + (item.usableMax || 0), 0);
+        const gross = disqualified ? 0 : calculatedGross;
+        const directCost = disqualified ? 0 : calculatedDirectCost;
+        const usableMin = disqualified ? 0 : calculatedUsableMin;
+        const usableMax = disqualified ? 0 : calculatedUsableMax;
         const netMin = Math.max(0, usableMin - directCost);
         const netMax = Math.max(0, usableMax - directCost);
-        const hasMissing = unknowns.length > 0 || componentResults.some((item) => item.relevant && item.hasUnknownDependency);
-        const hasRelevantFailure = componentResults.some((item) => item.relevant && !item.earned && !item.hasUnknownDependency);
+        const hasMissing = forcedCannotAssess || unknowns.length > 0 || componentResults.some((item) => item.relevant && item.hasUnknownDependency);
+        const hasRelevantFailure = componentResults.some((item) => item.relevant && ((!item.earned && !item.hasUnknownDependency) || item.usabilityRejected));
         const earnedRelevant = componentResults.filter((item) => item.relevant && item.earned);
 
         let match = "CANNOT ASSESS";
@@ -198,7 +259,8 @@
             verdict = "SKIP";
             summary = "Potwierdzony warunek wyklucza ten scenariusz z oferty.";
         } else if (!hasMissing) {
-            if (gross <= 0 || earnedRelevant.length === 0) {
+            const hasFunctionalValue = earnedRelevant.some((item) => item.rule.functionalOutcome);
+            if ((usableMax <= 0 && !hasFunctionalValue) || earnedRelevant.length === 0) {
                 match = "POOR FIT";
                 verdict = "SKIP";
                 summary = "W podanym scenariuszu oferta nie daje użytecznej wartości, która uzasadniałaby nowe obowiązki.";
@@ -219,7 +281,7 @@
             match,
             verdict,
             summary,
-            reasons: [...new Set(reasons)],
+            reasons: disqualified ? [] : [...new Set(reasons)],
             blockers: [...new Set(blockers)],
             conditions: [...new Set(conditions)],
             unknowns: [...new Set(unknowns.map((field) => field.label))],
@@ -232,6 +294,7 @@
             netMax,
             componentResults
         };
+        result.functionalFit = componentResults.some((item) => item.earned && item.rule.functionalOutcome);
         result.summary = plainResultSummary(result, offer);
         return result;
     }
@@ -252,7 +315,10 @@
     function renderResult(container, result, offer) {
         const range = (min, max) => min === max ? formatMoney(money(min)) : `${formatMoney(money(min))}–${formatMoney(money(max))}`;
         const unavailable = result.match === "CANNOT ASSESS" ? "Brak danych" : null;
-        container.innerHTML = `<div class="match-result-head"><div><span>${global.NorthGlossary.label("northMatch")}</span><strong class="match-band match-band--${result.match.toLowerCase().replaceAll(" ", "-")}">${escapeHtml(matchLabels[result.match])}</strong><small>${escapeHtml(result.match)}</small></div><div><span>${global.NorthGlossary.label("verdict")}</span><strong class="match-verdict">${escapeHtml(verdictLabels[result.verdict])}</strong><small>${escapeHtml(result.verdict)}</small></div></div><p class="match-summary">${escapeHtml(result.summary)}</p><dl class="match-values"><div><dt>${global.NorthGlossary.label("yourLikelyValue")}</dt><dd>${unavailable || formatMoney(money(result.gross))}</dd></div><div><dt>${global.NorthGlossary.label("expectedUsableValue")}</dt><dd>${unavailable || range(result.usableMin, result.usableMax)}</dd></div><div><dt>${global.NorthGlossary.label("netScenarioValue")}</dt><dd>${unavailable || range(result.netMin, result.netMax)}</dd></div><div><dt>Potwierdzony koszt</dt><dd>${unavailable || formatMoney(money(result.directCost))}</dd></div></dl><div class="match-explanation"><h3>Dlaczego ten wynik?</h3>${resultList("Co pasuje", result.reasons, "✓", "match-reasons")}${resultList("Co nie pasuje lub blokuje", result.blockers, "×", "match-blockers")}${resultList("Warunki", result.conditions, "→", "match-conditions")}${resultList("Brakujące dane", result.unknowns, "?", "match-unknowns")}</div><details class="match-input-summary"><summary>Dane, które wpłynęły na wynik</summary><ul>${result.influenced.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></details><p class="match-local-note">Odpowiedzi są przetwarzane tylko na tym urządzeniu. North ich nie wysyła ani nie zapisuje profilu.</p><p class="match-method-note">Dopasowanie mówi, jak dobrze warunki pasują do Twojej sytuacji. Ocena sensu oferty mówi, co zrobić w tym scenariuszu. Maksimum z reklamy to ${escapeHtml(offer.value.advertisedMax.displayLabel)}.</p>`;
+        const grossDisplay = result.functionalFit && result.gross === 0 ? "Wartość funkcjonalna" : formatMoney(money(result.gross));
+        const usableDisplay = result.functionalFit && result.usableMax === 0 ? "Zależy od użycia" : range(result.usableMin, result.usableMax);
+        const netDisplay = result.functionalFit && result.netMax === 0 ? "Bez arbitralnej wyceny" : range(result.netMin, result.netMax);
+        container.innerHTML = `<div class="match-result-head"><div><span>${global.NorthGlossary.label("northMatch")}</span><strong class="match-band match-band--${result.match.toLowerCase().replaceAll(" ", "-")}">${escapeHtml(matchLabels[result.match])}</strong><small>${escapeHtml(result.match)}</small></div><div><span>${global.NorthGlossary.label("verdict")}</span><strong class="match-verdict">${escapeHtml(verdictLabels[result.verdict])}</strong><small>${escapeHtml(result.verdict)}</small></div></div><p class="match-summary">${escapeHtml(result.summary)}</p><dl class="match-values"><div><dt>${global.NorthGlossary.label("yourLikelyValue")}</dt><dd>${unavailable || grossDisplay}</dd></div><div><dt>${global.NorthGlossary.label("expectedUsableValue")}</dt><dd>${unavailable || usableDisplay}</dd></div><div><dt>${global.NorthGlossary.label("netScenarioValue")}</dt><dd>${unavailable || netDisplay}</dd></div><div><dt>Potwierdzony koszt</dt><dd>${unavailable || formatMoney(money(result.directCost))}</dd></div></dl><div class="match-explanation"><h3>Dlaczego ten wynik?</h3>${resultList("Co pasuje", result.reasons, "✓", "match-reasons")}${resultList("Co nie pasuje lub blokuje", result.blockers, "×", "match-blockers")}${resultList("Warunki", result.conditions, "→", "match-conditions")}${resultList("Brakujące dane", result.unknowns, "?", "match-unknowns")}</div><details class="match-input-summary"><summary>Dane, które wpłynęły na wynik</summary><ul>${result.influenced.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></details><p class="match-local-note">Odpowiedzi są przetwarzane tylko na tym urządzeniu. North ich nie wysyła ani nie zapisuje profilu.</p><p class="match-method-note">Dopasowanie mówi, jak dobrze warunki pasują do Twojej sytuacji. Ocena sensu oferty mówi, co zrobić w tym scenariuszu. Maksimum z reklamy to ${escapeHtml(offer.value.advertisedMax.displayLabel)}.</p>`;
         global.NorthGlossary.init(container);
     }
 

@@ -455,6 +455,10 @@ offer = {
   execution: { ... },
   cost: { ... },
   decision: { ... },
+  functionalValue: { ... } | null,
+  yieldOffer: { ... } | null,
+  promotionVariants: [...],
+  linkedPromotions: [...],
   evidence: { ... },
   listing: { problemLabel, summary, featured },
   affiliate: { available, url, disclosure }
@@ -470,7 +474,10 @@ offer = {
 | `identity.id` | tak | Stabilny identyfikator analizowanej oferty, niezależny od tytułu marketingowego. |
 | `identity.slug` | tak | Stabilny, czytelny URL; zmiana edycji nie wymusza zmiany sluga. |
 | `identity.provider` | tak | Oficjalna nazwa oferenta. |
-| `identity.category` | tak | Dla core v0.6.1: `bank_account`. |
+| `identity.category` | tak | `bank_account` albo `savings_account`; `crypto_validation` pozostaje technicznym hard case, nie kategorią katalogu. |
+| `identity.productIdentityStatus` | warunkowo | `current` dla bieżącego produktu; alias historyczny nie tworzy drugiej karty. |
+| `identity.previousNames` | nie | Oficjalne poprzednie nazwy produktu lub dostawcy, np. Santander → Erste. |
+| `identity.redirectToProductId` | nie | Stabilny cel przekierowania wyłącznie dla rekordu aliasu; katalog nie publikuje aliasu jako osobnej oferty. |
 | `identity.title` | tak | Oficjalna lub neutralna nazwa oferty; bez nieudowodnionego „najlepsza”. |
 | `identity.status` | tak | `draft`, `under_verification`, `active`, `closing`, `expired` lub `withdrawn`. |
 | `identity.verifiedAt` | warunkowo | Data ostatniego pełnego przeglądu wszystkich krytycznych pól. `null`, dopóki przegląd nie jest kompletny. |
@@ -489,6 +496,9 @@ value = {
   advertisedMax: {
     displayLabel,
     faceValueTotal: Money | null,
+    cashValueTotal: Money | null,
+    nonCashValueTotal: Money | null,
+    valuationBasis,
     componentIds[],
     aggregationBasis,
     isCashEquivalent,
@@ -499,6 +509,13 @@ value = {
     label,
     form,
     advertisedValue: Money | null,
+    valuation: {
+      amount,
+      currency,
+      source,
+      cashEquivalent,
+      userValueMustBeEstimated
+    } | null,
     calculation,
     conditionActionIds[],
     combinability,
@@ -527,7 +544,7 @@ value = {
 }
 ```
 
-**Dozwolone `rewardComponents.form`:** `cash`, `cashback`, `voucher`, `points`, `interest`, `fee_waiver`, `asset`, `other`. Typ nie przesądza wartości użytecznej; tę określa `usability`.
+**Dozwolone `rewardComponents.form`:** `cash`, `voucher`, `physical_reward`, `cashback`, `interest`, `fee_waiver`, `functional`, `points`, `asset`, `other`. Typ nie przesądza wartości użytecznej; tę określa `usability` i opcjonalna `valuation`.
 
 **Dozwolone `usability.liquidity`:** `cash`, `cash_equivalent`, `restricted`, `market_exposed`, `unknown`.
 
@@ -540,6 +557,28 @@ Reguły:
 - `conditionalMax` nie dubluje `advertisedMax`; wyjaśnia, jaka część maksimum wymaga dodatkowego kapitału, dłuższego horyzontu, szczególnych zachowań lub ma ograniczoną użyteczność.
 - `scenarioFormula.expression` ma być audytowalna, lecz UI zawsze pokazuje także wersję `humanReadable`.
 - Completion probability nie jest mnożnikiem w v1. Nie używamy domyślnego `0.8 × bonus` ani podobnych heurystyk.
+
+### 4.4a. Rozszerzenia katalogu 12 produktów
+
+`functionalValue` opisuje korzyści produktu, których nie wolno zamieniać w arbitralny wynik liczbowy:
+
+```text
+functionalValue = {
+  baselineMonthlyCost,
+  coreFeatures[],
+  feeWaiverRequired,
+  atmProfile,
+  transferProfile,
+  fxProfile,
+  utilityCaveat
+}
+```
+
+`yieldOffer` reprezentuje ofertę oszczędnościową zależną od kapitału i czasu. Zawiera co najmniej `rateType`, `promotionalTiers`, `fallbackTiers`, `standardTiers`, `maxEligibleBalance`, `durationDays`, `newMoneyDefinition`, `referenceBalanceDate`, `requiredActivity`, `taxAssumption` i `capitalScenarios`. Roczna stopa nie jest `faceValueTotal`; scenariusz odsetkowy zawsze zachowuje saldo, czas, stopę i założenie podatkowe.
+
+`promotionVariants[]` przechowuje `id`, `name`, `status`, daty, `rewardComponents`, kwalifikację, wymagania, `sourceRefs`, `recheckBy`, `shortLivedPromotion` i `stackability`. Dozwolone stany stackability: `confirmed`, `conditional`, `unknown`, `prohibited`. Wariantów nie wolno sumować automatycznie, jeśli każdy wybrany wariant nie ma `confirmed`.
+
+`linkedPromotions[]` opisuje osobny produkt lub promocję powiązaną. Jej identyfikator ani wartość nie trafiają do głównego `advertisedMax`. UI pokazuje relację, ale nie tworzy fikcyjnej sumy konta, oszczędności i nagrody kanałowej.
 
 ### 4.5. USER / ELIGIBILITY
 

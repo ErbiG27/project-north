@@ -7,14 +7,43 @@
     const offerRoutes = {
         "bank-millennium-millennium-360": "offers/millennium.html",
         "nest-bank-nest-konto": "offers/nest.html",
-        "bank-pekao-konto-przekorzystne": "offers/pekao.html"
+        "bank-pekao-konto-przekorzystne": "offers/pekao.html",
+        "alior-konto-18-25": "offers/alior-18-25.html",
+        "erste-konto-smart": "offers/erste-smart.html",
+        "revolut-standard": "offers/revolut.html",
+        "mbank-ekonto-do-uslug": "offers/mbank.html",
+        "pko-konto-za-zero": "offers/pko.html",
+        "bnp-konto-otwarte-na-ciebie": "offers/bnp.html",
+        "unicredit-konto-osobiste": "offers/unicredit.html",
+        "velobank-elastyczne-konto-oszczednosciowe": "offers/velobank-eko.html",
+        "alior-konto-plus": "offers/alior-plus.html"
     };
 
     const providerLogos = {
         "bank-millennium-millennium-360": "assets/logos/bank-millennium.svg",
         "nest-bank-nest-konto": "assets/logos/nest-bank.png",
-        "bank-pekao-konto-przekorzystne": "assets/logos/bank-pekao.svg"
+        "bank-pekao-konto-przekorzystne": "assets/logos/bank-pekao.svg",
+        "alior-konto-18-25": "assets/logos/alior-bank.png",
+        "erste-konto-smart": "assets/logos/erste.png",
+        "revolut-standard": "assets/logos/revolut.svg",
+        "mbank-ekonto-do-uslug": "assets/logos/mbank.jpg",
+        "pko-konto-za-zero": "assets/logos/pko-bank-polski.svg",
+        "bnp-konto-otwarte-na-ciebie": "assets/logos/bnp-paribas.png",
+        "unicredit-konto-osobiste": "assets/logos/unicredit.svg",
+        "velobank-elastyczne-konto-oszczednosciowe": "assets/logos/velobank.svg",
+        "alior-konto-plus": "assets/logos/alior-bank.png"
     };
+
+    const wideLogoOfferIds = new Set([
+        "alior-konto-18-25",
+        "revolut-standard",
+        "mbank-ekonto-do-uslug",
+        "pko-konto-za-zero",
+        "bnp-konto-otwarte-na-ciebie",
+        "unicredit-konto-osobiste",
+        "velobank-elastyczne-konto-oszczednosciowe",
+        "alior-konto-plus"
+    ]);
 
     const scenarioLetters = ["A", "B", "C"];
     let listedOffers = [];
@@ -25,6 +54,14 @@
         if (offer.identity.id.includes("millennium")) return "Bank Millennium";
         if (offer.identity.id.includes("nest")) return "Nest Bank";
         if (offer.identity.id.includes("pekao")) return "Bank Pekao";
+        if (offer.identity.id.includes("alior")) return "Alior Bank";
+        if (offer.identity.id.includes("erste")) return "Erste";
+        if (offer.identity.id.includes("revolut")) return "Revolut";
+        if (offer.identity.id.includes("mbank")) return "mBank";
+        if (offer.identity.id.includes("pko-")) return "PKO Bank Polski";
+        if (offer.identity.id.includes("bnp")) return "BNP Paribas";
+        if (offer.identity.id.includes("unicredit")) return "UniCredit";
+        if (offer.identity.id.includes("velobank")) return "VeloBank";
         return offer.identity.provider;
     }
 
@@ -32,14 +69,15 @@
         if (offer.identity.id.includes("millennium")) return "M";
         if (offer.identity.id.includes("nest")) return "N";
         if (offer.identity.id.includes("pekao")) return "P";
-        return shortProvider(offer).slice(0, 1);
+        return shortProvider(offer).slice(0, 2).toUpperCase();
     }
 
     function providerMark(offer) {
         const src = providerLogos[offer.identity.id];
         const fallback = `<span class="bank-monogram" aria-hidden="true">${escapeHtml(monogram(offer))}</span>`;
         if (!src) return fallback;
-        return `<span class="bank-mark"><img class="bank-logo" src="${src}" alt="" aria-hidden="true" decoding="async">${fallback}</span>`;
+        const widthClass = wideLogoOfferIds.has(offer.identity.id) ? " bank-mark--wide" : "";
+        return `<span class="bank-mark${widthClass}"><img class="bank-logo" src="${src}" alt="" aria-hidden="true" decoding="async">${fallback}</span>`;
     }
 
     function initBankMarkFallbacks(scope) {
@@ -203,8 +241,6 @@
         window.NorthGlossary.cleanup(target);
         target.className = "decision-offers-grid";
         target.innerHTML = offers.map((offer) => {
-            const firstExample = offer.value.scenarioExamples[0];
-            const firstValue = offer.decision.northValue.find((item) => item.scenarioId === firstExample.id);
             const freshness = freshnessFor(offer);
             return `
                 <article class="decision-offer-card">
@@ -218,8 +254,9 @@
                     <p class="offer-summary">${escapeHtml(offer.listing.summary)}</p>
                     <p class="offer-confidence"><strong>${escapeHtml(confidenceDescription(offer.decision.northConfidence.band))}</strong>${confidenceReason(offer) ? ` ${escapeHtml(confidenceReason(offer))}` : ""}</p>
                     <dl class="offer-card-values">
-                        <div><dt>${term("advertisedMax")}</dt><dd>${escapeHtml(offer.value.advertisedMax.displayLabel)}</dd></div>
-                        <div><dt>${term("yourLikelyValue", "Przykładowa realna kwota")}</dt><dd>${formatValue(firstValue.likelyGrossValue)}</dd></div>
+                        <div><dt>Główna wartość</dt><dd>${escapeHtml(offer.listing.cardValue || offer.value.advertisedMax.displayLabel)}</dd></div>
+                        <div><dt>Najważniejszy warunek</dt><dd>${escapeHtml(offer.listing.cardEffort || offer.listing.summary)}</dd></div>
+                        <div><dt>Typ wartości</dt><dd>${escapeHtml(offer.listing.cardValueType || offer.value.rewardForms.join(" / "))}</dd></div>
                     </dl>
                     <div class="offer-card-verdict"><span>Przed podaniem Twoich danych</span><strong>${escapeHtml(verdictLabel(offer.decision.verdict.state))}</strong><small>${escapeHtml(offer.decision.verdict.state)}</small></div>
                     <a class="north-button north-button--card" href="${offerRoutes[offer.identity.id]}#match">Sprawdź dla siebie <span aria-hidden="true">→</span></a>
@@ -246,10 +283,7 @@
     function hasFilter(offer, filter) {
         if (filter === "all") return true;
         const components = offer.value.rewardComponents || [];
-        if (filter === "cash") return components.some((component) => component.form === "cash");
-        if (filter === "cashback") return components.some((component) => component.form === "cashback");
-        if (filter === "travel") return normalized(components.map((component) => [component.label, component.calculation, ...(component.usability?.restrictions || [])].join(" ")).join(" ")).includes("podroz");
-        return true;
+        return (offer.listing.categories || []).includes(filter);
     }
 
     function resultCountCopy(count) {

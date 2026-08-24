@@ -411,6 +411,56 @@
 .snapshot-card dd { margin-bottom: .15rem; font-size: .95rem; }
 .snapshot-card > span { font-size: .59rem; line-height: 1.35; }
 
+.model-extension-grid,
+.yield-scenarios,
+.variant-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+    gap: 1rem;
+}
+
+.model-extension-grid > div,
+.yield-scenarios article,
+.variant-grid article {
+    padding: 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface-deep);
+}
+
+.model-extension-grid dt,
+.yield-scenarios span,
+.variant-grid span {
+    color: var(--color-text-muted);
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+}
+
+.model-extension-grid dd,
+.yield-scenarios strong,
+.variant-grid strong {
+    display: block;
+    margin: .35rem 0 0;
+    color: var(--color-text);
+}
+
+.feature-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.feature-list li {
+    padding: .55rem .75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-pill);
+    background: var(--color-surface);
+}
+
 @media (max-width: 900px) {
     .north-hero { grid-template-columns: minmax(0, 1fr); min-height: 0; }
     .north-hero__dashboard { max-width: 42rem; }
