@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "product-identity-v0.8.0-prototype",
+  "generatedAt": "2026-08-24",
+  "scope": "mBank bounded prototype only; does not alter the public 12-offer catalog",
+  "products": [
+    {
+      "id": "mbank-ekonto-mozliwosci-18-24",
+      "providerId": "mbank",
+      "name": "eKonto możliwości",
+      "category": "bank_account",
+      "segmentRules": {"ageMin": 18, "ageMax": 24},
+      "ownershipModes": ["individual"],
+      "baseCosts": {"accountMonthlyPln": 0, "cardMonthlyPln": 0},
+      "feeWaivers": [],
+      "functionalCapabilities": ["standard_current_account", "debit_card", "foreign_atm_withdrawals"],
+      "cashWithdrawalRules": {"polandFreeFromPln": 100, "belowThresholdFeePln": 2.5},
+      "lifecycleTransitions": [
+        {"trigger": "age_out", "targetProductId": "mbank-ekonto-do-uslug", "note": "Model transition; exact operational timing remains evidence-controlled."}
+      ],
+      "evidence": [
+        {"type": "official_product_page", "url": "https://www.mbank.pl/indywidualny/dla-mlodych/i-mozesz-wiecej/", "checkedAt": "2026-08-24", "supports": ["identity", "age_segment", "base_costs", "withdrawal_rules"]}
+      ]
+    },
+    {
+      "id": "mbank-ekonto-do-uslug",
+      "providerId": "mbank",
+      "name": "eKonto do usług",
+      "category": "bank_account",
+      "segmentRules": {"ageMin": 18, "ageMax": null},
+      "ownershipModes": ["individual", "joint"],
+      "baseCosts": {"accountMonthlyPln": 0, "cardMonthlyPln": 9},
+      "feeWaivers": [
+        {"fee": "cardMonthlyPln", "condition": "monthly_card_transactions_pln >= 350", "resultPln": 0}
+      ],
+      "functionalCapabilities": ["standard_current_account", "debit_card", "joint_ownership", "foreign_atm_withdrawals"],
+      "cashWithdrawalRules": {"polandFreeFromPln": 300, "belowThresholdFeePln": 2.5},
+      "lifecycleTransitions": [],
+      "evidence": [
+        {"type": "official_product_page", "url": "https://www.mbank.pl/indywidualny/konta/konta-osobiste/ekonto-do-uslug/", "checkedAt": "2026-08-24", "supports": ["identity", "base_costs", "card_waiver"]},
+        {"type": "official_legal_note", "url": "https://www.mbank.pl/nota/zaloz-konto/", "checkedAt": "2026-08-24", "supports": ["base_costs", "withdrawal_rules", "promotion_entry"]}
+      ]
+    },
+    {
+      "id": "mbank-mkonto-intensive",
+      "providerId": "mbank",
+      "name": "mKonto Intensive",
+      "category": "bank_account",
+      "segmentRules": {"ageMin": 18, "ageMax": null},
+      "ownershipModes": ["individual", "joint"],
+      "baseCosts": {"accountMonthlyPln": 49.5},
+      "feeWaivers": [
+        {"fee": "accountMonthlyPln", "condition": "monthly_inflows_pln >= 10000 OR qualifying_assets_pln >= 100000", "resultPln": 0}
+      ],
+      "functionalCapabilities": ["premium_current_account", "premium_service", "debit_card", "joint_ownership", "enhanced_transfer_benefits"],
+      "lifecycleTransitions": [],
+      "evidence": [
+        {"type": "official_product_page", "url": "https://www.mbank.pl/indywidualny/konta/konta-osobiste/mkonto-intensive/", "checkedAt": "2026-08-24", "supports": ["identity", "base_costs", "fee_waiver", "premium_positioning"]},
+        {"type": "official_joint_product_page", "url": "https://www.mbank.pl/indywidualny/konta/konta-osobiste/wspolne-mkonto-intensive/", "checkedAt": "2026-08-24", "supports": ["joint_ownership", "joint_fee_waiver"]}
+      ]
+    }
+  ],
+  "needs": [
+    {
+      "id": "shared_finances",
+      "type": "ownership_need",
+      "description": "User needs a jointly owned account rather than an individual promotional variant.",
+      "candidateProductIds": ["mbank-ekonto-do-uslug", "mbank-mkonto-intensive"]
+    }
+  ],
+  "promotionEditions": [
+    {
+      "id": "mbank-cala-naprzod-2026-i",
+      "name": "Cała naprzód – zyskuj z kontem w mBanku – edycja I",
+      "entryFrom": "2026-05-28",
+      "entryTo": "2026-08-31",
+      "promotionRunsTo": "2027-04-30",
+      "eligibleProductIds": ["mbank-ekonto-mozliwosci-18-24", "mbank-ekonto-do-uslug", "mbank-mkonto-intensive"],
+      "eligibleOwnershipModes": ["individual"],
+      "commonRewardComponents": [
+        {"id": "initial", "cashPln": 100},
+        {"id": "activity", "cashPln": 400},
+        {"id": "opening_method", "cashPln": 100},
+        {"id": "salary", "cashPln": 300}
+      ],
+      "productOverrides": {
+        "mbank-ekonto-mozliwosci-18-24": {"advertisedCashMaxPln": 900, "requiredInflowsPln": 1000},
+        "mbank-ekonto-do-uslug": {"advertisedCashMaxPln": 1000, "requiredInflowsPln": 2000, "additionalRewardComponents": [{"id": "child_account", "cashPln": 100}]},
+        "mbank-mkonto-intensive": {"advertisedCashMaxPln": 1000, "requiredInflowsPln": 2000, "additionalRewardComponents": [{"id": "child_account", "cashPln": 100}]}
+      },
+      "evidence": [
+        {"type": "official_promotion_terms", "url": "https://www.mbank.pl/pdf/promocje/konta/regulamin-promocji-cala-naprzod-zyskuj-z-kontem-w-mbanku-edycja-i.pdf", "checkedAt": "2026-08-24", "supports": ["eligible_products", "dates", "ownership_mode", "reward_structure", "product_overrides"]}
+      ],
+      "recheckBy": "2026-08-31"
+    }
+  ]
+}
