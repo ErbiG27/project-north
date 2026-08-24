@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "alternative-comparison-v0.8.0-prototype",
+  "generatedAt": "2026-08-24",
+  "scope": "mBank bounded prototype only",
+  "contract": {
+    "candidateFields": [
+      "eligibility",
+      "northMatch",
+      "baseProductCost",
+      "promotionEligibility",
+      "promotionValue",
+      "functionalValue",
+      "effort",
+      "failureRisk",
+      "lifecycleFit",
+      "confidence",
+      "verdict"
+    ],
+    "resultFields": ["preferredProductId", "decisiveFactors", "tradeoffs", "unresolvedFactors"],
+    "rules": [
+      "No numeric score 0-100.",
+      "preferredProductId may be null.",
+      "Promotion value must not override product suitability.",
+      "Affiliate economics are excluded from comparison.",
+      "Do nothing or no clear winner remain valid outcomes."
+    ]
+  },
+  "scenarios": [
+    {
+      "id": "young-solo-standard-use",
+      "inputs": {"age": 22, "ownershipNeed": "individual", "monthlyInflowsPln": 3000, "monthlyCardSpendPln": 500, "qualifyingAssetsPln": 0, "premiumServiceNeed": false, "travelNeed": false, "childNeed": false},
+      "expected": {
+        "preferredProductId": "mbank-ekonto-mozliwosci-18-24",
+        "decisiveFactors": ["age_eligibility", "zero_card_fee_without_spend_condition", "lower_domestic_atm_free_threshold"],
+        "tradeoffs": ["current promotion cash maximum is lower than eKonto do usług / Intensive"],
+        "unresolvedFactors": []
+      }
+    },
+    {
+      "id": "adult-standard-use-no-premium",
+      "inputs": {"age": 30, "ownershipNeed": "individual", "monthlyInflowsPln": 3000, "monthlyCardSpendPln": 500, "qualifyingAssetsPln": 0, "premiumServiceNeed": false, "travelNeed": false, "childNeed": false},
+      "expected": {
+        "preferredProductId": "mbank-ekonto-do-uslug",
+        "decisiveFactors": ["youth_product_ineligible", "card_fee_waiver_met", "intensive_fee_waiver_not_met", "no_premium_need"],
+        "tradeoffs": ["card fee requires monthly activity"],
+        "unresolvedFactors": []
+      }
+    },
+    {
+      "id": "premium-qualified-traveler",
+      "inputs": {"age": 35, "ownershipNeed": "individual", "monthlyInflowsPln": 12000, "monthlyCardSpendPln": 1500, "qualifyingAssetsPln": 0, "premiumServiceNeed": true, "travelNeed": true, "childNeed": false},
+      "expected": {
+        "preferredProductId": "mbank-mkonto-intensive",
+        "decisiveFactors": ["intensive_fee_waiver_met", "premium_need", "functional_value"],
+        "tradeoffs": ["premium value depends on actual use; cash promotion is not the deciding factor"],
+        "unresolvedFactors": ["user-specific valuation of premium capabilities"]
+      }
+    },
+    {
+      "id": "shared-finances",
+      "inputs": {"age": 30, "ownershipNeed": "joint", "monthlyInflowsPln": 6000, "monthlyCardSpendPln": 800, "qualifyingAssetsPln": 0, "premiumServiceNeed": false, "travelNeed": false, "childNeed": false},
+      "expected": {
+        "preferredProductId": "mbank-ekonto-do-uslug",
+        "decisiveFactors": ["joint_ownership_required", "standard_product_fit", "current_cala_naprzod_promotion_is_individual_only"],
+        "tradeoffs": ["the better product fit may have no eligible current promotion under this ownership mode"],
+        "unresolvedFactors": ["current joint-account promotional availability outside Cała naprzód"]
+      }
+    }
+  ]
+}
