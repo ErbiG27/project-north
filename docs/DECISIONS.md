@@ -20,9 +20,11 @@ Katalog wykorzystuje `data/offers.js` i `script.js`, zamiast kopiować dane do H
 
 **Konsekwencja:** dane muszą mieć spójny kontrakt. Przy rozbudowie dopuszczamy migrację do szerszego modelu oferty, ale nie mnożenie równoległych list.
 
+**Doprecyzowanie 2026-08-24:** źródłem faktów 12 ofert i rekordu Kraken jest `frontend/data/decision-offers.json`. `data/offers.js` jest wyłącznie cienkim loaderem/formatowaniem, a strony HTML nie przechowują kopii faktów.
+
 ## ADR-003 — Strona Revolut jest wzorcem, nie wyjątkiem
 
-**Status:** accepted · **Data:** 2026-08-10
+**Status:** superseded przez ADR-006 i ADR-008 · **Data:** 2026-08-10
 
 Układ North Hero, North Score, North Snapshot, North Verdict i badges jest punktem wyjścia dla następnych stron ofert.
 
@@ -40,7 +42,7 @@ Podstawą identyfikacji są czarne/grafitowe powierzchnie, jasna typografia i zi
 
 ## ADR-005 — Git ma być źródłem prawdy dla dokumentacji
 
-**Status:** proposed · **Data:** 2026-08-11
+**Status:** accepted · **Data:** 2026-08-11 · **Potwierdzenie:** Continuity Lock 2026-08-24
 
 Markdown w `/docs` ma być wersjonowany razem z kodem. Narzędzia typu Notion mogą prezentować lub agregować wiedzę, ale nie powinny tworzyć drugiej, rozjeżdżającej się wersji.
 
@@ -58,12 +60,12 @@ North nie będzie pozycjonowany jako „lepszy ranking promocji”. Kierunkiem p
 - nie istnieje jedna uniwersalna „realna nagroda” dla wszystkich użytkowników;
 - North Score pozostaje możliwym skrótem wtórnym, ale nie jest głównym USP; kierunek docelowy rozdziela `North Value` od `North Confidence`;
 - `North Confidence` opisuje jakość, kompletność i aktualność danych oraz wniosku; bez danych nie publikujemy fałszywie precyzyjnych procentów;
-- North Verdict przyjmuje docelowo: `TAKE NOW`, `TAKE IF`, `WAIT`, `SKIP`, `NOT ENOUGH DATA`;
-- `WAIT` nie może być przedstawiany jako wiarygodna dostępna funkcja przed zebraniem historii porównywalnych edycji i wykonaniem backtestu;
+- North Verdict ma cztery aktywne stany: `TAKE NOW`, `TAKE IF`, `SKIP`, `NOT ENOUGH DATA`;
+- `WAIT` pozostaje wyłączone i nie może być przedstawiane jako wiarygodna funkcja przed zebraniem historii porównywalnych edycji, mechanizmu zmian i wykonaniem backtestu;
 - North Match ma wyjaśniać przyczyny dopasowania i wpływ zmiany założeń, zamiast opierać przewagę na samym procencie;
 - trust opiera się na field-level sourcing / evidence ledger: źródle pola, regulaminie, dacie weryfikacji i statusie lub pewności danych; historię zmian edycji dodajemy później.
 
-**Konsekwencja dla v0.6.1:** sprint otrzymuje nazwę **Decision Model v1** i ma udowodnić jakość decyzji na trzech ofertach, a nie skalę katalogu. Bank Millennium testuje premię z wysiłkiem i czasem, Nest Bank maksimum wobec scenariusza użytkownika, a Bank Pekao różne formy nagrody i ograniczoną użyteczność marketingowego maksimum. BOŚ i Allegro Klik są następnymi kandydatami. Evidence ledger jest na tym etapie prowadzony ręcznie.
+**Konsekwencja dla v0.6.1:** sprint otrzymuje nazwę **Decision Model v1** i ma udowodnić jakość decyzji na trzech ofertach, a nie skalę katalogu. Bank Millennium testuje premię z wysiłkiem i czasem, Nest Bank maksimum wobec scenariusza użytkownika, a Bank Pekao różne formy nagrody i ograniczoną użyteczność marketingowego maksimum. BOŚ i Allegro Klik były historycznymi kandydatami tego etapu, nie aktywnym planem. Evidence ledger jest prowadzony ręcznie.
 
 **Kontrolowany pilot krypto:** pierwszy publiczny MVP pozostaje skoncentrowany na ofertach niskiego ryzyka, a krypto nie jest główną kategorią produktu. Dopiero po walidacji podstawowej trójki v0.6.1 — Bank Millennium, Nest Bank i Bank Pekao — można przeanalizować jedną ofertę krypto jako optional stretch case i hard case dla Decision Model v1. Pierwszym kandydatem jest Kraken referral z Research Sprint #1. Pilot ma sprawdzić odporność modelu na dynamiczną lub niegwarantowaną nagrodę, większą niepewność danych, ryzyko rynkowe i dodatkowe warunki wykonania; nie rozszerza katalogu, nie tworzy nowego filaru i nie oznacza szerokiego otwarcia kategorii krypto.
 
@@ -83,4 +85,24 @@ Statyczny frontend ProjectNorth jest publikowany z GitHub `main` przez Vercel. R
 
 **Uzasadnienie:** repo jest czystym HTML/CSS/JavaScript, więc Vercel zapewnia najkrótszą stabilną ścieżkę od istniejącego repo do HTTPS i automatycznego deploymentu bez przebudowy architektury. Publikowanie `frontend/` zapobiega przypadkowemu wystawieniu `docs/` oraz plików roboczych z root repo.
 
-**Konsekwencje:** docelowo push do `main` ma uruchamiać deployment produkcyjny, ale automatyczny trigger nie zadziałał dla pierwszego finalnego redeployu i wymaga naprawy przed kolejnym wydaniem. Produkcję tego etapu opublikowano jako zweryfikowany snapshot `frontend/` przez uwierzytelnione API Vercela. Canonical, Open Graph, sitemap i robots używają rzeczywistego origin Vercel do czasu świadomej migracji na własną domenę. Zmiana providera lub domeny wymaga aktualizacji absolutnych URL-i i ponownego smoke testu, ale nie wymaga migracji frameworka.
+**Konsekwencje:** push do `main` uruchamia deployment produkcyjny. Pierwszy finalny redeploy wymagał zweryfikowanego ręcznego snapshotu, ale późniejsze wydania — w tym katalog 12 ofert z `24c2d7c` — potwierdziły działający trigger GitHub → Vercel. Manualny snapshot pozostaje wyłącznie fallbackiem. Canonical, Open Graph, sitemap i robots używają rzeczywistego origin Vercel do czasu świadomej migracji na własną domenę. Zmiana providera lub domeny wymaga aktualizacji absolutnych URL-i i ponownego smoke testu, ale nie wymaga migracji frameworka.
+
+## ADR-008 — Pierwszy katalog pozostaje kontrolowany i semantycznie rozdzielony
+
+**Status:** accepted · **Data:** 2026-08-24 · **Źródła:** Evidence Reviews #2–#4 i release `24c2d7c`
+
+Pierwszy publiczny katalog zawiera 12 wybranych ofert, a nie hurtowy import katalogów afiliacyjnych. Model rozdziela gotówkę, cashback, voucher, nagrodę rzeczową, odsetki, zwolnienia z opłat i wartość funkcjonalną. Warianty oraz promocje powiązane nie sumują się bez potwierdzonej łączności.
+
+**Uzasadnienie:** Full Affiliate Offer Discovery #1 wykazał 165 roboczych ofert/wariantów, ale także konflikty panelowe, różne definicje konwersji i dominację produktów niedopasowanych do celu North. Skala discovery nie jest dowodem gotowości do publikacji.
+
+**Konsekwencje:** nowe oferty wymagają oficjalnego evidence i świadomego wyboru. Kraken pozostaje trzynastym rekordem technicznym `crypto_validation`, poza katalogiem. Dalszy Controlled Catalog Expansion może rozpocząć się dopiero po sygnałach z użycia i opanowaniu freshness/source operations.
+
+## ADR-009 — Affiliate Source Layer jest oddzielona od Product Decision Layer
+
+**Status:** accepted · **Data:** 2026-08-24 · **Źródło:** Affiliate Source Research #1
+
+Prowizja, bonus wydawcy, sieć i dostępność kampanii nie mogą wpływać na North Value, Match, Confidence produktu, Verdict ani kolejność ofert. Preferred/Backup Source są decyzjami operacyjnymi dotyczącymi realizacji już niezależnie ocenionej oferty.
+
+**Uzasadnienie:** nominalne stawki nie są porównywalne bez acceptance, reversal, tracking i warunków placementu. Najwyższa prowizja nie dowodzi najwyższej realized economics ani najlepszego wyniku dla użytkownika.
+
+**Konsekwencje:** oferta bez zweryfikowanego źródła może pozostać najlepszą decyzją dla użytkownika; wysokopłatna kampania może otrzymać `SKIP`. Do czasu odpowiedzi supportów Preferred/Backup Source pozostają hipotezami tam, gdzie brakuje pewności operacyjnej. Pierwsza aktywacja afiliacyjna ma być małym, śledzonym pilotem.

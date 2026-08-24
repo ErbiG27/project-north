@@ -6,11 +6,29 @@
 
 Element trafia do sprintu tylko z celem, właścicielem, zakresem i Definition of Done. Roadmapa jest kolejnością hipotez, nie obietnicą terminu. Funkcje finansowe, afiliacyjne i analityczne wymagają najpierw zasad transparentności oraz zgodności prawnej.
 
-## Stan obecny — v0.7.2
+## Stan obecny — publiczny katalog 12 ofert
 
-**Cel osiągnięty:** użytkownik może znaleźć ofertę, policzyć Explainable North Match dla Millennium, Nest i Pekao oraz zrozumieć kwotę, obowiązki, czas, ryzyko i ocenę sensu oferty bez otwierania Glossary.
+Commit `24c2d7c5450b44ae07e12267f592b5898849bb54` opublikował pierwszy kontrolowany katalog 12 ofert pod `https://project-north-mu.vercel.app/`. Kraken pozostaje trzynastym rekordem technicznym `crypto_validation`, poza katalogiem i bez publicznego CTA. Data Guard zakończył release wynikiem `0 FAIL / 6 WARN / 17 OK`; sześć warningów to recheck reminders na 31.08.2026, nie stale blockers.
 
-Match nie jest procentem ani zamiennikiem Verdict. Wspólny silnik nadal interpretuje te same reguły Decision Model, ale pierwsza warstwa UI używa prostych polskich pytań i statusów. Wynik zaczyna się od sensu oferty, realnej kwoty, głównego warunku i największego ryzyka. Angielskie nazwy pozostają drugą warstwą. Dane scenariusza są lokalne w bieżącej karcie. Kraken pozostaje validation case poza głównym Match flow i katalogiem. Frontend działa pod `https://project-north-mu.vercel.app/`; prywatna beta nie została jeszcze otwarta.
+North UX Test #1, Evidence Reviews #1–#4, Data Integrity & Freshness Guard oraz implementacja i release katalogu są zakończone. v0.7.2 jest historycznym wcześniejszym wydaniem, nie bieżącym stanem produkcji.
+
+### Continuity & Sync Hardening
+
+**Status:** zamykane przez Continuity Lock #1 z 24.08.2026.
+
+- Wspólny cross-AI entrypoint, Context Map, Sync Protocol, Offer Taxonomy i master recovery state.
+- GitHub `/docs` pozostaje canonical; Notion jest operational mirror.
+- Materialne zadanie nie jest `Done` bez oceny wymaganej synchronizacji.
+
+### Następny etap operacyjny — nie feature sprint
+
+- Czekać na odpowiedzi supportów Money2Money, ComperiaLead i LeadStar.
+- Po odpowiedziach ustalić `Preferred Source`, `Backup Source` albo `No verified source`.
+- Zdefiniować tracking taxonomy i mały affiliate pilot.
+- Aktywować tylko kilka kontrolowanych CTA/źródeł oraz rozwijać wczesne Facebook/Discord.
+- Zbierać realne clicks, applications, acceptance, rejection, reversal oraz czasy walidacji i wypłat.
+
+Nie otwieramy teraz kolejnego sprintu produktowego. Najbliższy maintenance deadline to freshness recheck 31.08.2026.
 
 ## Następne etapy
 
@@ -47,7 +65,7 @@ Research Sprint nie jest nową wersją produktu i nie wymaga numeru wersji.
 - **Bank Millennium:** klasyczna premia, wysiłek miesięczny i czas do nagrody.
 - **Nest Bank:** reklamowane maksimum kontra rzeczywisty scenariusz wydatków użytkownika.
 - **Bank Pekao:** różne formy nagrody i ograniczona użyteczność marketingowego maksimum.
-- BOŚ i Allegro Klik pozostają kolejnymi kandydatami po zamknięciu podstawowej trójki.
+- BOŚ i Allegro Klik pozostają historycznymi kandydatami z tego etapu, nie aktywnym planem.
 - Dla każdej oferty opisać trzy poziomy: `Advertised Max`, `Easy Floor` oraz `Your Likely Value` / `Conditional Max` tam, gdzie ma zastosowanie; wartość scenariuszową oprzeć na jawnych założeniach lub formule.
 - Ująć formę i użyteczność nagrody, wymagany kapitał, koszty, opportunity cost, czas, powtarzalne obowiązki, warunki kwalifikacji, karencje i punkty utraty nagrody.
 - Rozdzielić kierunkowo `North Value` od `North Confidence`; nie publikować fałszywie precyzyjnych procentów bez danych.
@@ -60,7 +78,7 @@ Research Sprint nie jest nową wersją produktu i nie wymaga numeru wersji.
 
 **Status:** zakończono 2026-08-16 jako v0.6.3. Kraken zaakceptowano tylko jako non-affiliate analysis; wynik `LOW` / `NOT ENOUGH DATA`. Schema bez zmian, kategoria krypto nadal poza MVP.
 
-Ten etap może rozpocząć się wyłącznie po walidacji podstawowej trójki v0.6.1: Bank Millennium, Nest Bank i Bank Pekao. Pierwszy publiczny MVP nadal koncentruje się na ofertach niskiego ryzyka; krypto nie staje się główną kategorią produktu.
+Ten etap mógł rozpocząć się wyłącznie po walidacji podstawowej trójki v0.6.1: Bank Millennium, Nest Bank i Bank Pekao. Pierwszy publiczny MVP nadal koncentruje się na ofertach niskiego ryzyka; krypto nie staje się główną kategorią produktu.
 
 - Przeanalizować dokładnie jeden crypto hard case: Kraken referral z Research Sprint #1.
 - Traktować go jako validation case dla odporności Decision Model v1, nie jako rozszerzenie katalogu, nowy filar North ani zapowiedź szerokiego otwarcia krypto.
@@ -106,8 +124,8 @@ Ten etap może rozpocząć się wyłącznie po walidacji podstawowej trójki v0.
 - **Status:** zakończono 2026-08-16.
 - Statyczny katalog `frontend/` jest publikowany przez Vercel z GitHub `main`, bez frameworka, procesu budowania, backendu ani zmiennych środowiskowych.
 - Produkcyjny origin to `https://project-north-mu.vercel.app/`; HTTPS jest wymuszane przez hosting.
-- Indeksowalne strony mają canonical, `og:url`, podstawowe Open Graph i Twitter Summary Card. Sitemap obejmuje landing, metodologię, trzy core cases i Kraken validation case.
-- Revolut zachowuje `noindex, follow` i nie występuje w sitemap. Brak dedykowanej grafiki social blokuje wyłącznie metadata obrazkowe.
+- Indeksowalne strony mają canonical, `og:url`, podstawowe Open Graph i Twitter Summary Card. Historyczny sitemap tego etapu obejmował landing, metodologię, trzy core cases i Kraken validation case.
+- Revolut zachowywał `noindex, follow` i nie występował w historycznym sitemap tego etapu. Brak dedykowanej grafiki social blokował wyłącznie metadata obrazkowe.
 - Structured data i analytics pozostają świadomie niewdrożone.
 - **Operacyjny follow-up — zamknięty 2026-08-17:** push v0.7.2 do `main` automatycznie utworzył produkcyjny deployment `READY`. Sprawdzony manualny snapshot `frontend/` pozostaje wyłącznie fallbackiem.
 
@@ -115,7 +133,7 @@ Ten etap może rozpocząć się wyłącznie po walidacji podstawowej trójki v0.
 
 ### v0.7.2 — Plain Language & Comprehension
 
-- **Status:** zaimplementowano 2026-08-17.
+- **Status:** zaimplementowano 2026-08-17; historyczny release poprzedzający katalog 12 ofert.
 - Landing, strony bankowe i metodologia pokazują proste polskie etykiety przed nazwami Decision Model.
 - Pytania Match opisują sytuację użytkownika i wyjaśniają, że bank zalicza tylko określone wpływy lub płatności.
 - Wynik Match zaczyna się od krótkiego podsumowania: sens oferty, realna kwota, główny warunek i największe ryzyko; przy brakach wskazuje dane do uzupełnienia.
@@ -125,11 +143,20 @@ Ten etap może rozpocząć się wyłącznie po walidacji podstawowej trójki v0.
 
 **Definition of Done — spełnione:** główny flow jest zrozumiały bez Glossary, wartości i statusy Decision Model nie zmieniły semantyki, a landing, metodologia, trzy oferty bankowe, Kraken i Revolut przeszły testy desktop/tablet/mobile, dostępności i produkcyjny smoke.
 
+### Evidence Reviews #2–#4 i katalog 12 ofert
+
+- **Status:** zakończone i wydane 2026-08-24.
+- Review #2: Catalog Expansion Batch 1.
+- Review #3: Catalog Expansion Batch 2 + Affiliate Bonus Research.
+- Review #4: Small Batch 3 i decyzja o zakończeniu szerokiego discovery.
+- Release `24c2d7c` opublikował 12 ofert; Kraken pozostał validation-only.
+- Data Integrity & Freshness Guard jest osobną warstwą techniczną, nie Evidence Review.
+
 ### v0.8.0 — Prywatna beta
 
-**Status:** nieotwarta.
+**Status:** nieotwarta i nie jest aktywnym next step.
 
-- Zdefiniować grupę testową i zadania testowe.
+- Zdefiniować grupę testową i zadania testowe dopiero po decyzji o otwarciu etapu.
 - Mierzyć podstawowe przejścia: katalog → oferta → CTA.
 - Zbierać jakościowy feedback, nie tylko liczbę kliknięć.
 
@@ -137,11 +164,15 @@ Ten etap może rozpocząć się wyłącznie po walidacji podstawowej trójki v0.
 
 ## Później, nie teraz
 
+- **mBank Product & Promotion Variant Mapping** — przed kolejną kartą mBank rozstrzygnąć product identity, edycje, warianty, segmenty, kanały i rekordy afiliacyjne; nie otwierać teraz sprintu ani nie dodawać oferty.
+- Alternative Comparison oraz mocniejsze Do Nothing & Alternatives — po realnych sygnałach użycia.
+- Offer Execution i Freshness Operations tooling — po potwierdzeniu potrzeby.
+- Controlled Catalog Expansion — dopiero po opanowaniu freshness/source operations.
 - Pełny North Plan / portfolio planner i conflict engine — po walidacji modelu decyzji i dopasowania.
 - Historyczne `WAIT` vs `TAKE` — dopiero po zebraniu porównywalnych edycji, określeniu jakości danych i wykonaniu backtestu.
-- Automatyczne monitorowanie regulaminów — dopiero po sprawdzeniu ręcznego evidence ledger na małej liczbie ofert.
-- Krypto jako kategoria — poza pierwszym publicznym MVP; jedynym dopuszczonym wyjątkiem jest opisany wyżej, późniejszy i kontrolowany pilot Kraken po walidacji core v0.6.1.
+- Automatyczne monitorowanie regulaminów — dopiero po sprawdzeniu ręcznego evidence ledger.
+- Krypto jako kategoria — poza katalogiem; Kraken jest jedynym validation-only hard case'em.
 - Motion i zaawansowane animacje — dopiero po stabilizacji treści i ścieżek.
-- Porównywarka — po ujednoliceniu danych przynajmniej kilku ofert.
-- Konta użytkowników, backend i premium — po potwierdzeniu potrzeby w becie.
+- Porównywarka — po ujednoliceniu danych przynajmniej kilku ofert i realnym sygnale potrzeby.
+- Konta użytkowników, backend, premium i ML/AI personalization — po potwierdzeniu potrzeby.
 - Integracje analityczne — minimalnie i z poszanowaniem prywatności; nie są substytutem badań użytkowników.

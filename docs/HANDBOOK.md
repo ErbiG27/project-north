@@ -1,6 +1,6 @@
 # ProjectNorth Handbook
 
-> Wersja: 1.5 · Status: aktywny dokument roboczy · Produkt: v0.7.2 · Decision Model v1
+> Wersja: 1.6 · Status: aktywny kontrakt produktu · Publiczny katalog: 12 ofert · Decision Model v1
 
 ## Cel dokumentacji
 
@@ -45,11 +45,12 @@ frontend/
 │   ├── millennium.html         # Cienkie wejście do wspólnego renderera
 │   ├── nest.html               # Cienkie wejście do wspólnego renderera
 │   ├── pekao.html              # Cienkie wejście do wspólnego renderera
+│   ├── [9 dalszych tras]        # Pozostałe publiczne oferty katalogowe
 │   ├── offer.js                # Wspólny renderer Decision Model v1
 │   ├── match.js                # Wspólny interpreter reguł scenariusza
-│   └── revolut.html            # Niezmieniona strona legacy/example
+│   └── kraken.html             # Validation-only, poza katalogiem
 ├── data/
-│   ├── decision-offers.json    # Źródło prawdy dla faktów trzech ofert
+│   ├── decision-offers.json    # Źródło faktów 12 ofert + Kraken validation-only
 │   └── offers.js               # Cienki loader i formatowanie danych
 ├── script.js                   # Projekcje landingu, dem i listingu
 ├── glossary.js                 # Centralne definicje i dostępny popover
@@ -61,17 +62,17 @@ frontend/
 └── vercel.json                 # Minimalne nagłówki hostingu
 ```
 
-Landing, listing oraz strony Millennium, Nest i Pekao pobierają fakty z `decision-offers.json`. Osobne dokumenty HTML przechowują wyłącznie routing i metadane, a ich pełną treść renderuje wspólny `offers/offer.js`. `offers/revolut.html` pozostaje stroną legacy z dawnym North Score; nie jest wzorcem danych ani docelową metodologią. `style.css` nadal jest jednym punktem wejścia dla modułowych arkuszy.
+Landing, listing i wszystkie strony analiz pobierają fakty z `decision-offers.json`. Osobne dokumenty HTML przechowują wyłącznie routing i metadane, a treść renderuje wspólny `offers/offer.js`. `script.js` odpowiada za katalog, wyszukiwanie i filtry, a `match.js` interpretuje scenariusze bez uzależnienia od nazw banków. `style.css` pozostaje jednym punktem wejścia dla modułowych arkuszy.
 
 ## Produkcja
 
-Frontend jest publicznie dostępny pod `https://project-north-mu.vercel.app/`. Projekt Vercel wskazuje katalog `frontend/` i gałąź GitHub `main`; projekt nie ma procesu budowania, backendu, sekretów ani zmiennych środowiskowych. Pierwszy finalny redeploy wymagał awaryjnej publikacji zweryfikowanego snapshotu `frontend/`, ale push v0.7.2 ponownie uruchomił automatyczny produkcyjny deployment z GitHub `main`. Manualny snapshot `frontend/` pozostaje wyłącznie fallbackiem. `docs/`, lokalne artefakty i pliki z root repo nie są częścią publikowanej strony.
+Frontend jest publicznie dostępny pod `https://project-north-mu.vercel.app/`. Bieżąca aplikacja odpowiada release commitowi `24c2d7c5450b44ae07e12267f592b5898849bb54` i publikuje 12 kart katalogowych. Projekt Vercel wskazuje katalog `frontend/` i gałąź GitHub `main`; nie ma procesu budowania, backendu, sekretów ani zmiennych środowiskowych. Automatyczny deployment GitHub → Vercel działa. Manualny snapshot `frontend/` pozostaje wyłącznie historycznym fallbackiem. `docs/`, lokalne artefakty i pliki z root repo nie są częścią publikowanej strony.
 
-Landing, metodologia, Millennium, Nest, Pekao i Kraken mają samoodwołujące canonical URL-e, `og:url`, podstawowe Open Graph oraz Twitter Summary Card. Sitemap obejmuje te sześć indeksowalnych ścieżek. Kraken pozostaje publicznym validation case'em z `LOW` Confidence i `NOT ENOUGH DATA`, poza katalogiem i Match flow. Revolut zachowuje `noindex, follow` i nie występuje w sitemap.
+Landing, metodologia, 12 ofert i Kraken mają własne trasy oraz metadane zgodne z opublikowanym katalogiem. Kraken pozostaje publicznym validation case'em z `LOW` Confidence i `NOT ENOUGH DATA`, poza kartami katalogowymi i bez publicznego CTA. Revolut Standard jest obecnie normalną analizą katalogową wartości funkcjonalnej bez ogólnej gwarantowanej premii bazowej; nie jest już legacy prototypem.
 
 Brak dedykowanej grafiki social oznacza świadomy brak `og:image` i `twitter:image`. Structured data nadal nie mają uczciwej podstawy semantycznej. Analytics nie są częścią Deployment & Infrastructure #1.
 
-## Model danych: implementacja v0.7.0
+## Model danych: bieżąca implementacja
 
 `frontend/data/decision-offers.json` implementuje kontrakt `decision-model-v1`. Jeden rekord zasila listing, demo, Snapshot i stronę szczegółów:
 
@@ -89,7 +90,7 @@ Brak dedykowanej grafiki social oznacza świadomy brak `og:image` i `twitter:ima
 }
 ```
 
-Fakty nie są kopiowane do `offers.js` ani stron HTML. Trzy rekordy bankowe mają dodatkowo sekcję `match` z definicjami pól i wykonywalnymi regułami składników oraz kosztów. `match.js` interpretuje te reguły bez rozpoznawania nazw banków. Evidence pozostaje procesem ręcznym; nie ma automatycznej aktualizacji ani katalogu dziesiątek ofert.
+Fakty nie są kopiowane do `offers.js` ani stron HTML. Dwanaście rekordów katalogowych ma wykonywalne reguły Match odpowiednie do swoich mechanik; trzynasty rekord Kraken zachowuje kategorię `crypto_validation`. Model rozdziela `cash`, `cashback`, `voucher`, `physical_reward`, `interest`, `fee_waiver` i `functional`, obsługuje warianty i promocje powiązane bez automatycznego sumowania oraz modeluje yield jako funkcję salda, czasu i warunków. Evidence pozostaje procesem ręcznym.
 
 ## Model decyzji: aktywny kontrakt
 
@@ -99,15 +100,15 @@ Fakty nie są kopiowane do `offers.js` ani stron HTML. Trzy rekordy bankowe maj�
 - **North Match** pokazuje band `FIT`, `CONDITIONAL FIT`, `POOR FIT` albo `CANNOT ASSESS`, powody, warunki, blokery i dane wpływające na wynik. Nie jest procentem i nie zastępuje Verdict.
 - **Evidence ledger** łączy krytyczne pola ze źródłem, regulaminem, datą weryfikacji i statusem pewności. W v0.6.1 proces jest ręczny dla małej liczby ofert; historia zmian edycji i automatyczne monitorowanie należą do późniejszych etapów.
 
-## Kontrolowany pilot krypto: późniejsza walidacja
+## Kontrolowany pilot krypto: zamknięta walidacja
 
 Pierwszy publiczny MVP pozostaje skoncentrowany na ofertach niskiego ryzyka. Krypto nie jest główną kategorią North. Podstawowy zakres v0.6.1 pozostaje bez zmian: Bank Millennium, Nest Bank i Bank Pekao.
 
-Po walidacji tej trójki można dopuścić dokładnie jeden optional stretch case: Kraken referral wskazany w Research Sprint #1. Jest to kontrolowany crypto pilot i hard case dla Decision Model v1, a nie nowy filar katalogu ani sygnał szerokiego otwarcia kategorii krypto. Ma sprawdzić, czy model poprawnie obsługuje dynamiczną lub niegwarantowaną nagrodę, większą niepewność danych, ryzyko rynkowe i dodatkowe warunki wykonania.
+Po walidacji core dopuszczono dokładnie jeden optional stretch case: Kraken referral wskazany w Research Sprint #1. Test zakończono z `LOW` Confidence i `NOT ENOUGH DATA`. Jest to kontrolowany hard case dla Decision Model v1, a nie nowy filar katalogu ani sygnał szerokiego otwarcia kategorii krypto.
 
 Analiza musi jawnie pokazać reward uncertainty, market risk, `North Confidence`, user capital at risk i conditions required. Verdict może wynosić `TAKE IF`, `SKIP` albo `NOT ENOUGH DATA`; afiliacja lub referral nigdy nie są wystarczającą podstawą pozytywnego Verdict.
 
-Przed jakąkolwiek publikacją Kraken trzeba ponownie zweryfikować aktualne warunki promocji, publiczną dostępność ścieżki wejścia, ograniczenia programu referral, dozwolony sposób publikacji i linkowania, ryzyko rynkowe oraz niegwarantowany charakter nagrody.
+Kraken pozostaje dostępny jako validation-only bez publicznego referral CTA. Każda zmiana tego statusu wymaga ponownej weryfikacji warunków, ścieżki wejścia, zasad linkowania, ryzyka i Promotion Details.
 
 ## Standard pracy
 
@@ -124,8 +125,10 @@ Przed połączeniem zmian sprawdzamy desktop, 600 px, 900 px, klawiaturę, fokus
 - [Product polish](PRODUCT_POLISH.md) — jakościowy backlog.
 - [North Writing Guide](NORTH_WRITING_GUIDE.md) — trwały standard prostego copy.
 - [AI Workflow](AI_WORKFLOW.md) — stałe reguły kolejnych zamkniętych tasków Work.
+- [North State](NORTH_STATE.md) — master recovery document i bieżący etap operacyjny.
+- [Historia projektu](PROJECT_HISTORY.md) — krótka historia decyzji i rund walidacji.
 - [Komponenty](COMPONENTS/) — kontrakty kluczowych bloków UI.
 
 ## Zasada aktualizacji
 
-Ten handbook jest celowo konkretny dla v0.7.0. Rzeczy niezaimplementowane są oznaczane jako plan. Nie opisujemy ich jako istniejących funkcji.
+Ten handbook utrzymuje trwały kontrakt produktu i architektury. Bieżący release, deadline'y i aktywne strumienie pracy należą do `NORTH_STATE.md`. Rzeczy niezaimplementowane muszą być oznaczone jako plan lub hipoteza.

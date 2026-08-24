@@ -8,14 +8,14 @@ ProjectNorth to rozwijany po polsku **wyjaśnialny system decyzji dotyczących o
 
 ## Stan produktu
 
-Aktualny zakres to **Decision Model v1 + Explainable North Match + pierwszy katalog 12 produktów**. To publiczny frontend przed prywatną betą, z jednym modelem danych dla katalogu, stron ofert i scenariuszy Match.
+Aktualny zakres to **Decision Model v1 + Explainable North Match + pierwszy publiczny katalog 12 produktów**. Produkcja odpowiada commitowi `24c2d7c5450b44ae07e12267f592b5898849bb54` i korzysta z jednego modelu danych dla katalogu, stron ofert oraz scenariuszy Match.
 
-- katalog roboczy: **12 produktów** — Millennium, Nest, Pekao, Alior 18–25, Erste Smart, Revolut Standard, mBank, PKO, BNP, UniCredit, Velo EKO i Alior Plus;
+- katalog publiczny: **12 produktów** — Millennium, Nest, Pekao, Alior 18–25, Erste Smart, Revolut Standard, mBank, PKO, BNP, UniCredit, Velo EKO i Alior Plus;
 - formularz scenariusza działa lokalnie w przeglądarce, bez konta i backendu;
 - krytyczne pola mają ręcznie prowadzony evidence ledger i widoczny status aktualności;
 - **Kraken** pozostaje wyłącznie nieafiliacyjnym hard case'em do walidacji modelu — poza głównym katalogiem i Match flow;
 - **Revolut Standard** jest bieżącą analizą wartości funkcjonalnej bez stałej premii bazowej; dawna makieta Score nie jest już źródłem danych;
-- v0.7.2 upraszcza główny flow tak, aby Glossary było pomocą, a nie warunkiem zrozumienia; frontend działa publicznie pod [project-north-mu.vercel.app](https://project-north-mu.vercel.app/).
+- wcześniejszy release v0.7.2 uprościł główny flow tak, aby Glossary było pomocą, a nie warunkiem zrozumienia; bieżąca produkcja z katalogiem 12 ofert działa pod [project-north-mu.vercel.app](https://project-north-mu.vercel.app/).
 
 North nie monitoruje jeszcze automatycznie regulaminów, nie zapisuje profilu użytkownika i nie obiecuje zysku. Dane scenariusza znikają po przeładowaniu strony.
 
@@ -84,9 +84,21 @@ docs/                           # zasady produktu, decyzje i plan rozwoju
 Katalog [`/docs`](docs/) jest źródłem prawdy dla intencji produktu, standardów, roadmapy i historii decyzji; kod pozostaje źródłem prawdy dla implementacji. Najważniejsze dokumenty:
 
 - [North State](docs/NORTH_STATE.md) — pierwszy punkt wejścia dla AI i procedura odzyskania aktualnego kontekstu projektu;
+- [Historia projektu](docs/PROJECT_HISTORY.md) — krótka sekwencja decyzji od Product Direction do wydania katalogu 12 ofert;
 - [Handbook](docs/HANDBOOK.md) — wizja, zasady i aktywny kontrakt produktu;
 - [Roadmapa](docs/ROADMAP.md) — ukończone etapy i kolejność dalszej walidacji;
 - [Changelog](docs/CHANGELOG.md) — faktycznie wydane zmiany i ograniczenia;
 - [Decyzje](docs/DECISIONS.md) — uzasadnienie trwałych decyzji produktowych.
 
-v0.7.2 oraz pierwszy fundament produkcyjnego deploymentu są zamknięte. **Prywatna beta v0.8.0 nie została jeszcze otwarta**; jej zakres ma wynikać z przygotowanej strategii testów, a nie z dokładania funkcji. Konta, backend, analytics, automatyczne monitorowanie regulaminów, pełny North Plan i krypto jako kategoria pozostają świadomie poza obecnym zakresem.
+### AI / New Collaborator — Start Here
+
+1. Przeczytaj [`AGENTS.md`](AGENTS.md).
+2. Przeczytaj [`docs/NORTH_STATE.md`](docs/NORTH_STATE.md).
+3. Przeczytaj [`docs/CONTEXT_MAP.md`](docs/CONTEXT_MAP.md).
+4. Przeczytaj [`docs/HANDBOOK.md`](docs/HANDBOOK.md).
+5. Przeczytaj [`docs/DECISIONS.md`](docs/DECISIONS.md).
+6. Przeczytaj evidence/research właściwe dla bieżącego zadania.
+
+Przed zmianą wykonaj repo guard opisany w `AGENTS.md`. Każde materialne zadanie kończ zgodnie z [`docs/SYNC_PROTOCOL.md`](docs/SYNC_PROTOCOL.md); Notion jest operational mirror, nie drugim kanonicznym systemem.
+
+Publiczny katalog 12 ofert jest wydany. Najbliższy maintenance deadline to freshness recheck 31.08.2026 dla Nest, Pekao, mBank, Kraken oraz landing gates Pekao i Nest. Aktywny etap obejmuje odpowiedzi supportów afiliacyjnych, wybór źródeł, tracking/pilot, kontrolowaną aktywację, pierwsze community i zbieranie realnych danych. Nie otwieramy automatycznie kolejnego sprintu produktowego ani prywatnej bety v0.8.0.

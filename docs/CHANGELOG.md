@@ -4,6 +4,25 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 
 ## [Unreleased]
 
+### Added
+
+- Cross-AI continuity system: `AGENTS.md`, cienki `CLAUDE.md`, Context Map, Sync Protocol, Offer Taxonomy oraz krótka historia decyzji produktu.
+
+### Changed
+
+- `NORTH_STATE.md` stał się master recovery document, a README, Handbook, Decisions, Roadmap i AI Workflow zostały zsynchronizowane z publicznym katalogiem 12 ofert oraz etapem affiliate/support/pilot.
+- Utrwalono poprawną numerację Evidence Reviews #1–#4 i status Data Integrity & Freshness Guard jako osobnej technicznej walidacji.
+
+## [12-offer catalog release] — 2026-08-24
+
+**Commit:** `24c2d7c5450b44ae07e12267f592b5898849bb54` — `feat: release 12-offer catalog`
+
+### Added
+
+- Pierwszy publiczny katalog 12 ofert: Millennium, Nest, Pekao, Alior 18–25, Erste Smart, Revolut Standard, mBank, PKO, BNP, UniCredit, Velo EKO i Alior Plus.
+- Rozszerzony Decision Model dla cash, cashback, voucherów, nagród rzeczowych, yield/interest, wartości funkcjonalnej, promotion variants i linked promotions.
+- Kraken zachowany jako trzynasty rekord techniczny `crypto_validation`, poza kartami katalogowymi i bez publicznego CTA.
+
 ### Changed
 
 - Landing prowadzi teraz od hero bezpośrednio do aktywnych analiz, następnie krótko wyjaśnia działanie North i dopiero później pokazuje rozbudowane przykłady oraz metodologię.
@@ -16,10 +35,11 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 
 ### Verified
 
-- Landing, metodologia, Millennium, Nest, Pekao, Kraken i Revolut przeszły lokalny smoke w 1440×900, 820×900 i 390×844 bez poziomego overflow, duplikatów ID, zerwanych relacji ARIA, brakujących obrazów i błędów konsoli.
-- Wyszukiwanie, filtr Cashback, pusty stan oraz reset działają; Glossary obsługuje click/tap, Enter, Space i Escape z powrotem fokusu, a panel mieści się w viewportach przy skrajnych krawędziach.
-- Regresja Match zachowała: Millennium `FIT` / `TAKE IF` / 700 zł / koszt 0; Nest `CONDITIONAL FIT` / `TAKE IF` / 1 250 zł brutto / 1 200–1 250 zł użyteczne; Pekao start-only `FIT` / `TAKE IF` / 300 zł / koszt 0; Pekao full travel `FIT` / `TAKE IF` / 1 740 zł / koszt 0.
-- Brak danych nadal daje `CANNOT ASSESS` / `NOT ENOUGH DATA`, a potwierdzone wykluczenie `POOR FIT` / `SKIP`. Wszystkie śledzone pliki frontendu zwracają lokalnie HTTP 200.
+- Data Guard: `0 FAIL / 6 WARN / 17 OK`; sześć warningów to wyprzedzające recheck reminders do 31.08.2026, nie stale blockers w dniu release'u.
+- Guard tests: `16/16 PASS`; Match matrix: `50/50 PASS`; JavaScript syntax: `9/9 PASS`.
+- Lokalne trasy ofert: `12/12 PASS`; sprawdzone URL-e produkcyjne: `28/28 HTTP 200`.
+- Browser smoke i keyboard smoke: `PASS`.
+- GitHub → Vercel automatycznie opublikował deployment w stanie `READY` pod `https://project-north-mu.vercel.app/`.
 
 ## [0.7.2] — 2026-08-17
 

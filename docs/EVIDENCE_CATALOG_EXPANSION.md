@@ -1,4 +1,4 @@
-# ProjectNorth — Evidence Catalog Expansion #2–#4
+# ProjectNorth — Evidence Reviews #2–#4 — Catalog Expansion
 
 > Canonical implementation input · Founder-approved · release refresh 2026-08-24
 
@@ -22,7 +22,9 @@ Ten dokument porządkuje zatwierdzony pakiet Evidence Review #2–#4 dla pierwsz
 - UniCredit: oficjalna strona promocji i regulamin potwierdzają 3 e-vouchery Żabka po 50 zł, nabór 18.08–10.09.2026 albo do 5 000 uczestników oraz progi 3 000 zł wpływu i 1 000 zł płatności dla drugiego i trzeciego bonu. `cashValueTotal` pozostaje 0 zł. Następny recheck: 2026-09-03.
 - Kraken: oficjalne materiały nadal pozostają niespójne — generic page pokazuje do 20 EUR i 15 dni, wariant EEA losowe 10–75 EUR i 15 dni, a support stałe 20 w walucie domyślnej oraz 30 dni. Progi pozostają w Promotion Details. Rekord zachowuje `LOW`, `NOT ENOUGH DATA`, status validation-only i brak publicznego CTA. Następny recheck: 2026-08-31.
 
-## Review #2 — Millennium, Nest i Pekao
+## Evidence Review #2 — Catalog Expansion Batch 1
+
+**Data:** 2026-08-23. **Historyczny zakres:** Millennium 360°, Nest Konto, Pekao Konto Przekorzystne, Alior Konto 18–25, Erste Konto Smart i VeloKonto.
 
 ### Millennium 360°
 
@@ -61,7 +63,31 @@ Ten dokument porządkuje zatwierdzony pakiet Evidence Review #2–#4 dla pierwsz
 - Confidence: HIGH. Release recheck wykonany 2026-08-24; następny recheck: 2026-08-31.
 - Źródła: [produkt](https://www.pekao.com.pl/konto), [300 zł](https://www.pekao.com.pl/dam/ROOT-EXTERNAL/DOCS/Regulamin_promocji_Otworz_konto_online_i_ruszaj_po_wiecej.pdf), [podróże](https://www.pekao.com.pl/dam/ROOT-EXTERNAL/DOCS/Promocja_Podrozna_regulamin.pdf), [opłaty](https://www.pekao.com.pl/dam/jcr%3Aeab0d421-5e06-4d39-a23a-a4b9a98e9c0c/Taryfa-prowizji-i-oplat-oferta-biezaca-od-1-11-2025.pdf).
 
-## Review #3 — Revolut, Erste, mBank, PKO i BNP
+### Alior Konto 18–25
+
+- Segment 18–25, kod `BONUS500`, brak ROR PLN w Alior przez poprzednie 3 lata.
+- 500 zł cash = 200 zł + 3 × 100 zł. Easy floor: 200 zł.
+- Start: karta w portfelu cyfrowym i 3 płatności portfelem w 10 dni.
+- Miesiące 1–3: 500 zł zewnętrznego wpływu, 10 płatności kartą w portfelu i logowanie do aplikacji. BLIK nie zastępuje płatności wymaganych promocją.
+- Konto 0 zł; karta 7 zł bez 5 płatności kartą/BLIK.
+- Oszczędności 6% do 50 000 zł przez 3 miesiące są osobną promocją powiązaną.
+- Confidence: MEDIUM/HIGH. Recheck implementacyjny: 2026-09-03.
+- Źródła: [produkt](https://www.aliorbank.pl/klienci-indywidualni/konta-osobiste/alior-konto-18-25-lat.html), [promocja](https://www.aliorbank.pl/dam/jcr%3A9320aad2-99e5-4e7d-964b-888dc2a2bea7/regulamin-sprzedazy-premiowej-mlodzi-zyskuja.pdf), [opłaty](https://www.aliorbank.pl/dam/jcr%3A2c557a27-9d52-4c66-8fb5-f2652658e43e/toip-konta-osobiste.pdf), [oszczędności](https://www.aliorbank.pl/dam/jcr%3Aeb1b3723-6abe-4c78-a626-d5208fb16fda/regulamin-promocji-konto-oszczednosciowe-na-start-10-edycja.pdf).
+
+### Erste Konto Smart
+
+- Produkt został objęty Batch 1. Historyczna tożsamość Santander → Erste została dodatkowo sprawdzona w Review #3, aby nie tworzyć dwóch kart dla tego samego produktu.
+- Warianty 600 i 800 zł są wzajemnie wyłączne; nie sumują się do 1 400 zł.
+- Szczegółowy follow-up identity i warunków znajduje się w sekcji Review #3 poniżej.
+
+### VeloKonto
+
+- VeloKonto było w zakresie Review #2, ale nie weszło do pierwszego publicznego katalogu 12 ofert.
+- Nie należy mylić go z opublikowanym w Review #4 produktem VeloBank Elastyczne Konto Oszczędnościowe (`savings_account`).
+
+## Evidence Review #3 — Catalog Expansion Batch 2 + Affiliate Bonus Research
+
+**Zakres:** Revolut Standard, Santander → Erste identity change, mBank eKonto do usług, PKO Konto za Zero, BNP Konto Otwarte na Ciebie oraz oddzielna analiza wybranych affiliate bonus/source mechanics.
 
 ### Revolut Standard
 
@@ -73,7 +99,7 @@ Ten dokument porządkuje zatwierdzony pakiet Evidence Review #2–#4 dla pierwsz
 - Confidence: HIGH. Recheck: 2026-09-30.
 - Źródła: [opłaty](https://www.revolut.com/pl-PL/legal/standard-fees/), [karta](https://help.revolut.com/pl-PL/help/cards/card-order/fees-for-ordering-a-card/), [bankomaty](https://help.revolut.com/pl-PL/help/card-payments-withdrawals/atm-withdrawals/withdrawing-in-other-currencies/), [FX](https://help.revolut.com/pl-PL/help/wealth/exchanging-money/how-much-does-it-cost-to-make-an-exchange/will-i-be-charged-for-exchanging-foreign-currencies/), [NBA](https://www.revolut.com/pl-PL/legal/nba-welcome-bonus-promotion/).
 
-### Erste Konto Smart
+### Santander → Erste identity change (follow-up)
 
 - Santander Bank Polska zmienił nazwę na Erste Bank Polska 24.04.2026; Konto Santander jest teraz Kontem Smart. Santander nie jest osobną kartą produktu.
 - Wariant A: do 600 zł = 4 × 100 zł + 200 zł all-or-nothing po komplecie czterech miesięcy.
@@ -116,7 +142,9 @@ Ten dokument porządkuje zatwierdzony pakiet Evidence Review #2–#4 dla pierwsz
 - Confidence: HIGH. Recheck: 2026-09-05.
 - Źródła: [produkt](https://www.bnpparibas.pl/klienci-indywidualni/konta/promocja-podroznik-2), [regulamin](https://www.bnpparibas.pl/_fileserver/item/1552031), [edycja 2](https://www.bnpparibas.pl/_fileserver/item/1552032), [opłaty](https://www.bnpparibas.pl/_fileserver/item/1517762).
 
-## Review #4 — UniCredit, VeloBank i Alior
+## Evidence Review #4 — Small Batch 3
+
+**Zakres:** UniCredit Konto Osobiste, VeloBank Elastyczne Konto Oszczędnościowe i Alior Konto Plus. **Decyzja końcowa:** zakończyć szeroki catalog discovery i przejść do implementacji pierwszego kontrolowanego katalogu.
 
 ### UniCredit Konto Osobiste
 
@@ -153,17 +181,6 @@ Ten dokument porządkuje zatwierdzony pakiet Evidence Review #2–#4 dla pierwsz
 - Oszczędności 6% do 50 000 zł przez 3 miesiące, 500 zł płatności miesięcznie i fallback 2% są promocją powiązaną.
 - Confidence: HIGH dla wartości, MEDIUM dla Safe Exit i cross-promotion stackability. Recheck oszczędności: 2026-08-31; promocja główna: 2026-10-06.
 - Źródła: [produkt](https://www.aliorbank.pl/klienci-indywidualni/konta-osobiste/alior-konto-plus.html), [promocja](https://www.aliorbank.pl/dam/jcr%3Aaf46bfca-1846-4be1-aa89-3fce817c0b56/regulamin-sprzedazy-premiowej-alior-konto-plus-z-premia.pdf), [oszczędności](https://www.aliorbank.pl/dam/jcr%3Aeb1b3723-6abe-4c78-a626-d5208fb16fda/regulamin-promocji-konto-oszczednosciowe-na-start-10-edycja.pdf), [opłaty](https://www.aliorbank.pl/dam/jcr%3Ac8aea0f7-6e70-4eea-a243-8f3a06f64eb9/oplaty-alior-konto-plus.pdf).
-
-### Alior Konto 18–25
-
-- Segment 18–25, kod `BONUS500`, brak ROR PLN w Alior przez poprzednie 3 lata.
-- 500 zł cash = 200 zł + 3 × 100 zł. Easy floor: 200 zł.
-- Start: karta w portfelu cyfrowym i 3 płatności portfelem w 10 dni.
-- Miesiące 1–3: 500 zł zewnętrznego wpływu, 10 płatności kartą w portfelu i logowanie do aplikacji. Łącznie 1 500 zł wpływu. BLIK nie zastępuje płatności wymaganych promocją.
-- Konto 0 zł; karta 7 zł bez 5 płatności kartą/BLIK.
-- Oszczędności 6% do 50 000 zł przez 3 miesiące są osobną promocją powiązaną.
-- Confidence: MEDIUM/HIGH. Recheck implementacyjny: 2026-09-03.
-- Źródła: [produkt](https://www.aliorbank.pl/klienci-indywidualni/konta-osobiste/alior-konto-18-25-lat.html), [promocja](https://www.aliorbank.pl/dam/jcr%3A9320aad2-99e5-4e7d-964b-888dc2a2bea7/regulamin-sprzedazy-premiowej-mlodzi-zyskuja.pdf), [opłaty](https://www.aliorbank.pl/dam/jcr%3A2c557a27-9d52-4c66-8fb5-f2652658e43e/toip-konta-osobiste.pdf), [oszczędności](https://www.aliorbank.pl/dam/jcr%3Aeb1b3723-6abe-4c78-a626-d5208fb16fda/regulamin-promocji-konto-oszczednosciowe-na-start-10-edycja.pdf).
 
 ## Guard implementacyjny
 

@@ -1,5 +1,7 @@
 # ProjectNorth — Evidence Review #1
 
+> Historyczny snapshot core Evidence & Trust z 16.08.2026. Dla bieżącego stanu po Evidence Review #2 i release refresh używaj `EVIDENCE_CATALOG_EXPANSION.md` oraz `decision-offers.json`. W szczególności aktualny Confidence mechaniki Nest wynosi `HIGH`; poniższe `MEDIUM` opisuje wynik Review #1 sprzed późniejszego rozstrzygnięcia.
+
 **Zakres:** Bank Millennium, Nest Bank i Bank Pekao
 
 **Stan źródeł sprawdzony:** 2026-08-16
