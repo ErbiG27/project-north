@@ -1,0 +1,502 @@
+{
+  "contractVersion": "north-alternative-comparison-v0.8.0",
+  "id": "mbank-product-identity-comparison",
+  "status": "bounded_prototype",
+  "provider": {
+    "id": "mbank",
+    "name": "mBank S.A.",
+    "logo": "../assets/logos/mbank.jpg"
+  },
+  "review": {
+    "verifiedAt": "2026-08-24",
+    "recheckBy": "2026-08-31",
+    "scope": "Product Identity, opłaty, kwalifikacja bieżącej Promotion Edition i funkcjonalne różnice",
+    "confidence": "HIGH_FOR_PRODUCT_FACTS_MEDIUM_FOR_USER_PROMOTION_ELIGIBILITY"
+  },
+  "inputFields": [
+    {
+      "id": "age",
+      "type": "number",
+      "label": "Ile masz lat?",
+      "shortLabel": "Wiek",
+      "min": 18,
+      "max": 100,
+      "step": 1,
+      "suffix": "lat",
+      "required": true,
+      "help": "Wiek rozdziela eKonto możliwości 18–24 od kont dla wszystkich pełnoletnich."
+    },
+    {
+      "id": "ownership",
+      "type": "choice",
+      "label": "Jak chcesz prowadzić konto?",
+      "shortLabel": "Sposób prowadzenia",
+      "required": true,
+      "options": [
+        { "value": "individual", "label": "Indywidualnie" },
+        { "value": "joint", "label": "Wspólnie z drugą osobą" }
+      ],
+      "help": "Konto wspólne jest potrzebą i sposobem własności produktu, a nie wariantem promocji."
+    },
+    {
+      "id": "monthlyInflows",
+      "type": "number",
+      "label": "Jakie miesięczne wpływy możesz zapewnić?",
+      "shortLabel": "Wpływy",
+      "min": 0,
+      "max": 1000000,
+      "step": 100,
+      "suffix": "zł",
+      "required": true,
+      "help": "Sam wpływ nie dowodzi wpływu wynagrodzenia wymaganego dla części bonusu."
+    },
+    {
+      "id": "monthlyCardSpend",
+      "type": "number",
+      "label": "Ile miesięcznie naturalnie wydajesz kartą?",
+      "shortLabel": "Wydatki kartą",
+      "min": 0,
+      "max": 1000000,
+      "step": 50,
+      "suffix": "zł",
+      "required": true,
+      "help": "BLIK nie zastępuje kartowego warunku promocji. Przy koncie wspólnym bank bada 350 zł osobno dla karty każdej osoby."
+    },
+    {
+      "id": "qualifyingAssets",
+      "type": "number",
+      "label": "Ile masz kwalifikowanych depozytów i inwestycji w mBanku?",
+      "shortLabel": "Kwalifikowane aktywa",
+      "min": 0,
+      "max": 100000000,
+      "step": 1000,
+      "suffix": "zł",
+      "required": true,
+      "help": "Dla mKonta Intensive liczą się kwalifikowane aktywa na produktach dla osób fizycznych."
+    },
+    {
+      "id": "premiumServices",
+      "type": "choice",
+      "label": "Czy potrzebujesz obsługi i usług premium?",
+      "shortLabel": "Usługi premium",
+      "required": true,
+      "options": [
+        { "value": "yes", "label": "Tak" },
+        { "value": "no", "label": "Nie" }
+      ]
+    },
+    {
+      "id": "travelNeeds",
+      "type": "choice",
+      "label": "Jak ważne są dla Ciebie korzyści podróżne?",
+      "shortLabel": "Podróże",
+      "required": true,
+      "options": [
+        { "value": "frequent", "label": "Częste podróże" },
+        { "value": "occasional", "label": "Okazjonalne" },
+        { "value": "none", "label": "Nie są potrzebne" }
+      ]
+    },
+    {
+      "id": "childAccount",
+      "type": "choice",
+      "label": "Czy potrzebujesz też konta dla dziecka?",
+      "shortLabel": "Konto dziecka",
+      "required": true,
+      "options": [
+        { "value": "yes", "label": "Tak" },
+        { "value": "no", "label": "Nie" }
+      ]
+    }
+  ],
+  "decisionPolicy": {
+    "sequence": [
+      "user_scenario",
+      "product_identity",
+      "product_eligibility",
+      "promotion_eligibility",
+      "north_decision"
+    ],
+    "numericScoreAllowed": false,
+    "advertisedMaxCanOverrideProductFit": false,
+    "affiliateEconomicsAffectDecision": false,
+    "allowNoPreferredProduct": true,
+    "doNothingRequired": true
+  },
+  "promotionEditions": [
+    {
+      "id": "mbank-cala-naprzod-2026-edition-1",
+      "name": "Cała naprzód — zyskuj z kontem w mBanku — edycja I",
+      "status": "active_as_reviewed",
+      "entryFrom": "2026-05-28",
+      "entryTo": "2026-08-31",
+      "payoutEnd": "2027-04-30",
+      "eligibleProductIds": [
+        "mbank-ekonto-mozliwosci-18-24",
+        "mbank-ekonto-do-uslug",
+        "mbank-mkonto-intensive"
+      ],
+      "ownershipEligibility": "individual_only",
+      "newCustomerRule": "Od 01.01.2022 użytkownik nie był i nadal nie jest posiadaczem ani współposiadaczem wskazanego ROR lub rachunku oszczędnościowego mBanku.",
+      "newCustomerStatusInPrototype": "unresolved_not_asked",
+      "commonRequirements": {
+        "monthlyCardSpend": 350,
+        "savingsGoalOpeningBalance": 100,
+        "recurringSavingsIncrease": 100,
+        "activeMonths": 6,
+        "salaryMonthsForBonus": 4
+      },
+      "productOverrides": {
+        "mbank-ekonto-mozliwosci-18-24": {
+          "maximumCash": 900,
+          "initialAndMonthlyInflows": 1000,
+          "salaryIncome": 1000,
+          "childBonus": 0,
+          "linkedSavings": "5,3% w skali roku do 50 000 zł przez 90 dni"
+        },
+        "mbank-ekonto-do-uslug": {
+          "maximumCash": 1000,
+          "initialAndMonthlyInflows": 2000,
+          "salaryIncome": 2000,
+          "childBonus": 100,
+          "linkedSavings": "5,3% w skali roku do 50 000 zł przez 90 dni"
+        },
+        "mbank-mkonto-intensive": {
+          "maximumCash": 1000,
+          "initialAndMonthlyInflows": 2000,
+          "salaryIncome": 2000,
+          "childBonus": 100,
+          "linkedSavings": "5,5% w skali roku do 100 000 zł przez 90 dni"
+        }
+      },
+      "linkedSavingsRelationship": "linked_not_summed",
+      "failureRisks": [
+        "Zmiana rachunku indywidualnego na wspólny kończy udział w promocji.",
+        "BLIK nie zastępuje wymaganych płatności kartą.",
+        "Wpływy miesięczne nie dowodzą automatycznie kwalifikowanego wpływu wynagrodzenia.",
+        "Niespełnienie miesięcznego wzrostu salda na rachunku moje cele może obniżyć wartość promocji."
+      ]
+    }
+  ],
+  "productIdentities": [
+    {
+      "id": "mbank-ekonto-mozliwosci-18-24",
+      "name": "eKonto możliwości",
+      "segmentLabel": "Dla osób w wieku 18–24 lata",
+      "productEligibility": {
+        "ageMin": 18,
+        "ageMax": 24,
+        "ownershipModes": ["individual"]
+      },
+      "cost": {
+        "model": "always_free",
+        "accountMonthly": 0,
+        "cardMonthly": 0,
+        "waiver": "Konto i karta kosztują 0 zł bez warunku aktywności."
+      },
+      "functionalValue": [
+        "Konto i karta Visa Me bez miesięcznej opłaty.",
+        "Wypłaty ze wszystkich bankomatów w Polsce bez opłaty od 100 zł.",
+        "Wypłaty kartą za granicą bez prowizji mBanku.",
+        "Opcjonalna Visa Podróże bez opłaty przy 350 zł płatności kartą miesięcznie."
+      ],
+      "fitRules": [
+        {
+          "when": { "any": [
+            { "field": "premiumServices", "op": "eq", "value": "yes" },
+            { "field": "travelNeeds", "op": "eq", "value": "frequent" }
+          ] },
+          "band": "CONDITIONAL FIT",
+          "reason": "Wiek pasuje, ale potrzeby premium lub częste podróże mogą uzasadniać produkt z szerszym pakietem."
+        },
+        {
+          "when": { "always": true },
+          "band": "FIT",
+          "reason": "Produkt jest zaprojektowany dla wieku 18–24 i nie wymaga warunku zwolnienia z opłaty za konto ani kartę."
+        }
+      ]
+    },
+    {
+      "id": "mbank-ekonto-do-uslug",
+      "name": "eKonto do usług",
+      "segmentLabel": "Standardowe konto osobiste lub wspólne",
+      "productEligibility": {
+        "ageMin": 18,
+        "ageMax": null,
+        "ownershipModes": ["individual", "joint"]
+      },
+      "cost": {
+        "model": "card_spend_waiver",
+        "accountMonthly": 0,
+        "cardMonthly": 9,
+        "cardWaiverSpend": 350,
+        "jointWaiverPerCardholder": true,
+        "waiver": "Konto kosztuje 0 zł. Karta kosztuje 0 zł po 350 zł płatności miesięcznie; przy koncie wspólnym warunek dotyczy osobno karty każdej osoby."
+      },
+      "functionalValue": [
+        "Standardowe konto bez opłaty za prowadzenie.",
+        "Może działać jako konto indywidualne albo wspólne.",
+        "Wypłaty w Polsce bez opłaty od 300 zł i wypłaty za granicą bez prowizji mBanku.",
+        "Opcjonalna Visa Podróże bez opłaty przy 700 zł płatności kartą miesięcznie."
+      ],
+      "fitRules": [
+        {
+          "when": { "field": "ownership", "op": "eq", "value": "joint" },
+          "band": "FIT",
+          "reason": "To podstawowy Product Identity mBanku obsługujący wspólne finanse."
+        },
+        {
+          "when": { "all": [
+            { "field": "age", "op": "between", "value": [18, 24] },
+            { "field": "premiumServices", "op": "eq", "value": "no" },
+            { "field": "travelNeeds", "op": "ne", "value": "frequent" }
+          ] },
+          "band": "CONDITIONAL FIT",
+          "reason": "Produkt jest dostępny, ale w wieku 18–24 eKonto możliwości usuwa warunek zwolnienia z opłaty za kartę."
+        },
+        {
+          "when": { "all": [
+            { "any": [
+              { "field": "premiumServices", "op": "eq", "value": "yes" },
+              { "field": "travelNeeds", "op": "eq", "value": "frequent" }
+            ] },
+            { "any": [
+              { "field": "monthlyInflows", "op": "gte", "value": 10000 },
+              { "field": "qualifyingAssets", "op": "gte", "value": 100000 }
+            ] }
+          ] },
+          "band": "CONDITIONAL FIT",
+          "reason": "Standardowe konto działa, ale przy naturalnym spełnieniu progu Intensive nie wykorzystuje potrzeb premium tak dobrze jak mKonto Intensive."
+        },
+        {
+          "when": { "always": true },
+          "band": "FIT",
+          "reason": "Produkt pasuje do zwykłego, pełnoletniego użytkowania bez potrzeby pakietu premium."
+        }
+      ]
+    },
+    {
+      "id": "mbank-mkonto-intensive",
+      "name": "mKonto Intensive",
+      "segmentLabel": "Konto premium dla wyższych wpływów lub aktywów",
+      "productEligibility": {
+        "ageMin": 18,
+        "ageMax": null,
+        "ownershipModes": ["individual", "joint"]
+      },
+      "cost": {
+        "model": "account_waiver_any",
+        "accountMonthly": 49.5,
+        "cardMonthly": 0,
+        "waiverInflows": 10000,
+        "waiverAssets": 100000,
+        "waiver": "0 zł za konto przy minimum 10 000 zł miesięcznych wpływów albo 100 000 zł kwalifikowanych aktywów; w przeciwnym razie 49,50 zł miesięcznie."
+      },
+      "functionalValue": [
+        "Karta Visa Świat Intensive do płatności w wielu walutach bez prowizji mBanku za przewalutowanie.",
+        "Wypłaty z bankomatów za granicą bez prowizji mBanku.",
+        "Fast Track na lotnisku Chopina i usługa concierge.",
+        "Obsługa premium i osobisty ekspert."
+      ],
+      "fitRules": [
+        {
+          "when": { "all": [
+            { "any": [
+              { "field": "premiumServices", "op": "eq", "value": "yes" },
+              { "field": "travelNeeds", "op": "eq", "value": "frequent" }
+            ] },
+            { "any": [
+              { "field": "monthlyInflows", "op": "gte", "value": 10000 },
+              { "field": "qualifyingAssets", "op": "gte", "value": 100000 }
+            ] }
+          ] },
+          "band": "FIT",
+          "reason": "Potrzeby premium lub podróżne są materialne, a próg bezpłatnego prowadzenia spełniasz naturalnie."
+        },
+        {
+          "when": { "any": [
+            { "field": "premiumServices", "op": "eq", "value": "yes" },
+            { "field": "travelNeeds", "op": "eq", "value": "frequent" }
+          ] },
+          "band": "CONDITIONAL FIT",
+          "reason": "Funkcje mogą pasować, ale bez naturalnego zwolnienia pojawia się koszt 49,50 zł miesięcznie."
+        },
+        {
+          "when": { "always": true },
+          "band": "POOR FIT",
+          "reason": "Bez potrzeby premium lub częstych podróży produkt dokłada warunek kosztowy bez materialnej przewagi."
+        }
+      ]
+    }
+  ],
+  "recommendationRules": [
+    {
+      "when": { "field": "age", "op": "lt", "value": 18 },
+      "preferredProductId": null,
+      "summary": "Ten bounded prototype nie porównuje produktów dla osoby niepełnoletniej.",
+      "decisiveFactors": ["Żaden z trzech porównywanych Product Identities nie odpowiada temu scenariuszowi."],
+      "tradeOffs": ["Potrzebny jest osobny produkt dla osoby w wieku 13–17 lat lub dla dziecka." ]
+    },
+    {
+      "when": { "all": [
+        { "field": "ownership", "op": "eq", "value": "joint" },
+        { "any": [
+          { "field": "premiumServices", "op": "eq", "value": "yes" },
+          { "field": "travelNeeds", "op": "eq", "value": "frequent" }
+        ] },
+        { "any": [
+          { "field": "monthlyInflows", "op": "gte", "value": 10000 },
+          { "field": "qualifyingAssets", "op": "gte", "value": 100000 }
+        ] }
+      ] },
+      "preferredProductId": "mbank-mkonto-intensive",
+      "summary": "mKonto Intensive najlepiej odpowiada wspólnym finansom z realną potrzebą premium i naturalnym zwolnieniem z opłaty.",
+      "decisiveFactors": ["Wspólne finanse", "Potrzeba premium lub częstych podróży", "Naturalne spełnienie progu bezpłatnego Intensive"],
+      "tradeOffs": ["Bieżąca promocja Cała naprzód dotyczy rachunku indywidualnego, więc nie daje wartości dla konta wspólnego."]
+    },
+    {
+      "when": { "field": "ownership", "op": "eq", "value": "joint" },
+      "preferredProductId": "mbank-ekonto-do-uslug",
+      "summary": "eKonto do usług jest najprostszym dopasowaniem do wspólnego zarządzania pieniędzmi.",
+      "decisiveFactors": ["Wspólny dostęp do środków", "Brak potrzeby kosztownego pakietu premium", "0 zł za prowadzenie konta"],
+      "tradeOffs": ["Warunek bezpłatności kart dotyczy osobno każdej osoby.", "Bieżąca promocja Cała naprzód nie kwalifikuje rachunku wspólnego."]
+    },
+    {
+      "when": { "all": [
+        { "field": "ownership", "op": "eq", "value": "individual" },
+        { "field": "age", "op": "between", "value": [18, 24] },
+        { "not": { "all": [
+          { "any": [
+            { "field": "premiumServices", "op": "eq", "value": "yes" },
+            { "field": "travelNeeds", "op": "eq", "value": "frequent" }
+          ] },
+          { "any": [
+            { "field": "monthlyInflows", "op": "gte", "value": 10000 },
+            { "field": "qualifyingAssets", "op": "gte", "value": 100000 }
+          ] }
+        ] } }
+      ] },
+      "preferredProductId": "mbank-ekonto-mozliwosci-18-24",
+      "summary": "eKonto możliwości najlepiej pasuje do osoby 18–24, która potrzebuje prostego konta bez warunku za kartę.",
+      "decisiveFactors": ["Wiek 18–24", "Konto indywidualne", "0 zł za konto i kartę bez warunku aktywności"],
+      "tradeOffs": ["Maksimum promocji jest o 100 zł niższe, ale wyższa premia nie równoważy gorszego Product Fit.", "Produkt nie zawiera bonusu za otwarcie konta dla dziecka."]
+    },
+    {
+      "when": { "all": [
+        { "field": "ownership", "op": "eq", "value": "individual" },
+        { "any": [
+          { "field": "premiumServices", "op": "eq", "value": "yes" },
+          { "field": "travelNeeds", "op": "eq", "value": "frequent" }
+        ] },
+        { "any": [
+          { "field": "monthlyInflows", "op": "gte", "value": 10000 },
+          { "field": "qualifyingAssets", "op": "gte", "value": 100000 }
+        ] }
+      ] },
+      "preferredProductId": "mbank-mkonto-intensive",
+      "summary": "mKonto Intensive najlepiej wykorzystuje realną potrzebę premium lub częste podróże bez dokładania miesięcznej opłaty.",
+      "decisiveFactors": ["Potrzeba premium lub częste podróże", "Naturalne spełnienie progu bezpłatnego prowadzenia", "Funkcje podróżne i obsługa premium"],
+      "tradeOffs": ["Utrata progu 10 000 zł wpływów lub 100 000 zł aktywów oznacza 49,50 zł miesięcznie.", "Nie wyceniamy funkcji premium jako gotówki."]
+    },
+    {
+      "when": { "all": [
+        { "field": "ownership", "op": "eq", "value": "individual" },
+        { "field": "age", "op": "gte", "value": 18 }
+      ] },
+      "preferredProductId": "mbank-ekonto-do-uslug",
+      "summary": "eKonto do usług najlepiej pasuje do standardowego, indywidualnego korzystania bez potrzeby pakietu premium.",
+      "decisiveFactors": ["Pełnoletni użytkownik poza segmentem 18–24", "Brak materialnej potrzeby premium", "0 zł za prowadzenie konta"],
+      "tradeOffs": ["Karta wymaga 350 zł płatności miesięcznie, aby kosztowała 0 zł.", "Visa Podróże ma osobny, wyższy próg bezpłatności i nie jest automatycznie potrzebna."]
+    }
+  ],
+  "commonUnresolvedFactors": [
+    "Historia relacji z mBankiem od 01.01.2022 nie jest pytana w tym krótkim flow, więc indywidualna kwalifikacja do promocji pozostaje warunkowa.",
+    "Zadeklarowane wpływy nie dowodzą, że bank uzna je za wpływ wynagrodzenia dla bonusu 300 zł.",
+    "Flow nie pyta o metodę otwarcia ani comiesięczny wzrost oszczędności o 100 zł; oba czynniki mogą zmienić wartość promocji."
+  ],
+  "doNothing": {
+    "label": "Nie otwieraj nowego konta",
+    "reward": "0 zł",
+    "newMonthlyCost": "0 zł",
+    "effort": "minimalny",
+    "failureRisk": "brak nowego ryzyka utraty premii"
+  },
+  "acceptanceScenarios": [
+    {
+      "id": "age-22-solo-ordinary",
+      "label": "22 lata / solo / zwykłe użycie",
+      "inputs": { "age": 22, "ownership": "individual", "monthlyInflows": 3000, "monthlyCardSpend": 600, "qualifyingAssets": 0, "premiumServices": "no", "travelNeeds": "occasional", "childAccount": "no" },
+      "expectedPreferredProductId": "mbank-ekonto-mozliwosci-18-24"
+    },
+    {
+      "id": "age-30-standard",
+      "label": "30 lat / standard / bez premium",
+      "inputs": { "age": 30, "ownership": "individual", "monthlyInflows": 5000, "monthlyCardSpend": 800, "qualifyingAssets": 10000, "premiumServices": "no", "travelNeeds": "occasional", "childAccount": "no" },
+      "expectedPreferredProductId": "mbank-ekonto-do-uslug"
+    },
+    {
+      "id": "premium-qualified-traveler",
+      "label": "premium-qualified traveler",
+      "inputs": { "age": 38, "ownership": "individual", "monthlyInflows": 12000, "monthlyCardSpend": 3000, "qualifyingAssets": 150000, "premiumServices": "yes", "travelNeeds": "frequent", "childAccount": "no" },
+      "expectedPreferredProductId": "mbank-mkonto-intensive"
+    },
+    {
+      "id": "shared-finances",
+      "label": "shared finances",
+      "inputs": { "age": 34, "ownership": "joint", "monthlyInflows": 7000, "monthlyCardSpend": 1400, "qualifyingAssets": 20000, "premiumServices": "no", "travelNeeds": "occasional", "childAccount": "yes" },
+      "expectedPreferredProductId": "mbank-ekonto-do-uslug",
+      "expectedPromotionEligibility": "NOT ELIGIBLE"
+    }
+  ],
+  "sources": [
+    {
+      "id": "mbank-accounts-overview",
+      "type": "official_product_page",
+      "title": "Konta osobiste w mBanku — porównanie",
+      "url": "https://www.mbank.pl/indywidualny/konta/konta-osobiste/",
+      "supports": ["product identity separation", "ownership need"]
+    },
+    {
+      "id": "mbank-young-product",
+      "type": "official_product_page",
+      "title": "eKonto możliwości 18–24",
+      "url": "https://www.mbank.pl/indywidualny/dla-mlodych/i-mozesz-wiecej/",
+      "supports": ["age eligibility", "product cost", "functional value", "promotion maximum"]
+    },
+    {
+      "id": "mbank-standard-product",
+      "type": "official_product_page",
+      "title": "eKonto do usług",
+      "url": "https://www.mbank.pl/indywidualny/konta/konta-osobiste/ekonto-do-uslug/",
+      "supports": ["product cost", "card waiver", "joint ownership", "functional value"]
+    },
+    {
+      "id": "mbank-intensive-product",
+      "type": "official_product_page",
+      "title": "mKonto Intensive",
+      "url": "https://www.mbank.pl/indywidualny/konta/konta-osobiste/mkonto-intensive/",
+      "supports": ["product cost", "fee waiver", "premium and travel value"]
+    },
+    {
+      "id": "mbank-cala-naprzod-regulation",
+      "type": "official_regulation",
+      "title": "Regulamin promocji Cała naprzód — edycja I",
+      "url": "https://www.mbank.pl/pdf/promocje/konta/regulamin-promocji-cala-naprzod-zyskuj-z-kontem-w-mbanku-edycja-i.pdf",
+      "supports": ["eligible product identities", "promotion values", "product overrides", "joint exclusion", "linked savings separation", "execution requirements"]
+    },
+    {
+      "id": "mbank-joint-product",
+      "type": "official_product_page",
+      "title": "Wspólne eKonto do usług",
+      "url": "https://www.mbank.pl/indywidualny/konta/konta-osobiste/wspolne/",
+      "supports": ["joint ownership functional value", "per-cardholder waiver"]
+    },
+    {
+      "id": "mbank-joint-intensive-product",
+      "type": "official_product_page",
+      "title": "Wspólne mKonto Intensive",
+      "url": "https://www.mbank.pl/indywidualny/konta/konta-osobiste/wspolne-mkonto-intensive/",
+      "supports": ["joint ownership for premium product", "joint premium functional value"]
+    }
+  ]
+}

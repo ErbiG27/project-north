@@ -72,4 +72,4 @@ Nigdy nie może zmieniać wcześniejszego Product Verdict, North Value, Match, C
 
 ## Aktywny follow-up v0.8.0
 
-**mBank Product & Promotion Variant Mapping** — etap został otwarty 24.08.2026 jako pierwszy przypadek Alternative Comparison. Mapowanie, official evidence i kontrakt rozdzielają trzy Product Identities, a lokalny bounded UI prototype konsumuje je na osobnej trasie noindex. Nie zmienia `decision-offers.json`, homepage, sitemap ani publicznego katalogu; integracja z publicznym flow wymaga osobnej decyzji po Founder Review.
+**mBank Product & Promotion Variant Mapping** — etap został otwarty 24.08.2026 jako pierwszy przypadek Alternative Comparison. Mapowanie, official evidence i kontrakt rozdzielają trzy Product Identities, a lokalny bounded UI prototype konsumuje je na osobnej trasie noindex. Founder Review i wymagany UX density pass zakończyły się PASS. Prototyp nie zmienia `decision-offers.json`, homepage, sitemap ani publicznego katalogu; integracja z publicznym flow wymaga osobnej decyzji po kolejnym Founder Review.

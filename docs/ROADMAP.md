@@ -22,13 +22,13 @@ North UX Test #1, Evidence Reviews #1–#4, Data Integrity & Freshness Guard ora
 
 ### Aktywny etap — v0.8.0 Alternative Comparison & Product Identity Mapping
 
-**Status:** otwarte 24.08.2026. Mapowanie i kontrakt są zaakceptowane; osobny zatwierdzony task zbudował lokalny bounded UI prototype oczekujący na Founder Review. Integracja publiczna nie jest otwarta.
+**Status:** otwarte 24.08.2026. Mapowanie i kontrakt są zaakceptowane; lokalny bounded UI prototype przeszedł Founder Review i wymagany UX density pass. Jest gotowy do kolejnego Founder Review. Integracja publiczna nie jest otwarta.
 
 - Punktem wejścia jest sytuacja użytkownika, nie nazwa banku ani reklamowane maksimum.
 - Najpierw wybieramy właściwy `Product Identity`, następnie kwalifikowaną edycję lub wariant promocji, a dopiero później niezależne źródło afiliacyjne.
 - mBank jest pierwszym przypadkiem referencyjnym: eKonto możliwości 18–24, eKonto do usług oraz mKonto Intensive odpowiadają innym sytuacjom i nie mogą być zlane w jedną kartę „mBank”. Konto wspólne pozostaje osobną osią potrzeb i wymaga własnego mapowania.
 - Wynik ma pokazywać: rekomendowany kierunek dla scenariusza, powody, warunki, koszt niedopasowania, sensowne alternatywy i `Do Nothing`; nie tworzy rankingu kont ani uniwersalnego zwycięzcy.
-- Bounded route konsumuje osobny kontrakt, nie zmienia `decision-offers.json`, homepage, katalogu ani produkcji. Kolejna decyzja po Founder Review dotyczy dalszej walidacji lub osobnego tasku integracyjnego.
+- Bounded route konsumuje osobny kontrakt, nie zmienia `decision-offers.json`, homepage, katalogu ani produkcji. Kolejna decyzja po następnym Founder Review dotyczy dalszej walidacji lub osobnego tasku integracyjnego.
 
 Równolegle pozostają aktywne operacje: freshness recheck 31.08.2026, oczekiwanie na odpowiedzi supportów afiliacyjnych, późniejszy wybór źródeł i projekt małego pilota trackingowego. Prowizja nie wpływa na wynik porównania.
 
@@ -156,7 +156,7 @@ Ten etap mógł rozpocząć się wyłącznie po walidacji podstawowej trójki v0
 
 ### v0.8.0 — Alternative Comparison & Product Identity Mapping
 
-**Status:** aktywny etap; bounded UI prototype jest lokalnie zaimplementowany i zwalidowany, oczekuje na Founder Review, bez publicznej integracji.
+**Status:** aktywny etap; bounded UI prototype jest lokalnie zaimplementowany, przeszedł Founder Review i UX density pass oraz jest gotowy do kolejnego Founder Review, bez publicznej integracji.
 
 **Cel:** przejść od analizy jednej wskazanej oferty do wyjaśnialnego wyboru produktu dla sytuacji użytkownika, bez budowania rankingu reklamowanych premii.
 
@@ -165,7 +165,7 @@ Ten etap mógł rozpocząć się wyłącznie po walidacji podstawowej trójki v0
 - Zaprojektować widok, który najpierw wyjaśnia „dlaczego ten produkt pasuje”, a następnie pokazuje dwie uczciwe alternatywy i ryzyka zmiany scenariusza.
 - Rozdzielić porównanie produktu od wyboru promocji, kanału i źródła afiliacyjnego zgodnie z `OFFER_TAXONOMY.md`.
 - Utrzymać jakościowe Match/Verdict, jawne Confidence i Evidence oraz obowiązkową alternatywę `Do Nothing`; bez Match %, Score 0–100 i automatycznego sumowania wariantów.
-- Po Founder Review zdecydować, czy poprawić bounded prototype, przeprowadzić dodatkową walidację jakościową, czy otworzyć osobny task integracji z publicznym flow.
+- Po kolejnym Founder Review zdecydować, czy przeprowadzić dodatkową walidację jakościową, czy otworzyć osobny task integracji z publicznym flow.
 
 **Definition of Done:** istnieje zatwierdzony, generyczny kontrakt porównania i sprawdzony prototyp mBank, a następnie jego implementacja potrafi wybrać właściwy produkt i wariant dla scenariusza bez bankowych wyjątków w logice, bez wpływu afiliacji i bez sugerowania uniwersalnego zwycięzcy.
 

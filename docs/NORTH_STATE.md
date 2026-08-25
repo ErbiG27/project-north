@@ -1,6 +1,6 @@
 # ProjectNorth — canonical state and AI recovery
 
-> Master recovery document · stan kanoniczny: 2026-08-24 · publiczny release aplikacji: `24c2d7c5450b44ae07e12267f592b5898849bb54` · Decision Model v1
+> Master recovery document · stan kanoniczny: 2026-08-25 · publiczny release aplikacji: `24c2d7c5450b44ae07e12267f592b5898849bb54` · Decision Model v1
 
 Ten dokument jest pierwszym źródłem bieżącego kontekstu po utracie rozmowy, zmianie AI, zmianie osoby pracującej nad projektem albo dłuższej przerwie. Szczegóły wydań należą do `CHANGELOG.md`, trwałe uzasadnienia do `DECISIONS.md`, a fakty wdrożonych ofert do `frontend/data/decision-offers.json`.
 
@@ -216,7 +216,7 @@ Dopóki odpowiedzi nie nadejdą, Preferred Source i Backup Source pozostają hip
 
 ## 11. Aktualny etap projektu
 
-Continuity Lock #1 zakończył **Continuity & Sync Hardening**. Aktywnym etapem produktowym jest teraz **v0.8.0 Alternative Comparison & Product Identity Mapping**, otwarte 24.08.2026. Zaakceptowane mapowanie i kontrakt mBank mają lokalny bounded UI prototype oczekujący na Founder Review; nie jest to funkcja publiczna.
+Continuity Lock #1 zakończył **Continuity & Sync Hardening**. Aktywnym etapem produktowym jest teraz **v0.8.0 Alternative Comparison & Product Identity Mapping**, otwarte 24.08.2026. Lokalny bounded UI prototype mBank przeszedł Founder Review i wymagany UX density pass; jest gotowy do kolejnego Founder Review i nie jest funkcją publiczną.
 
 Etap ma rozszerzyć flow North z oceny jednej wskazanej oferty do wyboru właściwego produktu dla sytuacji użytkownika:
 
@@ -226,7 +226,7 @@ Etap ma rozszerzyć flow North z oceny jednej wskazanej oferty do wyboru właśc
 4. **North decision** — pokazać Value, Match, Confidence, Verdict, alternatywy i `Do Nothing` bez rankingu ani uniwersalnego zwycięzcy.
 5. **Affiliate source** — wybrać źródło operacyjne dopiero po niezależnej decyzji produktowej.
 
-mBank jest pierwszym przypadkiem referencyjnym. Mapowanie rozdziela eKonto możliwości 18–24, eKonto do usług i mKonto Intensive; konto wspólne jest osobną potrzebą, nie wariantem premii. Osobna trasa `frontend/prototypes/mbank-alternative-comparison.html` konsumuje kontrakt v0.8.0 i przeszła cztery acceptance scenarios oraz desktop/mobile/accessibility smoke. Publiczny `decision-offers.json`, homepage, sitemap, katalog i produkcja pozostają bez zmian.
+mBank jest pierwszym przypadkiem referencyjnym. Mapowanie rozdziela eKonto możliwości 18–24, eKonto do usług i mKonto Intensive; konto wspólne jest osobną potrzebą, nie wariantem premii. Osobna trasa `frontend/prototypes/mbank-alternative-comparison.html` konsumuje kontrakt v0.8.0; po Founder Review pokazuje pełną kartę zwycięzcy oraz domyślnie zwinięte alternatywy, evidence i metodologię. Cztery acceptance scenarios oraz skrócona rewalidacja desktop/mobile/accessibility przeszły po density pass. Publiczny `decision-offers.json`, homepage, sitemap, katalog i produkcja pozostają bez zmian.
 
 Równolegle trwają: freshness recheck 31.08.2026, oczekiwanie na odpowiedzi supportów Money2Money, ComperiaLead i LeadStar, późniejszy wybór `Preferred Source` / `Backup Source` / `No verified source` oraz projekt małego pilota trackingowego. Najpierw wartość i realne użycie produktu; dopiero własne dane pozwolą ocenić realized economics.
 
@@ -235,9 +235,9 @@ Równolegle trwają: freshness recheck 31.08.2026, oczekiwanie na odpowiedzi sup
 - Preferred/Backup Source bez potwierdzonych zasad operacyjnych supportu.
 - Cookie window, cross-device, caps, acceptance/reversal, własne materiały, community traffic, tracking i revenue-share permissions.
 - Skuteczność pierwszych kanałów Facebook/Discord i faktyczne zainteresowanie użytkowników.
-- Founder Review lokalnego bounded UI: hierarchia wyniku, gęstość kart kandydatów i gotowość ośmiu pytań do dalszej walidacji.
+- Kolejny Founder Review lokalnego bounded UI: potwierdzenie hierarchii pełnego zwycięzcy, zwiniętych alternatyw i evidence po density pass.
 - Czy konto wspólne wymaga osobnego pytania o wydatki kartą każdej osoby, czy jawny unresolved factor wystarcza w pierwszym flow.
-- Sposób integracji Alternative Comparison z publicznym routingiem dopiero po zaakceptowaniu bounded prototype; obecna trasa pozostaje noindex i bez linku z homepage.
+- Sposób integracji Alternative Comparison z publicznym routingiem wymaga osobnej decyzji po kolejnym Founder Review; obecna trasa pozostaje noindex i bez linku z homepage.
 - Bieżąca dostępność promocji po ich terminach `recheckBy`; wymaga ręcznej kontroli, nie założenia.
 
 ## 13. Czego teraz świadomie nie robimy
@@ -246,7 +246,7 @@ Nie otwieramy teraz:
 
 - Evidence Review #5 tylko z powodu rechecku 31.08;
 - szerokiego lub hurtowego Catalog Expansion;
-- integracji Alternative Comparison z publicznym frontendem przed Founder Review bounded prototype;
+- integracji Alternative Comparison z publicznym frontendem bez osobnej decyzji po kolejnym Founder Review bounded prototype;
 - szerokiej porównywarki cross-bank przed walidacją generycznego flow na kontrolowanych rodzinach produktów;
 - prywatnej bety przed kamieniem milowym 1.0; build testowy ma używać oznaczenia `v1.0-beta`, nie udawać stabilnego publicznego 1.0;
 - Offer Execution bez osobnej decyzji i zweryfikowanych warunków bezpiecznego wykonania;

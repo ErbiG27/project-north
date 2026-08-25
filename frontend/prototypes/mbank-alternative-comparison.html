@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Bounded prototype North v0.8.0 porównujący trzy Product Identities mBanku dla konkretnej sytuacji użytkownika.">
+    <title>mBank — porównanie Product Identity | North v0.8.0 prototype</title>
+    <link rel="icon" href="../assets/brand/favicon.ico" sizes="any">
+    <link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../style.css?v=catalog-5">
+    <link rel="stylesheet" href="../styles/pages/alternative-comparison.css?v=prototype-2">
+</head>
+<body class="decision-offer-page alternative-comparison-page">
+    <a class="skip-link" href="#comparison-content">Przejdź do porównania</a>
+
+    <header class="offer-site-header">
+        <a href="../index.html#opportunities" class="back-link">← Katalog 12 analiz</a>
+        <a href="../index.html" class="site-brand" aria-label="North — strona główna">
+            <img src="../assets/brand/north-logo.svg" alt="North">
+        </a>
+        <span class="prototype-badge">Prototype · v0.8.0</span>
+    </header>
+
+    <main id="comparison-content" class="comparison-shell">
+        <section class="comparison-hero" aria-labelledby="comparison-title">
+            <div>
+                <p class="section-kicker"><span aria-hidden="true"></span> Alternative Comparison · bounded mBank case</p>
+                <h1 id="comparison-title">Najpierw właściwe konto. <em>Dopiero potem promocja.</em></h1>
+                <p class="comparison-hero__lead">Odpowiedz na osiem pytań, które naprawdę rozdzielają produkty. North porówna eKonto możliwości, eKonto do usług i mKonto Intensive bez rankingu po wysokości premii.</p>
+                <ul class="comparison-principles" aria-label="Zasady prototypu">
+                    <li>Bez numeric score</li>
+                    <li>Premia nie zastępuje Product Fit</li>
+                    <li>Odpowiedzi zostają w przeglądarce</li>
+                </ul>
+            </div>
+            <aside class="comparison-sequence" aria-label="Kolejność decyzji North">
+                <span>01</span><p><strong>Twoja sytuacja</strong>Wiek, sposób prowadzenia, wpływy i potrzeby.</p>
+                <span>02</span><p><strong>Product Identity</strong>Produkt, który faktycznie otwierasz.</p>
+                <span>03</span><p><strong>Promocja</strong>Dopiero dla kwalifikowanego produktu i użytkownika.</p>
+            </aside>
+        </section>
+
+        <section class="comparison-workspace" aria-labelledby="scenario-title">
+            <div class="comparison-form-panel">
+                <div class="comparison-section-heading">
+                    <p class="section-kicker"><span aria-hidden="true"></span> Twój scenariusz</p>
+                    <h2 id="scenario-title">Co zmienia wybór produktu?</h2>
+                    <p>Nie pytamy o imię, PESEL, bank ani dane logowania.</p>
+                </div>
+                <form id="comparison-form" class="comparison-form" novalidate>
+                    <div id="comparison-fields" class="comparison-fields">
+                        <p class="data-loading">Ładowanie kontraktu porównania…</p>
+                    </div>
+                    <div class="comparison-form-actions">
+                        <button class="north-button" type="submit">Porównaj trzy konta <span aria-hidden="true">→</span></button>
+                        <button class="comparison-reset" type="reset">Wyczyść odpowiedzi</button>
+                    </div>
+                    <p id="comparison-form-error" class="comparison-form-error" role="alert" hidden>Uzupełnij wszystkie osiem odpowiedzi. Nie zgadujemy brakujących danych.</p>
+                </form>
+            </div>
+
+            <aside id="comparison-result" class="comparison-result" aria-live="polite" aria-atomic="false" tabindex="-1">
+                <div class="comparison-empty">
+                    <span>Wynik bez rankingu</span>
+                    <h2>Najpierw scenariusz, potem produkt.</h2>
+                    <p>Po odpowiedzi zobaczysz rekomendowany Product Identity albo brak jednoznacznego zwycięzcy, wraz z powodami, kompromisami i nierozstrzygniętymi warunkami.</p>
+                </div>
+            </aside>
+        </section>
+
+        <section id="candidate-comparison" class="candidate-section" aria-labelledby="candidate-title" hidden>
+            <div class="comparison-section-heading comparison-section-heading--wide">
+                <div>
+                    <p class="section-kicker"><span aria-hidden="true"></span> Wynik porównania</p>
+                    <h2 id="candidate-title">Najlepiej pasuje Ci</h2>
+                </div>
+                <p>Zwycięzca jest rozwinięty. Pozostałe Product Identities możesz otworzyć bez utraty pełnych danych.</p>
+            </div>
+            <div id="candidate-cards" class="candidate-cards"></div>
+        </section>
+
+        <details class="prototype-notes">
+            <summary>
+                <span>
+                    <span class="section-kicker"><span aria-hidden="true"></span> Metodologia prototypu</span>
+                    <strong>Granice krótkiego porównania</strong>
+                </span>
+                <span class="prototype-notes__hint" aria-hidden="true">Pokaż szczegóły</span>
+            </summary>
+            <div class="prototype-notes__body">
+                <h2>To nie jest publiczna rekomendacja ani ścieżka otwarcia konta.</h2>
+                <p>Prototyp nie pyta o historię relacji z mBankiem, typ wpływu wynagrodzenia ani metodę otwarcia. Dlatego kwalifikacja do promocji może pozostać warunkowa mimo dobrego Product Fit. Linked savings pokazujemy osobno i nie dodajemy do premii gotówkowej.</p>
+            </div>
+        </details>
+    </main>
+
+    <noscript><p class="comparison-noscript">Włącz JavaScript, aby użyć interaktywnego porównania. Prototyp nie wysyła odpowiedzi na serwer.</p></noscript>
+    <script type="module" src="mbank-alternative-comparison.mjs?v=prototype-2"></script>
+</body>
+</html>

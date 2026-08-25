@@ -7,11 +7,20 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 ### Added
 
 - Cross-AI continuity system: `AGENTS.md`, cienki `CLAUDE.md`, Context Map, Sync Protocol, Offer Taxonomy oraz krótka historia decyzji produktu.
+- Bounded, nieindeksowany prototyp mBank Alternative Comparison, który porównuje eKonto możliwości, eKonto do usług i mKonto Intensive z osobnego kontraktu v0.8.0 bez zmiany publicznego katalogu.
 
 ### Changed
 
 - `NORTH_STATE.md` stał się master recovery document, a README, Handbook, Decisions, Roadmap i AI Workflow zostały zsynchronizowane z publicznym katalogiem 12 ofert oraz etapem affiliate/support/pilot.
 - Utrwalono poprawną numerację Evidence Reviews #1–#4 i status Data Integrity & Freshness Guard jako osobnej technicznej walidacji.
+- Alternative Comparison wybiera najpierw Product Identity, następnie ocenia Product i Promotion eligibility; product-specific różnice są overrides, linked savings nie jest sumowane z gotówką, a afiliacja i numeric score pozostają poza decyzją.
+- Po Founder Review pełna karta zwycięzcy pozostaje rozwinięta, a pozostałe Product Identities, evidence i metodologia używają domyślnie zamkniętych, dostępnych disclosure bez usuwania danych.
+
+### Verified
+
+- Cztery scenariusze acceptance mBank przeszły przez interpreter i renderowany formularz; scenariusz 22-letni wybrał lepszy Product Fit mimo niższej maksymalnej premii.
+- Skrócona rewalidacja po density pass potwierdziła 4/4 acceptance, `preferredProductId: null`, reset disclosure, mysz i klawiaturę, fokus, desktop 1440×900, mobile 390×844, 0 px overflow oraz brak błędów konsoli, strony, żądań i relacji DOM/ARIA.
+- Data Guard zakończył się `0 FAIL / 6 WARN / 17 OK`, fixtures 16/16, Match 50/50 i składnia JS/MJS 11/11; lokalny i publiczny katalog nadal renderują 12 kart, a lokalne i publiczne trasy ofert zwracają 12/12 HTTP 200.
 
 ## [12-offer catalog release] — 2026-08-24
 
