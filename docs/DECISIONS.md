@@ -106,3 +106,23 @@ Prowizja, bonus wydawcy, sieć i dostępność kampanii nie mogą wpływać na N
 **Uzasadnienie:** nominalne stawki nie są porównywalne bez acceptance, reversal, tracking i warunków placementu. Najwyższa prowizja nie dowodzi najwyższej realized economics ani najlepszego wyniku dla użytkownika.
 
 **Konsekwencje:** oferta bez zweryfikowanego źródła może pozostać najlepszą decyzją dla użytkownika; wysokopłatna kampania może otrzymać `SKIP`. Do czasu odpowiedzi supportów Preferred/Backup Source pozostają hipotezami tam, gdzie brakuje pewności operacyjnej. Pierwsza aktywacja afiliacyjna ma być małym, śledzonym pilotem.
+
+## ADR-010 — Alternative Comparison zaczyna od sytuacji i Product Identity
+
+**Status:** accepted · **Data:** 2026-08-24 · **Źródła:** Decision Model v1 i `OFFER_TAXONOMY.md`
+
+North rozszerza pojedynczą analizę oferty o wyjaśnialne porównanie alternatyw. Kolejność decyzji to: `User Scenario → Product Identity → eligible Promotion Edition / Variant → North Value + Match + Verdict`. Dopiero po tej decyzji można wybrać dozwolone źródło afiliacyjne.
+
+**Uzasadnienie:** jeden bank może mieć kilka prawnie i funkcjonalnie różnych kont przeznaczonych dla innych sytuacji. Zlanie ich w jedną kartę banku albo porównanie tylko reklamowanych premii ukrywa opłaty, segmenty, funkcjonalne przewagi i koszt niedopasowania. Przypadek mBank służy jako pierwsza kontrolowana walidacja tej reguły, ale logika porównania ma pozostać generyczna i niezależna od nazw produktów.
+
+**Konsekwencje:** wynik nie jest rankingiem ani deklaracją uniwersalnego zwycięzcy. Ma wskazać rekomendowany kierunek dla jawnego scenariusza, powody, warunki, alternatywy, ryzyka zmiany założeń i `Do Nothing`. Product Identity, promocja, wariant, segment, kampania i źródło pozostają oddzielnymi warstwami. Implementacja frontendu może rozpocząć się dopiero po zatwierdzeniu kontraktu oraz prototypu i wymaga aktualnego official evidence dla wszystkich krytycznych pól.
+
+## ADR-011 — Prywatna beta należy do kamienia milowego 1.0
+
+**Status:** accepted · **Data:** 2026-08-24
+
+Prywatna beta nie jest już zakresem v0.8.0. v0.8.0 przejmuje Alternative Comparison & Product Identity Mapping, a prywatne testy zostają przesunięte do kamienia milowego 1.0 po wdrożeniu i walidacji porównania.
+
+**Uzasadnienie:** otwieranie bety przed rozwiązaniem wyboru między produktami testowałoby stary flow pojedynczej oferty, a nie kierunek produktu, który ma prowadzić od sytuacji użytkownika do właściwej decyzji. Jednocześnie nazwanie niezweryfikowanego buildu stabilnym `v1.0` tworzyłoby mylący sygnał gotowości.
+
+**Konsekwencje:** prywatny build używa oznaczenia prerelease `v1.0-beta`. Stabilne publiczne `v1.0` może zostać ogłoszone dopiero po przejściu bram porównania, freshness, źródeł, trackingu, transparentności afiliacyjnej i obserwacji użytkowników. Przesunięcie nie upoważnia do rozpoczęcia bety ani implementacji w bieżącym tasku.

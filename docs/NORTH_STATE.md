@@ -216,25 +216,28 @@ Dopóki odpowiedzi nie nadejdą, Preferred Source i Backup Source pozostają hip
 
 ## 11. Aktualny etap projektu
 
-Continuity Lock #1 domyka obecnie **Continuity & Sync Hardening**: cross-AI entrypointy, Context Map, Sync Protocol, Offer Taxonomy, kanoniczny recovery state oraz synchronizację GitHub ↔ Notion. Nie otwiera nowego sprintu produktowego.
+Continuity Lock #1 zakończył **Continuity & Sync Hardening**. Aktywnym etapem produktowym jest teraz **v0.8.0 Alternative Comparison & Product Identity Mapping**, otwarte 24.08.2026. Zaakceptowane mapowanie i kontrakt mBank mają lokalny bounded UI prototype oczekujący na Founder Review; nie jest to funkcja publiczna.
 
-Po zamknięciu continuity pack aktywne są następujące strumienie operacyjne:
+Etap ma rozszerzyć flow North z oceny jednej wskazanej oferty do wyboru właściwego produktu dla sytuacji użytkownika:
 
-1. **Affiliate support responses** — czekać na Money2Money, ComperiaLead i LeadStar.
-2. **Affiliate source selection** — po odpowiedziach przypisać wybranym ofertom `Preferred Source`, `Backup Source` albo `No verified source`.
-3. **Tracking taxonomy / pilot design** — `offer`, `network`, `source`, `placement`, `content`, `creative`, `cohort`, `version`.
-4. **Controlled first affiliate activation** — uruchomić kilka kontrolowanych CTA/źródeł, nie cały katalog jednocześnie.
-5. **Community / distribution** — wczesny fanpage Facebook, Discord, pierwsi użytkownicy i realny feedback; to nie są jeszcze duże kanały.
-6. **Real North data** — zbierać clicks, applications, accepted, rejected, reversal, validation time, payout time, source, placement i content.
+1. **User scenario** — zacząć od potrzeby i ograniczeń użytkownika.
+2. **Product Identity** — wybrać produkt odpowiadający sytuacji, zamiast łączyć wszystkie konta jednego banku w jedną ofertę.
+3. **Promotion Edition / Variant** — dopiero dla wybranego produktu ustalić kwalifikowaną edycję i wariant bez automatycznego sumowania.
+4. **North decision** — pokazać Value, Match, Confidence, Verdict, alternatywy i `Do Nothing` bez rankingu ani uniwersalnego zwycięzcy.
+5. **Affiliate source** — wybrać źródło operacyjne dopiero po niezależnej decyzji produktowej.
 
-Najpierw wartość i realne użycie produktu; dopiero własne dane pozwolą ocenić realized economics.
+mBank jest pierwszym przypadkiem referencyjnym. Mapowanie rozdziela eKonto możliwości 18–24, eKonto do usług i mKonto Intensive; konto wspólne jest osobną potrzebą, nie wariantem premii. Osobna trasa `frontend/prototypes/mbank-alternative-comparison.html` konsumuje kontrakt v0.8.0 i przeszła cztery acceptance scenarios oraz desktop/mobile/accessibility smoke. Publiczny `decision-offers.json`, homepage, sitemap, katalog i produkcja pozostają bez zmian.
+
+Równolegle trwają: freshness recheck 31.08.2026, oczekiwanie na odpowiedzi supportów Money2Money, ComperiaLead i LeadStar, późniejszy wybór `Preferred Source` / `Backup Source` / `No verified source` oraz projekt małego pilota trackingowego. Najpierw wartość i realne użycie produktu; dopiero własne dane pozwolą ocenić realized economics.
 
 ## 12. Co pozostaje hipotezą lub otwartym problemem
 
 - Preferred/Backup Source bez potwierdzonych zasad operacyjnych supportu.
 - Cookie window, cross-device, caps, acceptance/reversal, własne materiały, community traffic, tracking i revenue-share permissions.
 - Skuteczność pierwszych kanałów Facebook/Discord i faktyczne zainteresowanie użytkowników.
-- Który kolejny kierunek produktowy daje największą wartość po zebraniu sygnałów.
+- Founder Review lokalnego bounded UI: hierarchia wyniku, gęstość kart kandydatów i gotowość ośmiu pytań do dalszej walidacji.
+- Czy konto wspólne wymaga osobnego pytania o wydatki kartą każdej osoby, czy jawny unresolved factor wystarcza w pierwszym flow.
+- Sposób integracji Alternative Comparison z publicznym routingiem dopiero po zaakceptowaniu bounded prototype; obecna trasa pozostaje noindex i bez linku z homepage.
 - Bieżąca dostępność promocji po ich terminach `recheckBy`; wymaga ręcznej kontroli, nie założenia.
 
 ## 13. Czego teraz świadomie nie robimy
@@ -243,15 +246,18 @@ Nie otwieramy teraz:
 
 - Evidence Review #5 tylko z powodu rechecku 31.08;
 - szerokiego lub hurtowego Catalog Expansion;
-- Alternative Comparison, mocniejszego Do Nothing & Alternatives ani Offer Execution bez realnego sygnału;
+- integracji Alternative Comparison z publicznym frontendem przed Founder Review bounded prototype;
+- szerokiej porównywarki cross-bank przed walidacją generycznego flow na kontrolowanych rodzinach produktów;
+- prywatnej bety przed kamieniem milowym 1.0; build testowy ma używać oznaczenia `v1.0-beta`, nie udawać stabilnego publicznego 1.0;
+- Offer Execution bez osobnej decyzji i zweryfikowanych warunków bezpiecznego wykonania;
 - profili użytkownika, conflict engine, historii ofert ani `WAIT`;
 - backendu, kont, premium, ML/AI recommendation layer;
 - szerokiej kategorii krypto;
 - agresywnej dystrybucji afiliacyjnej ani aktywacji wszystkich CTA;
 - Founding Members/revenue share bez potwierdzonych zasad;
-- kolejnego sprintu produktowego podczas Continuity Lock.
+- automatycznego wpływu afiliacji na wybór produktu, Match, Confidence lub Verdict.
 
-Potencjalne późniejsze kierunki: Alternative Comparison, Do Nothing & Alternatives, Offer Execution, Freshness Operations tooling, Controlled Catalog Expansion oraz Community & Growth Validation. To opcje zależne od danych, nie aktywny plan.
+Potencjalne późniejsze kierunki: Offer Execution, Freshness Operations tooling, Controlled Catalog Expansion, szerokie porównania cross-bank oraz Community & Growth Validation. To opcje zależne od danych, nie aktywny plan.
 
 ## 14. Mapa źródeł prawdy
 

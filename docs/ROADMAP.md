@@ -14,21 +14,23 @@ North UX Test #1, Evidence Reviews #1–#4, Data Integrity & Freshness Guard ora
 
 ### Continuity & Sync Hardening
 
-**Status:** zamykane przez Continuity Lock #1 z 24.08.2026.
+**Status:** zakończone przez Continuity Lock #1 z 24.08.2026.
 
 - Wspólny cross-AI entrypoint, Context Map, Sync Protocol, Offer Taxonomy i master recovery state.
 - GitHub `/docs` pozostaje canonical; Notion jest operational mirror.
 - Materialne zadanie nie jest `Done` bez oceny wymaganej synchronizacji.
 
-### Następny etap operacyjny — nie feature sprint
+### Aktywny etap — v0.8.0 Alternative Comparison & Product Identity Mapping
 
-- Czekać na odpowiedzi supportów Money2Money, ComperiaLead i LeadStar.
-- Po odpowiedziach ustalić `Preferred Source`, `Backup Source` albo `No verified source`.
-- Zdefiniować tracking taxonomy i mały affiliate pilot.
-- Aktywować tylko kilka kontrolowanych CTA/źródeł oraz rozwijać wczesne Facebook/Discord.
-- Zbierać realne clicks, applications, acceptance, rejection, reversal oraz czasy walidacji i wypłat.
+**Status:** otwarte 24.08.2026. Mapowanie i kontrakt są zaakceptowane; osobny zatwierdzony task zbudował lokalny bounded UI prototype oczekujący na Founder Review. Integracja publiczna nie jest otwarta.
 
-Nie otwieramy teraz kolejnego sprintu produktowego. Najbliższy maintenance deadline to freshness recheck 31.08.2026.
+- Punktem wejścia jest sytuacja użytkownika, nie nazwa banku ani reklamowane maksimum.
+- Najpierw wybieramy właściwy `Product Identity`, następnie kwalifikowaną edycję lub wariant promocji, a dopiero później niezależne źródło afiliacyjne.
+- mBank jest pierwszym przypadkiem referencyjnym: eKonto możliwości 18–24, eKonto do usług oraz mKonto Intensive odpowiadają innym sytuacjom i nie mogą być zlane w jedną kartę „mBank”. Konto wspólne pozostaje osobną osią potrzeb i wymaga własnego mapowania.
+- Wynik ma pokazywać: rekomendowany kierunek dla scenariusza, powody, warunki, koszt niedopasowania, sensowne alternatywy i `Do Nothing`; nie tworzy rankingu kont ani uniwersalnego zwycięzcy.
+- Bounded route konsumuje osobny kontrakt, nie zmienia `decision-offers.json`, homepage, katalogu ani produkcji. Kolejna decyzja po Founder Review dotyczy dalszej walidacji lub osobnego tasku integracyjnego.
+
+Równolegle pozostają aktywne operacje: freshness recheck 31.08.2026, oczekiwanie na odpowiedzi supportów afiliacyjnych, późniejszy wybór źródeł i projekt małego pilota trackingowego. Prowizja nie wpływa na wynik porównania.
 
 ## Następne etapy
 
@@ -152,20 +154,35 @@ Ten etap mógł rozpocząć się wyłącznie po walidacji podstawowej trójki v0
 - Release `24c2d7c` opublikował 12 ofert; Kraken pozostał validation-only.
 - Data Integrity & Freshness Guard jest osobną warstwą techniczną, nie Evidence Review.
 
-### v0.8.0 — Prywatna beta
+### v0.8.0 — Alternative Comparison & Product Identity Mapping
 
-**Status:** nieotwarta i nie jest aktywnym next step.
+**Status:** aktywny etap; bounded UI prototype jest lokalnie zaimplementowany i zwalidowany, oczekuje na Founder Review, bez publicznej integracji.
 
-- Zdefiniować grupę testową i zadania testowe dopiero po decyzji o otwarciu etapu.
-- Mierzyć podstawowe przejścia: katalog → oferta → CTA.
-- Zbierać jakościowy feedback, nie tylko liczbę kliknięć.
+**Cel:** przejść od analizy jednej wskazanej oferty do wyjaśnialnego wyboru produktu dla sytuacji użytkownika, bez budowania rankingu reklamowanych premii.
 
-**Definition of Done:** decyzje o kolejnych zmianach opierają się na obserwacji użytkowników, nie tylko intuicji zespołu.
+- Zmapować dla przypadku mBank co najmniej trzy odrębne `Product Identities`, ich segmenty, opłaty, funkcjonalne przewagi, Promotion Editions i Promotion Variants na aktualnym oficjalnym evidence.
+- Zdefiniować minimalne pytania rozdzielające sytuacje, m.in. wiek, typ codziennego użycia, wpływy lub aktywa, potrzeby premium/podróżne oraz tolerancję warunków i opłat.
+- Zaprojektować widok, który najpierw wyjaśnia „dlaczego ten produkt pasuje”, a następnie pokazuje dwie uczciwe alternatywy i ryzyka zmiany scenariusza.
+- Rozdzielić porównanie produktu od wyboru promocji, kanału i źródła afiliacyjnego zgodnie z `OFFER_TAXONOMY.md`.
+- Utrzymać jakościowe Match/Verdict, jawne Confidence i Evidence oraz obowiązkową alternatywę `Do Nothing`; bez Match %, Score 0–100 i automatycznego sumowania wariantów.
+- Po Founder Review zdecydować, czy poprawić bounded prototype, przeprowadzić dodatkową walidację jakościową, czy otworzyć osobny task integracji z publicznym flow.
+
+**Definition of Done:** istnieje zatwierdzony, generyczny kontrakt porównania i sprawdzony prototyp mBank, a następnie jego implementacja potrafi wybrać właściwy produkt i wariant dla scenariusza bez bankowych wyjątków w logice, bez wpływu afiliacji i bez sugerowania uniwersalnego zwycięzcy.
+
+### Kamień milowy 1.0 — prywatna beta
+
+**Status:** przełożona z v0.8.0; nie jest aktywnym etapem. W fazie testowej oznaczamy build jako `v1.0-beta`, aby nie przedstawiać go jako stabilnego publicznego 1.0 przed ukończeniem bram.
+
+- Otworzyć grupę testową dopiero po wdrożeniu i jakościowej walidacji Alternative Comparison.
+- Zdefiniować zadania obejmujące wybór produktu, zrozumienie powodów, zmianę scenariusza, odrzucenie niedopasowanej oferty i przejście do CTA.
+- Mierzyć podstawowe przejścia: katalog → porównanie → oferta → CTA oraz miejsca rezygnacji.
+- Zbierać jakościowy feedback i obserwacje decyzji, nie tylko liczbę kliknięć.
+- Przed otwarciem potwierdzić freshness, zasady źródeł, tracking, transparentność afiliacyjną i bezpieczne wyjście z ofert objętych testem.
+
+**Definition of Done:** decyzje o publicznym 1.0 wynikają z obserwacji użytkowników oraz danych o zrozumieniu i wykonaniu decyzji, a nie tylko z intuicji zespołu lub CTR.
 
 ## Później, nie teraz
 
-- **mBank Product & Promotion Variant Mapping** — przed kolejną kartą mBank rozstrzygnąć product identity, edycje, warianty, segmenty, kanały i rekordy afiliacyjne; nie otwierać teraz sprintu ani nie dodawać oferty.
-- Alternative Comparison oraz mocniejsze Do Nothing & Alternatives — po realnych sygnałach użycia.
 - Offer Execution i Freshness Operations tooling — po potwierdzeniu potrzeby.
 - Controlled Catalog Expansion — dopiero po opanowaniu freshness/source operations.
 - Pełny North Plan / portfolio planner i conflict engine — po walidacji modelu decyzji i dopasowania.
@@ -173,6 +190,6 @@ Ten etap mógł rozpocząć się wyłącznie po walidacji podstawowej trójki v0
 - Automatyczne monitorowanie regulaminów — dopiero po sprawdzeniu ręcznego evidence ledger.
 - Krypto jako kategoria — poza katalogiem; Kraken jest jedynym validation-only hard case'em.
 - Motion i zaawansowane animacje — dopiero po stabilizacji treści i ścieżek.
-- Porównywarka — po ujednoliceniu danych przynajmniej kilku ofert i realnym sygnale potrzeby.
+- Szeroka porównywarka cross-bank i masowe porównania — dopiero po walidacji generycznego kontraktu na mBank i kilku kontrolowanych rodzinach produktów.
 - Konta użytkowników, backend, premium i ML/AI personalization — po potwierdzeniu potrzeby.
 - Integracje analityczne — minimalnie i z poszanowaniem prywatności; nie są substytutem badań użytkowników.

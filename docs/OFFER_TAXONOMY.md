@@ -70,6 +70,6 @@ Preferred Source może zależeć od:
 
 Nigdy nie może zmieniać wcześniejszego Product Verdict, North Value, Match, Confidence produktu ani kolejności ofert.
 
-## Wymagany przyszły follow-up
+## Aktywny follow-up v0.8.0
 
-**mBank Product & Promotion Variant Mapping** — przed dodaniem kolejnej karty mBank trzeba rozstrzygnąć, które rekordy panelowe oznaczają inne produkty, inne segmenty, inne warianty promocji, inny kanał albo wyłącznie inny model afiliacyjny. Ten follow-up nie jest obecnie otwartym sprintem i nie zmienia publicznego katalogu.
+**mBank Product & Promotion Variant Mapping** — etap został otwarty 24.08.2026 jako pierwszy przypadek Alternative Comparison. Mapowanie, official evidence i kontrakt rozdzielają trzy Product Identities, a lokalny bounded UI prototype konsumuje je na osobnej trasie noindex. Nie zmienia `decision-offers.json`, homepage, sitemap ani publicznego katalogu; integracja z publicznym flow wymaga osobnej decyzji po Founder Review.
