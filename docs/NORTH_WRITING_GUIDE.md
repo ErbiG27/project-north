@@ -40,6 +40,19 @@ Confidence pokazujemy w dwóch warstwach. Najpierw prosty sens: `HIGH` — „Da
 
 Nie trzeba używać tych zdań literalnie. Liczy się ten sam sens w naturalnym kontekście.
 
+## Hierarchia głównego flow
+
+Pierwsza warstwa treści odpowiada w tej kolejności:
+
+1. **Co dostanę?** — forma i użyteczna wartość, bez mieszania gotówki z voucherem, rzeczą, odsetkami lub wartością warunkową.
+2. **Co muszę zrobić?** — najważniejsze działania, czas i powtarzalne warunki.
+3. **Gdzie jest haczyk?** — największe ryzyko, koszt albo warunek utraty korzyści.
+4. **Dla kogo to ma sens?** — jakościowy kontekst sytuacji użytkownika, bez procentowego Match i bez udawania pełnej kwalifikacji.
+
+Pełne wyjątki, evidence i metodologia schodzą niżej lub na podstronę. Nie wolno ich usuwać, ale nie powinny blokować zrozumienia pierwszej warstwy.
+
+W globalnym headerze bez zapisanego Core Profile używamy `Dopasuj oferty`, a po zapisie `Twoje dopasowanie`. Słów `Profil` i `Konto` nie używamy jako nazwy tej lokalnej warstwy kontekstu; są zarezerwowane dla przyszłego user account/login.
+
 ## Kontrola przed publikacją
 
 Przeczytaj kluczowy flow bez otwierania Glossary. Użytkownik powinien zrozumieć kwotę, działania, czas, koszt, ryzyko i decyzję. Szczególnie sprawdź słowa: „kwalifikowany”, „scenariusz”, „horyzont”, „warunkowy”, „komponent”, „nominalny”, „usable”, „execution”, „downstream”, „opportunity cost”, „evidence” i „confidence”. Jeśli termin jest konieczny, wyjaśnij go przy pierwszym użyciu.

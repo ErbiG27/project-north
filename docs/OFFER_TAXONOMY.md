@@ -70,6 +70,8 @@ Preferred Source może zależeć od:
 
 Nigdy nie może zmieniać wcześniejszego Product Verdict, North Value, Match, Confidence produktu ani kolejności ofert.
 
-## Aktywny follow-up v0.8.0
+## Checkpoint v0.8.0 i relacja do bieżącego kierunku
 
-**mBank Product & Promotion Variant Mapping** — etap został otwarty 24.08.2026 jako pierwszy przypadek Alternative Comparison. Mapowanie, official evidence i kontrakt rozdzielają trzy Product Identities, a lokalny bounded UI prototype konsumuje je na osobnej trasie noindex. Founder Review i wymagany UX density pass zakończyły się PASS. Prototyp nie zmienia `decision-offers.json`, homepage, sitemap ani publicznego katalogu; integracja z publicznym flow wymaga osobnej decyzji po kolejnym Founder Review.
+**mBank Product & Promotion Variant Mapping** — zakończony lokalny checkpoint Alternative Comparison. Mapowanie, official evidence i kontrakt rozdzielają trzy Product Identities, a bounded UI prototype konsumuje je na osobnej trasie `noindex`. Founder Review, acceptance i wymagany UX density pass zakończyły się PASS.
+
+Prototyp nie zmienia `decision-offers.json`, publicznego homepage, sitemap ani katalogu. Jego integracja nie jest aktywnym follow-upem: wymaga późniejszej osobnej decyzji i musi podporządkować się bieżącemu kierunkowi Product UX, w którym najpierw upraszczamy pełny flow użytkownika. Affiliate support, pilot i tracking pozostają `PARKED` i nadal nie mogą odwrócić kolejności z tego dokumentu.

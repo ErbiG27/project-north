@@ -1,5 +1,7 @@
 # North Score
 
+> Status: legacy component documentation. North Score nie jest aktywnym wynikiem Decision Model v1 i nie należy przywracać go do nowego UX.
+
 ## Rola
 
 North Score może syntetyzować ocenę oferty jako skrót wtórny. Nie jest głównym USP, samodzielną „prawdą” o ofercie ani substytutem scenariusza użytkownika. Kierunek Decision Model v1 rozdziela **North Value** — wartość dla jawnych założeń — od **North Confidence** — jakości, kompletności i aktualności danych oraz wniosku.
@@ -46,6 +48,6 @@ Warstwa wartości ma trzy poziomy: `advertisedMax`, `easyFloor` oraz `yourLikely
 
 Pierścień ma `role="img"` i tekstowy opis wyniku. Liczba, ocena literowa oraz breakdown muszą pozostać dostępne jako tekst, nie wyłącznie grafika.
 
-## Następny krok
+## Bieżąca decyzja
 
-Najpierw zweryfikować North Value i North Confidence na ofertach Millennium, Nest i Pekao. Dopracowanie wizualne pierścienia pozostaje późniejsze; nie rozwiązuje problemu metodologii ani dowodów.
+North Value i North Confidence zostały zweryfikowane w Decision Model v1 bez reaktywowania Score. Nie ma aktywnego zadania dopracowania pierścienia 0–100. Każdy przyszły powrót do syntetycznej liczby wymagałby osobnej metodologii, danych i decyzji; nie może zastąpić scenariusza, powodów, ryzyk ani evidence.

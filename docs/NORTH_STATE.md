@@ -1,8 +1,15 @@
 # ProjectNorth — canonical state and AI recovery
 
-> Master recovery document · stan kanoniczny: 2026-08-25 · publiczny release aplikacji: `24c2d7c5450b44ae07e12267f592b5898849bb54` · Decision Model v1
+> Master recovery document · stan kanoniczny: 2026-08-29 · publiczny release aplikacji: `24c2d7c5450b44ae07e12267f592b5898849bb54` · najnowszy lokalny UX checkpoint: `b3593e2118af48103d0518cdcc0c3fad47af4513` · Decision Model v1
 
 Ten dokument jest pierwszym źródłem bieżącego kontekstu po utracie rozmowy, zmianie AI, zmianie osoby pracującej nad projektem albo dłuższej przerwie. Szczegóły wydań należą do `CHANGELOG.md`, trwałe uzasadnienia do `DECISIONS.md`, a fakty wdrożonych ofert do `frontend/data/decision-offers.json`.
+
+Najważniejsze rozdzielenie stanu na 2026-08-29:
+
+- **PUBLIC PRODUCTION:** nadal pokazuje wcześniejszy UX i katalog 12 ofert z release'u `24c2d7c`;
+- **LOCAL MAIN / APPROVED UX:** zawiera lokalne checkpointy `f2747b7 feat: establish North offer experience UX` oraz `b3593e2 feat: add simplified North homepage prototype`; lokalny `main` jest przed `origin/main`;
+- **PRODUCTION ≠ LOCAL APPROVED UX:** oba checkpointy UX są lokalne; nie wykonano pushu ani deployu i nie są publicznie zintegrowane;
+- `.gitattributes`, `.codex-remote-attachments/` i `artifacts/` są chronionymi leftovers poza zakresem UX i dokumentacji.
 
 ## 1. Czym jest ProjectNorth i dlaczego istnieje
 
@@ -36,6 +43,8 @@ ProjectNorth nie jest:
 - Brak danych albo nierozwiązany konflikt może wymagać `CANNOT ASSESS` i `NOT ENOUGH DATA`. Nie uzupełniaj luk intuicją.
 - Prosty język jest pierwszą warstwą. Glossary pomaga, ale nie może być wymagane do zrozumienia głównego flow.
 - Nie przedstawiaj hipotezy, backlogu ani planu jako istniejącej funkcji.
+- Główny flow ma odpowiadać kolejno: **co dostanę, co muszę zrobić, gdzie jest haczyk, dla kogo to ma sens**. Metodologia, pełne źródła i wyjątki należą do warstwy niżej lub podstrony.
+- Core Profile jest opcjonalnym kontekstem, nie bramką dostępu. Bez profilu katalog i szczegóły ofert pozostają dostępne.
 
 ## 3. Decision Model v1 — aktywny rdzeń
 
@@ -132,7 +141,7 @@ Kraken jest trzynastym rekordem technicznym `crypto_validation`: validation-only
 - Keyboard smoke: `PASS`.
 - GitHub → Vercel deploy: `READY`.
 
-Sześć warningów nie blokowało release'u i nie oznacza stale evidence. To operacyjne przypomnienia opisane poniżej.
+Sześć warningów nie blokowało release'u i nie oznaczało stale evidence w dniu wydania. To historyczny wynik bramy release'owej, nie bieżący wynik lokalnego guardu.
 
 ## 6. Upcoming freshness recheck
 
@@ -147,7 +156,7 @@ Ręczny freshness recheck obejmuje:
 - landing gate Pekao;
 - landing gate Nest.
 
-To `Freshness Operations`, nie Evidence Review #5 i nie błąd wydania.
+To `Freshness Operations`, nie Evidence Review #5 i nie błąd wydania. Ostatni lokalny Data Guard uruchomiony na `2026-08-29` miał `0 FAIL / 10 WARN / 13 OK`; warningi są przypomnieniami o istniejących terminach rechecku, nie skutkiem prototypów UX. Recheck musi nastąpić przed publiczną integracją odpowiednich ofert; ten sync nie zmienia facts ani evidence.
 
 ## 7. Historia Evidence Reviews — numeracja zamknięta
 
@@ -197,7 +206,7 @@ Historia wyjaśniająca, dlaczego North ma dzisiejszą formę, znajduje się w `
 
 Bieżące fakty implementacyjne zawsze sprawdzaj w `decision-offers.json`; powyższa lista jest guardem semantycznym, nie równoległym ledgerem ofert.
 
-## 10. Affiliate research — aktualny stan
+## 10. Affiliate research — zakończony checkpoint, praca PARKED
 
 23.08.2026 zakończono `Affiliate Source Research #1` oraz `Full Affiliate Offer Discovery #1`.
 
@@ -208,36 +217,55 @@ Bieżące fakty implementacyjne zawsze sprawdzaj w `decision-offers.json`; powy�
 - Do zakresu North: 285 rekordów finansowych/ubezpieczeniowych.
 - Po roboczej deduplikacji: 165 ofert lub istotnych wariantów.
 
-Ten wynik nie tworzy planu katalogu 165 ofert. Potwierdził zasadność kontrolowanego katalogu.
+Ten wynik nie tworzy planu katalogu 165 ofert. Potwierdził zasadność kontrolowanego katalogu. Późniejszy support/source-selection/tracking work jest zachowany jako ukończony research i operacyjny materiał wejściowy, ale **nie jest aktywnym następnym krokiem**.
 
-Wiadomości zostały wysłane do supportów Money2Money, ComperiaLead i LeadStar. Odpowiedzi są **pending**. Pytania obejmują m.in. social → North → bank, organic/paid social, własne copy i analizy, Discord/Telegram/community, domain approval, cookie window, cross-device, acceptance, reversal, validation time, caps, EPI/subID, API/postback oraz revenue share/cashback permissions.
-
-Dopóki odpowiedzi nie nadejdą, Preferred Source i Backup Source pozostają hipotezami tam, gdzie nie ma wystarczającej pewności operacyjnej. Realized economics pozostaje nieudowodnione bez własnych danych acceptance/reversal i czasu rozliczenia.
+Od 2026-08-28 cały affiliate support, pilot i tracking są `PARKED` z powodu nadrzędnego priorytetu Product UX. Nie implementujemy teraz CTA/tracking, nie uruchamiamy pilota i nie używamy ekonomii afiliacyjnej do wyboru backlogu produktu. Realized economics pozostaje nieudowodnione bez własnych, porównywalnych danych acceptance, reversal, payout i czasu rozliczenia.
 
 ## 11. Aktualny etap projektu
 
-Continuity Lock #1 zakończył **Continuity & Sync Hardening**. Aktywnym etapem produktowym jest teraz **v0.8.0 Alternative Comparison & Product Identity Mapping**, otwarte 24.08.2026. Lokalny bounded UI prototype mBank przeszedł Founder Review i wymagany UX density pass; jest gotowy do kolejnego Founder Review i nie jest funkcją publiczną.
+Continuity Lock #1 i v0.8.0 Alternative Comparison są zakończonymi checkpointami. Architektura i prototyp mBank istnieją, przeszły acceptance oraz density pass, ale ich publiczna integracja jest późniejsza i podporządkowana obecnemu kierunkowi UX.
 
-Etap ma rozszerzyć flow North z oceny jednej wskazanej oferty do wyboru właściwego produktu dla sytuacji użytkownika:
+Od **2026-08-28 aktywnym priorytetem jest Product UX i content hierarchy**. Nie są nim: infrastruktura afiliacyjna, community/dystrybucja, mBank public integration ani dalsze rozszerzanie katalogu.
 
-1. **User scenario** — zacząć od potrzeby i ograniczeń użytkownika.
-2. **Product Identity** — wybrać produkt odpowiadający sytuacji, zamiast łączyć wszystkie konta jednego banku w jedną ofertę.
-3. **Promotion Edition / Variant** — dopiero dla wybranego produktu ustalić kwalifikowaną edycję i wariant bez automatycznego sumowania.
-4. **North decision** — pokazać Value, Match, Confidence, Verdict, alternatywy i `Do Nothing` bez rankingu ani uniwersalnego zwycięzcy.
-5. **Affiliate source** — wybrać źródło operacyjne dopiero po niezależnej decyzji produktowej.
+### Core Profile i wspólny flow
 
-mBank jest pierwszym przypadkiem referencyjnym. Mapowanie rozdziela eKonto możliwości 18–24, eKonto do usług i mKonto Intensive; konto wspólne jest osobną potrzebą, nie wariantem premii. Osobna trasa `frontend/prototypes/mbank-alternative-comparison.html` konsumuje kontrakt v0.8.0; po Founder Review pokazuje pełną kartę zwycięzcy oraz domyślnie zwinięte alternatywy, evidence i metodologię. Cztery acceptance scenarios oraz skrócona rewalidacja desktop/mobile/accessibility przeszły po density pass. Publiczny `decision-offers.json`, homepage, sitemap, katalog i produkcja pozostają bez zmian.
+- Jeden krótki Core Profile jest wypełniany raz i ponownie używany na homepage, w katalogu i na detail page.
+- Klucz lokalnego prototypu: `north.offerExperience.profile.v1`.
+- Brak backendu, loginu i konta użytkownika; odpowiedzi pozostają w `localStorage` i można je zmienić lub wyczyścić.
+- Bez profilu pełny katalog i każda oferta pozostają dostępne. Z profilem karty i detail dodają interpretację „co to znaczy dla Ciebie”, nie zmieniając faktów oferty.
+- Przyszły Progressive Profile może dodawać wyłącznie pytania specyficzne dla kategorii, gdy realnie zmieniają kilka decyzji lub ważny hard gate.
+- Header używa `Dopasuj oferty` bez profilu i `Twoje dopasowanie` po zapisie. Terminy `Profil` i `Konto` są zarezerwowane dla przyszłego user account/login.
 
-Równolegle trwają: freshness recheck 31.08.2026, oczekiwanie na odpowiedzi supportów Money2Money, ComperiaLead i LeadStar, późniejszy wybór `Preferred Source` / `Backup Source` / `No verified source` oraz projekt małego pilota trackingowego. Najpierw wartość i realne użycie produktu; dopiero własne dane pozwolą ocenić realized economics.
+### Status lokalnych sprintów UX
+
+1. **Sprint 1 — North Offer Experience v1/v1.1:** `APPROVED UX PATTERN`; lokalny checkpoint `f2747b7`.
+2. **Sprint 2 — Category Shell & Header v1:** `VISUAL PASS` po micro-fixie. `Konta` są aktywne; Oszczędzanie, Inwestowanie, Fintech i Krypto pozostają nieinteraktywne bez martwych linków i pustych katalogów.
+3. **Offer Identity & Visual Assets Pass v1:** `VISUAL PASS` po micro-fixie. Logo providerów i North visual fallback są wystarczające; nie dodajemy stocków ani marketingowych product visuals.
+4. **Sprint 3 — Homepage Simplification v1:** `FUNCTIONAL / PRODUCT / VISUAL PASS` po Founder Review i micro-fixie; lokalny checkpoint `b3593e2` jest kompletny, bez pushu, deployu i publicznej integracji.
+
+Lokalny flow Sprintów 1–3 został zaakceptowany. Nie otwiera to automatycznie Sprintu 4; następny bounded krok wymaga osobnej decyzji Founder/Product.
+
+### Zaakceptowany kierunek Homepage Simplification v1
+
+- H1: `Znajdź ofertę, która faktycznie ma sens dla Ciebie.`
+- Supporting copy: `Sprawdzamy premie, warunki i haczyki. Ty odpowiadasz na kilka pytań, a North pokazuje, które oferty pasują do Twojej sytuacji.`
+- CTA bez profilu: `Dopasuj oferty do mnie`; secondary: `Przeglądaj wszystkie oferty`.
+- CTA z profilem: `Zobacz dopasowane oferty`.
+- IA: Header → Hero → Category Discovery → 3 real offers → Jak działa North → Trust/Sources → Final CTA.
+- Hero zachowuje abstrakcyjny visual na desktopie; na mobile visual jest ukryty.
+- Informacja `Kolejne kategorie w przygotowaniu` występuje raz w headerze; Category Discovery nie dubluje tego komunikatu.
+- Trzy realne oferty to Millennium 360°, Nest Konto i Pekao Konto Przekorzystne. Nie ma podium, rankingu ani języka zwycięzcy.
+- Pekao jest prezentowane jako `300 zł gotówki + do 2 400 zł warunkowej wartości podróżnej`, nigdy jako 2 700 zł gotówki.
+
+Public integration całej ścieżki wymaga osobnej decyzji po aktualnym UX kierunku i po wymaganych recheckach evidence. Ukończone lokalne checkpointy nie są zgodą na push, deploy ani zmianę produkcji.
 
 ## 12. Co pozostaje hipotezą lub otwartym problemem
 
-- Preferred/Backup Source bez potwierdzonych zasad operacyjnych supportu.
-- Cookie window, cross-device, caps, acceptance/reversal, własne materiały, community traffic, tracking i revenue-share permissions.
-- Skuteczność pierwszych kanałów Facebook/Discord i faktyczne zainteresowanie użytkowników.
-- Kolejny Founder Review lokalnego bounded UI: potwierdzenie hierarchii pełnego zwycięzcy, zwiniętych alternatyw i evidence po density pass.
-- Czy konto wspólne wymaga osobnego pytania o wydatki kartą każdej osoby, czy jawny unresolved factor wystarcza w pierwszym flow.
-- Sposób integracji Alternative Comparison z publicznym routingiem wymaga osobnej decyzji po kolejnym Founder Review; obecna trasa pozostaje noindex i bez linku z homepage.
+- Czy i kiedy zatwierdzony lokalny flow homepage → category → card → detail → Core Profile powinien zastąpić wcześniejszy publiczny UX.
+- Jak włączyć v0.8.0 Alternative Comparison do późniejszego publicznego flow bez cofnięcia prostoty obecnego kierunku UX.
+- Czy konto wspólne wymaga później osobnego pytania o wydatki kartą każdej osoby, czy jawny unresolved factor wystarcza.
+- Które przyszłe kategorie zostaną aktywowane i w jakiej kolejności; Business jest możliwym późniejszym kierunkiem, nie aktywnym verticalem.
+- Affiliate source selection, tracking i realized economics pozostają materiałem późniejszym, obecnie `PARKED`.
 - Bieżąca dostępność promocji po ich terminach `recheckBy`; wymaga ręcznej kontroli, nie założenia.
 
 ## 13. Czego teraz świadomie nie robimy
@@ -246,14 +274,15 @@ Nie otwieramy teraz:
 
 - Evidence Review #5 tylko z powodu rechecku 31.08;
 - szerokiego lub hurtowego Catalog Expansion;
-- integracji Alternative Comparison z publicznym frontendem bez osobnej decyzji po kolejnym Founder Review bounded prototype;
+- publicznej integracji Homepage v1, Offer Experience albo Alternative Comparison bez osobnej decyzji i release gates;
 - szerokiej porównywarki cross-bank przed walidacją generycznego flow na kontrolowanych rodzinach produktów;
 - prywatnej bety przed kamieniem milowym 1.0; build testowy ma używać oznaczenia `v1.0-beta`, nie udawać stabilnego publicznego 1.0;
 - Offer Execution bez osobnej decyzji i zweryfikowanych warunków bezpiecznego wykonania;
-- profili użytkownika, conflict engine, historii ofert ani `WAIT`;
+- backendowego profilu użytkownika, konta/loginu, conflict engine, historii ofert ani `WAIT`;
 - backendu, kont, premium, ML/AI recommendation layer;
 - szerokiej kategorii krypto;
-- agresywnej dystrybucji afiliacyjnej ani aktywacji wszystkich CTA;
+- affiliate support/pilota/trackingu, agresywnej dystrybucji afiliacyjnej ani aktywacji wszystkich CTA;
+- community i dystrybucji jako aktywnego priorytetu;
 - Founding Members/revenue share bez potwierdzonych zasad;
 - automatycznego wpływu afiliacji na wybór produktu, Match, Confidence lub Verdict.
 
@@ -263,6 +292,7 @@ Potencjalne późniejsze kierunki: Offer Execution, Freshness Operations tooling
 
 | Źródło | Autorytet |
 | --- | --- |
+| Lokalny working tree i stage jawnie otwartego tasku | Najnowszy stan lokalnego UX; nie jest produkcją ani release'em przed osobnym commit/push/deploy. |
 | GitHub `/docs` | Kanoniczne decyzje, model, zasady, roadmapa i historia. |
 | `frontend/data/decision-offers.json` | Fakty ofert faktycznie używane przez wdrożony produkt. |
 | Oficjalne źródła finansowe | Bieżąca prawda produktowa; dokumentacja i dane wymagają synchronizacji po zmianie źródła. |
@@ -272,10 +302,11 @@ Potencjalne późniejsze kierunki: Offer Execution, Freshness Operations tooling
 
 Gdy dokumenty są sprzeczne:
 
-1. aktualny GitHub `/docs` wygrywa dla decyzji;
-2. aktualny `decision-offers.json` wygrywa dla faktów wdrożonych;
-3. oficjalne źródła finansowe wygrywają dla bieżącej prawdy produktowej;
-4. konflikt należy nazwać i zsynchronizować, nie rekonstruować z intuicji.
+1. jawnie zatwierdzony lokalny working tree wygrywa dla bieżącego lokalnego UX, ale nie zmienia stanu publicznego;
+2. aktualny GitHub `/docs` wygrywa dla zatwierdzonych decyzji i historii;
+3. aktualny `decision-offers.json` wygrywa dla faktów wdrożonych;
+4. oficjalne źródła finansowe wygrywają dla bieżącej prawdy produktowej;
+5. konflikt należy nazwać i zsynchronizować, nie rekonstruować z intuicji.
 
 ## 15. Recovery instructions dla przyszłego AI
 
@@ -285,15 +316,16 @@ Jeżeli tracisz kontekst ProjectNorth:
 2. Przeczytaj ten dokument w całości.
 3. Przeczytaj `docs/DECISIONS.md`.
 4. Przeczytaj `docs/ROADMAP.md`.
-5. Przeczytaj `docs/AI_WORKFLOW.md`.
-6. Sprawdź `pwd`, root Git, branch, `git status`, `git log` oraz relację `HEAD` do `origin/main`.
-7. Traktuj `frontend/data/decision-offers.json` jako źródło faktów ofertowych.
-8. Traktuj Notion wyłącznie jako operational mirror.
-9. Nie rekonstruuj brakujących decyzji z intuicji ani z pamięci rozmowy.
-10. Porównaj produkcję, `main` i working tree. Nazwij każdą rozbieżność.
-11. Zachowaj lokalne zmiany i chronione leftovers; stage'uj tylko jawnie dozwolone ścieżki.
-12. Przed zmianą zakresu przypomnij aktualny etap i sekcję „Czego teraz świadomie nie robimy”.
+5. Przeczytaj `docs/NORTH_OFFER_EXPERIENCE_V1.md` dla aktualnego lokalnego kontraktu UX.
+6. Przeczytaj `docs/AI_WORKFLOW.md`.
+7. Sprawdź `pwd`, root Git, branch, `git status`, `git log`, stage oraz relację `HEAD` do `origin/main`.
+8. Traktuj `frontend/data/decision-offers.json` jako źródło faktów ofertowych.
+9. Traktuj Notion wyłącznie jako operational mirror; starszy Sprint Board lub Roadmap nie nadpisuje aktualnego handoffu Foundera i kanonicznych docs.
+10. Nie rekonstruuj brakujących decyzji z intuicji ani z pamięci rozmowy.
+11. Porównaj produkcję, `main`, lokalny `HEAD`, working tree i stage. Nazwij każdą rozbieżność.
+12. Zachowaj lokalne zmiany i chronione leftovers; stage'uj tylko jawnie dozwolone ścieżki.
+13. Przed zmianą zakresu przypomnij aktywny priorytet Product UX i sekcję „Czego teraz świadomie nie robimy”.
 
 ## 16. Kiedy aktualizować ten dokument
 
-Aktualizuj `NORTH_STATE.md`, gdy zmienia się publiczny release, pozycjonowanie, Decision Model, liczba ofert, numeracja Evidence Reviews, aktywny etap, maintenance deadline albo nienaruszalna zasada. Nie kopiuj do niego pełnych warunków każdej oferty ani kroniki commit po commicie.
+Aktualizuj `NORTH_STATE.md`, gdy zmienia się publiczny release, lokalny zatwierdzony checkpoint mający znaczenie dla recovery, pozycjonowanie, Decision Model, liczba ofert, numeracja Evidence Reviews, aktywny etap, maintenance deadline albo nienaruszalna zasada. Nie kopiuj do niego pełnych warunków każdej oferty ani kroniki commit po commicie.

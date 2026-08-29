@@ -20,19 +20,36 @@ North UX Test #1, Evidence Reviews #1–#4, Data Integrity & Freshness Guard ora
 - GitHub `/docs` pozostaje canonical; Notion jest operational mirror.
 - Materialne zadanie nie jest `Done` bez oceny wymaganej synchronizacji.
 
-### Aktywny etap — v0.8.0 Alternative Comparison & Product Identity Mapping
+### Aktywny etap — Product UX i content hierarchy
 
-**Status:** otwarte 24.08.2026. Mapowanie i kontrakt są zaakceptowane; lokalny bounded UI prototype przeszedł Founder Review i wymagany UX density pass. Jest gotowy do kolejnego Founder Review. Integracja publiczna nie jest otwarta.
+**Status:** aktywny od 2026-08-28. Priorytetem jest prosty, spójny flow produktu; nie affiliate infrastructure, community/dystrybucja, mBank public integration ani dalszy catalog expansion.
 
-- Punktem wejścia jest sytuacja użytkownika, nie nazwa banku ani reklamowane maksimum.
-- Najpierw wybieramy właściwy `Product Identity`, następnie kwalifikowaną edycję lub wariant promocji, a dopiero później niezależne źródło afiliacyjne.
-- mBank jest pierwszym przypadkiem referencyjnym: eKonto możliwości 18–24, eKonto do usług oraz mKonto Intensive odpowiadają innym sytuacjom i nie mogą być zlane w jedną kartę „mBank”. Konto wspólne pozostaje osobną osią potrzeb i wymaga własnego mapowania.
-- Wynik ma pokazywać: rekomendowany kierunek dla scenariusza, powody, warunki, koszt niedopasowania, sensowne alternatywy i `Do Nothing`; nie tworzy rankingu kont ani uniwersalnego zwycięzcy.
-- Bounded route konsumuje osobny kontrakt, nie zmienia `decision-offers.json`, homepage, katalogu ani produkcji. Kolejna decyzja po następnym Founder Review dotyczy dalszej walidacji lub osobnego tasku integracyjnego.
+North prowadzi użytkownika przez cztery pytania w stałej kolejności:
 
-Równolegle pozostają aktywne operacje: freshness recheck 31.08.2026, oczekiwanie na odpowiedzi supportów afiliacyjnych, późniejszy wybór źródeł i projekt małego pilota trackingowego. Prowizja nie wpływa na wynik porównania.
+1. Co dostanę?
+2. Co muszę zrobić?
+3. Gdzie jest haczyk?
+4. Dla kogo to ma sens?
 
-## Następne etapy
+Pełna metodologia, evidence, wyjątki i regulaminowe szczegóły pozostają niżej lub na podstronie. Core Profile jest opcjonalny, lokalny i wypełniany raz; katalog działa również bez niego.
+
+#### Sekwencja UX
+
+1. **North Offer Experience v1/v1.1:** `APPROVED UX PATTERN`.
+2. **Category Shell & Header v1:** `VISUAL PASS` po micro-fixie.
+3. **Offer Identity & Visual Assets Pass v1:** `VISUAL PASS`; provider logos i North visual fallback są wystarczające.
+4. **Homepage Simplification v1:** `FUNCTIONAL / PRODUCT / VISUAL PASS` po Founder Review i micro-fixie; lokalny checkpoint `b3593e2` jest kompletny, bez pushu, deployu i publicznej integracji.
+5. **Później, po osobnej decyzji Founder/Product:** następny bounded krok; nie otwieramy automatycznie Sprintu 4 ani integracji pełnego flow z publicznym frontendem.
+
+Zaakceptowana IA Homepage v1: Header → Hero → Category Discovery → 3 real offers → Jak działa North → Trust/Sources → Final CTA. Konta są jedyną aktywną kategorią; Oszczędzanie, Inwestowanie, Fintech i Krypto są przyszłymi kierunkami bez martwych linków lub pustych katalogów. Business może dojść później, ale nie jest aktywnym verticalem.
+
+Affiliate support, pilot i tracking są `PARKED`. v0.8.0 Alternative Comparison pozostaje zaakceptowanym lokalnym checkpointem architektury i prototypu mBank, lecz jego publiczna integracja jest późniejsza i podporządkowana UX-first direction. Jedyną równoległą operacją wymagającą terminu jest freshness recheck 31.08.2026; nie jest to nowy feature sprint.
+
+Lokalny flow Sprintów 1–3 jest zaakceptowany. Następny bounded krok wymaga osobnej decyzji Founder/Product; roadmapa nie zakłada jeszcze jego zakresu.
+
+## Zakończone etapy i zachowane kontrakty
+
+Poniższe sekcje dokumentują kolejność historycznych etapów oraz ich Definition of Done. Nie nadpisują aktywnego priorytetu opisanego wyżej.
 
 Research Sprint #1 — Competition & Offers
 Cel:
@@ -156,7 +173,7 @@ Ten etap mógł rozpocząć się wyłącznie po walidacji podstawowej trójki v0
 
 ### v0.8.0 — Alternative Comparison & Product Identity Mapping
 
-**Status:** aktywny etap; bounded UI prototype jest lokalnie zaimplementowany, przeszedł Founder Review i UX density pass oraz jest gotowy do kolejnego Founder Review, bez publicznej integracji.
+**Status:** zakończony lokalny checkpoint architektury i bounded prototype; acceptance oraz UX density pass zakończone. Publiczna integracja nie jest aktywnym etapem i wymaga późniejszej, osobnej decyzji zgodnej z UX-first direction.
 
 **Cel:** przejść od analizy jednej wskazanej oferty do wyjaśnialnego wyboru produktu dla sytuacji użytkownika, bez budowania rankingu reklamowanych premii.
 
@@ -165,7 +182,7 @@ Ten etap mógł rozpocząć się wyłącznie po walidacji podstawowej trójki v0
 - Zaprojektować widok, który najpierw wyjaśnia „dlaczego ten produkt pasuje”, a następnie pokazuje dwie uczciwe alternatywy i ryzyka zmiany scenariusza.
 - Rozdzielić porównanie produktu od wyboru promocji, kanału i źródła afiliacyjnego zgodnie z `OFFER_TAXONOMY.md`.
 - Utrzymać jakościowe Match/Verdict, jawne Confidence i Evidence oraz obowiązkową alternatywę `Do Nothing`; bez Match %, Score 0–100 i automatycznego sumowania wariantów.
-- Po kolejnym Founder Review zdecydować, czy przeprowadzić dodatkową walidację jakościową, czy otworzyć osobny task integracji z publicznym flow.
+- Zachować prototyp jako referencję. Ewentualny task integracyjny otworzyć dopiero po decyzji dotyczącej pełnego flow i bez cofania prostoty zaakceptowanego kierunku UX.
 
 **Definition of Done:** istnieje zatwierdzony, generyczny kontrakt porównania i sprawdzony prototyp mBank, a następnie jego implementacja potrafi wybrać właściwy produkt i wariant dla scenariusza bez bankowych wyjątków w logice, bez wpływu afiliacji i bez sugerowania uniwersalnego zwycięzcy.
 

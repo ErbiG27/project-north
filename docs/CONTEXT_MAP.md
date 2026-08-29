@@ -15,6 +15,7 @@
 | Workflow agentów | `AGENTS.md`, `docs/AI_WORKFLOW.md` | Entry point i przebieg tasku. |
 | Synchronizacja po tasku | `docs/SYNC_PROTOCOL.md` | Kiedy aktualizować GitHub/Notion/state. |
 | Decision Model | `docs/LANDING_2_1_DECISION_MODEL_V1.md` | Pełny kontrakt modelu i UI. |
+| Aktualny lokalny kontrakt Product UX | `docs/NORTH_OFFER_EXPERIENCE_V1.md` | Core Profile, Offer Experience, Header/Category Shell, provider identity i Homepage Simplification; lokalne, nie publiczne. |
 | Fakty ofert używane przez frontend | `frontend/data/decision-offers.json` | Structured source dla wdrożonych rekordów. |
 | Core Evidence Review #1 | `docs/EVIDENCE_REVIEW_V1.md` | Millennium, Nest, Pekao. |
 | Evidence Reviews #2–#4 | `docs/EVIDENCE_CATALOG_EXPANSION.md` | Historyczny zakres i input implementacyjny katalogu. |

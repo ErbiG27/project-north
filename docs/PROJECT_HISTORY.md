@@ -60,8 +60,16 @@ Commit `24c2d7c5450b44ae07e12267f592b5898849bb54` (`feat: release 12-offer catal
 
 Release przeszedł Data Guard `0 FAIL / 6 WARN / 17 OK`, guard tests 16/16, Match matrix 50/50, JS syntax 9/9, lokalne trasy 12/12, produkcyjne URL-e 28/28, browser smoke i keyboard smoke. Sześć warningów stało się operacyjnym recheckiem na 31.08.2026, nie błędem wydania.
 
+## Od modelu decyzji do wspólnego doświadczenia użytkownika
+
+v0.8.0 Alternative Comparison potwierdziło na rodzinie mBank, że Product Identity i sytuacja użytkownika muszą wyprzedzać reklamowane maksimum oraz wybór źródła afiliacyjnego. Architektura i bounded prototype zostały zaakceptowane jako lokalny checkpoint, bez publicznej integracji.
+
+Od 28.08.2026 priorytet przeszedł na Product UX i content hierarchy. North Offer Experience v1/v1.1 ustanowił opcjonalny Core Profile wypełniany raz, lokalnie przechowywany i ponownie używany w katalogu oraz na detail page. Category Shell & Header v1 dodały aktywne `Konta` i nieinteraktywne kierunki przyszłych kategorii. Offer Identity & Visual Assets Pass potwierdził, że provider logos i North visual fallback wystarczają bez stockowych wizualizacji produktu.
+
+Homepage Simplification v1 domknął lokalny flow: Header → Hero → Category Discovery → trzy realne oferty → Jak działa North → Trust/Sources → Final CTA. Po Founder Review i micro-fixie otrzymał functional/product/visual PASS i został zapisany jako lokalny checkpoint `b3593e2`, bez pushu, deployu i publicznej integracji. Wcześniejszy lokalny checkpoint `f2747b7` zachowuje Offer Experience. Produkcja nadal pokazuje wcześniejszy UX i katalog 12 ofert.
+
 ## Dlaczego North jest dziś taki, jaki jest
 
 North jest kontrolowanym systemem decyzji, ponieważ kolejne rundy pokazały trzy stałe ryzyka: marketingowe maksimum może fałszować użyteczność, brak evidence może fałszować pewność, a ekonomia afiliacyjna może fałszować rekomendację. Obecna architektura jawnie rozdziela te warstwy.
 
-Następny etap nie jest automatycznie kolejnym feature sprintem. Projekt czeka na odpowiedzi supportów afiliacyjnych, przygotowuje kontrolowaną aktywację i tracking, buduje pierwsze kanały community oraz zbiera realne dane przed wyborem dalszego kierunku produktu.
+Następny etap nie jest automatycznie Sprintem 4, afiliacją, community ani kolejnym rozszerzeniem katalogu. Lokalny flow Sprintów 1–3 jest zaakceptowany; następny bounded krok wymaga osobnej decyzji Founder/Product. Public integration wymaga osobnej decyzji, aktualnego evidence i pełnych release gates.

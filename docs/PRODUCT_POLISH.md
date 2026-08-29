@@ -2,6 +2,16 @@
 
 Backlog jakościowy. Priorytet określa wpływ na zaufanie i ukończenie zadania użytkownika; nie jest planem wydania.
 
+## Product UX checkpoint — 2026-08-29
+
+- [x] North Offer Experience v1/v1.1: zaakceptowany wzorzec krótkiego, opcjonalnego Core Profile bez blokowania katalogu.
+- [x] Category Shell & Header v1: visual pass po micro-fixie; `Konta` aktywne, przyszłe kategorie bez martwych linków i pustych katalogów.
+- [x] Offer Identity & Visual Assets Pass v1: provider logos i North visual fallback wystarczają; bez stockowych product visuals.
+- [x] Homepage Simplification v1: functional/product/visual pass po Founder Review i micro-fixie; prosty flow od hero do ofert, z metodologią niżej; lokalny checkpoint `b3593e2` kompletny.
+- [ ] Public integration pełnego flow: osobny późniejszy task po decyzji Foundera, wymaganych recheckach evidence i pełnych release gates. Lokalny Homepage v1 nie jest produkcją i nie został pushed ani deployed.
+
+Affiliate support/pilot/tracking, community, mBank public integration i dalszy catalog expansion nie są aktywnym backlogiem tego etapu.
+
 ## Pre-UX Polish Patch — North UX Test #1
 
 - [x] Podnieść aktywne analizy bezpośrednio pod hero, przed rozbudowanymi przykładami; zachować wyszukiwanie, filtry, pusty stan i reset.

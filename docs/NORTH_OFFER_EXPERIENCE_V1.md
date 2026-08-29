@@ -1,10 +1,10 @@
-# North Offer Experience v1.1 + Category Shell & Header v1 + Offer Identity & Visual Assets Pass v1 — bounded frontend prototype
+# North Offer Experience v1.1 + Category Shell & Header v1 + Offer Identity & Visual Assets Pass v1 + Homepage Simplification v1 — bounded frontend prototype
 
-> Status: lokalny bounded prototype po Founder Review · Future Categories Micro-Fix zwalidowany · nie jest funkcją publiczną
+> Status: zaakceptowany lokalny wzorzec UX · Homepage Simplification v1 ma local checkpoint `b3593e2` i Founder Review `FUNCTIONAL / PRODUCT / VISUAL PASS` · bez pushu, deployu i publicznej integracji
 
 ## Cel
 
-Prototyp sprawdza, czy jeden krótki Core Profile może dodawać użyteczny kontekst do całego katalogu i podstron ofert bez blokowania dostępu użytkownikowi, który profilu nie wypełnił. Zakres jest eksperymentem UX/product w aktywnym kierunku v0.8.0, nie implementacją afiliacyjną ani decyzją o integracji publicznej.
+Prototyp sprawdza, czy jeden krótki Core Profile może dodawać użyteczny kontekst do homepage, katalogu i podstron ofert bez blokowania dostępu użytkownikowi, który profilu nie wypełnił. Zakres realizuje aktywny kierunek Product UX i content hierarchy, nie implementację afiliacyjną ani decyzję o integracji publicznej.
 
 ## Granice
 
@@ -104,13 +104,37 @@ Mobilne menu jest natywnym dialogiem. Po otwarciu fokus przechodzi na aktywne `K
 
 Shell `Konta` porządkuje doświadczenie między globalną nawigacją i katalogiem. Pokazuje nazwę i opis kategorii, jawny status `Aktywna kategoria`, widok `Wszystkie konta` oraz akcję profilu `Dopasowane do mnie` / `Edytuj dopasowanie`. Nie zmienia danych, kolejności ofert ani logiki dopasowania; ponownie wykorzystuje Core Profile i istniejący katalog trzech ofert.
 
+## Homepage Simplification v1
+
+Sprint 3 dodaje osobną trasę `noindex` `frontend/prototypes/north-homepage.html`. Nie zmienia publicznego `frontend/index.html`, sitemap, danych ofert ani produkcji. Używa tych samych trzech rekordów Millennium, Nest i Pekao oraz tego samego Core Profile.
+
+Zaakceptowany kontrakt treści:
+
+- H1: `Znajdź ofertę, która faktycznie ma sens dla Ciebie.`;
+- supporting copy: `Sprawdzamy premie, warunki i haczyki. Ty odpowiadasz na kilka pytań, a North pokazuje, które oferty pasują do Twojej sytuacji.`;
+- primary CTA bez profilu: `Dopasuj oferty do mnie`;
+- secondary CTA: `Przeglądaj wszystkie oferty`;
+- primary CTA z profilem: `Zobacz dopasowane oferty`.
+
+Zaakceptowana architektura informacji:
+
+1. Header;
+2. Hero;
+3. Category Discovery;
+4. trzy realne oferty;
+5. `Jak działa North`;
+6. Trust / Sources;
+7. Final CTA.
+
+Hero zachowuje abstrakcyjny North visual na desktopie i ukrywa go na mobile, aby treść i CTA pozostały pierwszą warstwą. `Kolejne kategorie w przygotowaniu` pojawia się raz w headerze; Category Discovery pokazuje przyszłe kategorie bez dublowania statusu, martwych linków i pustych katalogów. Karty nie tworzą podium ani języka zwycięzcy. Pekao zachowuje split `300 zł gotówki + do 2 400 zł warunkowej wartości podróżnej`.
+
 ## Synchronizacja
 
-- Changelog: not required — prototyp nie jest release'em ani funkcją publiczną.
+- Changelog: wpis w `Unreleased` opisuje lokalny checkpoint i jawnie nie udaje release'u.
 - ADR: not required — bounded persistence i micro-fix nie zmieniają trwałego kontraktu produktu ani architektury publicznej.
-- `NORTH_STATE.md` / `ROADMAP.md`: not required — aktywny etap v0.8.0 i produkcja pozostają bez zmian.
-- Notion mirror: not required — bounded micro-fix nie zmienia roadmapy, decyzji ani stanu publicznego.
-- Commit: dozwolony wyłącznie jako lokalny UX checkpoint z jawnej allowlisty; push i deploy pozostają wyłączone.
+- `NORTH_STATE.md` / `ROADMAP.md`: wymagają synchronizacji, ponieważ priorytet zmienił się z v0.8.0/affiliate na Product UX.
+- Notion mirror: odczytany jako weryfikacja; starsze Roadmap/Sprint Board zawierają historyczny drift i nie nadpisują kanonicznych docs ani handoffu Foundera.
+- Checkpointy UX: Offer Experience zapisano lokalnie jako `f2747b7`, a Homepage v1 jako `b3593e2`. Bounded documentation sync nie obejmuje pushu, deployu ani publicznej integracji.
 
 ## Walidacja v1.1 i Sprint 2
 
@@ -169,4 +193,17 @@ Stan testu: 2026-08-29.
 - Public regression: homepage i sitemap niezmienione, katalog nadal ma 12 ofert, wyszukiwanie Millennium pokazuje jedną kartę, `decision-offers.json` jest niezmieniony, brak linków do prototypu, czysta konsola i 0 px overflow PASS.
 - Reproducibility: prototype używa `Bank_Millenium.svg`, `nest1.svg` i `Bank_Pekao_SA_Logo_(2017).svg`; ich SHA-256 są zgodne z wcześniej zatwierdzonymi wartościami checkpointu.
 
-Prototyp v1.1 wraz z Header v1, Category Shell v1, Offer Identity & Visual Assets Pass v1 i Future Categories Micro-Fix przeszedł Founder Review oraz lokalną walidację checkpointu, ale nie jest zatwierdzony do publikacji. Recheck Nest i Pekao pozostaje osobną operacją freshness przed jakąkolwiek późniejszą decyzją o publicznej integracji.
+### Homepage Simplification v1 — Founder Review i micro-fix
+
+Stan: 2026-08-29.
+
+- Founder Review: `FUNCTIONAL / PRODUCT / VISUAL PASS` po micro-fixie.
+- H1, supporting copy, CTA bez profilu, CTA z profilem i secondary CTA są zgodne z zaakceptowanym kontraktem.
+- IA zachowuje kolejność Header → Hero → Category Discovery → 3 real offers → Jak działa North → Trust/Sources → Final CTA.
+- Core Profile pozostaje opcjonalny i współdzielony przez homepage, katalog i detail przez `north.offerExperience.profile.v1`.
+- Header zachowuje `Dopasuj oferty` bez profilu i `Twoje dopasowanie` po zapisie; określenia `Profil/Konto` pozostają zarezerwowane dla przyszłego user account/login.
+- Hero visual jest ukryty na mobile; przyszłe kategorie nie prowadzą do pustych ekranów i nie duplikują komunikatu `Kolejne kategorie w przygotowaniu` w Category Discovery.
+- Homepage pokazuje trzy realne oferty bez rankingu: Millennium 360°, Nest Konto i Pekao Konto Przekorzystne.
+- Implementację dokładnie pięciu plików Sprintu 3 zapisano w lokalnym checkpoincie `b3593e2`; nie wykonano pushu, deployu ani publicznej integracji.
+
+Prototyp v1.1 wraz z Header v1, Category Shell v1, Offer Identity & Visual Assets Pass v1, Future Categories Micro-Fix i Homepage Simplification v1 przeszedł wymagane lokalne review, ale nie jest zatwierdzony do publikacji. Recheck Nest i Pekao pozostaje osobną operacją freshness przed jakąkolwiek późniejszą decyzją o publicznej integracji.

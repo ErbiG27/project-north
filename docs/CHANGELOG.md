@@ -8,6 +8,8 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 
 - Cross-AI continuity system: `AGENTS.md`, cienki `CLAUDE.md`, Context Map, Sync Protocol, Offer Taxonomy oraz krótka historia decyzji produktu.
 - Bounded, nieindeksowany prototyp mBank Alternative Comparison, który porównuje eKonto możliwości, eKonto do usług i mKonto Intensive z osobnego kontraktu v0.8.0 bez zmiany publicznego katalogu.
+- Lokalny checkpoint `f2747b7` — nieindeksowany North Offer Experience v1/v1.1 z opcjonalnym Core Profile zapisanym pod `north.offerExperience.profile.v1`, wspólnym katalogiem/detail, Header v1, Category Shell v1 oraz provider identity.
+- Lokalny checkpoint `b3593e2` — Homepage Simplification v1 z prostym hero, Category Discovery, trzema realnymi ofertami, krótkim `Jak działa North`, warstwą Trust/Sources i finalnym CTA.
 
 ### Changed
 
@@ -15,12 +17,20 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 - Utrwalono poprawną numerację Evidence Reviews #1–#4 i status Data Integrity & Freshness Guard jako osobnej technicznej walidacji.
 - Alternative Comparison wybiera najpierw Product Identity, następnie ocenia Product i Promotion eligibility; product-specific różnice są overrides, linked savings nie jest sumowane z gotówką, a afiliacja i numeric score pozostają poza decyzją.
 - Po Founder Review pełna karta zwycięzcy pozostaje rozwinięta, a pozostałe Product Identities, evidence i metodologia używają domyślnie zamkniętych, dostępnych disclosure bez usuwania danych.
+- Priorytet produktu przesunięto na Product UX i content hierarchy: `Co dostanę? → Co muszę zrobić? → Gdzie jest haczyk? → Dla kogo to ma sens?`; affiliate support/pilot/tracking, community, mBank public integration i dalszy catalog expansion są PARKED albo późniejsze.
+- Header używa `Dopasuj oferty` bez Core Profile i `Twoje dopasowanie` po zapisie. Terminy `Profil/Konto` pozostają zarezerwowane dla przyszłego user account/login.
+- Pekao w lokalnym wzorcu UX pokazuje `300 zł gotówki + do 2 400 zł warunkowej wartości podróżnej`, bez przedstawiania 2 700 zł jako gotówki.
 
 ### Verified
 
 - Cztery scenariusze acceptance mBank przeszły przez interpreter i renderowany formularz; scenariusz 22-letni wybrał lepszy Product Fit mimo niższej maksymalnej premii.
 - Skrócona rewalidacja po density pass potwierdziła 4/4 acceptance, `preferredProductId: null`, reset disclosure, mysz i klawiaturę, fokus, desktop 1440×900, mobile 390×844, 0 px overflow oraz brak błędów konsoli, strony, żądań i relacji DOM/ARIA.
 - Data Guard zakończył się `0 FAIL / 6 WARN / 17 OK`, fixtures 16/16, Match 50/50 i składnia JS/MJS 11/11; lokalny i publiczny katalog nadal renderują 12 kart, a lokalne i publiczne trasy ofert zwracają 12/12 HTTP 200.
+- North Offer Experience v1/v1.1 otrzymał `APPROVED UX PATTERN`; Category Shell & Header v1 oraz Offer Identity & Visual Assets Pass v1 otrzymały `VISUAL PASS` po micro-fixach.
+- Homepage Simplification v1 otrzymał `FUNCTIONAL / PRODUCT / VISUAL PASS` po Founder Review i micro-fixie. Lokalny checkpoint `b3593e2` jest kompletny, ale nie został pushed, deployed ani publicznie zintegrowany.
+- Data Guard na `2026-08-29`: `0 FAIL / 10 WARN / 13 OK`; warningi są istniejącymi freshness reminders, nie regresją UX.
+
+`Unreleased` opisuje lokalne checkpointy `f2747b7` i `b3593e2`; `Unreleased` nie jest release'em produkcyjnym. Produkcja nadal odpowiada release'owi `24c2d7c` i publicznemu katalogowi 12 ofert.
 
 ## [12-offer catalog release] — 2026-08-24
 

@@ -1,6 +1,6 @@
 # mBank Alternative Comparison — bounded UI prototype v0.8.0
 
-> Status: Founder Review PASS 2026-08-25 · bounded UX density pass i skrócona rewalidacja ukończone · gotowy do kolejnego Founder Review · nie jest funkcją publiczną
+> Status: zaakceptowany lokalny checkpoint architektury i bounded prototype · Founder Review, acceptance i UX density pass ukończone · public integration później, pod kierunkiem UX-first · nie jest funkcją publiczną
 
 ## Cel i granice
 
@@ -12,6 +12,8 @@ Prototyp sprawdza, czy generyczny kontrakt Alternative Comparison potrafi przej�
 - konto wspólne jako `ownership mode` / potrzeba użytkownika, nie Promotion Variant.
 
 Implementacja jest dostępna wyłącznie jako nieindeksowana trasa `frontend/prototypes/mbank-alternative-comparison.html`. Homepage, listing, `decision-offers.json`, sitemap i publiczne trasy 12 ofert nie zostały zmienione. Prototyp nie ma CTA afiliacyjnego, nie zapisuje odpowiedzi i nie jest produkcyjną rekomendacją.
+
+Od 2026-08-28 mBank public integration nie jest aktywnym etapem. Prototyp pozostaje referencją dla rozdzielenia User Scenario, Product Identity i Promotion Variant; ewentualna integracja musi pasować do prostszego pełnego flow North i wymaga osobnej decyzji po aktualnym kierunku Product UX.
 
 ## Kontrakt
 
@@ -99,7 +101,7 @@ Wysokość sekcji wyniku w scenariuszu 22-letnim wyniosła 1 328 px przy zamkni�
 
 ## Founder Review
 
-Founder zaakceptował model i prototyp z małym UX density pass przed commitem. Warunek został wykonany bez zmiany modelu. Kolejny review powinien potwierdzić przede wszystkim:
+Founder zaakceptował model i prototyp z małym UX density pass przed commitem. Warunek został wykonany bez zmiany modelu. Poniższe punkty pozostają pytaniami do ewentualnego późniejszego tasku integracyjnego, nie aktywnym kolejnym review:
 
 1. czy pełna karta zwycięzcy oraz zwinięte alternatywy tworzą właściwą hierarchię na mobile;
 2. czy widoczne „Dlaczego” i „Na co uważać” wystarczają przed rozwinięciem evidence;
