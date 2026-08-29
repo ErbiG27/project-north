@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="North Offer Experience v1.1 z Offer Identity & Visual Assets Pass v1: opcjonalny kontekst, wyraźna tożsamość produktu i neutralny system wizualny.">
+    <title>North Offer Identity & Visual Assets Pass v1 — bounded prototype</title>
+    <link rel="icon" href="../assets/brand/favicon.ico" sizes="any">
+    <link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../style.css?v=catalog-5">
+    <link rel="stylesheet" href="../styles/pages/north-offer-experience.css?v=prototype-8">
+</head>
+<body class="noe-page" data-noe-page="catalog">
+    <a class="skip-link" href="#main-content">Przejdź do treści</a>
+
+    <header class="noe-platform-header">
+        <div class="noe-platform-header__inner">
+            <a href="north-offer-experience.html" class="noe-brand" aria-label="North — katalog kategorii">
+                <img src="../assets/brand/north-logo.svg" alt="North">
+            </a>
+            <nav class="noe-category-nav" aria-label="Kategorie produktów North">
+                <ul data-category-nav></ul>
+                <p class="noe-category-nav__status">Kolejne kategorie w przygotowaniu</p>
+            </nav>
+            <div class="noe-header-actions">
+                <button class="noe-header-profile" type="button" data-profile-open data-header-profile>
+                    <span class="noe-header-profile__dot" aria-hidden="true"></span>
+                    <span data-header-profile-label>Dopasuj oferty</span>
+                </button>
+                <button class="noe-menu-button" type="button" data-category-menu-open aria-label="Otwórz menu kategorii" aria-controls="category-menu" aria-expanded="false">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="noe-prototype-context noe-shell">
+        <a href="../index.html#opportunities">← Publiczny katalog</a>
+        <span>Bounded prototype · Offer Identity & Visual Assets Pass v1</span>
+    </div>
+
+    <main id="main-content">
+        <section class="noe-hero noe-shell" aria-labelledby="noe-title">
+            <div class="noe-hero__copy">
+                <p class="noe-kicker"><span aria-hidden="true"></span> Jedna sytuacja · cały katalog</p>
+                <h1 id="noe-title">Powiedz raz, czego potrzebujesz. <em>North doda kontekst.</em></h1>
+                <p class="noe-lead">Profil jest opcjonalny. Bez niego nadal zobaczysz pełny katalog, warunki i źródła. Po zapisaniu odpowiedzi North pokaże, co wstępnie pasuje do Twojej sytuacji i co wymaga sprawdzenia.</p>
+                <div class="noe-hero__actions">
+                    <button class="noe-button noe-button--primary" type="button" data-profile-open>Dopasuj oferty do mnie</button>
+                    <a class="noe-text-link" href="#prototype-catalog">Najpierw zobacz oferty</a>
+                </div>
+                <ul class="noe-privacy-list" aria-label="Granice profilu">
+                    <li>Bez konta i logowania</li>
+                    <li>Tylko w tej przeglądarce</li>
+                    <li>Wyczyścisz w każdej chwili</li>
+                </ul>
+            </div>
+            <aside class="noe-sequence" aria-label="Jak działa prototyp">
+                <div><span>01</span><p><strong>Krótki profil</strong>Sześć informacji, które zmieniają sens kilku ofert.</p></div>
+                <div><span>02</span><p><strong>Neutralne fakty</strong>Wartość, warunki i haczyk pozostają takie same dla każdego.</p></div>
+                <div><span>03</span><p><strong>Twój kontekst</strong>Jakościowa wskazówka z powodami, bez procentów i rankingu.</p></div>
+            </aside>
+        </section>
+
+        <section id="category-accounts" class="noe-shell noe-category-shell" aria-labelledby="category-title">
+            <div class="noe-category-shell__heading">
+                <div>
+                    <p class="noe-kicker"><span aria-hidden="true"></span> Kategoria</p>
+                    <h2 id="category-title">Konta</h2>
+                    <p>Konta osobiste i promocje bankowe bez ukrywania warunków i haczyków.</p>
+                </div>
+                <span class="noe-category-state">Aktywna kategoria</span>
+            </div>
+            <nav class="noe-category-views" aria-label="Widoki kategorii Konta">
+                <a href="#prototype-catalog" aria-current="page">Wszystkie konta</a>
+                <button type="button" data-profile-open data-category-profile-action>Dopasowane do mnie</button>
+            </nav>
+            <div id="profile-summary" class="noe-profile-summary" aria-live="polite">
+                <div>
+                    <p class="noe-eyebrow">Twój kontekst</p>
+                    <h3 id="profile-strip-title">Katalog działa bez profilu</h3>
+                    <p>Wypełnij profil, jeśli chcesz zobaczyć kontekst dopasowania na wszystkich kartach.</p>
+                </div>
+                <button class="noe-button noe-button--secondary" type="button" data-profile-open>Dopasuj oferty</button>
+            </div>
+        </section>
+
+        <section id="prototype-catalog" class="noe-shell noe-catalog" aria-labelledby="catalog-title">
+            <div class="noe-section-heading">
+                <div>
+                    <p class="noe-kicker"><span aria-hidden="true"></span> Przypadek testowy · prawdziwe oferty</p>
+                    <h2 id="catalog-title">Trzy oferty, bez uniwersalnego zwycięzcy</h2>
+                </div>
+                <p>Profil nie zmienia faktów ani kolejności. Zmienia wyłącznie warstwę kontekstu.</p>
+            </div>
+            <div id="offer-grid" class="noe-offer-grid" aria-live="polite">
+                <p class="noe-loading">Ładowanie ofert…</p>
+            </div>
+        </section>
+
+        <section class="noe-shell noe-boundary" aria-labelledby="boundary-title">
+            <p class="noe-kicker"><span aria-hidden="true"></span> Granica prototypu</p>
+            <h2 id="boundary-title">Profil pomaga odsiać niedopasowanie. Nie potwierdza kwalifikacji.</h2>
+            <p>Status nowego klienta, szczegółowa karencja i kwalifikowana ścieżka otwarcia zależą od konkretnego banku. North pokazuje je na stronie oferty jako rzeczy do potwierdzenia, zamiast zbierać osobną historię dla każdego banku w profilu głównym.</p>
+        </section>
+    </main>
+
+    <div id="category-menu-mount"></div>
+    <div id="profile-mount"></div>
+    <noscript><p class="noe-noscript">Włącz JavaScript, aby zobaczyć katalog i opcjonalny profil. Odpowiedzi nie są wysyłane na serwer.</p></noscript>
+    <script type="module" src="north-offer-experience.mjs?v=prototype-8"></script>
+</body>
+</html>

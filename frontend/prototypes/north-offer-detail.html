@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Wzorzec podstrony oferty North z tożsamością providera, opcjonalnym kontekstem użytkownika, warunkami, ryzykami i źródłami.">
+    <title>Szczegóły konta — North Offer Identity & Visual Assets Pass v1</title>
+    <link rel="icon" href="../assets/brand/favicon.ico" sizes="any">
+    <link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../style.css?v=catalog-5">
+    <link rel="stylesheet" href="../styles/pages/north-offer-experience.css?v=prototype-8">
+</head>
+<body class="noe-page noe-detail-page" data-noe-page="detail">
+    <a class="skip-link" href="#main-content">Przejdź do treści</a>
+
+    <header class="noe-platform-header">
+        <div class="noe-platform-header__inner">
+            <a href="north-offer-experience.html" class="noe-brand" aria-label="North — katalog kategorii">
+                <img src="../assets/brand/north-logo.svg" alt="North">
+            </a>
+            <nav class="noe-category-nav" aria-label="Kategorie produktów North">
+                <ul data-category-nav></ul>
+                <p class="noe-category-nav__status">Kolejne kategorie w przygotowaniu</p>
+            </nav>
+            <div class="noe-header-actions">
+                <button class="noe-header-profile" type="button" data-profile-open data-header-profile>
+                    <span class="noe-header-profile__dot" aria-hidden="true"></span>
+                    <span data-header-profile-label>Dopasuj oferty</span>
+                </button>
+                <button class="noe-menu-button" type="button" data-category-menu-open aria-label="Otwórz menu kategorii" aria-controls="category-menu" aria-expanded="false">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="noe-prototype-context noe-shell">
+        <a href="north-offer-experience.html#prototype-catalog">← Katalog kont</a>
+        <span>Bounded prototype · Offer Identity & Visual Assets Pass v1</span>
+    </div>
+
+    <main id="main-content" class="noe-shell noe-detail-shell">
+        <div id="detail-root" aria-live="polite">
+            <p class="noe-loading">Ładowanie analizy…</p>
+        </div>
+    </main>
+
+    <div id="category-menu-mount"></div>
+    <div id="profile-mount"></div>
+    <noscript><p class="noe-noscript">Włącz JavaScript, aby zobaczyć analizę. Odpowiedzi profilu nie są wysyłane na serwer.</p></noscript>
+    <script type="module" src="north-offer-experience.mjs?v=prototype-8"></script>
+</body>
+</html>
