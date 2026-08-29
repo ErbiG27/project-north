@@ -106,24 +106,34 @@ const categories = Object.freeze([
     { id: "crypto", label: "Krypto", status: "planned", route: null, active: false }
 ]);
 
-function categoryNavigationHtml() {
+function categoryNavigationHtml(currentCategoryId = null) {
     return categories.map((category) => {
         if (category.active && category.route) {
-            return `<li><a class="noe-category-link noe-category-link--active" href="${escapeHtml(category.route)}" aria-current="page"><span>${escapeHtml(category.label)}</span><small>Aktywne</small></a></li>`;
+            const current = category.id === currentCategoryId;
+            return `<li><a class="noe-category-link noe-category-link--active" href="${escapeHtml(category.route)}"${current ? ' aria-current="page"' : ""}><span>${escapeHtml(category.label)}</span><small>${current ? "Aktywne" : "Dostępne"}</small></a></li>`;
         }
         return `<li><span class="noe-category-link noe-category-link--planned" aria-label="${escapeHtml(category.label)} — przyszła kategoria"><span>${escapeHtml(category.label)}</span></span></li>`;
     }).join("");
 }
 
-function categoryMenuHtml() {
+function categoryMenuHtml(currentCategoryId = null) {
     return `<dialog id="category-menu" class="noe-category-dialog" aria-labelledby="category-menu-title">
         <div class="noe-category-dialog__header">
             <div><p class="noe-eyebrow">Kategorie North</p><h2 id="category-menu-title">Wybierz obszar</h2></div>
             <button class="noe-dialog-close" type="button" data-category-menu-close aria-label="Zamknij menu kategorii">×</button>
         </div>
-        <nav aria-label="Mobilne menu kategorii"><ul>${categoryNavigationHtml()}</ul></nav>
+        <nav aria-label="Mobilne menu kategorii"><ul>${categoryNavigationHtml(currentCategoryId)}</ul></nav>
         <p class="noe-category-dialog__note">Konta są aktywnym prototypem. Pozostałe obszary pokazują przyszłą architekturę North, ale nie prowadzą do pustych katalogów.</p>
     </dialog>`;
+}
+
+function categoryDiscoveryHtml() {
+    return categories.map((category) => {
+        if (category.active && category.route) {
+            return `<a class="noe-home-category noe-home-category--active" href="${escapeHtml(category.route)}"><span>${escapeHtml(category.label)}</span><small>Dostępne teraz</small><strong aria-hidden="true">→</strong></a>`;
+        }
+        return `<span class="noe-home-category noe-home-category--planned" aria-label="${escapeHtml(category.label)} — przyszła kategoria"><span>${escapeHtml(category.label)}</span></span>`;
+    }).join("");
 }
 
 function escapeHtml(value) {
@@ -581,15 +591,17 @@ function renderHeaderProfile(profile) {
 }
 
 function mountCategoryNavigation() {
+    const currentCategoryId = document.body?.dataset.noePage === "homepage" ? null : "accounts";
     document.querySelectorAll("[data-category-nav]").forEach((list) => {
-        list.innerHTML = categoryNavigationHtml();
+        list.innerHTML = categoryNavigationHtml(currentCategoryId);
     });
 }
 
 function mountCategoryMenuController() {
     const mount = document.querySelector("#category-menu-mount");
     if (!mount) return;
-    mount.innerHTML = categoryMenuHtml();
+    const currentCategoryId = document.body?.dataset.noePage === "homepage" ? null : "accounts";
+    mount.innerHTML = categoryMenuHtml(currentCategoryId);
     const dialog = mount.querySelector("#category-menu");
     const closeButton = mount.querySelector("[data-category-menu-close]");
     let lastTrigger = null;
@@ -604,7 +616,7 @@ function mountCategoryMenuController() {
         lastTrigger = trigger;
         trigger.setAttribute("aria-expanded", "true");
         dialog.showModal();
-        window.setTimeout(() => dialog.querySelector("a[aria-current='page']")?.focus(), 0);
+        window.setTimeout(() => dialog.querySelector("a[aria-current='page'], a")?.focus(), 0);
     });
 
     closeButton.addEventListener("click", close);
@@ -760,6 +772,36 @@ function renderCatalog(offers, profile, announcement = "") {
     if (announcement) summary.insertAdjacentHTML("beforeend", `<p class="noe-sr-status" role="status">${escapeHtml(announcement)}</p>`);
     grid.innerHTML = offers.map((offer) => offerCardHtml(offer, profile)).join("");
     renderHeaderProfile(profile);
+}
+
+function renderHomePrimaryCtas(profile) {
+    const active = Boolean(profile);
+    document.querySelectorAll("[data-home-primary]").forEach((button) => {
+        button.textContent = active ? "Zobacz dopasowane oferty" : "Dopasuj oferty do mnie";
+        button.toggleAttribute("data-profile-open", !active);
+        button.setAttribute("aria-label", active
+            ? "Zobacz oferty z zapisanym dopasowaniem"
+            : "Otwórz krótki formularz dopasowania ofert");
+    });
+}
+
+function renderHome(offers, profile, announcement = "") {
+    const grid = document.querySelector("#home-offer-grid");
+    const discovery = document.querySelector("[data-category-discovery]");
+    if (!grid || !discovery) return;
+    discovery.innerHTML = categoryDiscoveryHtml();
+    grid.innerHTML = offers.map((offer) => offerCardHtml(offer, profile)).join("");
+    if (announcement) grid.insertAdjacentHTML("afterend", `<p class="noe-sr-status" role="status">${escapeHtml(announcement)}</p>`);
+    renderHeaderProfile(profile);
+    renderHomePrimaryCtas(profile);
+}
+
+function mountHomePrimaryController() {
+    document.addEventListener("click", (event) => {
+        const trigger = event.target.closest("[data-home-primary]");
+        if (!trigger || !readProfile()) return;
+        window.location.href = "north-offer-experience.html#prototype-catalog";
+    });
 }
 
 function listBlock(title, items, className = "") {
@@ -928,6 +970,25 @@ async function mountCatalog() {
     }
 }
 
+async function mountHomepage() {
+    const grid = document.querySelector("#home-offer-grid");
+    try {
+        const offers = await loadOffers();
+        let profile = readProfile();
+        const update = (nextProfile, announcement) => {
+            profile = nextProfile;
+            renderHome(offers, profile, announcement);
+        };
+        mountCategoryNavigation();
+        mountCategoryMenuController();
+        renderHome(offers, profile);
+        mountProfileController(update);
+        mountHomePrimaryController();
+    } catch (error) {
+        renderLoadError(grid, error.message);
+    }
+}
+
 async function mountDetail() {
     const root = document.querySelector("#detail-root");
     try {
@@ -950,6 +1011,7 @@ async function mountDetail() {
 
 if (typeof document !== "undefined") {
     const page = document.body?.dataset.noePage;
+    if (page === "homepage") mountHomepage();
     if (page === "catalog") mountCatalog();
     if (page === "detail") mountDetail();
 }

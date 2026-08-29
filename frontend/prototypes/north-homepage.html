@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="description" content="Izolowany prototyp homepage North: dopasowanie ofert lub swobodne przeglądanie bez podawania danych.">
+    <title>North Homepage Simplification v1 — bounded prototype</title>
+    <link rel="icon" href="../assets/brand/favicon.ico" sizes="any">
+    <link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="../style.css?v=catalog-5">
+    <link rel="stylesheet" href="../styles/pages/north-offer-experience.css?v=homepage-1">
+</head>
+<body class="noe-page noe-homepage" data-noe-page="homepage">
+    <a class="skip-link" href="#main-content">Przejdź do treści</a>
+
+    <header class="noe-platform-header">
+        <div class="noe-platform-header__inner">
+            <a href="north-homepage.html" class="noe-brand" aria-label="North — strona główna prototypu">
+                <img src="../assets/brand/north-logo.svg" alt="North">
+            </a>
+            <nav class="noe-category-nav" aria-label="Kategorie produktów North">
+                <ul data-category-nav></ul>
+                <p class="noe-category-nav__status">Kolejne kategorie w przygotowaniu</p>
+            </nav>
+            <div class="noe-header-actions">
+                <button class="noe-header-profile" type="button" data-profile-open data-header-profile>
+                    <span class="noe-header-profile__dot" aria-hidden="true"></span>
+                    <span data-header-profile-label>Dopasuj oferty</span>
+                </button>
+                <button class="noe-menu-button" type="button" data-category-menu-open aria-label="Otwórz menu kategorii" aria-controls="category-menu" aria-expanded="false">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-content">
+        <section class="noe-home-hero noe-shell" aria-labelledby="home-title">
+            <div class="noe-home-hero__copy">
+                <p class="noe-kicker"><span aria-hidden="true"></span> Decyzje zamiast rankingu</p>
+                <h1 id="home-title">Znajdź ofertę, która faktycznie ma sens dla Ciebie.</h1>
+                <p class="noe-lead">Sprawdzamy premie, warunki i haczyki. Ty odpowiadasz na kilka pytań, a North pokazuje, które oferty pasują do Twojej sytuacji.</p>
+                <div class="noe-home-hero__actions">
+                    <button class="noe-button noe-button--primary" type="button" data-home-primary data-profile-open>Dopasuj oferty do mnie</button>
+                    <a class="noe-button noe-button--secondary" href="north-offer-experience.html#prototype-catalog">Przeglądaj wszystkie oferty</a>
+                </div>
+                <p class="noe-home-hero__note">Profil jest opcjonalny i zostaje tylko w tej przeglądarce. Katalog działa również bez niego.</p>
+            </div>
+
+            <aside class="noe-home-visual" aria-label="North pokazuje wartość, wymagania i haczyk oferty">
+                <div class="noe-home-visual__signal"><span aria-hidden="true"></span><p>Oferta × Twoja sytuacja</p></div>
+                <div class="noe-home-visual__card noe-home-visual__card--value">
+                    <span>Co dostajesz?</span>
+                    <strong>Wartość w odpowiednim kontekście</strong>
+                </div>
+                <div class="noe-home-visual__card">
+                    <span>Co musisz zrobić?</span>
+                    <strong>Warunki bez drobnego druku</strong>
+                </div>
+                <div class="noe-home-visual__card noe-home-visual__card--catch">
+                    <span>Gdzie jest haczyk?</span>
+                    <strong>Ryzyko utraty korzyści</strong>
+                </div>
+            </aside>
+        </section>
+
+        <section id="category-discovery" class="noe-home-section noe-home-categories noe-shell" aria-labelledby="category-discovery-title">
+            <div class="noe-home-section__heading">
+                <div>
+                    <p class="noe-kicker"><span aria-hidden="true"></span> Odkrywaj po potrzebie</p>
+                    <h2 id="category-discovery-title">Jeden North, różne decyzje finansowe</h2>
+                </div>
+                <p>Dziś możesz sprawdzić konta. Kolejne obszary dołączą dopiero wtedy, gdy będą miały gotowe oferty i wiarygodne dane.</p>
+            </div>
+            <div class="noe-home-category-grid" data-category-discovery></div>
+        </section>
+
+        <section id="offer-preview" class="noe-home-section noe-home-offers noe-shell" aria-labelledby="offer-preview-title">
+            <div class="noe-home-section__heading">
+                <div>
+                    <p class="noe-kicker"><span aria-hidden="true"></span> Dostępne teraz</p>
+                    <h2 id="offer-preview-title">Oferty, które możesz sprawdzić już teraz</h2>
+                </div>
+                <p>Bez podium i uniwersalnego zwycięzcy. Każda karta pokazuje wartość, najważniejsze warunki i największy haczyk.</p>
+            </div>
+            <div id="home-offer-grid" class="noe-offer-grid" aria-live="polite">
+                <p class="noe-loading">Ładowanie ofert…</p>
+            </div>
+            <a class="noe-home-inline-link" href="north-offer-experience.html#prototype-catalog">Przejdź do katalogu kont <span aria-hidden="true">→</span></a>
+        </section>
+
+        <section id="how-north-works" class="noe-home-section noe-home-how noe-shell" aria-labelledby="how-title">
+            <div class="noe-home-section__heading">
+                <div>
+                    <p class="noe-kicker"><span aria-hidden="true"></span> Jak działa North</p>
+                    <h2 id="how-title">Od kilku odpowiedzi do jasnego kontekstu</h2>
+                </div>
+                <p>Nie pytamy tylko, gdzie premia jest najwyższa. Sprawdzamy, która oferta ma sens w Twojej sytuacji.</p>
+            </div>
+            <ol class="noe-home-steps">
+                <li><span>01</span><h3>Odpowiedz na kilka pytań</h3><p>Podaj tylko informacje, które realnie zmieniają ocenę kilku ofert.</p></li>
+                <li><span>02</span><h3>North sprawdza warunki i haczyki</h3><p>Oddzielamy reklamowane maksimum od działań, kosztów i ryzyka.</p></li>
+                <li><span>03</span><h3>Zobacz, co pasuje do Twojej sytuacji</h3><p>Dostajesz powody i rzeczy do potwierdzenia, a nie procent dopasowania.</p></li>
+            </ol>
+        </section>
+
+        <section id="trust-sources" class="noe-home-section noe-home-trust noe-shell" aria-labelledby="trust-title">
+            <div class="noe-home-trust__intro">
+                <p class="noe-kicker"><span aria-hidden="true"></span> Zaufanie przez jawność</p>
+                <h2 id="trust-title">Wiesz, skąd pochodzi wniosek</h2>
+                <p>Warunki ofert mogą się zmieniać. Dlatego North pokazuje źródła, datę sprawdzenia i granice pewności zamiast udawać, że każda informacja jest wieczna.</p>
+                <a class="noe-home-inline-link" href="../methodology.html">Zobacz metodologię <span aria-hidden="true">→</span></a>
+            </div>
+            <ul class="noe-home-trust__list">
+                <li><strong>Oficjalne źródła</strong><span>Regulaminy, strony produktów i tabele opłat są podstawą faktów.</span></li>
+                <li><strong>Widoczna świeżość</strong><span>Pokazujemy, kiedy dane zostały sprawdzone i kiedy wymagają ponownej kontroli.</span></li>
+                <li><strong>Neutralność afiliacyjna</strong><span>Źródło partnerskie nie wpływa na ocenę, dopasowanie ani kolejność ofert.</span></li>
+            </ul>
+        </section>
+
+        <section class="noe-home-final noe-shell" aria-labelledby="final-cta-title">
+            <div>
+                <p class="noe-kicker"><span aria-hidden="true"></span> Zacznij po swojemu</p>
+                <h2 id="final-cta-title">Dopasuj oferty albo przejrzyj je bez podawania danych.</h2>
+            </div>
+            <div class="noe-home-final__actions">
+                <button class="noe-button noe-button--primary" type="button" data-home-primary data-profile-open>Dopasuj oferty do mnie</button>
+                <a class="noe-button noe-button--secondary" href="north-offer-experience.html#prototype-catalog">Przeglądaj wszystkie oferty</a>
+            </div>
+        </section>
+    </main>
+
+    <div id="category-menu-mount"></div>
+    <div id="profile-mount"></div>
+    <noscript><p class="noe-noscript">Włącz JavaScript, aby zobaczyć oferty i opcjonalne dopasowanie. Odpowiedzi nie są wysyłane na serwer.</p></noscript>
+    <script type="module" src="north-offer-experience.mjs?v=homepage-1"></script>
+</body>
+</html>
