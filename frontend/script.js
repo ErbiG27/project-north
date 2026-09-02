@@ -97,15 +97,20 @@
     }
 
     function confidenceLabel(band) {
-        return ({ HIGH: "wysoka", MEDIUM: "średnia", LOW: "niska" })[band] || band;
+        return ({ HIGH: "wysoka", MEDIUM: "średnia", LOW: "niska", UNKNOWN: "nie można potwierdzić" })[band] || band;
     }
 
     function confidenceDescription(band) {
         return ({
             HIGH: "Dane są dobrze potwierdzone w oficjalnych źródłach.",
             MEDIUM: "Większość danych jest potwierdzona, ale jedna rzecz pozostaje niejasna.",
-            LOW: "Brakuje ważnych informacji, które mogą zmienić decyzję."
+            LOW: "Brakuje ważnych informacji, które mogą zmienić decyzję.",
+            UNKNOWN: "Aktualność danych nie pozwala dziś potwierdzić tej oceny."
         })[band] || "Sprawdź uzasadnienie pewności danych.";
+    }
+
+    function effectiveConfidenceBand(offer) {
+        return window.NorthOffers.effectiveConfidenceBand(offer);
     }
 
     function confidenceReason(offer) {
@@ -159,11 +164,11 @@
                     <strong>Saldo podróżne nie jest gotówką.</strong>
                     <p>${escapeHtml(travel.usability.restrictions[0])} ${escapeHtml(travel.usability.restrictions[1])}</p>
                 </div>
-                <p class="record-meta">${freshnessBadge(offer)} Edycja sprawdzona ${formatDate(offer.identity.verifiedAt)} · pewność danych: ${escapeHtml(confidenceLabel(offer.decision.northConfidence.band))}</p>
+                <p class="record-meta">${freshnessBadge(offer)} Edycja sprawdzona ${formatDate(offer.identity.verifiedAt)} · pewność danych: ${escapeHtml(confidenceLabel(effectiveConfidenceBand(offer)))}</p>
                 <a class="north-link" href="${offerRoutes[offer.identity.id]}#sources">Zobacz źródła i punkty regulaminu <span aria-hidden="true">→</span></a>
             </article>
             <aside class="snapshot-panel">
-                <div class="panel-topline"><span>Najważniejsze liczby</span><span class="confidence-badge">Pewność danych: ${escapeHtml(confidenceLabel(offer.decision.northConfidence.band))}</span></div>
+                <div class="panel-topline"><span>Najważniejsze liczby</span><span class="confidence-badge">Pewność danych: ${escapeHtml(confidenceLabel(effectiveConfidenceBand(offer)))}</span></div>
                 <p class="snapshot-intro">Przykład: ${escapeHtml(example.label)}.</p>
                 <dl class="snapshot-values">
                     <div><dt>${term("advertisedMax")}</dt><dd>${formatMoney(scenario.advertisedMax)}</dd><span>nie jest jedną gotówkową premią</span></div>
@@ -213,6 +218,7 @@
         target.innerHTML = offer.value.scenarioExamples.map((example, index) => {
             const value = offer.decision.northValue.find((item) => item.scenarioId === example.id);
             const inputs = scenarioInputs(example);
+            const scenarioConfidence = effectiveConfidenceBand(offer) === "UNKNOWN" ? "UNKNOWN" : example.confidenceBand;
             return `
                 <article class="persona-card">
                     <div class="persona-card__head"><span>Przykład ${scenarioLetters[index]}</span><span class="${verdictClass(example.verdict)}">${escapeHtml(verdictLabel(example.verdict))}<small>${escapeHtml(example.verdict)}</small></span></div>
@@ -231,7 +237,7 @@
                     </dl>
                     <p class="verdict-reason"><strong>Dlaczego:</strong> ${escapeHtml(example.verdictReason)}</p>
                     <p class="do-nothing"><strong>Jeśli nic nie zrobisz:</strong> 0 zł nagrody, 0 zł nowego kosztu, minimalny wysiłek.</p>
-                    <p class="scenario-confidence"><strong>${escapeHtml(confidenceDescription(example.confidenceBand))}</strong> <small>${escapeHtml(confidenceLabel(example.confidenceBand))} (${escapeHtml(example.confidenceBand)})</small></p>
+                    <p class="scenario-confidence"><strong>${escapeHtml(confidenceDescription(scenarioConfidence))}</strong> <small>${escapeHtml(confidenceLabel(scenarioConfidence))} (${escapeHtml(scenarioConfidence)})</small></p>
                 </article>`;
         }).join("");
     }
@@ -247,12 +253,12 @@
                     <div class="decision-offer-card__top">
                         ${providerMark(offer)}
                         <div><p>${escapeHtml(shortProvider(offer))}</p><span class="offer-status">${escapeHtml(freshness.label)} · sprawdzono ${formatDate(offer.identity.verifiedAt)}</span></div>
-                        <span class="confidence-badge">Pewność danych: ${escapeHtml(confidenceLabel(offer.decision.northConfidence.band))} <small>(${escapeHtml(offer.decision.northConfidence.band)})</small></span>
+                        <span class="confidence-badge">Pewność danych: ${escapeHtml(confidenceLabel(effectiveConfidenceBand(offer)))} <small>(${escapeHtml(effectiveConfidenceBand(offer))})</small></span>
                     </div>
                     <p class="problem-label">${escapeHtml(offer.listing.problemLabel)}</p>
                     <h3>${escapeHtml(offer.identity.title)}</h3>
                     <p class="offer-summary">${escapeHtml(offer.listing.summary)}</p>
-                    <p class="offer-confidence"><strong>${escapeHtml(confidenceDescription(offer.decision.northConfidence.band))}</strong>${confidenceReason(offer) ? ` ${escapeHtml(confidenceReason(offer))}` : ""}</p>
+                    <p class="offer-confidence"><strong>${escapeHtml(confidenceDescription(effectiveConfidenceBand(offer)))}</strong>${effectiveConfidenceBand(offer) !== "UNKNOWN" && confidenceReason(offer) ? ` ${escapeHtml(confidenceReason(offer))}` : ""}</p>
                     <dl class="offer-card-values">
                         <div><dt>Główna wartość</dt><dd>${escapeHtml(offer.listing.cardValue || offer.value.advertisedMax.displayLabel)}</dd></div>
                         <div><dt>Najważniejszy warunek</dt><dd>${escapeHtml(offer.listing.cardEffort || offer.listing.summary)}</dd></div>
@@ -340,9 +346,9 @@
     function renderConfidence(offers, data) {
         const target = document.getElementById("confidence-summary");
         target.classList.remove("data-loading");
-        target.innerHTML = offers.map((offer) => `<div><dt>${escapeHtml(shortProvider(offer).replace("Bank ", ""))}</dt><dd>${escapeHtml(confidenceLabel(offer.decision.northConfidence.band))} <small>(${escapeHtml(offer.decision.northConfidence.band)})</small></dd></div>`).join("");
+        target.innerHTML = offers.map((offer) => { const band = effectiveConfidenceBand(offer); return `<div><dt>${escapeHtml(shortProvider(offer).replace("Bank ", ""))}</dt><dd>${escapeHtml(confidenceLabel(band))} <small>(${escapeHtml(band)})</small></dd></div>`; }).join("");
         const recheckBy = offers.map((offer) => offer.evidence.recheckBy).sort()[0];
-        const dueCount = offers.filter((offer) => freshnessFor(offer).state === "RECHECK_DUE").length;
+        const dueCount = offers.filter((offer) => !["CURRENT", "RECHECK_SOON"].includes(freshnessFor(offer).state)).length;
         document.getElementById("confidence-review").textContent = dueCount
             ? `${dueCount} ${dueCount === 1 ? "analiza wymaga" : "analizy wymagają"} ręcznego rechecku · poprzedni review: ${formatDate(data.reviewedAt)}`
             : `Pełny review: ${formatDate(data.reviewedAt)} · kolejny recheck do ${formatDate(recheckBy)}`;
@@ -367,7 +373,7 @@
             const states = activeOffers.map((offer) => freshnessFor(offer).state);
             const structureStatus = document.getElementById("structure-status");
             if (structureStatus) {
-                structureStatus.textContent = states.every((state) => state === "VERIFIED")
+                structureStatus.textContent = states.every((state) => ["CURRENT", "RECHECK_SOON"].includes(state))
                     ? "Warunki sprawdzone w oficjalnych źródłach"
                     : "Sprawdź aktualność danych";
             }

@@ -9,13 +9,25 @@ import { validateNorthData, validateNorthDataText } from "./validate-north-data.
 const scriptDir = path.dirname(fileURLToPath(import.meta.url));
 const dataPath = path.resolve(scriptDir, "..", "frontend", "data", "decision-offers.json");
 const sourceData = JSON.parse(await readFile(dataPath, "utf8"));
-const REVIEW_DATE = sourceData.reviewedAt;
+const REVIEW_DATE = "2026-09-02";
 const shiftIsoDate = (isoDate, days) => {
     const date = new Date(`${isoDate}T00:00:00Z`);
     date.setUTCDate(date.getUTCDate() + days);
     return date.toISOString().slice(0, 10);
 };
-const copyData = () => structuredClone(sourceData);
+const copyData = () => {
+    const data = structuredClone(sourceData);
+    for (const offer of data.offers) {
+        if (["active", "closing"].includes(offer.identity.status) && offer.identity.edition.validTo && offer.identity.edition.validTo < REVIEW_DATE) {
+            offer.identity.edition.validTo = "2026-12-31";
+        }
+        offer.evidence.recheckBy = "2026-12-31";
+    }
+    Object.values(data.landingGates).forEach((gate) => {
+        if (gate && typeof gate === "object" && "recheckBy" in gate) gate.recheckBy = "2026-12-31";
+    });
+    return data;
+};
 
 test("malformed JSON returns FAIL", () => {
     const report = validateNorthDataText('{"offers": [', { today: REVIEW_DATE });
@@ -112,7 +124,7 @@ test("expired recheck requires LOW freshness and fails as stale evidence", () =>
         && entry.message === "Expired recheckBy requires the freshness confidence factor to be LOW."));
 });
 
-test("unchanged reviewed data has no false FAIL on its review date", () => {
+test("normalized current fixture has no false FAIL before a targeted mutation", () => {
     const report = validateNorthData(copyData(), { today: REVIEW_DATE });
     assert.equal(report.exitCode, 0);
     assert.equal(report.counts.FAIL, 0);

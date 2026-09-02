@@ -17,7 +17,7 @@ const sandbox = {
 };
 vm.createContext(sandbox);
 vm.runInContext(matchSource, sandbox, { filename: "frontend/offers/match.js" });
-const evaluate = sandbox.window.NorthMatch.evaluate;
+const evaluate = sandbox.window.NorthMatch.evaluateLegacy;
 const offers = new Map(data.offers.map((offer) => [offer.identity.id, offer]));
 
 const base = {
@@ -98,10 +98,10 @@ const cases = [
     { name: "Nest — pominięty miesiąc", id: "nest-bank-nest-konto", input: values("nest-bank-nest-konto", { commitmentMonths: 23 }), expect: { gross: 1150 } },
     { name: "Nest — wykluczenie", id: "nest-bank-nest-konto", input: values("nest-bank-nest-konto", { relationshipClear: false }), expect: { match: "POOR FIT", verdict: "SKIP" } },
 
-    { name: "Pekao — tylko 300 zł", id: "bank-pekao-konto-przekorzystne", input: values("bank-pekao-konto-przekorzystne"), expect: { match: "FIT", gross: 300 } },
-    { name: "Pekao — użytkownik podróżny", id: "bank-pekao-konto-przekorzystne", input: values("bank-pekao-konto-przekorzystne", { commitmentMonths: 12, includeTravel: true, firstTransactionsSpend: 3334, laterTransactionsSpend: 1667, travelMonths: 12, travelSpend: 12000, travelExpenseCount: 2, acceptsRestrictedReward: true }), expect: { gross: 2700 } },
-    { name: "Pekao — brak planów podróżnych", id: "bank-pekao-konto-przekorzystne", input: values("bank-pekao-konto-przekorzystne", { includeTravel: false }), expect: { gross: 300 } },
-    { name: "Pekao — brak danych", id: "bank-pekao-konto-przekorzystne", input: {}, expect: { match: "CANNOT ASSESS", verdict: "NOT ENOUGH DATA" } },
+    { name: "Pekao [LEGACY SCALAR MODEL] — tylko 300 zł", id: "bank-pekao-konto-przekorzystne", input: values("bank-pekao-konto-przekorzystne"), expect: { match: "FIT", gross: 300 } },
+    { name: "Pekao [LEGACY SCALAR MODEL] — użytkownik podróżny", id: "bank-pekao-konto-przekorzystne", input: values("bank-pekao-konto-przekorzystne", { commitmentMonths: 12, includeTravel: true, firstTransactionsSpend: 3334, laterTransactionsSpend: 1667, travelMonths: 12, travelSpend: 12000, travelExpenseCount: 2, acceptsRestrictedReward: true }), expect: { gross: 2700 } },
+    { name: "Pekao [LEGACY SCALAR MODEL] — brak planów podróżnych", id: "bank-pekao-konto-przekorzystne", input: values("bank-pekao-konto-przekorzystne", { includeTravel: false }), expect: { gross: 300 } },
+    { name: "Pekao [LEGACY SCALAR MODEL] — brak danych", id: "bank-pekao-konto-przekorzystne", input: {}, expect: { match: "CANNOT ASSESS", verdict: "NOT ENOUGH DATA" } },
 
     { name: "Alior 18–25 — kwalifikowany", id: "alior-konto-18-25", input: values("alior-konto-18-25"), expect: { match: "FIT", gross: 500 } },
     { name: "Alior 18–25 — poza wiekiem", id: "alior-konto-18-25", input: values("alior-konto-18-25", { age: 26 }), expect: { match: "POOR FIT", verdict: "SKIP", gross: 0, usableMax: 0 } },

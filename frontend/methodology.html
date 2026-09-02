@@ -205,10 +205,12 @@
                 <p>Przy liczbach i warunkach pokazujemy rodzaj oficjalnego źródła, dokładną referencję, datę sprawdzenia, poziom wsparcia, notę niepewności oraz konflikt, jeśli istnieje. Regulamin ma pierwszeństwo przed skrótem marketingowym.</p>
             </div>
             <div class="freshness-method-grid">
-                <article><span class="freshness-badge freshness-badge--verified">VERIFIED</span><h3>Ręczny review jest ważny</h3><p>Oferta ma pełną datę weryfikacji, oficjalne dowody i nie minął termin kolejnego sprawdzenia.</p></article>
+                <article><span class="freshness-badge freshness-badge--current">CURRENT</span><h3>Ręczny review jest ważny</h3><p>Oferta ma pełną datę weryfikacji, oficjalne dowody i nie minął termin kolejnego sprawdzenia.</p></article>
+                <article><span class="freshness-badge freshness-badge--recheck-soon">RECHECK SOON</span><h3>Zbliża się termin sprawdzenia</h3><p>Evidence nadal odpowiada bieżącemu review, ale wymaga ponownej kontroli w ciągu siedmiu dni.</p></article>
                 <article><span class="freshness-badge freshness-badge--recheck-due">RECHECK DUE</span><h3>Minął termin ponownego sprawdzenia</h3><p>Poprzednie dowody pozostają widoczne, ale nie nazywamy danych aktualnymi bez nowego ręcznego review.</p></article>
-                <article><span class="freshness-badge freshness-badge--expired">EXPIRED</span><h3>Okno wejścia się skończyło</h3><p>Ta edycja nie jest przedstawiana jako dostępna. Nowa edycja wymaga osobnej weryfikacji.</p></article>
-                <article><span class="freshness-badge freshness-badge--unverified">UNVERIFIED</span><h3>Brakuje kompletnej podstawy</h3><p>Nie ma pełnego review bieżącej edycji lub oficjalnych dowodów. Pozytywna rekomendacja jest zablokowana.</p></article>
+                <article><span class="freshness-badge freshness-badge--stale-or-expired">STALE OR EXPIRED</span><h3>Okno wejścia się skończyło albo dane są stare</h3><p>Ta edycja nie jest przedstawiana jako dostępna. Nowa edycja wymaga osobnej weryfikacji.</p></article>
+                <article><span class="freshness-badge freshness-badge--conflicting">CONFLICTING</span><h3>Źródła są sprzeczne</h3><p>North zachowuje konflikt i blokuje potwierdzoną odpowiedź do czasu rozstrzygnięcia.</p></article>
+                <article><span class="freshness-badge freshness-badge--unknown">UNKNOWN</span><h3>Brakuje kompletnej podstawy</h3><p>Nie ma poprawnej daty, pełnego review albo oficjalnych dowodów. Pozytywna rekomendacja jest zablokowana.</p></article>
             </div>
             <p class="methodology-note">Freshness jest wyliczane z <code>verifiedAt</code>, <code>recheckBy</code>, statusu edycji i evidence. Nie prowadzimy automatycznego monitoringu regulaminów i nie obiecujemy, że dane są „zawsze aktualne”.</p>
         </section>

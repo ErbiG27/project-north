@@ -1,7 +1,7 @@
 (function renderDecisionOffer() {
     "use strict";
 
-    const { load, formatMoney, formatValue, formatDate, freshnessFor, escapeHtml } = window.NorthOffers;
+    const { load, formatMoney, formatValue, formatDate, freshnessFor, evidencePresentation, editionSurface, escapeHtml } = window.NorthOffers;
     const root = document.getElementById("offer-content");
     const offerId = document.body.dataset.offerId;
     const term = (key, label) => window.NorthGlossary.label(key, label);
@@ -137,15 +137,20 @@
     }
 
     function confidenceLabel(band) {
-        return ({ HIGH: "wysoka", MEDIUM: "średnia", LOW: "niska" })[band] || band;
+        return ({ HIGH: "wysoka", MEDIUM: "średnia", LOW: "niska", UNKNOWN: "nie można potwierdzić" })[band] || band;
     }
 
     function confidenceDescription(band) {
         return ({
             HIGH: "Dane są dobrze potwierdzone w oficjalnych źródłach.",
             MEDIUM: "Większość danych jest potwierdzona, ale jedna rzecz pozostaje niejasna.",
-            LOW: "Brakuje ważnych informacji, które mogą zmienić decyzję."
+            LOW: "Brakuje ważnych informacji, które mogą zmienić decyzję.",
+            UNKNOWN: "Aktualność danych nie pozwala dziś potwierdzić tej oceny."
         })[band] || "Sprawdź uzasadnienie pewności danych.";
+    }
+
+    function effectiveConfidenceBand(offer) {
+        return window.NorthOffers.effectiveConfidenceBand(offer);
     }
 
     function confidenceReason(offer, band, example) {
@@ -319,7 +324,7 @@
     function renderScenarios(offer) {
         const cards = offer.value.scenarioExamples.map((example, index) => {
             const value = offer.decision.northValue.find((item) => item.scenarioId === example.id);
-            const confidence = example.confidenceBand || offer.decision.northConfidence.band;
+            const confidence = effectiveConfidenceBand(offer) === "UNKNOWN" ? "UNKNOWN" : example.confidenceBand || offer.decision.northConfidence.band;
             return `
                 <article class="offer-scenario-card">
                     <div class="scenario-card-head">
@@ -385,7 +390,7 @@
                     <p class="section-kicker"><span aria-hidden="true"></span> Kwalifikacja</p>
                     <h2 id="conditions-title">Krytyczne warunki wejścia</h2>
                     <p>${escapeHtml(offer.eligibility.geography.basis)}</p>
-                    <div class="condition-block"><h3>Nowy klient</h3><p>${escapeHtml(offer.eligibility.newCustomer.definition)}</p></div>
+                    <div class="condition-block"><h3>Nowy klient</h3><p>${escapeHtml(window.NorthOffers.eligibilitySummary(offer))}</p></div>
                     <div class="condition-block"><h3>Wpływ</h3><p>${income.required ? escapeHtml(income.cadence) : "Wpływ nie jest warunkiem nagrody w tej ofercie."}</p>${income.ageBands ? `<ul>${income.ageBands.map((band) => `<li>${escapeHtml(band.age)}: ${formatMoney(band.amount)}</li>`).join("")}</ul>` : ""}</div>
                     <div class="condition-block"><h3>Wydatki</h3>${asArray(offer.eligibility.requiredSpend).length ? asArray(offer.eligibility.requiredSpend).map((spend) => `<p><strong>${escapeHtml(spend.cadence || "Warunek wydatków")}</strong><br>${escapeHtml(spend.eligibleTransactions || "Brak dodatkowego opisu w rekordzie.")}</p>`).join("") : "<p>Ta oferta nie ma osobnego warunku wydatków w rekordzie.</p>"}</div>
                 </div>
@@ -440,7 +445,7 @@
                         <div><h3>Dlaczego</h3><ul>${asArray(verdict.reasons).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul></div>
                         <div><h3>Pod jakimi warunkami</h3>${asArray(verdict.conditions).length ? `<ul>${asArray(verdict.conditions).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : "<p>Bez Twoich danych nie ma warunków pozytywnej oceny.</p>"}</div>
                         <div><h3>Co blokuje pozytywną ocenę</h3>${asArray(verdict.positiveBlockers).length ? `<ul>${asArray(verdict.positiveBlockers).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : "<p>Brak dodatkowych przeszkód w danych oferty.</p>"}</div>
-                        <div><h3>${term("northConfidence")}</h3><strong class="confidence-large">${escapeHtml(confidenceDescription(offer.decision.northConfidence.band))}</strong><p><small>${escapeHtml(confidenceLabel(offer.decision.northConfidence.band))} (${escapeHtml(offer.decision.northConfidence.band)})</small> · ${escapeHtml(confidenceReason(offer, offer.decision.northConfidence.band) || asArray(offer.decision.northConfidence.reasons)[0] || "Brak dodatkowego uzasadnienia w rekordzie.")}</p></div>
+                        <div><h3>${term("northConfidence")}</h3><strong class="confidence-large">${escapeHtml(confidenceDescription(effectiveConfidenceBand(offer)))}</strong><p><small>${escapeHtml(confidenceLabel(effectiveConfidenceBand(offer)))} (${escapeHtml(effectiveConfidenceBand(offer))})</small> · ${escapeHtml(effectiveConfidenceBand(offer) === "UNKNOWN" ? freshnessFor(offer).explanation : confidenceReason(offer, offer.decision.northConfidence.band) || asArray(offer.decision.northConfidence.reasons)[0] || "Brak dodatkowego uzasadnienia w rekordzie.")}</p></div>
                     </div>
                     <div class="comparison-panel"><div><span>Jeśli nic nie zrobisz</span><strong>${formatMoney(comparison.doNothing.reward)} nagrody · ${formatMoney(comparison.doNothing.directCost)} kosztu</strong><p>Wysiłek: ${escapeHtml(comparison.doNothing.effort)} · nowe ryzyko: ${escapeHtml(comparison.doNothing.failureRisk)}</p></div><div><span>Wniosek</span><p>${escapeHtml(comparison.conclusion)}</p></div></div>
                 </article>
@@ -487,8 +492,10 @@
     function renderEvidence(offer) {
         const ledger = criticalEvidence(offer);
         const freshness = freshnessFor(offer);
+        const edition = editionSurface(offer);
         const sources = asArray(offer.evidence?.sources);
         const conflicts = asArray(offer.evidence?.conflicts);
+        const eligibilityRules = asArray(offer.eligibility?.contractV2?.rules);
         const sourceById = new Map(sources.map((source) => [source.id, source]));
         const affiliate = offer.affiliate?.available && offer.affiliate.url
             ? `<div class="affiliate-action"><a class="north-button" href="${escapeHtml(offer.affiliate.url)}" target="_blank" rel="sponsored noopener">Przejdź do oferty partnerskiej <span aria-hidden="true">↗</span><span class="visually-hidden"> (otwiera nową kartę)</span></a><p>${escapeHtml(offer.affiliate.disclosure)} Link nie wpływa na Value, Confidence ani Verdict.</p></div>`
@@ -502,25 +509,40 @@
                 <div class="offer-section-heading"><div><p class="section-kicker"><span aria-hidden="true"></span> Skąd mamy te dane</p><h2 id="sources-title">Źródła i data sprawdzenia</h2></div><p>Przy każdej ważnej liczbie i zasadzie pokazujemy źródło, miejsce w dokumencie, datę sprawdzenia i niepewność.</p></div>
                 <div class="evidence-status-grid">
                     <div><span>Aktualność danych</span><strong class="freshness-text freshness-text--${freshness.state.toLowerCase().replaceAll("_", "-")}">${escapeHtml(freshness.label)}</strong></div>
-                    <div><span>Ostatnie pełne sprawdzenie</span><strong>${formatDate(offer.identity.verifiedAt)}</strong></div>
-                    <div><span>${term("northConfidence")}</span><strong>${escapeHtml(confidenceLabel(offer.decision.northConfidence.band))} <small>(${escapeHtml(offer.decision.northConfidence.band)})</small></strong></div>
+                    <div><span>Ostatnie pełne sprawdzenie</span><strong>${edition.conflicting ? "Wymaga ponownej weryfikacji" : formatDate(offer.identity.verifiedAt)}</strong></div>
+                    <div><span>${term("northConfidence")}</span><strong>${escapeHtml(confidenceLabel(effectiveConfidenceBand(offer)))} <small>(${escapeHtml(effectiveConfidenceBand(offer))})</small></strong></div>
                     <div><span>Sprawdź ponownie do</span><strong>${formatDate(offer.evidence?.recheckBy)}</strong></div>
                 </div>
                 <p class="freshness-explanation"><span class="freshness-badge freshness-badge--${freshness.state.toLowerCase().replaceAll("_", "-")}">${escapeHtml(freshness.label)}</span>${escapeHtml(freshness.explanation)}</p>
                 <div class="sources-layout">
                     <div>
                         <h3>Oficjalne źródła</h3>
-                        <ul class="source-list">${sources.length ? sources.map((source) => `<li>${source.url ? `<a href="${escapeHtml(source.url)}" target="_blank" rel="noopener">${escapeHtml(sourceTitle(source))} <span aria-hidden="true">↗</span><span class="visually-hidden"> (otwiera nową kartę)</span></a>` : `<span class="source-title">${escapeHtml(sourceTitle(source))}</span>`}<span>${escapeHtml(readableSourceType(source.type))} · sprawdzono ${formatDate(source.accessedAt)} · ${escapeHtml(source.editionReference || "bieżąca edycja")}</span></li>`).join("") : "<li><span class=\"source-title\">Brak źródeł do pokazania</span><span>Pozytywny Verdict jest zablokowany do czasu uzupełnienia evidence.</span></li>"}</ul>
+                        <ul class="source-list">${sources.length ? sources.map((source) => {
+                            const drift = source.status === "edition_drift" || source.documentIdentity?.currentUrlMatchesExpected === false;
+                            const title = drift
+                                ? `Historyczny rekord: ${source.documentIdentity?.expected || sourceTitle(source)}; URL serwuje teraz: ${source.documentIdentity?.observedAtCurrentUrl || "inną edycję"}`
+                                : sourceTitle(source);
+                            const detail = drift
+                                ? `CONFLICTING · tożsamość URL sprawdzono ${formatDate(source.lastUrlCheckAt)} · warunki wymagają ponownej weryfikacji`
+                                : `${readableSourceType(source.type)} · sprawdzono ${formatDate(source.accessedAt)} · ${source.editionReference || "bieżąca edycja"}`;
+                            return `<li>${source.url ? `<a href="${escapeHtml(source.url)}" target="_blank" rel="noopener">${escapeHtml(title)} <span aria-hidden="true">↗</span><span class="visually-hidden"> (otwiera nową kartę)</span></a>` : `<span class="source-title">${escapeHtml(title)}</span>`}<span>${escapeHtml(detail)}</span></li>`;
+                        }).join("") : "<li><span class=\"source-title\">Brak źródeł do pokazania</span><span>Pozytywny Verdict jest zablokowany do czasu uzupełnienia evidence.</span></li>"}</ul>
                     </div>
-                    <aside class="confidence-reasons"><h3>${escapeHtml(confidenceDescription(offer.decision.northConfidence.band))}</h3><p><small>Stan systemowy: ${escapeHtml(offer.decision.northConfidence.band)}</small></p>${asArray(offer.decision.northConfidence.reasons).length ? `<ul>${asArray(offer.decision.northConfidence.reasons).map((reason) => `<li>${escapeHtml(reason)}</li>`).join("")}</ul>` : "<p>Brak dodatkowego uzasadnienia w rekordzie.</p>"}${asArray(offer.decision.northConfidence.blockers).length ? `<h4>Co obniża pewność</h4><ul>${asArray(offer.decision.northConfidence.blockers).map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}</ul>` : ""}</aside>
+                    <aside class="confidence-reasons"><h3>${escapeHtml(confidenceDescription(effectiveConfidenceBand(offer)))}</h3><p><small>Stan systemowy: ${escapeHtml(effectiveConfidenceBand(offer))}</small></p>${effectiveConfidenceBand(offer) === "UNKNOWN" ? `<p>${escapeHtml(freshness.explanation)}</p>` : asArray(offer.decision.northConfidence.reasons).length ? `<ul>${asArray(offer.decision.northConfidence.reasons).map((reason) => `<li>${escapeHtml(reason)}</li>`).join("")}</ul>` : "<p>Brak dodatkowego uzasadnienia w rekordzie.</p>"}${effectiveConfidenceBand(offer) !== "UNKNOWN" && asArray(offer.decision.northConfidence.blockers).length ? `<h4>Co obniża pewność</h4><ul>${asArray(offer.decision.northConfidence.blockers).map((blocker) => `<li>${escapeHtml(blocker)}</li>`).join("")}</ul>` : ""}</aside>
                 </div>
                 <div class="evidence-ledger">
                     <h3>Dowody dla kluczowych liczb i warunków</h3>
                     ${ledger.map((item) => {
                         const source = sourceById.get(item.sourceId);
-                        return `<article><div><span>${escapeHtml(evidenceFieldLabel(item, offer))}</span><strong>${escapeHtml(readableSupportLevel(item.supportLevel))}</strong></div>${source?.url ? `<a class="evidence-source-link" href="${escapeHtml(source.url)}" target="_blank" rel="noopener">${escapeHtml(readableSourceType(source.type))}: ${escapeHtml(sourceTitle(source))} <span aria-hidden="true">↗</span><span class="visually-hidden"> (otwiera nową kartę)</span></a>` : `<p class="evidence-source-missing">Źródło nie ma dostępnego linku.</p>`}<p><strong>Gdzie:</strong> ${escapeHtml(item.reference || "Brak dokładnej referencji")}</p><small>Sprawdzono ${formatDate(item.checkedAt)}</small>${item.uncertaintyNote ? `<p class="uncertainty-note"><strong>Niepewność:</strong> ${escapeHtml(item.uncertaintyNote)}</p>` : ""}</article>`;
+                        const presentation = evidencePresentation(item, source);
+                        return `<article><div><span>${escapeHtml(evidenceFieldLabel(item, offer))}</span><strong>${escapeHtml(readableSupportLevel(presentation.supportLevel))}</strong></div>${source?.url ? `<a class="evidence-source-link" href="${escapeHtml(source.url)}" target="_blank" rel="noopener">${escapeHtml(readableSourceType(source.type))}: ${escapeHtml(sourceTitle(source))} <span aria-hidden="true">↗</span><span class="visually-hidden"> (otwiera nową kartę)</span></a>` : `<p class="evidence-source-missing">Źródło nie ma dostępnego linku.</p>`}<p><strong>Gdzie:</strong> ${escapeHtml(presentation.reference)}</p><small>Sprawdzono ${formatDate(presentation.checkedAt)}</small>${presentation.uncertaintyNote ? `<p class="uncertainty-note"><strong>Niepewność:</strong> ${escapeHtml(presentation.uncertaintyNote)}</p>` : ""}</article>`;
                     }).join("")}
                 </div>
+                ${eligibilityRules.length ? `<div class="evidence-ledger"><h3>Dowody kwalifikacji używane przez runtime</h3>${eligibilityRules.map((rule) => {
+                    const source = sourceById.get(rule.evidence?.sourceIds?.[0]);
+                    const presentation = evidencePresentation(rule.evidence || {}, source);
+                    return `<article data-locator-type="${escapeHtml(rule.evidence?.locator?.type || "unavailable")}"><div><span>${escapeHtml(rule.failureMessage || rule.id)}</span><strong>${escapeHtml(readableSupportLevel(presentation.supportLevel))}</strong></div>${source?.url ? `<a class="evidence-source-link" href="${escapeHtml(source.url)}" target="_blank" rel="noopener">${escapeHtml(sourceTitle(source))} <span aria-hidden="true">↗</span></a>` : `<p class="evidence-source-missing">Brak źródła dla tej reguły.</p>`}<p><strong>Gdzie:</strong> ${escapeHtml(presentation.reference)}</p><small>Stan: ${escapeHtml(rule.evidence?.state || "UNKNOWN")} · sprawdzono ${formatDate(presentation.checkedAt)}</small></article>`;
+                }).join("")}</div>` : ""}
                 ${conflicts.length ? `<div class="conflicts-box"><h3>Konflikty źródeł</h3>${conflicts.map((conflict) => `<article><strong>${escapeHtml(evidenceFieldLabel({ fieldPath: conflict.fieldPath }, offer))}</strong><p>${escapeHtml(conflict.description)}</p><small>Jak traktuje to North: ${escapeHtml(conflict.resolutionStatus)}</small></article>`).join("")}</div>` : `<p class="no-conflicts">Nie wykryto konfliktu źródeł, który blokowałby ten rekord.</p>`}
                 ${sourceActions ? `<div class="source-actions">${sourceActions}</div>` : "<p class=\"no-conflicts\">Brak dodatkowych linków źródłowych w rekordzie.</p>"}
                 ${affiliate}
@@ -529,6 +551,7 @@
 
     function renderOffer(offer) {
         const freshness = freshnessFor(offer);
+        const edition = editionSurface(offer);
         const isValidationCase = offer.identity.category === "crypto_validation";
         const validityCopy = offer.identity.edition.validTo ? ` · wejście do ${formatDate(offer.identity.edition.validTo)}` : " · warunki dynamiczne";
         const footerDisclosure = isValidationCase
@@ -542,17 +565,18 @@
         root.innerHTML = `
             <section class="offer-decision-hero" aria-labelledby="offer-title">
                 <div class="offer-decision-hero__copy">
-                    <p class="section-kicker"><span aria-hidden="true"></span> ${isValidationCase ? "validation case · " : ""}${escapeHtml(readableStatus(offer.identity.status))} · review ${formatDate(offer.identity.verifiedAt)}</p>
+                    <p class="section-kicker"><span aria-hidden="true"></span> ${isValidationCase ? "validation case · " : ""}${escapeHtml(readableStatus(offer.identity.status))} · ${escapeHtml(edition.reviewLabel)}</p>
                     <div class="offer-provider-row">${providerMark(offer)}<p>${escapeHtml(shortProvider(offer))}</p></div>
                     <h1 id="offer-title">${escapeHtml(offer.identity.title)}</h1>
                     <p class="offer-hero-problem">${escapeHtml(offer.listing.problemLabel)}</p>
                     <p>${escapeHtml(offer.listing.summary)}</p>
                     <div class="action-row"><a class="north-button" href="${offer.match ? "#match" : "#scenarios"}">${offer.match ? "Sprawdź dla siebie" : "Zobacz scenariusze"} <span aria-hidden="true">↓</span></a><a class="north-link" href="#sources">Sprawdź źródła</a></div>
                     <div class="hero-freshness"><span class="freshness-badge freshness-badge--${freshness.state.toLowerCase().replaceAll("_", "-")}">${escapeHtml(freshness.label)}</span><p>${escapeHtml(freshness.explanation)}</p></div>
-                    <p class="record-meta">Edycja: ${escapeHtml(offer.identity.edition.name)}${validityCopy}</p>
+                    <p class="record-meta">${escapeHtml(edition.editionLabel)}${edition.conflicting ? "" : validityCopy}</p>
+                    ${edition.explanation ? `<p class="uncertainty-note"><strong>CONFLICTING / EVIDENCE GAP:</strong> ${escapeHtml(edition.explanation)}</p>` : ""}
                 </div>
                 <aside class="offer-hero-verdict">
-                    <div class="panel-topline"><span>${term("verdict")}</span><span class="confidence-badge">Pewność danych: ${escapeHtml(confidenceLabel(offer.decision.northConfidence.band))}</span></div>
+                    <div class="panel-topline"><span>${term("verdict")}</span><span class="confidence-badge">Pewność danych: ${escapeHtml(confidenceLabel(effectiveConfidenceBand(offer)))}</span></div>
                     <span class="${verdictClass(offer.decision.verdict.state)}">${escapeHtml(verdictLabel(offer.decision.verdict.state))}<small>${escapeHtml(offer.decision.verdict.state)}</small></span>
                     <h2>${escapeHtml(offer.decision.verdict.summary)}</h2>
                     <p>${escapeHtml(asArray(offer.decision.verdict.reasons).join(" ") || "Brak dodatkowego powodu w rekordzie.")}</p>
@@ -573,7 +597,7 @@
             ${renderCosts(offer)}
             ${renderVerdict(offer)}
             ${renderEvidence(offer)}
-            <footer class="offer-footer-page"><img src="../assets/brand/north-logo.svg" alt="North"><p>Decision Model v1 · ${escapeHtml(freshness.label)} · review ${formatDate(offer.identity.verifiedAt)}. North nie gwarantuje nagrody i nie zastępuje regulaminu ani indywidualnej porady.<br>${escapeHtml(footerDisclosure)}</p><nav aria-label="Linki analizy"><a class="north-link" href="../methodology.html">Metodologia</a><a class="north-link" href="${isValidationCase ? "../methodology.html#validation" : "../index.html#opportunities"}">${isValidationCase ? "Wróć do validation case" : "Wróć do analiz"}</a></nav></footer>`;
+            <footer class="offer-footer-page"><img src="../assets/brand/north-logo.svg" alt="North"><p>Decision Model v1 · ${escapeHtml(freshness.label)} · ${escapeHtml(edition.reviewLabel)}. North nie gwarantuje nagrody i nie zastępuje regulaminu ani indywidualnej porady.<br>${escapeHtml(footerDisclosure)}</p><nav aria-label="Linki analizy"><a class="north-link" href="../methodology.html">Metodologia</a><a class="north-link" href="${isValidationCase ? "../methodology.html#validation" : "../index.html#opportunities"}">${isValidationCase ? "Wróć do validation case" : "Wróć do analiz"}</a></nav></footer>`;
         window.NorthGlossary.init(root);
         initBankMarkFallbacks(root);
         if (offer.match) window.NorthMatch.mount(root.querySelector("#north-match-root"), offer);
@@ -585,7 +609,8 @@
             if (!offer) throw new Error("Nie znaleziono rekordu oferty.");
             renderOffer(offer);
         })
-        .catch(() => {
+        .catch((error) => {
+            console.error("North offer loader failed", error);
             root.innerHTML = `<div class="notice notice--error"><h1>Nie udało się wczytać analizy</h1><p>Otwórz stronę przez lokalny serwer albo wróć do listy analiz.</p><a class="north-link" href="../index.html#opportunities">Wróć do analiz</a></div>`;
         });
 }());

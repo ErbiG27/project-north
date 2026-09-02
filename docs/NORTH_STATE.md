@@ -1,14 +1,16 @@
 # ProjectNorth — canonical state and AI recovery
 
-> Master recovery document · stan kanoniczny: 2026-08-29 · publiczny release aplikacji: `24c2d7c5450b44ae07e12267f592b5898849bb54` · najnowszy lokalny UX checkpoint: `b3593e2118af48103d0518cdcc0c3fad47af4513` · Decision Model v1
+> Master recovery document · stan roboczy: 2026-09-02 · publiczny release aplikacji: `24c2d7c5450b44ae07e12267f592b5898849bb54` · najnowszy lokalny UX checkpoint: `b3593e2118af48103d0518cdcc0c3fad47af4513` · Sprint 4A Truth & Eligibility Core oczekuje Founder Review
 
 Ten dokument jest pierwszym źródłem bieżącego kontekstu po utracie rozmowy, zmianie AI, zmianie osoby pracującej nad projektem albo dłuższej przerwie. Szczegóły wydań należą do `CHANGELOG.md`, trwałe uzasadnienia do `DECISIONS.md`, a fakty wdrożonych ofert do `frontend/data/decision-offers.json`.
 
-Najważniejsze rozdzielenie stanu na 2026-08-29:
+Najważniejsze rozdzielenie stanu na 2026-09-02:
 
 - **PUBLIC PRODUCTION:** nadal pokazuje wcześniejszy UX i katalog 12 ofert z release'u `24c2d7c`;
 - **LOCAL MAIN / APPROVED UX:** zawiera lokalne checkpointy `f2747b7 feat: establish North offer experience UX` oraz `b3593e2 feat: add simplified North homepage prototype`; lokalny `main` jest przed `origin/main`;
 - **PRODUCTION ≠ LOCAL APPROVED UX:** oba checkpointy UX są lokalne; nie wykonano pushu ani deployu i nie są publicznie zintegrowane;
+- **LOCAL UNCOMMITTED / SPRINT 4A:** wdrożono kontrakt eligibility V2, component-level gating, realny zegar freshness, evidence capability, oddzielne user/evidence gaps i bezpieczne buckety wartości; zmiany nie są jeszcze zatwierdzonym checkpointem i oczekują Founder Review;
+- **LOCAL UNCOMMITTED / SPRINT 4A REPAIR PASS #1:** naprawiono zweryfikowane findingi P0/P1; runtime i validator fail-closed przy mixed generation, driftujących targetach/ID oraz source edition drift. Pekao pozostaje `CONFLICTING`/`UNKNOWN` do pełnego rechecku nowych edycji; bez stage/commit/push/deploy.
 - `.gitattributes`, `.codex-remote-attachments/` i `artifacts/` są chronionymi leftovers poza zakresem UX i dokumentacji.
 
 ## 1. Czym jest ProjectNorth i dlaczego istnieje
@@ -46,7 +48,9 @@ ProjectNorth nie jest:
 - Główny flow ma odpowiadać kolejno: **co dostanę, co muszę zrobić, gdzie jest haczyk, dla kogo to ma sens**. Metodologia, pełne źródła i wyjątki należą do warstwy niżej lub podstrony.
 - Core Profile jest opcjonalnym kontekstem, nie bramką dostępu. Bez profilu katalog i szczegóły ofert pozostają dostępne.
 
-## 3. Decision Model v1 — aktywny rdzeń
+## 3. Decision Model v1 + Truth & Eligibility Core — aktywny lokalny rdzeń
+
+Sprint 4A dodaje minimalny `north-eligibility-v2`. Autorytatywna kwalifikacja może być scoped per provider, promotion/component, relationship type i date window. Krytyczna odpowiedź engine wynika mechanicznie z coverage oraz aktualności evidence, a nie ze statycznego `HIGH/MEDIUM/LOW`. Stare `northConfidence` pozostaje polem zgodności wstecznej. Brak odpowiedzi użytkownika i brak wystarczającego evidence są osobnymi stanami. Różne formy i waluty wartości pozostają w osobnych bucketach.
 
 ### North Value
 

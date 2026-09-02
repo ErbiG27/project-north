@@ -6,6 +6,8 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 
 ### Added
 
+- Lokalny, nieopublikowany Sprint 4A `Truth & Eligibility Core`: minimalny kontrakt `north-eligibility-v2` z oknami `FIXED_DATE`, `FIXED_DATE_OPEN_ENDED`, `ROLLING_PERIOD`, `NONE`, `UNKNOWN`, scope per provider/promocja/komponent/relacja oraz mechanicznymi stanami capability.
+- Osobny validator kontraktu V2 i 15 testów regresyjnych dla częściowej kwalifikacji, evidence gaps, zegara, form i walut wartości oraz niepoprawnych przedziałów.
 - Cross-AI continuity system: `AGENTS.md`, cienki `CLAUDE.md`, Context Map, Sync Protocol, Offer Taxonomy oraz krótka historia decyzji produktu.
 - Bounded, nieindeksowany prototyp mBank Alternative Comparison, który porównuje eKonto możliwości, eKonto do usług i mKonto Intensive z osobnego kontraktu v0.8.0 bez zmiany publicznego katalogu.
 - Lokalny checkpoint `f2747b7` — nieindeksowany North Offer Experience v1/v1.1 z opcjonalnym Core Profile zapisanym pod `north.offerExperience.profile.v1`, wspólnym katalogiem/detail, Header v1, Category Shell v1 oraz provider identity.
@@ -13,6 +15,9 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 
 ### Changed
 
+- Pekao rozdziela kwalifikację 300 zł i części podróżnej; PKO Letni/Samsung używają potwierdzonego okna 1.01.2025–30.06.2026, PKO Allegro pozostaje `EVIDENCE_GAP`; mBank zachowuje barierę od 1.01.2022, Alior Plus rolling 3 lata, a UniCredit stosuje relację UniCredit/Aion do voucherów bez bramkowania wartości funkcjonalnej.
+- Freshness korzysta z realnej daty `Europe/Warsaw` w runtime i rozróżnia `CURRENT`, `RECHECK_SOON`, `RECHECK_DUE`, `STALE_OR_EXPIRED`, `CONFLICTING`, `UNKNOWN`; deterministyczne testy wstrzykują `today`.
+- Match oddziela brak odpowiedzi użytkownika od luki evidence, wyprowadza decision-relevant fields i zachowuje formę oraz walutę wartości w osobnych bucketach bez scalarnego sumowania różnych form.
 - `NORTH_STATE.md` stał się master recovery document, a README, Handbook, Decisions, Roadmap i AI Workflow zostały zsynchronizowane z publicznym katalogiem 12 ofert oraz etapem affiliate/support/pilot.
 - Utrwalono poprawną numerację Evidence Reviews #1–#4 i status Data Integrity & Freshness Guard jako osobnej technicznej walidacji.
 - Alternative Comparison wybiera najpierw Product Identity, następnie ocenia Product i Promotion eligibility; product-specific różnice są overrides, linked savings nie jest sumowane z gotówką, a afiliacja i numeric score pozostają poza decyzją.
@@ -21,8 +26,13 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 - Header używa `Dopasuj oferty` bez Core Profile i `Twoje dopasowanie` po zapisie. Terminy `Profil/Konto` pozostają zarezerwowane dla przyszłego user account/login.
 - Pekao w lokalnym wzorcu UX pokazuje `300 zł gotówki + do 2 400 zł warunkowej wartości podróżnej`, bez przedstawiania 2 700 zł jako gotówki.
 
+### Fixed
+
+- Repair Pass #1 Sprintu 4A: przywrócono właściwe mapowanie eligibility per oferta, rozdzielono inputy otwarcia Pekao dla 300 zł i travel bez wymuszania `TRUE`, dodano fail-closed runtime/validator dla driftu generacji i ID, sklasyfikowano decision-critical evidence oraz zdegradowano historyczne claims Pekao po zmianie edycji pod tymi samymi URL-ami.
+
 ### Verified
 
+- Sprint 4A Repair Pass #1: validator `PASS` (0 FAIL), targeted 8/8, production-like integration 9/9, compatibility 4/4, adversarial 10/10 oraz jawnie oznaczony legacy scalar Match 50/50; browser smoke renderuje Pekao jako `CONFLICTING`/Confidence `UNKNOWN` i mBank jako `STALE OR EXPIRED`, z własnym eligibility copy. Stan oczekuje Founder Review i nie został staged, committed, pushed ani deployed.
 - Cztery scenariusze acceptance mBank przeszły przez interpreter i renderowany formularz; scenariusz 22-letni wybrał lepszy Product Fit mimo niższej maksymalnej premii.
 - Skrócona rewalidacja po density pass potwierdziła 4/4 acceptance, `preferredProductId: null`, reset disclosure, mysz i klawiaturę, fokus, desktop 1440×900, mobile 390×844, 0 px overflow oraz brak błędów konsoli, strony, żądań i relacji DOM/ARIA.
 - Data Guard zakończył się `0 FAIL / 6 WARN / 17 OK`, fixtures 16/16, Match 50/50 i składnia JS/MJS 11/11; lokalny i publiczny katalog nadal renderują 12 kart, a lokalne i publiczne trasy ofert zwracają 12/12 HTTP 200.

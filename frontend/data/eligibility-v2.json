@@ -1,0 +1,841 @@
+{
+  "schemaVersion": "north-eligibility-v2",
+  "runtimeIdentity": {
+    "buildId": "north-static-2026-09-02-r2",
+    "decisionSchema": "decision-model-v1",
+    "eligibilitySchema": "north-eligibility-v2",
+    "loaderApi": "north-loader-v2",
+    "matchApi": "north-match-v2"
+  },
+  "windowKinds": [
+    "FIXED_DATE",
+    "FIXED_DATE_OPEN_ENDED",
+    "ROLLING_PERIOD",
+    "NONE",
+    "UNKNOWN"
+  ],
+  "capabilityStates": [
+    "CAN_ANSWER",
+    "NEEDS_USER_INPUT",
+    "EVIDENCE_GAP",
+    "CONFLICTING",
+    "STALE",
+    "UNKNOWN"
+  ],
+  "offers": {
+    "bank-pekao-konto-przekorzystne": {
+      "legacyControlledFields": [
+        "relationshipClear",
+        "eligibleOpeningPath"
+      ],
+      "componentBypassFields": {
+        "pekao-opening-reward": [
+          "relationshipClear",
+          "eligibleOpeningPath"
+        ],
+        "pekao-month-one-reward": [
+          "relationshipClear",
+          "eligibleOpeningPath"
+        ],
+        "pekao-month-two-reward": [
+          "relationshipClear",
+          "eligibleOpeningPath"
+        ],
+        "pekao-travel-rewards": [
+          "relationshipClear",
+          "eligibleOpeningPath"
+        ]
+      },
+      "fieldReplacements": [
+        "relationshipClear",
+        "eligibleOpeningPath"
+      ],
+      "fieldOverrides": {
+        "residencePoland": {
+          "label": "Czy mieszkasz w Polsce?",
+          "shortLabel": "Miejsce zamieszkania"
+        }
+      },
+      "fields": [
+        {
+          "id": "pekaoCashRelationshipClear",
+          "label": "Czy od 1.06.2024 do 15.07.2026 nie miałeś konta ani współwłasności konta w Pekao?",
+          "shortLabel": "Karencja dla 300 zł",
+          "type": "radio",
+          "stage": 1,
+          "required": true,
+          "options": [
+            {
+              "value": true,
+              "label": "Tak, nie miałem konta"
+            },
+            {
+              "value": false,
+              "label": "Nie, miałem konto"
+            },
+            {
+              "value": "unknown",
+              "label": "Nie wiem"
+            }
+          ]
+        },
+        {
+          "id": "pekaoTravelRelationshipClear",
+          "label": "Czy od 1.06.2024 do 31.05.2026 nie miałeś żadnej umowy o produkt lub usługę Pekao?",
+          "shortLabel": "Karencja dla części podróżnej",
+          "type": "radio",
+          "stage": 1,
+          "required": true,
+          "options": [
+            {
+              "value": true,
+              "label": "Tak, nie miałem żadnej relacji"
+            },
+            {
+              "value": false,
+              "label": "Nie, miałem inną relację"
+            },
+            {
+              "value": "unknown",
+              "label": "Nie wiem"
+            }
+          ]
+        },
+        {
+          "id": "pekaoCashDocumentEligible",
+          "label": "Czy masz polski dowód osobisty wymagany przez promocję 300 zł?",
+          "shortLabel": "Dokument dla 300 zł",
+          "type": "radio",
+          "stage": 1,
+          "required": true,
+          "options": [
+            {
+              "value": true,
+              "label": "Tak"
+            },
+            {
+              "value": false,
+              "label": "Nie"
+            },
+            {
+              "value": "unknown",
+              "label": "Nie wiem"
+            }
+          ]
+        },
+        {
+          "id": "pekaoCashOpeningPathEligible",
+          "label": "Czy otworzysz konto ścieżką wskazaną dla promocji 300 zł?",
+          "shortLabel": "Ścieżka otwarcia dla 300 zł",
+          "type": "radio",
+          "stage": 1,
+          "required": true,
+          "options": [
+            {
+              "value": true,
+              "label": "Tak"
+            },
+            {
+              "value": false,
+              "label": "Nie"
+            },
+            {
+              "value": "unknown",
+              "label": "Nie wiem"
+            }
+          ]
+        },
+        {
+          "id": "pekaoTravelOpeningPathEligible",
+          "label": "Czy otworzysz konto ścieżką wskazaną dla części podróżnej?",
+          "shortLabel": "Ścieżka otwarcia dla części podróżnej",
+          "type": "radio",
+          "stage": 1,
+          "required": true,
+          "options": [
+            {
+              "value": true,
+              "label": "Tak"
+            },
+            {
+              "value": false,
+              "label": "Nie"
+            },
+            {
+              "value": "unknown",
+              "label": "Nie wiem"
+            }
+          ]
+        }
+      ],
+      "rules": [
+        {
+          "id": "pekao-300-account-lookback",
+          "scope": {
+            "provider": "Bank Polska Kasa Opieki S.A.",
+            "promotionId": "pekao-300",
+            "componentIds": [
+              "pekao-opening-reward",
+              "pekao-month-one-reward",
+              "pekao-month-two-reward"
+            ],
+            "relationshipTypes": [
+              "personal_account_holder",
+              "personal_account_coholder"
+            ],
+            "offerId": "bank-pekao-konto-przekorzystne"
+          },
+          "window": {
+            "kind": "FIXED_DATE",
+            "from": "2024-06-01",
+            "to": "2026-07-15",
+            "anchor": "promotion_entry"
+          },
+          "userInputField": "pekaoCashRelationshipClear",
+          "evidence": {
+            "sourceIds": [
+              "pekao-reg-start-ii"
+            ],
+            "checkedAt": "2026-09-02",
+            "state": "GAP",
+            "locator": {
+              "type": "title_page_and_section",
+              "value": "Tytuł dokumentu i sekcja uczestnika w dokumencie serwowanym 2026-09-02"
+            }
+          },
+          "failureMessage": "Historia konta Pekao wyklucza tylko promocję 300 zł."
+        },
+        {
+          "id": "pekao-300-polish-id",
+          "scope": {
+            "provider": "Bank Polska Kasa Opieki S.A.",
+            "promotionId": "pekao-300",
+            "componentIds": [
+              "pekao-opening-reward",
+              "pekao-month-one-reward",
+              "pekao-month-two-reward"
+            ],
+            "relationshipTypes": [],
+            "offerId": "bank-pekao-konto-przekorzystne"
+          },
+          "window": {
+            "kind": "NONE",
+            "from": null,
+            "to": null,
+            "anchor": "promotion_entry"
+          },
+          "userInputField": "pekaoCashDocumentEligible",
+          "evidence": {
+            "sourceIds": [
+              "pekao-reg-start-ii"
+            ],
+            "checkedAt": "2026-09-02",
+            "state": "GAP",
+            "locator": {
+              "type": "title_page_and_section",
+              "value": "Tytuł dokumentu i sekcja uczestnika w dokumencie serwowanym 2026-09-02"
+            }
+          },
+          "failureMessage": "Brak wymaganego dokumentu wyklucza tylko promocję 300 zł."
+        },
+        {
+          "id": "pekao-travel-any-product-lookback",
+          "scope": {
+            "provider": "Bank Polska Kasa Opieki S.A.",
+            "promotionId": "pekao-travel",
+            "componentIds": [
+              "pekao-travel-rewards"
+            ],
+            "relationshipTypes": [
+              "any_product_or_service_agreement"
+            ],
+            "offerId": "bank-pekao-konto-przekorzystne"
+          },
+          "window": {
+            "kind": "FIXED_DATE",
+            "from": "2024-06-01",
+            "to": "2026-05-31",
+            "anchor": "promotion_entry"
+          },
+          "userInputField": "pekaoTravelRelationshipClear",
+          "evidence": {
+            "sourceIds": [
+              "pekao-reg-travel"
+            ],
+            "checkedAt": "2026-09-02",
+            "state": "GAP",
+            "locator": {
+              "type": "title_page_and_section",
+              "value": "Tytuł dokumentu i sekcja uczestnika w dokumencie serwowanym 2026-09-02"
+            }
+          },
+          "failureMessage": "Historia dowolnego produktu lub usługi Pekao wyklucza tylko część podróżną."
+        },
+        {
+          "id": "pekao-300-opening-path",
+          "scope": {
+            "provider": "Bank Polska Kasa Opieki S.A.",
+            "promotionId": "pekao-300",
+            "componentIds": [
+              "pekao-opening-reward",
+              "pekao-month-one-reward",
+              "pekao-month-two-reward"
+            ],
+            "relationshipTypes": [],
+            "offerId": "bank-pekao-konto-przekorzystne"
+          },
+          "window": {
+            "kind": "NONE",
+            "from": null,
+            "to": null,
+            "anchor": "promotion_entry"
+          },
+          "userInputField": "pekaoCashOpeningPathEligible",
+          "evidence": {
+            "sourceIds": [
+              "pekao-reg-start-ii"
+            ],
+            "locator": {
+              "type": "title_page_and_section",
+              "value": "Aktualny URL: edycja III, pkt 4–5, sprawdzone 2026-09-02"
+            },
+            "checkedAt": "2026-09-02",
+            "state": "GAP"
+          },
+          "failureMessage": "Niewłaściwa ścieżka otwarcia wyklucza tylko promocję 300 zł."
+        },
+        {
+          "id": "pekao-travel-opening-path",
+          "scope": {
+            "provider": "Bank Polska Kasa Opieki S.A.",
+            "promotionId": "pekao-travel",
+            "componentIds": [
+              "pekao-travel-rewards"
+            ],
+            "relationshipTypes": [],
+            "offerId": "bank-pekao-konto-przekorzystne"
+          },
+          "window": {
+            "kind": "NONE",
+            "from": null,
+            "to": null,
+            "anchor": "promotion_entry"
+          },
+          "userInputField": "pekaoTravelOpeningPathEligible",
+          "evidence": {
+            "sourceIds": [
+              "pekao-reg-travel"
+            ],
+            "locator": {
+              "type": "title_page_and_section",
+              "value": "Aktualny URL: Promocja Podróżna II, pkt 4–5, sprawdzone 2026-09-02"
+            },
+            "checkedAt": "2026-09-02",
+            "state": "GAP"
+          },
+          "failureMessage": "Niewłaściwa ścieżka otwarcia wyklucza tylko część podróżną."
+        }
+      ],
+      "offerId": "bank-pekao-konto-przekorzystne",
+      "provider": "Bank Polska Kasa Opieki S.A.",
+      "summary": "Promocja 300 zł i część podróżna mają osobne warunki kwalifikacji i osobne ścieżki otwarcia.",
+      "evidenceRequirements": {
+        "decisionCriticalComponentIds": [
+          "pekao-opening-reward",
+          "pekao-month-one-reward",
+          "pekao-month-two-reward",
+          "pekao-travel-rewards"
+        ],
+        "nonCriticalComponentIds": []
+      }
+    },
+    "mbank-ekonto-do-uslug": {
+      "legacyControlledFields": [
+        "relationshipClear"
+      ],
+      "fieldOverrides": {
+        "relationshipClear": {
+          "label": "Czy od 1.01.2022 nie miałeś rachunku osobistego ani oszczędnościowego w mBanku?",
+          "shortLabel": "Karencja od 1.01.2022"
+        }
+      },
+      "fields": [
+        {
+          "id": "mbankNoOtherProductsAtEntry",
+          "label": "Czy w dniu wejścia nie będziesz mieć żadnego innego produktu ani usługi mBanku?",
+          "shortLabel": "Brak innych produktów przy wejściu",
+          "type": "radio",
+          "stage": 1,
+          "required": true,
+          "options": [
+            {
+              "value": true,
+              "label": "Tak, nie będę mieć"
+            },
+            {
+              "value": false,
+              "label": "Nie, mam inny produkt"
+            },
+            {
+              "value": "unknown",
+              "label": "Nie wiem"
+            }
+          ]
+        }
+      ],
+      "rules": [
+        {
+          "id": "mbank-main-account-lookback",
+          "scope": {
+            "provider": "mBank S.A.",
+            "promotionId": "mbank-main-1000",
+            "componentIds": [
+              "mbank-initial",
+              "mbank-activity",
+              "mbank-opening",
+              "mbank-salary",
+              "mbank-child"
+            ],
+            "relationshipTypes": [
+              "personal_current_account",
+              "personal_savings_account"
+            ],
+            "offerId": "mbank-ekonto-do-uslug"
+          },
+          "window": {
+            "kind": "FIXED_DATE_OPEN_ENDED",
+            "from": "2022-01-01",
+            "to": null,
+            "anchor": "promotion_entry"
+          },
+          "userInputField": "relationshipClear",
+          "evidence": {
+            "sourceIds": [
+              "mbank-main"
+            ],
+            "locator": {
+              "type": "section_page_heading",
+              "value": "Uczestnik promocji, str. 2 PDF"
+            },
+            "checkedAt": "2026-09-02",
+            "state": "SUPPORTED"
+          },
+          "failureMessage": "Rachunek osobisty lub oszczędnościowy w mBanku od 1.01.2022 wyklucza ten wariant."
+        },
+        {
+          "id": "mbank-mobile-account-lookback",
+          "scope": {
+            "provider": "mBank S.A.",
+            "promotionId": "mbank-mobile-10",
+            "componentIds": [
+              "mbank-mobile"
+            ],
+            "relationshipTypes": [
+              "personal_current_account",
+              "personal_savings_account"
+            ],
+            "offerId": "mbank-ekonto-do-uslug"
+          },
+          "window": {
+            "kind": "FIXED_DATE_OPEN_ENDED",
+            "from": "2022-01-01",
+            "to": null,
+            "anchor": "promotion_entry"
+          },
+          "userInputField": "relationshipClear",
+          "evidence": {
+            "sourceIds": [
+              "mbank-mobile"
+            ],
+            "locator": {
+              "type": "section_page_heading",
+              "value": "Uczestnik promocji, str. 2 PDF"
+            },
+            "checkedAt": "2026-09-02",
+            "state": "SUPPORTED"
+          },
+          "failureMessage": "Rachunek osobisty lub oszczędnościowy w mBanku od 1.01.2022 wyklucza ten wariant."
+        },
+        {
+          "id": "mbank-media-account-lookback",
+          "scope": {
+            "provider": "mBank S.A.",
+            "promotionId": "mbank-media",
+            "componentIds": [
+              "mbank-media-cash",
+              "mbank-media-voucher"
+            ],
+            "relationshipTypes": [
+              "personal_current_account",
+              "personal_savings_account"
+            ],
+            "offerId": "mbank-ekonto-do-uslug"
+          },
+          "window": {
+            "kind": "FIXED_DATE_OPEN_ENDED",
+            "from": "2022-01-01",
+            "to": null,
+            "anchor": "promotion_entry"
+          },
+          "userInputField": "relationshipClear",
+          "evidence": {
+            "sourceIds": [
+              "mbank-media"
+            ],
+            "locator": {
+              "type": "section_page_heading",
+              "value": "Uczestnik promocji, str. 2 PDF"
+            },
+            "checkedAt": "2026-09-02",
+            "state": "SUPPORTED"
+          },
+          "failureMessage": "Rachunek osobisty lub oszczędnościowy w mBanku od 1.01.2022 wyklucza ten wariant."
+        },
+        {
+          "id": "mbank-mobile-no-other-products",
+          "scope": {
+            "provider": "mBank S.A.",
+            "promotionId": "mbank-mobile-10",
+            "componentIds": [
+              "mbank-mobile"
+            ],
+            "relationshipTypes": [
+              "any_other_mbank_product_or_service_at_entry"
+            ],
+            "offerId": "mbank-ekonto-do-uslug"
+          },
+          "window": {
+            "kind": "NONE",
+            "from": null,
+            "to": null,
+            "anchor": "promotion_entry"
+          },
+          "userInputField": "mbankNoOtherProductsAtEntry",
+          "evidence": {
+            "sourceIds": [
+              "mbank-mobile"
+            ],
+            "checkedAt": "2026-09-02",
+            "state": "SUPPORTED",
+            "locator": {
+              "type": "section_page_heading",
+              "value": "Uczestnik promocji, str. 2 PDF"
+            }
+          },
+          "failureMessage": "Inny produkt lub usługa mBanku w dniu wejścia wyklucza wariant Mobile."
+        },
+        {
+          "id": "mbank-media-no-other-products",
+          "scope": {
+            "provider": "mBank S.A.",
+            "promotionId": "mbank-media",
+            "componentIds": [
+              "mbank-media-cash",
+              "mbank-media-voucher"
+            ],
+            "relationshipTypes": [
+              "any_other_mbank_product_or_service_at_entry"
+            ],
+            "offerId": "mbank-ekonto-do-uslug"
+          },
+          "window": {
+            "kind": "NONE",
+            "from": null,
+            "to": null,
+            "anchor": "promotion_entry"
+          },
+          "userInputField": "mbankNoOtherProductsAtEntry",
+          "evidence": {
+            "sourceIds": [
+              "mbank-media"
+            ],
+            "checkedAt": "2026-09-02",
+            "state": "SUPPORTED",
+            "locator": {
+              "type": "section_page_heading",
+              "value": "Uczestnik promocji, str. 2 PDF"
+            }
+          },
+          "failureMessage": "Inny produkt lub usługa mBanku w dniu wejścia wyklucza wariant Media Expert."
+        }
+      ],
+      "offerId": "mbank-ekonto-do-uslug",
+      "provider": "mBank S.A.",
+      "summary": "Karencja rachunkowa obowiązuje każdy wariant; Mobile i Media mają dodatkowy warunek braku innych produktów przy wejściu.",
+      "evidenceRequirements": {
+        "decisionCriticalComponentIds": [
+          "mbank-initial",
+          "mbank-activity",
+          "mbank-opening",
+          "mbank-salary",
+          "mbank-child",
+          "mbank-mobile",
+          "mbank-media-cash",
+          "mbank-media-voucher"
+        ],
+        "nonCriticalComponentIds": []
+      }
+    },
+    "pko-konto-za-zero": {
+      "legacyControlledFields": [
+        "relationshipClear"
+      ],
+      "fieldOverrides": {
+        "relationshipClear": {
+          "label": "Czy spełniasz karencję właściwą dla wybranego wariantu?",
+          "shortLabel": "Karencja wybranego wariantu"
+        }
+      },
+      "rules": [
+        {
+          "id": "pko-letni-account-lookback",
+          "appliesWhen": {
+            "field": "variant",
+            "op": "eq",
+            "value": "letni"
+          },
+          "scope": {
+            "provider": "PKO Bank Polski S.A.",
+            "promotionId": "pko-letni",
+            "componentIds": [
+              "pko-letni-cashback",
+              "pko-letni-completion"
+            ],
+            "relationshipTypes": [
+              "pln_personal_current_account_excluding_inteligo"
+            ],
+            "offerId": "pko-konto-za-zero"
+          },
+          "window": {
+            "kind": "FIXED_DATE",
+            "from": "2025-01-01",
+            "to": "2026-06-30",
+            "anchor": "promotion_entry"
+          },
+          "userInputField": "relationshipClear",
+          "evidence": {
+            "sourceIds": [
+              "pko-letni"
+            ],
+            "checkedAt": "2026-09-02",
+            "state": "SUPPORTED",
+            "locator": {
+              "type": "section_page_heading",
+              "value": "3. Uczestnicy promocji, pkt 2 ppkt 1, str. 3 PDF"
+            }
+          },
+          "failureMessage": "Rachunek osobisty PKO BP w okresie 1.01.2025–30.06.2026 wyklucza Letni Bonus."
+        },
+        {
+          "id": "pko-samsung-account-lookback",
+          "appliesWhen": {
+            "field": "variant",
+            "op": "eq",
+            "value": "samsung"
+          },
+          "scope": {
+            "provider": "PKO Bank Polski S.A.",
+            "promotionId": "pko-samsung",
+            "componentIds": [
+              "pko-samsung"
+            ],
+            "relationshipTypes": [
+              "pln_personal_current_account_excluding_inteligo"
+            ],
+            "offerId": "pko-konto-za-zero"
+          },
+          "window": {
+            "kind": "FIXED_DATE",
+            "from": "2025-01-01",
+            "to": "2026-06-30",
+            "anchor": "promotion_entry"
+          },
+          "userInputField": "relationshipClear",
+          "evidence": {
+            "sourceIds": [
+              "pko-samsung-reg"
+            ],
+            "checkedAt": "2026-09-02",
+            "state": "SUPPORTED",
+            "locator": {
+              "type": "section_page_heading",
+              "value": "3. Uczestnicy promocji, pkt 2 ppkt 1, str. 4 PDF"
+            }
+          },
+          "failureMessage": "Rachunek osobisty PKO BP w okresie 1.01.2025–30.06.2026 wyklucza wariant Samsung."
+        },
+        {
+          "id": "pko-allegro-evidence-gap",
+          "appliesWhen": {
+            "field": "variant",
+            "op": "eq",
+            "value": "allegro"
+          },
+          "scope": {
+            "provider": "PKO Bank Polski S.A.",
+            "promotionId": "pko-allegro",
+            "componentIds": [
+              "pko-allegro"
+            ],
+            "relationshipTypes": [
+              "UNKNOWN"
+            ],
+            "offerId": "pko-konto-za-zero"
+          },
+          "window": {
+            "kind": "UNKNOWN",
+            "from": null,
+            "to": null,
+            "anchor": "UNKNOWN"
+          },
+          "userInputField": null,
+          "evidence": {
+            "sourceIds": [
+              "pko-promos"
+            ],
+            "checkedAt": "2026-08-24",
+            "state": "GAP"
+          },
+          "failureMessage": "North nie ma wystarczającej kotwicy źródłowej dla kwalifikacji wariantu Allegro."
+        }
+      ],
+      "offerId": "pko-konto-za-zero",
+      "provider": "PKO Bank Polski S.A.",
+      "summary": "Karencja jest wariantowa: Letni Bonus i Rabat w górę mają potwierdzone okno; Allegro pozostaje EVIDENCE_GAP.",
+      "evidenceRequirements": {
+        "decisionCriticalComponentIds": [
+          "pko-letni-cashback",
+          "pko-letni-completion",
+          "pko-samsung",
+          "pko-allegro"
+        ],
+        "nonCriticalComponentIds": [
+          "pko-child"
+        ]
+      }
+    },
+    "unicredit-konto-osobiste": {
+      "legacyControlledFields": [
+        "relationshipClear"
+      ],
+      "fieldOverrides": {
+        "relationshipClear": {
+          "label": "Czy przed 18.08.2026 nie miałeś żadnego konta ani produktu UniCredit lub Aion?",
+          "shortLabel": "Relacja UniCredit/Aion przed startem"
+        }
+      },
+      "rules": [
+        {
+          "id": "unicredit-any-product-before-start",
+          "scope": {
+            "provider": "UniCredit S.A. Oddział w Polsce",
+            "promotionId": "unicredit-zabka-150",
+            "componentIds": [
+              "unicredit-voucher-1",
+              "unicredit-voucher-2",
+              "unicredit-voucher-3"
+            ],
+            "relationshipTypes": [
+              "any_account_or_product_unicredit_or_aion"
+            ],
+            "offerId": "unicredit-konto-osobiste"
+          },
+          "window": {
+            "kind": "FIXED_DATE_OPEN_ENDED",
+            "from": null,
+            "to": "2026-08-17",
+            "anchor": "promotion_start_2026-08-18"
+          },
+          "userInputField": "relationshipClear",
+          "evidence": {
+            "sourceIds": [
+              "unicredit-zabka"
+            ],
+            "checkedAt": "2026-09-02",
+            "state": "SUPPORTED",
+            "locator": {
+              "type": "clause",
+              "value": "§3 ust. 17"
+            }
+          },
+          "failureMessage": "Wcześniejsza relacja z UniCredit lub Aion wyklucza vouchery, ale nie bramkuje funkcjonalnej wartości konta."
+        }
+      ],
+      "offerId": "unicredit-konto-osobiste",
+      "provider": "UniCredit S.A. Oddział w Polsce",
+      "summary": "Vouchery wymagają braku wcześniejszej relacji z UniCredit lub Aion; funkcje konta nie są bramkowane tą promocją.",
+      "evidenceRequirements": {
+        "decisionCriticalComponentIds": [
+          "unicredit-voucher-1",
+          "unicredit-voucher-2",
+          "unicredit-voucher-3",
+          "unicredit-functional"
+        ],
+        "nonCriticalComponentIds": []
+      }
+    },
+    "alior-konto-plus": {
+      "legacyControlledFields": [
+        "relationshipClear"
+      ],
+      "fieldOverrides": {
+        "relationshipClear": {
+          "label": "Czy przez 3 lata przed wnioskiem nie miałeś rachunku osobistego w Alior Banku?",
+          "shortLabel": "3-letnia karencja rachunku osobistego"
+        }
+      },
+      "rules": [
+        {
+          "id": "alior-plus-rolling-account-lookback",
+          "scope": {
+            "provider": "Alior Bank S.A.",
+            "promotionId": "alior-plus-main",
+            "componentIds": [
+              "alior-plus-opening",
+              "alior-plus-stage",
+              "alior-plus-monthly",
+              "alior-plus-ring"
+            ],
+            "relationshipTypes": [
+              "personal_current_account"
+            ],
+            "offerId": "alior-konto-plus"
+          },
+          "window": {
+            "kind": "ROLLING_PERIOD",
+            "period": {
+              "value": 3,
+              "unit": "YEARS"
+            },
+            "anchor": "application_date"
+          },
+          "userInputField": "relationshipClear",
+          "evidence": {
+            "sourceIds": [
+              "alior-plus-reg"
+            ],
+            "checkedAt": "2026-09-02",
+            "state": "SUPPORTED",
+            "locator": {
+              "type": "section_page_heading",
+              "value": "Część 4 – Warunki uczestnictwa – zasady ogólne, pkt 1, str. 4 PDF"
+            }
+          },
+          "failureMessage": "Rachunek osobisty w Alior Banku w ciągu 3 lat przed wnioskiem wyklucza promocję; inne produkty same nie tworzą tej bariery."
+        }
+      ],
+      "offerId": "alior-konto-plus",
+      "provider": "Alior Bank S.A.",
+      "summary": "Karencja obejmuje rachunek osobisty w ciągu 3 lat przed wnioskiem, nie wszystkie relacje z bankiem.",
+      "evidenceRequirements": {
+        "decisionCriticalComponentIds": [
+          "alior-plus-opening",
+          "alior-plus-stage",
+          "alior-plus-monthly",
+          "alior-plus-ring"
+        ],
+        "nonCriticalComponentIds": []
+      }
+    }
+  }
+}
