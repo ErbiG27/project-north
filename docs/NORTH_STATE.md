@@ -1,16 +1,17 @@
 # ProjectNorth — canonical state and AI recovery
 
-> Master recovery document · stan roboczy: 2026-09-02 · publiczny release aplikacji: `24c2d7c5450b44ae07e12267f592b5898849bb54` · najnowszy lokalny UX checkpoint: `b3593e2118af48103d0518cdcc0c3fad47af4513` · Sprint 4A Truth & Eligibility Core oczekuje Founder Review
+> Master recovery document · stan roboczy: 2026-09-02 · ostatni zweryfikowany publiczny release aplikacji: `24c2d7c5450b44ae07e12267f592b5898849bb54` · checkpoint Truth & Eligibility Core: `da04dfa22540d610ece9f0c04e19f27e3cc294ad` · Sprint 4A COMPLETE · Sprint 4B next
 
 Ten dokument jest pierwszym źródłem bieżącego kontekstu po utracie rozmowy, zmianie AI, zmianie osoby pracującej nad projektem albo dłuższej przerwie. Szczegóły wydań należą do `CHANGELOG.md`, trwałe uzasadnienia do `DECISIONS.md`, a fakty wdrożonych ofert do `frontend/data/decision-offers.json`.
 
 Najważniejsze rozdzielenie stanu na 2026-09-02:
 
-- **PUBLIC PRODUCTION:** nadal pokazuje wcześniejszy UX i katalog 12 ofert z release'u `24c2d7c`;
-- **LOCAL MAIN / APPROVED UX:** zawiera lokalne checkpointy `f2747b7 feat: establish North offer experience UX` oraz `b3593e2 feat: add simplified North homepage prototype`; lokalny `main` jest przed `origin/main`;
-- **PRODUCTION ≠ LOCAL APPROVED UX:** oba checkpointy UX są lokalne; nie wykonano pushu ani deployu i nie są publicznie zintegrowane;
-- **LOCAL UNCOMMITTED / SPRINT 4A:** wdrożono kontrakt eligibility V2, component-level gating, realny zegar freshness, evidence capability, oddzielne user/evidence gaps i bezpieczne buckety wartości; zmiany nie są jeszcze zatwierdzonym checkpointem i oczekują Founder Review;
-- **LOCAL UNCOMMITTED / SPRINT 4A REPAIR PASS #1:** naprawiono zweryfikowane findingi P0/P1; runtime i validator fail-closed przy mixed generation, driftujących targetach/ID oraz source edition drift. Pekao pozostaje `CONFLICTING`/`UNKNOWN` do pełnego rechecku nowych edycji; bez stage/commit/push/deploy.
+- **PUBLIC PRODUCTION:** ostatni zweryfikowany stan to wcześniejszy UX i katalog 12 ofert z release'u `24c2d7c`; aktualizacji produkcji nie należy uznawać za zakończoną bez osobnego potwierdzenia deploymentu i smoke;
+- **MAIN CHECKPOINTS:** Offer Experience `f2747b7`, Homepage Simplification `b3593e2` oraz Truth & Eligibility Core `da04dfa` są zapisane w lokalnej historii `main`;
+- **SPRINT 4A — COMPLETE:** początkowy Claude Red Team zakończył się `FAIL/BLOCKED`; Repair Pass #1 usunął pierwszą grupę findingów, post-repair verification wykrył sześć dalszych blockerów, a Final Repair Pass #2 zamknął `6/6` znanych blockerów;
+- **SPRINT 4A — VERIFIED:** targeted Repair #2 oraz production-like/core tests `26/26 PASS`; mutation integrity `8/8` fail-closed; mixed-generation w obu kierunkach `PASS`; production freshness mutant zabity; browser smoke `PASS`, `0` błędów konsoli;
+- **EVIDENCE DEBT:** semantyczny refresh Pekao Edition III / Travel Edition II nie został wykonany w 4A. Runtime pozostaje fail-closed z `CONFLICTING`, `EVIDENCE_GAP` i `CANNOT ASSESS` tam, gdzie brakuje wystarczającego evidence; szerszy freshness/data refresh jest osobnym follow-upem;
+- **NEXT PRODUCT/UX PHASE:** Sprint 4B.
 - `.gitattributes`, `.codex-remote-attachments/` i `artifacts/` są chronionymi leftovers poza zakresem UX i dokumentacji.
 
 ## 1. Czym jest ProjectNorth i dlaczego istnieje
@@ -50,7 +51,7 @@ ProjectNorth nie jest:
 
 ## 3. Decision Model v1 + Truth & Eligibility Core — aktywny lokalny rdzeń
 
-Sprint 4A dodaje minimalny `north-eligibility-v2`. Autorytatywna kwalifikacja może być scoped per provider, promotion/component, relationship type i date window. Krytyczna odpowiedź engine wynika mechanicznie z coverage oraz aktualności evidence, a nie ze statycznego `HIGH/MEDIUM/LOW`. Stare `northConfidence` pozostaje polem zgodności wstecznej. Brak odpowiedzi użytkownika i brak wystarczającego evidence są osobnymi stanami. Różne formy i waluty wartości pozostają w osobnych bucketach.
+Zakończony Sprint 4A, zapisany w `da04dfa22540d610ece9f0c04e19f27e3cc294ad`, dodaje minimalny `north-eligibility-v2`. Autorytatywna kwalifikacja może być scoped per provider, promotion/component, relationship type i date window. Krytyczna odpowiedź engine wynika mechanicznie z coverage oraz aktualności evidence, a nie ze statycznego `HIGH/MEDIUM/LOW`. Stare `northConfidence` pozostaje polem zgodności wstecznej. Brak odpowiedzi użytkownika i brak wystarczającego evidence są osobnymi stanami. Różne formy i waluty wartości pozostają w osobnych bucketach.
 
 ### North Value
 
@@ -147,7 +148,7 @@ Kraken jest trzynastym rekordem technicznym `crypto_validation`: validation-only
 
 Sześć warningów nie blokowało release'u i nie oznaczało stale evidence w dniu wydania. To historyczny wynik bramy release'owej, nie bieżący wynik lokalnego guardu.
 
-## 6. Upcoming freshness recheck
+## 6. Freshness i data debt po Sprint 4A
 
 Najbliższy maintenance deadline: **2026-08-31**.
 
@@ -160,7 +161,7 @@ Ręczny freshness recheck obejmuje:
 - landing gate Pekao;
 - landing gate Nest.
 
-To `Freshness Operations`, nie Evidence Review #5 i nie błąd wydania. Ostatni lokalny Data Guard uruchomiony na `2026-08-29` miał `0 FAIL / 10 WARN / 13 OK`; warningi są przypomnieniami o istniejących terminach rechecku, nie skutkiem prototypów UX. Recheck musi nastąpić przed publiczną integracją odpowiednich ofert; ten sync nie zmienia facts ani evidence.
+To `Freshness Operations`, nie Evidence Review #5 i nie błąd Sprintu 4A. Ostatni lokalny Data Guard uruchomiony na `2026-08-29` miał `0 FAIL / 10 WARN / 13 OK`; warningi są przypomnieniami o istniejących terminach rechecku, nie skutkiem prototypów UX. Sprint 4A nie wykonał semantycznego refreshu Pekao Edition III / Travel Edition II ani szerszego freshness/data refreshu. Do czasu aktualnego official evidence runtime ma pozostać fail-closed.
 
 ## 7. Historia Evidence Reviews — numeracja zamknięta
 
@@ -245,9 +246,9 @@ Od **2026-08-28 aktywnym priorytetem jest Product UX i content hierarchy**. Nie 
 1. **Sprint 1 — North Offer Experience v1/v1.1:** `APPROVED UX PATTERN`; lokalny checkpoint `f2747b7`.
 2. **Sprint 2 — Category Shell & Header v1:** `VISUAL PASS` po micro-fixie. `Konta` są aktywne; Oszczędzanie, Inwestowanie, Fintech i Krypto pozostają nieinteraktywne bez martwych linków i pustych katalogów.
 3. **Offer Identity & Visual Assets Pass v1:** `VISUAL PASS` po micro-fixie. Logo providerów i North visual fallback są wystarczające; nie dodajemy stocków ani marketingowych product visuals.
-4. **Sprint 3 — Homepage Simplification v1:** `FUNCTIONAL / PRODUCT / VISUAL PASS` po Founder Review i micro-fixie; lokalny checkpoint `b3593e2` jest kompletny, bez pushu, deployu i publicznej integracji.
+4. **Sprint 3 — Homepage Simplification v1:** `FUNCTIONAL / PRODUCT / VISUAL PASS` po Founder Review i micro-fixie; checkpoint `b3593e2` jest kompletny, ale jego stan na produkcji wymaga osobnej weryfikacji deploymentu i smoke.
 
-Lokalny flow Sprintów 1–3 został zaakceptowany. Nie otwiera to automatycznie Sprintu 4; następny bounded krok wymaga osobnej decyzji Founder/Product.
+Lokalny flow Sprintów 1–3 został zaakceptowany. Sprint 4A Truth & Eligibility Core jest zakończonym checkpointem; następną fazą produktu/UX jest Sprint 4B.
 
 ### Zaakceptowany kierunek Homepage Simplification v1
 

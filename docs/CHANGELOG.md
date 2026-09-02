@@ -6,7 +6,7 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 
 ### Added
 
-- Lokalny, nieopublikowany Sprint 4A `Truth & Eligibility Core`: minimalny kontrakt `north-eligibility-v2` z oknami `FIXED_DATE`, `FIXED_DATE_OPEN_ENDED`, `ROLLING_PERIOD`, `NONE`, `UNKNOWN`, scope per provider/promocja/komponent/relacja oraz mechanicznymi stanami capability.
+- Sprint 4A `Truth & Eligibility Core`, zapisany w code checkpointcie `da04dfa22540d610ece9f0c04e19f27e3cc294ad`: minimalny kontrakt `north-eligibility-v2` z oknami `FIXED_DATE`, `FIXED_DATE_OPEN_ENDED`, `ROLLING_PERIOD`, `NONE`, `UNKNOWN`, scope per provider/promocja/komponent/relacja oraz mechanicznymi stanami capability.
 - Osobny validator kontraktu V2 i 15 testów regresyjnych dla częściowej kwalifikacji, evidence gaps, zegara, form i walut wartości oraz niepoprawnych przedziałów.
 - Cross-AI continuity system: `AGENTS.md`, cienki `CLAUDE.md`, Context Map, Sync Protocol, Offer Taxonomy oraz krótka historia decyzji produktu.
 - Bounded, nieindeksowany prototyp mBank Alternative Comparison, który porównuje eKonto możliwości, eKonto do usług i mKonto Intensive z osobnego kontraktu v0.8.0 bez zmiany publicznego katalogu.
@@ -15,7 +15,7 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 
 ### Changed
 
-- Pekao rozdziela kwalifikację 300 zł i części podróżnej; PKO Letni/Samsung używają potwierdzonego okna 1.01.2025–30.06.2026, PKO Allegro pozostaje `EVIDENCE_GAP`; mBank zachowuje barierę od 1.01.2022, Alior Plus rolling 3 lata, a UniCredit stosuje relację UniCredit/Aion do voucherów bez bramkowania wartości funkcjonalnej.
+- Pekao rozdziela kwalifikację 300 zł i części podróżnej; PKO Letni/Samsung używają potwierdzonego okna 1.01.2025–30.06.2026, PKO Allegro pozostaje `EVIDENCE_GAP`; mBank zachowuje barierę od 1.01.2022, Alior Plus rolling 3 lata, a UniCredit stosuje relację UniCredit/Aion do voucherów bez bramkowania wartości funkcjonalnej. Semantyczny refresh Pekao Edition III / Travel Edition II nie należał do 4A: runtime zachowuje fail-closed `CONFLICTING`, `EVIDENCE_GAP` i `CANNOT ASSESS`, a szerszy freshness/data refresh pozostaje osobnym follow-up debt.
 - Freshness korzysta z realnej daty `Europe/Warsaw` w runtime i rozróżnia `CURRENT`, `RECHECK_SOON`, `RECHECK_DUE`, `STALE_OR_EXPIRED`, `CONFLICTING`, `UNKNOWN`; deterministyczne testy wstrzykują `today`.
 - Match oddziela brak odpowiedzi użytkownika od luki evidence, wyprowadza decision-relevant fields i zachowuje formę oraz walutę wartości w osobnych bucketach bez scalarnego sumowania różnych form.
 - `NORTH_STATE.md` stał się master recovery document, a README, Handbook, Decisions, Roadmap i AI Workflow zostały zsynchronizowane z publicznym katalogiem 12 ofert oraz etapem affiliate/support/pilot.
@@ -28,19 +28,21 @@ Format oparty na Keep a Changelog. Wersje przed publicznym wydaniem mogą zmieni
 
 ### Fixed
 
-- Repair Pass #1 Sprintu 4A: przywrócono właściwe mapowanie eligibility per oferta, rozdzielono inputy otwarcia Pekao dla 300 zł i travel bez wymuszania `TRUE`, dodano fail-closed runtime/validator dla driftu generacji i ID, sklasyfikowano decision-critical evidence oraz zdegradowano historyczne claims Pekao po zmianie edycji pod tymi samymi URL-ami.
+- Sprint 4A: początkowy Claude Red Team zakończył się `FAIL/BLOCKED`. Repair Pass #1 przywrócił właściwe mapowanie eligibility per oferta, rozdzielił inputy otwarcia Pekao dla 300 zł i travel bez wymuszania `TRUE`, dodał fail-closed runtime/validator dla driftu generacji i ID, sklasyfikował decision-critical evidence oraz zdegradował historyczne claims Pekao po zmianie edycji pod tymi samymi URL-ami.
+- Claude post-repair verification wykrył sześć dalszych blockerów; Final Repair Pass #2 zamknął `6/6` znanych blockerów.
 
 ### Verified
 
-- Sprint 4A Repair Pass #1: validator `PASS` (0 FAIL), targeted 8/8, production-like integration 9/9, compatibility 4/4, adversarial 10/10 oraz jawnie oznaczony legacy scalar Match 50/50; browser smoke renderuje Pekao jako `CONFLICTING`/Confidence `UNKNOWN` i mBank jako `STALE OR EXPIRED`, z własnym eligibility copy. Stan oczekuje Founder Review i nie został staged, committed, pushed ani deployed.
+- Sprint 4A Final Repair Pass #2: targeted Repair #2 oraz production-like/core tests `26/26 PASS`; mutation integrity `8/8` fail-closed; mixed-generation w obu kierunkach `PASS`; production freshness mutant zabity.
+- Browser smoke `PASS`, `0` błędów konsoli; Pekao pozostaje fail-closed przy konflikcie lub luce evidence. Sprint 4A jest zakończonym checkpointem `da04dfa22540d610ece9f0c04e19f27e3cc294ad`.
 - Cztery scenariusze acceptance mBank przeszły przez interpreter i renderowany formularz; scenariusz 22-letni wybrał lepszy Product Fit mimo niższej maksymalnej premii.
 - Skrócona rewalidacja po density pass potwierdziła 4/4 acceptance, `preferredProductId: null`, reset disclosure, mysz i klawiaturę, fokus, desktop 1440×900, mobile 390×844, 0 px overflow oraz brak błędów konsoli, strony, żądań i relacji DOM/ARIA.
 - Data Guard zakończył się `0 FAIL / 6 WARN / 17 OK`, fixtures 16/16, Match 50/50 i składnia JS/MJS 11/11; lokalny i publiczny katalog nadal renderują 12 kart, a lokalne i publiczne trasy ofert zwracają 12/12 HTTP 200.
 - North Offer Experience v1/v1.1 otrzymał `APPROVED UX PATTERN`; Category Shell & Header v1 oraz Offer Identity & Visual Assets Pass v1 otrzymały `VISUAL PASS` po micro-fixach.
-- Homepage Simplification v1 otrzymał `FUNCTIONAL / PRODUCT / VISUAL PASS` po Founder Review i micro-fixie. Lokalny checkpoint `b3593e2` jest kompletny, ale nie został pushed, deployed ani publicznie zintegrowany.
+- Homepage Simplification v1 otrzymał `FUNCTIONAL / PRODUCT / VISUAL PASS` po Founder Review i micro-fixie. Checkpoint `b3593e2` jest kompletny, ale jego stan na produkcji wymaga osobnej weryfikacji deploymentu i smoke.
 - Data Guard na `2026-08-29`: `0 FAIL / 10 WARN / 13 OK`; warningi są istniejącymi freshness reminders, nie regresją UX.
 
-`Unreleased` opisuje lokalne checkpointy `f2747b7` i `b3593e2`; `Unreleased` nie jest release'em produkcyjnym. Produkcja nadal odpowiada release'owi `24c2d7c` i publicznemu katalogowi 12 ofert.
+`Unreleased` obejmuje checkpointy `f2747b7`, `b3593e2` i `da04dfa`; sam wpis nie dowodzi aktualizacji produkcji. Ostatnim zweryfikowanym publicznym release'em pozostaje `24c2d7c`, dopóki nowy deployment i smoke nie zostaną osobno potwierdzone.
 
 ## [12-offer catalog release] — 2026-08-24
 

@@ -20,11 +20,13 @@ North UX Test #1, Evidence Reviews #1–#4, Data Integrity & Freshness Guard ora
 - GitHub `/docs` pozostaje canonical; Notion jest operational mirror.
 - Materialne zadanie nie jest `Done` bez oceny wymaganej synchronizacji.
 
-### Aktywny etap — Sprint 4A Truth & Eligibility Core
+### Sprint 4A COMPLETE — Sprint 4B next
 
-**Status:** lokalna implementacja po Repair Pass #1 z 2026-09-02, oczekuje Founder Review i pełnego evidence rechecku nowych edycji Pekao. Priorytetem jest poprawność kwalifikacji, evidence i freshness przed przebudową UX; nie affiliate infrastructure, community/dystrybucja, mBank public integration ani dalszy catalog expansion.
+**Status:** Truth & Eligibility Core jest zakończony w checkpointcie `da04dfa22540d610ece9f0c04e19f27e3cc294ad`. Początkowy Claude Red Team zakończył się `FAIL/BLOCKED`; Repair Pass #1 został wykonany, post-repair verification wykrył sześć dalszych blockerów, a Final Repair Pass #2 zamknął `6/6`. Następną fazą produktu/UX jest Sprint 4B.
 
-Zakres 4A obejmuje eligibility per promocja/komponent, minimalny contract V2, realny zegar, evidence capability, rozdzielenie user-input gap od evidence gap, progressive-question relevance i regresje Value Engine. Sprint 4B (przebudowa UX/wyglądu) pozostaje odroczony do osobnej decyzji po review 4A.
+Finalna brama 4A: targeted Repair #2 oraz production-like/core tests `26/26 PASS`, mutation integrity `8/8` fail-closed, mixed-generation w obu kierunkach `PASS`, production freshness mutant zabity oraz browser smoke `PASS` przy `0` błędów konsoli. Semantyczny refresh Pekao Edition III / Travel Edition II oraz szerszy freshness/data refresh pozostają osobnym follow-up debt; runtime zachowuje `CONFLICTING`, `EVIDENCE_GAP` i `CANNOT ASSESS` tam, gdzie evidence nie pozwala na bezpieczny wniosek.
+
+Zakres 4A obejmuje eligibility per promocja/komponent, minimalny contract V2, realny zegar, evidence capability, rozdzielenie user-input gap od evidence gap, progressive-question relevance i regresje Value Engine. Sprint 4B (przebudowa UX/wyglądu) jest następną fazą, ale wymaga osobnej, bounded decyzji zakresowej.
 
 North prowadzi użytkownika przez cztery pytania w stałej kolejności:
 
@@ -40,15 +42,15 @@ Pełna metodologia, evidence, wyjątki i regulaminowe szczegóły pozostają ni�
 1. **North Offer Experience v1/v1.1:** `APPROVED UX PATTERN`.
 2. **Category Shell & Header v1:** `VISUAL PASS` po micro-fixie.
 3. **Offer Identity & Visual Assets Pass v1:** `VISUAL PASS`; provider logos i North visual fallback są wystarczające.
-4. **Homepage Simplification v1:** `FUNCTIONAL / PRODUCT / VISUAL PASS` po Founder Review i micro-fixie; lokalny checkpoint `b3593e2` jest kompletny, bez pushu, deployu i publicznej integracji.
-5. **Sprint 4A Truth & Eligibility Core:** lokalnie zaimplementowany, bez stage/commit/push/deploy; oczekuje Founder Review.
-6. **Sprint 4B UX refresh:** `DEFERRED`; nie rozpoczynać bez osobnej decyzji po zamknięciu 4A.
+4. **Homepage Simplification v1:** `FUNCTIONAL / PRODUCT / VISUAL PASS` po Founder Review i micro-fixie; checkpoint `b3593e2` jest kompletny, ale jego stan na produkcji wymaga osobnej weryfikacji deploymentu i smoke.
+5. **Sprint 4A Truth & Eligibility Core:** `COMPLETE`; code checkpoint `da04dfa`, Final Repair Pass #2 zamknął `6/6` znanych blockerów.
+6. **Sprint 4B UX refresh:** następna faza produktu/UX; zakres wymaga osobnej, bounded decyzji.
 
 Zaakceptowana IA Homepage v1: Header → Hero → Category Discovery → 3 real offers → Jak działa North → Trust/Sources → Final CTA. Konta są jedyną aktywną kategorią; Oszczędzanie, Inwestowanie, Fintech i Krypto są przyszłymi kierunkami bez martwych linków lub pustych katalogów. Business może dojść później, ale nie jest aktywnym verticalem.
 
 Affiliate support, pilot i tracking są `PARKED`. v0.8.0 Alternative Comparison pozostaje zaakceptowanym lokalnym checkpointem architektury i prototypu mBank, lecz jego publiczna integracja jest późniejsza i podporządkowana UX-first direction. Jedyną równoległą operacją wymagającą terminu jest freshness recheck 31.08.2026; nie jest to nowy feature sprint.
 
-Lokalny flow Sprintów 1–3 jest zaakceptowany. Sprint 4A ma implementację roboczą, ale nie jest zakończonym checkpointem przed Founder Review. Następny bounded krok po review wymaga osobnej decyzji Founder/Product.
+Lokalny flow Sprintów 1–3 jest zaakceptowany, a Sprint 4A jest zakończonym checkpointem. Następny bounded krok to zdefiniowanie zakresu Sprintu 4B; freshness/data debt pozostaje oddzielnym follow-upem.
 
 ## Zakończone etapy i zachowane kontrakty
 
